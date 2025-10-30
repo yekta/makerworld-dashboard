@@ -5,9 +5,7 @@ export type TStatResponse = {
 };
 
 export type TUser = {
-  current: TUserStat;
-  delta_1h: TUserStat;
-  delta_24h: TUserStat;
+  stats: { current: TUserStat; delta_1h: TUserStat; delta_24h: TUserStat };
 };
 
 export type TUserStat = {

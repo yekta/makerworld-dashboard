@@ -11,8 +11,6 @@ import {
   UsersIcon,
 } from "lucide-react";
 
-export const dynamic = "force-dynamic";
-
 export default async function Home() {
   const res = await fetch(env.API_URL + "/v1/stats");
   const { models, user }: TStatResponse = await res.json();
@@ -21,43 +19,43 @@ export default async function Home() {
       <div className="w-full max-w-6xl flex flex-col">
         <div className="w-full flex-wrap flex items-center justify-center gap-2 px-2 md:px-4">
           <Stat
-            value={user.current.prints}
-            delta1h={user.delta_1h.prints}
-            delta24h={user.delta_24h.prints}
+            value={user.stats.current.prints}
+            delta1h={user.stats.delta_1h.prints}
+            delta24h={user.stats.delta_24h.prints}
             Icon={BoxIcon}
           />
           <Stat
-            value={user.current.downloads}
-            delta1h={user.delta_1h.downloads}
-            delta24h={user.delta_24h.downloads}
+            value={user.stats.current.downloads}
+            delta1h={user.stats.delta_1h.downloads}
+            delta24h={user.stats.delta_24h.downloads}
             Icon={DownloadIcon}
           />
           <Stat
-            value={user.current.boosts}
-            delta1h={user.delta_1h.boosts}
-            delta24h={user.delta_24h.boosts}
+            value={user.stats.current.boosts}
+            delta1h={user.stats.delta_1h.boosts}
+            delta24h={user.stats.delta_24h.boosts}
             Icon={RocketIcon}
           />
           <Stat
-            value={user.current.likes}
-            delta1h={user.delta_1h.likes}
-            delta24h={user.delta_24h.likes}
+            value={user.stats.current.likes}
+            delta1h={user.stats.delta_1h.likes}
+            delta24h={user.stats.delta_24h.likes}
             Icon={ThumbsUp}
           />
           <Stat
-            value={user.current.followers}
-            delta1h={user.delta_1h.followers}
-            delta24h={user.delta_24h.followers}
+            value={user.stats.current.followers}
+            delta1h={user.stats.delta_1h.followers}
+            delta24h={user.stats.delta_24h.followers}
             Icon={UsersIcon}
           />
           <Stat
-            value={user.current.following}
-            delta1h={user.delta_1h.following}
-            delta24h={user.delta_24h.following}
+            value={user.stats.current.following}
+            delta1h={user.stats.delta_1h.following}
+            delta24h={user.stats.delta_24h.following}
             Icon={ContactIcon}
           />
         </div>
-        <div className="w-full flex flex-wrap mt-4">
+        <div className="w-full flex flex-wrap mt-4 md:mt-6">
           {models.map((model) => (
             <ModelCard key={model.modelId} model={model} />
           ))}
@@ -79,7 +77,7 @@ function Stat({
   Icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
 }) {
   return (
-    <div className="flex flex-col gap-0.5">
+    <div className="flex flex-col px-2 md:px-3">
       <div className="flex items-center gap-1 font-semibold">
         <Icon className="size-3.5" />
         <span className="">{value.toLocaleString(appLocale)}</span>
