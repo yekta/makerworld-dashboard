@@ -50,12 +50,12 @@ export default async function Home() {
             delta24h={user.stats.delta_24h.followers}
             Icon={UsersIcon}
           />
-          <Stat
+          {/* <Stat
             value={user.stats.current.following}
             delta1h={user.stats.delta_1h.following}
             delta24h={user.stats.delta_24h.following}
             Icon={ContactIcon}
-          />
+          /> */}
         </div>
         <div className="w-full flex flex-wrap mt-4 md:mt-6">
           {models.map((model) => (
