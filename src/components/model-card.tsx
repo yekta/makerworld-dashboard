@@ -42,7 +42,7 @@ export default function ModelCard({ model }: TProps) {
             Icon={ThumbsUpIcon}
           />
         </div>
-        <div className="w-full mt-1 relative">
+        <div className="w-full relative">
           <Image
             src={model.image}
             alt={model.title}
@@ -52,7 +52,7 @@ export default function ModelCard({ model }: TProps) {
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 320px"
           />
           <div className="w-full h-2/3 bg-linear-to-b from-background from-[1rem] to-background/0 absolute left-0 top-0"></div>
-          <h2 className="text-xs absolute left-0 top-0 w-full -mt-1 text-muted-foreground whitespace-nowrap overflow-hidden overflow-ellipsis">
+          <h2 className="text-xs absolute left-0 top-0 w-full text-muted-foreground whitespace-nowrap overflow-hidden overflow-ellipsis">
             {model.title}
           </h2>
         </div>
