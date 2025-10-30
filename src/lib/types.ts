@@ -1,7 +1,13 @@
 export type TStatResponse = {
-  user: TUserStat;
+  user: TUser;
   models: TModel[];
   latestBatch: number;
+};
+
+export type TUser = {
+  current: TUserStat;
+  delta_1h: TUserStat;
+  delta_24h: TUserStat;
 };
 
 export type TUserStat = {
@@ -19,26 +25,16 @@ export type TModel = {
   title: string;
   image: string;
   stats: {
-    current: {
-      prints: number;
-      downloads: number;
-      boosts: number;
-      likes: number;
-      comments: number;
-    };
-    delta_1h: {
-      prints: number;
-      downloads: number;
-      boosts: number;
-      likes: number;
-      comments: number;
-    };
-    delta_24h: {
-      prints: number;
-      downloads: number;
-      boosts: number;
-      likes: number;
-      comments: number;
-    };
+    current: TModelStat;
+    delta_1h: TModelStat;
+    delta_24h: TModelStat;
   };
+};
+
+export type TModelStat = {
+  prints: number;
+  downloads: number;
+  boosts: number;
+  likes: number;
+  comments: number;
 };

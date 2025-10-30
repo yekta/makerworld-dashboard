@@ -17,13 +17,43 @@ export default async function Home() {
   return (
     <div className="w-full flex justify-center items-start px-2 py-4 md:px-8 md:py-8">
       <div className="w-full max-w-6xl flex flex-col">
-        <div className="w-full flex-wrap flex items-center justify-center gap-3 px-2 md:gap-4 md:px-4">
-          <Stat value={user.prints} Icon={BoxIcon} />
-          <Stat value={user.downloads} Icon={DownloadIcon} />
-          <Stat value={user.boosts} Icon={RocketIcon} />
-          <Stat value={user.likes} Icon={ThumbsUp} />
-          <Stat value={user.followers} Icon={UsersIcon} />
-          <Stat value={user.following} Icon={ContactIcon} />
+        <div className="w-full flex-wrap flex items-center justify-center gap-2 px-2 md:px-4">
+          <Stat
+            value={user.current.prints}
+            delta1h={user.delta_1h.prints}
+            delta24h={user.delta_24h.prints}
+            Icon={BoxIcon}
+          />
+          <Stat
+            value={user.current.downloads}
+            delta1h={user.delta_1h.downloads}
+            delta24h={user.delta_24h.downloads}
+            Icon={DownloadIcon}
+          />
+          <Stat
+            value={user.current.boosts}
+            delta1h={user.delta_1h.boosts}
+            delta24h={user.delta_24h.boosts}
+            Icon={RocketIcon}
+          />
+          <Stat
+            value={user.current.likes}
+            delta1h={user.delta_1h.likes}
+            delta24h={user.delta_24h.likes}
+            Icon={ThumbsUp}
+          />
+          <Stat
+            value={user.current.followers}
+            delta1h={user.delta_1h.followers}
+            delta24h={user.delta_24h.followers}
+            Icon={UsersIcon}
+          />
+          <Stat
+            value={user.current.following}
+            delta1h={user.delta_1h.following}
+            delta24h={user.delta_24h.following}
+            Icon={ContactIcon}
+          />
         </div>
         <div className="w-full flex flex-wrap mt-4">
           {models.map((model) => (
@@ -37,16 +67,34 @@ export default async function Home() {
 
 function Stat({
   value,
+  delta1h,
+  delta24h,
   Icon,
 }: {
   value: number;
-  Icon?: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+  delta1h: number;
+  delta24h: number;
+  Icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
 }) {
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col gap-0.5">
       <div className="flex items-center gap-1 font-semibold">
-        {Icon && <Icon className="size-4" />}
+        <Icon className="size-3.5" />
         <span className="">{value.toLocaleString(appLocale)}</span>
+      </div>
+      <div className="w-full flex flex-col text-sm">
+        <div
+          data-positive={delta1h > 0 ? true : undefined}
+          className="flex items-center gap-0.75 text-muted-foreground data-positive:text-success"
+        >
+          +{delta1h.toLocaleString(appLocale)}
+        </div>
+        <div
+          data-positive={delta24h > 0 ? true : undefined}
+          className="flex items-center gap-0.75 text-muted-foreground data-positive:text-success"
+        >
+          +{delta24h.toLocaleString(appLocale)}
+        </div>
       </div>
     </div>
   );
