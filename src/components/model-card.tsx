@@ -1,6 +1,8 @@
+import { appLocale } from "@/lib/constants";
 import { TModel } from "@/lib/types";
 import { BoxIcon, DownloadIcon, RocketIcon, ThumbsUpIcon } from "lucide-react";
-import { appLocale } from "@/lib/constants";
+import Image from "next/image";
+import Link from "next/link";
 
 type TProps = {
   model: TModel;
@@ -8,12 +10,13 @@ type TProps = {
 
 export default function ModelCard({ model }: TProps) {
   return (
-    <div className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-1">
-      <div className="px-4 pt-2.5 pb-3 border rounded-xl flex flex-col gap-2">
-        <h2 className="text-xs text-muted-foreground w-full whitespace-nowrap overflow-hidden overflow-ellipsis">
-          {model.title}
-        </h2>
-        <div className="w-full flex gap-3">
+    <Link
+      href={getModelUrl(model.modelId)}
+      target="_blank"
+      className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-1 group"
+    >
+      <div className="p-4 border group-active:border-foreground/25 group-hover:border-foreground/25 rounded-xl flex flex-col gap-2">
+        <div className="w-full -mt-1 flex gap-3">
           <Stat
             value={model.stats.current.prints}
             delta24h={model.stats.delta_24h.prints}
@@ -39,9 +42,27 @@ export default function ModelCard({ model }: TProps) {
             Icon={ThumbsUpIcon}
           />
         </div>
+        <div className="w-full mt-1 relative">
+          <Image
+            src={model.image}
+            alt={model.title}
+            width={1916}
+            height={1437}
+            className="w-full h-auto rounded-md bg-border"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 320px"
+          />
+          <div className="w-full h-2/3 bg-linear-to-b from-background from-[1rem] to-background/0 absolute left-0 top-0"></div>
+          <h2 className="text-xs absolute left-0 top-0 w-full -mt-1 text-muted-foreground whitespace-nowrap overflow-hidden overflow-ellipsis">
+            {model.title}
+          </h2>
+        </div>
       </div>
-    </div>
+    </Link>
   );
+}
+
+function getModelUrl(id: number) {
+  return `https://makerworld.com/en/models/${id}`;
 }
 
 function Stat({
