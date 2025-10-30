@@ -11,6 +11,8 @@ import {
   UsersIcon,
 } from "lucide-react";
 
+export const dynamic = "force-dynamic";
+
 export default async function Home() {
   const res = await fetch(env.API_URL + "/v1/stats");
   const { models, user }: TStatResponse = await res.json();
