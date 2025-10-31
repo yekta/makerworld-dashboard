@@ -13,49 +13,48 @@ export default function ModelCard({ model }: TProps) {
     <Link
       href={getModelUrl(model.modelId)}
       target="_blank"
-      className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-1 group"
+      className="w-full md:w-1/2 lg:w-1/2 xl:w-1/3 p-1 group"
     >
-      <div className="p-4 border group-active:border-foreground/25 group-hover:border-foreground/25 rounded-xl flex flex-col gap-2">
-        <div className="w-full -mt-1 flex gap-3">
-          <Stat
-            value={model.stats.current.prints}
-            delta24h={model.stats.delta_24h.prints}
-            delta1h={model.stats.delta_1h.prints}
-            Icon={BoxIcon}
-          />
-          <Stat
-            value={model.stats.current.downloads}
-            delta24h={model.stats.delta_24h.downloads}
-            delta1h={model.stats.delta_1h.downloads}
-            Icon={DownloadIcon}
-          />
-          <Stat
-            value={model.stats.current.boosts}
-            delta24h={model.stats.delta_24h.boosts}
-            delta1h={model.stats.delta_1h.boosts}
-            Icon={RocketIcon}
-          />
-          <Stat
-            value={model.stats.current.likes}
-            delta24h={model.stats.delta_24h.likes}
-            delta1h={model.stats.delta_1h.likes}
-            Icon={ThumbsUpIcon}
-          />
-        </div>
-        <div className="w-full relative">
+      <div className="p-2 border group-active:bg-border group-hover:bg-border rounded-xl flex flex-col gap-2">
+        <div className="w-full flex flex-row items-start justify-center gap-3">
           <Image
             src={model.image}
             alt={model.title}
             width={1916}
             height={1437}
-            className="w-full h-auto rounded-md bg-border"
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 320px"
+            className="w-17 shrink-0 h-auto rounded-sm bg-border overflow-hidden"
+            sizes="68px"
           />
-          <div className="w-full h-2/3 bg-linear-to-b from-background from-[1rem] to-background/0 absolute left-0 top-0"></div>
-          <h2 className="text-xs absolute left-0 top-0 w-full text-muted-foreground whitespace-nowrap overflow-hidden overflow-ellipsis">
-            {model.title}
-          </h2>
+          <div className="flex-1 shrink min-w-0 overflow-hidden -mt-1 flex gap-3 py-0.75">
+            <Stat
+              value={model.stats.current.prints}
+              delta24h={model.stats.delta_24h.prints}
+              delta1h={model.stats.delta_1h.prints}
+              Icon={BoxIcon}
+            />
+            <Stat
+              value={model.stats.current.downloads}
+              delta24h={model.stats.delta_24h.downloads}
+              delta1h={model.stats.delta_1h.downloads}
+              Icon={DownloadIcon}
+            />
+            <Stat
+              value={model.stats.current.boosts}
+              delta24h={model.stats.delta_24h.boosts}
+              delta1h={model.stats.delta_1h.boosts}
+              Icon={RocketIcon}
+            />
+            <Stat
+              value={model.stats.current.likes}
+              delta24h={model.stats.delta_24h.likes}
+              delta1h={model.stats.delta_1h.likes}
+              Icon={ThumbsUpIcon}
+            />
+          </div>
         </div>
+        <h2 className="text-xs px-0.75 -mt-1.5 w-full text-muted-foreground whitespace-nowrap overflow-hidden overflow-ellipsis">
+          {model.title}
+        </h2>
       </div>
     </Link>
   );
