@@ -78,23 +78,31 @@ function Stat({
   Icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
 }) {
   return (
-    <div className="flex flex-col px-2 md:px-3">
-      <div className="flex items-center gap-1 font-semibold">
-        <Icon className="size-3.5" />
-        <span className="">{value.toLocaleString(appLocale)}</span>
+    <div className="flex shrink min-w-0 overflow-hidden flex-col px-2 md:px-3">
+      <div className="flex items-center gap-1 font-semibold overflow-hidden overflow-ellipsis">
+        <Icon className="size-3.5 shrink-0" />
+        <p className="shrink min-w-0 overflow-hidden overflow-ellipsis">
+          {value.toLocaleString(appLocale)}
+        </p>
       </div>
-      <div className="w-full flex flex-col text-sm">
+      <div className="shrink min-w-0 overflow-hidden flex flex-col text-sm mt-0.5">
         <div
           data-positive={delta1h > 0 ? true : undefined}
-          className="flex items-center gap-0.75 text-muted-foreground data-positive:text-success"
+          className="shrink min-w-0 overflow-hidden flex items-center gap-1 text-muted-foreground data-positive:text-success"
         >
-          +{delta1h.toLocaleString(appLocale)}
+          {/* <div className="size-3.5 shrink-0" /> */}
+          <p className="shrink min-w-0 leading-tight overflow-hidden overflow-ellipsis">
+            +{delta1h.toLocaleString(appLocale)}
+          </p>
         </div>
         <div
           data-positive={delta24h > 0 ? true : undefined}
-          className="flex items-center gap-0.75 text-muted-foreground data-positive:text-success"
+          className="shrink min-w-0 overflow-hidden flex items-center gap-1 text-muted-foreground data-positive:text-success"
         >
-          +{delta24h.toLocaleString(appLocale)}
+          {/* <div className="size-3.5 shrink-0" /> */}
+          <p className="shrink min-w-0 leading-tight overflow-hidden overflow-ellipsis">
+            +{delta24h.toLocaleString(appLocale)}
+          </p>
         </div>
       </div>
     </div>
