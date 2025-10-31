@@ -1,13 +1,6 @@
 import { appLocale } from "@/lib/constants";
 import { TModel } from "@/lib/types";
-import {
-  BoxIcon,
-  Clock12Icon,
-  Clock1Icon,
-  DownloadIcon,
-  RocketIcon,
-  ThumbsUpIcon,
-} from "lucide-react";
+import { BoxIcon, DownloadIcon, RocketIcon, ThumbsUpIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -18,7 +11,7 @@ type TProps = {
 export default function ModelCard({ model }: TProps) {
   return (
     <Link
-      href={getModelUrl(model.modelId)}
+      href={getModelUrl(model.model_id)}
       target="_blank"
       className="w-full md:w-1/2 lg:w-1/2 xl:w-1/3 p-1 group"
     >

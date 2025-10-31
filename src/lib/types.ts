@@ -1,7 +1,7 @@
 export type TStatResponse = {
   user: TUser;
   models: TModel[];
-  latestBatch: number;
+  latest_batch: number;
 };
 
 export type TUser = {
@@ -19,7 +19,7 @@ export type TUserStat = {
 };
 
 export type TModel = {
-  modelId: number;
+  model_id: number;
   title: string;
   image: string;
   stats: {
