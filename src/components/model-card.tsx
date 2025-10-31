@@ -30,7 +30,7 @@ export default function ModelCard({ model }: TProps) {
               value={model.stats.current.prints}
               delta24h={model.stats.delta_24h.prints}
               delta1h={model.stats.delta_1h.prints}
-              showDeltaIcon={true}
+              showDelta={true}
               Icon={BoxIcon}
             />
             <Stat
@@ -70,13 +70,12 @@ function Stat({
   delta24h,
   delta1h,
   Icon,
-  showDeltaIcon = false,
 }: {
   value: number;
   delta24h: number;
   delta1h: number;
   Icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
-  showDeltaIcon?: boolean;
+  showDelta?: boolean;
 }) {
   return (
     <div className="flex shrink min-w-0 overflow-hidden flex-col text-sm gap-0.5">
@@ -91,7 +90,6 @@ function Stat({
           data-positive={delta1h > 0 ? true : undefined}
           className="flex items-center gap-1 text-muted-foreground data-positive:text-success"
         >
-          {/* <div className="size-3.5 shrink-0" /> */}
           <p className="shrink leading-tight min-w-0 overflow-hidden overflow-ellipsis">
             +{delta1h.toLocaleString(appLocale)}
           </p>
@@ -100,7 +98,6 @@ function Stat({
           data-positive={delta24h > 0 ? true : undefined}
           className="flex items-center gap-1 text-muted-foreground data-positive:text-success"
         >
-          {/* <div className="size-3.5 shrink-0" /> */}
           <p className="shrink leading-tight min-w-0 overflow-hidden overflow-ellipsis">
             +{delta24h.toLocaleString(appLocale)}
           </p>
