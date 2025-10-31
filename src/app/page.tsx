@@ -1,6 +1,7 @@
 import ModelCard from "@/components/model-card";
 import { appLocale } from "@/lib/constants";
 import { env } from "@/lib/env";
+import { timeAgo } from "@/lib/helpers";
 import { TStatResponse } from "@/lib/types";
 import {
   BoxIcon,
@@ -14,9 +15,9 @@ export const dynamic = "force-dynamic";
 
 export default async function Home() {
   const res = await fetch(env.API_URL + "/v1/stats");
-  const { models, user }: TStatResponse = await res.json();
+  const { models, user, metadata }: TStatResponse = await res.json();
   return (
-    <div className="w-full flex justify-center items-start px-2 pt-4 pb-12 md:px-5 md:pt-5 md:pb-10 lg:px-6 lg:pt-6 lg:pb-12">
+    <div className="w-full flex justify-center items-start px-2 py-4 md:px-5 md:py-5 lg:px-6 lg:py-6">
       <div className="w-full max-w-6xl flex flex-col">
         <div className="w-full flex-wrap flex items-center justify-center gap-2 px-2 md:px-4">
           <Stat
@@ -60,6 +61,14 @@ export default async function Home() {
           {models.map((model) => (
             <ModelCard key={model.model_id} model={model} />
           ))}
+        </div>
+        {/* Metadata */}
+        <div className="w-full flex items-center justify-center mt-2 md:mt-3 text-xs">
+          <p className="shrink text-center px-2 text-muted-foreground min-w-0 overflow-hidden overflow-ellipsis">
+            △1h: {timeAgo(metadata.delta_1h_timestamp)}
+            <span>{" • "}</span>
+            △24h: {timeAgo(metadata.delta_24h_timestamp)}
+          </p>
         </div>
       </div>
     </div>

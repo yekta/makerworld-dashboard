@@ -2,6 +2,10 @@ export type TStatResponse = {
   user: TUser;
   models: TModel[];
   latest_batch: number;
+  metadata: {
+    delta_1h_timestamp: number;
+    delta_24h_timestamp: number;
+  };
 };
 
 export type TUser = {
