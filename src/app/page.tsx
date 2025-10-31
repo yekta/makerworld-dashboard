@@ -58,7 +58,7 @@ export default async function Home() {
         </div>
         <div className="w-full flex flex-wrap mt-4 md:mt-6">
           {models.map((model) => (
-            <ModelCard key={model.modelId} model={model} />
+            <ModelCard key={model.model_id} model={model} />
           ))}
         </div>
       </div>

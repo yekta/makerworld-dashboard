@@ -13,7 +13,7 @@ export default function ModelCard({ model }: TProps) {
     <Link
       href={getModelUrl(model.model_id)}
       target="_blank"
-      className="w-full md:w-1/2 lg:w-1/2 xl:w-1/3 p-1 group"
+      className="w-full md:w-1/2 lg:w-1/2 xl:w-1/3 p-1 group rounded-2xl"
     >
       <div className="p-2 border group-active:bg-border group-hover:bg-border rounded-xl flex flex-col gap-2">
         <div className="w-full flex flex-row items-start justify-center gap-3">
