@@ -16,7 +16,7 @@ export default async function Home() {
   const res = await fetch(env.API_URL + "/v1/stats");
   const { models, user }: TStatResponse = await res.json();
   return (
-    <div className="w-full flex justify-center items-start px-2 pt-4 pb-12 md:px-8 md:pt-8 md:pb-16">
+    <div className="w-full flex justify-center items-start px-2 pt-4 pb-12 md:px-5 md:pt-5 md:pb-10 lg:px-6 lg:pt-6 lg:pb-12">
       <div className="w-full max-w-6xl flex flex-col">
         <div className="w-full flex-wrap flex items-center justify-center gap-2 px-2 md:px-4">
           <Stat
