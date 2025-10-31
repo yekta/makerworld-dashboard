@@ -94,15 +94,15 @@ function Stat({
   return (
     <div
       data-placeholder={isPlaceholder ? true : undefined}
-      className="flex shrink min-w-0 overflow-hidden flex-col px-2 md:px-3 group"
+      className="flex shrink min-w-0 overflow-hidden flex-col px-2 md:px-3 group gap-0.5"
     >
-      <div className="flex items-center gap-1 font-semibold overflow-hidden overflow-ellipsis">
+      <div className="flex items-center gap-0.75 font-semibold overflow-hidden overflow-ellipsis">
         <Icon className="size-3.5 shrink-0 group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-foreground group-data-placeholder:text-transparent" />
         <p className="shrink leading-tight min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded-sm group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-foreground group-data-placeholder:text-transparent">
           {value.toLocaleString(appLocale)}
         </p>
       </div>
-      <div className="shrink min-w-0 overflow-hidden flex flex-col text-sm mt-1">
+      <div className="shrink min-w-0 overflow-hidden flex flex-col text-sm gap-px">
         <div
           data-positive={delta1h > 0 ? true : undefined}
           className="shrink min-w-0 overflow-hidden flex items-center gap-1 text-muted-foreground data-positive:text-success"
@@ -114,7 +114,7 @@ function Stat({
         </div>
         <div
           data-positive={delta24h > 0 ? true : undefined}
-          className="shrink min-w-0 overflow-hidden mt-px flex items-center gap-1 text-muted-foreground data-positive:text-success"
+          className="shrink min-w-0 overflow-hidden flex items-center gap-1 text-muted-foreground data-positive:text-success"
         >
           {/* <div className="size-3.5 shrink-0" /> */}
           <p className="shrink min-w-0 leading-tight overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent">

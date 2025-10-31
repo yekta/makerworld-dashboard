@@ -115,15 +115,15 @@ function Stat({
   return (
     <div
       data-placeholder={isPlaceholder ? true : undefined}
-      className="flex shrink min-w-0 overflow-hidden flex-col text-sm gap-0.5 group"
+      className="flex shrink min-w-0 overflow-hidden flex-col text-sm gap-px group"
     >
-      <div className="flex shrink min-w-0 overflow-hidden items-center gap-1 font-semibold py-px">
-        <Icon className="size-3.5 shrink-0 group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-foreground group-data-placeholder:text-transparent" />
+      <div className="flex shrink min-w-0 overflow-hidden items-center gap-0.75 font-semibold py-px">
+        <Icon className="size-3 shrink-0 group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-foreground group-data-placeholder:text-transparent" />
         <p className="shrink min-w-0 overflow-hidden leading-tight overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-foreground group-data-placeholder:text-transparent">
           {value.toLocaleString(appLocale)}
         </p>
       </div>
-      <div className="shrink min-w-0 overflow-hidden flex flex-col text-xs mt-px">
+      <div className="shrink min-w-0 overflow-hidden flex flex-col text-xs mt-px gap-px">
         <div
           data-positive={delta1h > 0 ? true : undefined}
           className="flex items-center gap-1 text-muted-foreground data-positive:text-success"
@@ -134,7 +134,7 @@ function Stat({
         </div>
         <div
           data-positive={delta24h > 0 ? true : undefined}
-          className="flex items-center gap-1 mt-px text-muted-foreground data-positive:text-success"
+          className="flex items-center gap-1 text-muted-foreground data-positive:text-success"
         >
           <p className="shrink leading-tight min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent">
             +{delta24h.toLocaleString(appLocale)}
