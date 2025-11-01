@@ -21,7 +21,7 @@ export default function MetadataSection() {
     <Wrapper isPending={isPending}>
       <p
         suppressHydrationWarning
-        className="shrink text-center px-2 text-muted-foreground min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent"
+        className="shrink font-mono text-center px-2 text-muted-foreground min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent"
       >
         △1h:{" "}
         {timeAgo(data?.metadata.delta_1h_timestamp || placeholderTimestamp)}

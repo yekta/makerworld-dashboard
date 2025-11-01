@@ -115,7 +115,7 @@ function Stat({
   return (
     <div
       data-placeholder={isPlaceholder ? true : undefined}
-      className="flex shrink min-w-0 overflow-hidden flex-col text-sm gap-px group"
+      className="flex shrink min-w-0 overflow-hidden flex-col text-sm gap-px group font-mono"
     >
       <div className="flex shrink min-w-0 overflow-hidden items-center gap-0.75 font-semibold py-px">
         <Icon className="size-3 shrink-0 group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-foreground group-data-placeholder:text-transparent" />
