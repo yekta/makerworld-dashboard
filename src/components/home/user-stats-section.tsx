@@ -25,47 +25,40 @@ export default function UserStatsSection() {
   return (
     <Wrapper>
       <Stat
-        value={data?.user.stats.current.prints || 1000}
-        delta1h={data?.user.stats.delta_1h.prints || 10}
-        delta24h={data?.user.stats.delta_24h.prints || 10}
+        value={data ? data.user.stats.current.prints : 1000}
+        delta1h={data ? data.user.stats.delta_1h.prints : 10}
+        delta24h={data ? data.user.stats.delta_24h.prints : 10}
         Icon={BoxIcon}
         isPlaceholder={isPending}
       />
       <Stat
-        value={data?.user.stats.current.downloads || 2000}
-        delta1h={data?.user.stats.delta_1h.downloads || 10}
-        delta24h={data?.user.stats.delta_24h.downloads || 10}
+        value={data ? data.user.stats.current.downloads : 2000}
+        delta1h={data ? data.user.stats.delta_1h.downloads : 10}
+        delta24h={data ? data.user.stats.delta_24h.downloads : 10}
         Icon={DownloadIcon}
         isPlaceholder={isPending}
       />
       <Stat
-        value={data?.user.stats.current.boosts || 100}
-        delta1h={data?.user.stats.delta_1h.boosts || 1}
-        delta24h={data?.user.stats.delta_24h.boosts || 10}
+        value={data ? data.user.stats.current.boosts : 100}
+        delta1h={data ? data.user.stats.delta_1h.boosts : 1}
+        delta24h={data ? data.user.stats.delta_24h.boosts : 10}
         Icon={RocketIcon}
         isPlaceholder={isPending}
       />
       <Stat
-        value={data?.user.stats.current.likes || 1000}
-        delta1h={data?.user.stats.delta_1h.likes || 10}
-        delta24h={data?.user.stats.delta_24h.likes || 100}
+        value={data ? data.user.stats.current.likes : 1000}
+        delta1h={data ? data.user.stats.delta_1h.likes : 10}
+        delta24h={data ? data.user.stats.delta_24h.likes : 100}
         Icon={ThumbsUp}
         isPlaceholder={isPending}
       />
       <Stat
-        value={data?.user.stats.current.followers || 500}
-        delta1h={data?.user.stats.delta_1h.followers || 10}
-        delta24h={data?.user.stats.delta_24h.followers || 10}
+        value={data ? data.user.stats.current.followers : 500}
+        delta1h={data ? data.user.stats.delta_1h.followers : 10}
+        delta24h={data ? data.user.stats.delta_24h.followers : 10}
         Icon={UsersIcon}
         isPlaceholder={isPending}
       />
-      {/* <Stat
-        value={data?.user.stats.current.following}
-        delta1h={data?.user.stats.delta_1h.following}
-        delta24h={data?.user.stats.delta_24h.following}
-        Icon={ContactIcon}
-        isPlaceholder={isPending}
-      /> */}
     </Wrapper>
   );
 }

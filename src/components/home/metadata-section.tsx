@@ -24,10 +24,14 @@ export default function MetadataSection() {
         className="shrink font-mono text-center px-2 text-muted-foreground min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent"
       >
         △1h:{" "}
-        {timeAgo(data?.metadata.delta_1h_timestamp || placeholderTimestamp)}
+        {timeAgo(
+          data ? data.metadata.delta_1h_timestamp : placeholderTimestamp
+        )}
         <span>{" • "}</span>
         △24h:{" "}
-        {timeAgo(data?.metadata.delta_24h_timestamp || placeholderTimestamp)}
+        {timeAgo(
+          data ? data.metadata.delta_24h_timestamp : placeholderTimestamp
+        )}
       </p>
     </Wrapper>
   );
