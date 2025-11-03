@@ -14,7 +14,7 @@ export const StatsProvider: React.FC<{
 }> = ({ initialData, children }) => {
   const query = api.stats.get.useQuery(
     {},
-    { initialData, refetchInterval: 7500 }
+    { initialData, refetchInterval: 6000 }
   );
   return (
     <StatsContext.Provider value={query}>{children}</StatsContext.Provider>
