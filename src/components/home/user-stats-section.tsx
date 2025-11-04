@@ -27,6 +27,7 @@ export default function UserStatsSection() {
       <Stat
         value={data ? data.user.stats.current.prints : 1000}
         delta1h={data ? data.user.stats.delta_1h.prints : 10}
+        delta8h={data ? data.user.stats.delta_8h.prints : 10}
         delta24h={data ? data.user.stats.delta_24h.prints : 10}
         Icon={BoxIcon}
         isPlaceholder={isPending}
@@ -34,6 +35,7 @@ export default function UserStatsSection() {
       <Stat
         value={data ? data.user.stats.current.downloads : 2000}
         delta1h={data ? data.user.stats.delta_1h.downloads : 10}
+        delta8h={data ? data.user.stats.delta_8h.downloads : 10}
         delta24h={data ? data.user.stats.delta_24h.downloads : 10}
         Icon={DownloadIcon}
         isPlaceholder={isPending}
@@ -41,6 +43,7 @@ export default function UserStatsSection() {
       <Stat
         value={data ? data.user.stats.current.boosts : 100}
         delta1h={data ? data.user.stats.delta_1h.boosts : 1}
+        delta8h={data ? data.user.stats.delta_8h.boosts : 10}
         delta24h={data ? data.user.stats.delta_24h.boosts : 10}
         Icon={RocketIcon}
         isPlaceholder={isPending}
@@ -48,6 +51,7 @@ export default function UserStatsSection() {
       <Stat
         value={data ? data.user.stats.current.likes : 1000}
         delta1h={data ? data.user.stats.delta_1h.likes : 10}
+        delta8h={data ? data.user.stats.delta_8h.likes : 10}
         delta24h={data ? data.user.stats.delta_24h.likes : 100}
         Icon={ThumbsUp}
         isPlaceholder={isPending}
@@ -55,6 +59,7 @@ export default function UserStatsSection() {
       <Stat
         value={data ? data.user.stats.current.followers : 500}
         delta1h={data ? data.user.stats.delta_1h.followers : 10}
+        delta8h={data ? data.user.stats.delta_8h.followers : 10}
         delta24h={data ? data.user.stats.delta_24h.followers : 10}
         Icon={UsersIcon}
         isPlaceholder={isPending}
@@ -74,12 +79,14 @@ function Wrapper({ children }: { children: React.ReactNode }) {
 function Stat({
   value,
   delta1h,
+  delta8h,
   delta24h,
   Icon,
   isPlaceholder,
 }: {
   value: number;
   delta1h: number;
+  delta8h: number;
   delta24h: number;
   Icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   isPlaceholder?: boolean;
@@ -103,6 +110,15 @@ function Stat({
           {/* <div className="size-3.5 shrink-0" /> */}
           <p className="shrink min-w-0 leading-tight overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent">
             +{delta1h.toLocaleString(appLocale)}
+          </p>
+        </div>
+        <div
+          data-positive={delta8h > 0 ? true : undefined}
+          className="shrink min-w-0 overflow-hidden flex items-center gap-1 text-muted-foreground data-positive:text-success"
+        >
+          {/* <div className="size-3.5 shrink-0" /> */}
+          <p className="shrink min-w-0 leading-tight overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent">
+            +{delta8h.toLocaleString(appLocale)}
           </p>
         </div>
         <div
