@@ -40,6 +40,7 @@
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
   --color-success: var(--success);
+  --color-success-highlight: var(--success-highlight);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -59,6 +60,7 @@
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
   --success: oklch(0.538 0.211 134.699);
+  --success-highlight: oklch(65.998% 0.14795 160.592);
   --pending: oklch(71.861% 0.13461 72.576);
   --muted: oklch(0.97 0 0);
   --muted-foreground: oklch(0.556 0 0);
@@ -96,6 +98,7 @@
   --secondary: oklch(0.269 0 0);
   --secondary-foreground: oklch(0.985 0 0);
   --success: oklch(84.267% 0.15936 144.028);
+  --success-highlight: oklch(90.711% 0.14532 167.051);
   --pending: oklch(82.321% 0.13867 92.293);
   --muted: oklch(0.269 0 0);
   --muted-foreground: oklch(0.708 0 0);

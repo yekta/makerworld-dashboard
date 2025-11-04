@@ -3,6 +3,7 @@ import { AppRouterOutputs } from "@/server/trpc/api/root";
 import { BoxIcon, DownloadIcon, RocketIcon, ThumbsUpIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect } from "react";
 
 type TProps =
   | {
