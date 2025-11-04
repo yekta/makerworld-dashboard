@@ -39,25 +39,25 @@ export default function ModelCard(props: TProps) {
 
 function ModelCardContent({ model, isPlaceholder }: TProps) {
   return (
-    <div className="p-2 border group-active:bg-border group-hover:bg-border rounded-xl flex flex-col gap-1">
-      <div className="w-full flex items-center overflow-hidden gap-0.5">
-        <div className="w-10 aspect-4/3 bg-border rounded-sm overflow-hidden group-data-placeholder:animate-pulse">
-          {!isPlaceholder && (
-            <Image
-              src={model.image}
-              alt={model.title}
-              width={1916}
-              height={1437}
-              className="w-full shrink-0 h-auto bg-border"
-              sizes="40px"
-            />
-          )}
-        </div>
-        <h2 className="text-xs px-2 shrink min-w-0 text-muted-foreground whitespace-nowrap overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent">
+    <div className="p-2 border group-active:bg-border group-hover:bg-border rounded-xl flex flex-col gap-1 relative overflow-hidden">
+      <div className="w-18 absolute -bottom-px -right-px aspect-4/3 bg-border border rounded-tl-md overflow-hidden group-data-placeholder:animate-pulse">
+        {!isPlaceholder && (
+          <Image
+            src={model.image}
+            alt={model.title}
+            width={1916}
+            height={1437}
+            className="w-full shrink-0 h-auto bg-border"
+            sizes="40px"
+          />
+        )}
+      </div>
+      <div className="w-full flex items-center overflow-hidden gap-0.5 relative">
+        <h2 className="text-xs px-1 shrink min-w-0 text-muted-foreground whitespace-nowrap overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent">
           {!isPlaceholder ? model.title : "Loading This Model's Title"}
         </h2>
       </div>
-      <div className="w-full flex flex-row overflow-hidden gap-5 py-0.75 px-1">
+      <div className="w-full flex flex-row overflow-hidden gap-5 pb-px px-1 relative">
         <Stat
           value={!isPlaceholder ? model.stats.current.prints : 100}
           delta24h={!isPlaceholder ? model.stats.delta_24h.prints : 0}
