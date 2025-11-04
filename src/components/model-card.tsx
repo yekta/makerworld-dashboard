@@ -48,7 +48,7 @@ function ModelCardContent({ model, isPlaceholder }: TProps) {
             width={1916}
             height={1437}
             className="w-full shrink-0 h-auto bg-border"
-            sizes="40px"
+            sizes="72px"
           />
         )}
       </div>
