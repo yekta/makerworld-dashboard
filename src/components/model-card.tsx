@@ -1,4 +1,4 @@
-import { appLocale } from "@/lib/constants";
+import Stat from "@/components/stat";
 import { AppRouterOutputs } from "@/server/trpc/api/root";
 import { BoxIcon, DownloadIcon, RocketIcon, ThumbsUpIcon } from "lucide-react";
 import Image from "next/image";
@@ -39,7 +39,7 @@ export default function ModelCard(props: TProps) {
 
 function ModelCardContent({ model, isPlaceholder }: TProps) {
   return (
-    <div className="p-2 border group-active:bg-border group-hover:bg-border rounded-xl flex flex-col gap-2">
+    <div className="p-2 border group-active:bg-border group-hover:bg-border rounded-xl flex flex-col gap-1">
       <div className="w-full flex items-center overflow-hidden gap-0.5">
         <div className="w-10 aspect-4/3 bg-border rounded-sm overflow-hidden group-data-placeholder:animate-pulse">
           {!isPlaceholder && (
@@ -57,42 +57,40 @@ function ModelCardContent({ model, isPlaceholder }: TProps) {
           {!isPlaceholder ? model.title : "Loading This Model's Title"}
         </h2>
       </div>
-      <div className="w-full flex flex-row items-start justify-center gap-3">
-        <div className="flex-1 shrink min-w-0 overflow-hidden -mt-1 flex gap-5 py-0.75 px-1">
-          <Stat
-            value={!isPlaceholder ? model.stats.current.prints : 100}
-            delta24h={!isPlaceholder ? model.stats.delta_24h.prints : 0}
-            delta8h={!isPlaceholder ? model.stats.delta_8h.prints : 0}
-            delta1h={!isPlaceholder ? model.stats.delta_1h.prints : 0}
-            showDelta={true}
-            Icon={BoxIcon}
-            isPlaceholder={isPlaceholder}
-          />
-          <Stat
-            value={!isPlaceholder ? model.stats.current.downloads : 200}
-            delta24h={!isPlaceholder ? model.stats.delta_24h.downloads : 0}
-            delta8h={!isPlaceholder ? model.stats.delta_8h.downloads : 0}
-            delta1h={!isPlaceholder ? model.stats.delta_1h.downloads : 0}
-            Icon={DownloadIcon}
-            isPlaceholder={isPlaceholder}
-          />
-          <Stat
-            value={!isPlaceholder ? model.stats.current.boosts : 10}
-            delta24h={!isPlaceholder ? model.stats.delta_24h.boosts : 0}
-            delta8h={!isPlaceholder ? model.stats.delta_8h.boosts : 0}
-            delta1h={!isPlaceholder ? model.stats.delta_1h.boosts : 0}
-            Icon={RocketIcon}
-            isPlaceholder={isPlaceholder}
-          />
-          <Stat
-            value={!isPlaceholder ? model.stats.current.likes : 100}
-            delta24h={!isPlaceholder ? model.stats.delta_24h.likes : 0}
-            delta8h={!isPlaceholder ? model.stats.delta_8h.likes : 0}
-            delta1h={!isPlaceholder ? model.stats.delta_1h.likes : 0}
-            Icon={ThumbsUpIcon}
-            isPlaceholder={isPlaceholder}
-          />
-        </div>
+      <div className="w-full flex flex-row overflow-hidden gap-5 py-0.75 px-1">
+        <Stat
+          value={!isPlaceholder ? model.stats.current.prints : 100}
+          delta24h={!isPlaceholder ? model.stats.delta_24h.prints : 0}
+          delta8h={!isPlaceholder ? model.stats.delta_8h.prints : 0}
+          delta1h={!isPlaceholder ? model.stats.delta_1h.prints : 0}
+          showDelta={true}
+          Icon={BoxIcon}
+          isPlaceholder={isPlaceholder}
+        />
+        <Stat
+          value={!isPlaceholder ? model.stats.current.downloads : 200}
+          delta24h={!isPlaceholder ? model.stats.delta_24h.downloads : 0}
+          delta8h={!isPlaceholder ? model.stats.delta_8h.downloads : 0}
+          delta1h={!isPlaceholder ? model.stats.delta_1h.downloads : 0}
+          Icon={DownloadIcon}
+          isPlaceholder={isPlaceholder}
+        />
+        <Stat
+          value={!isPlaceholder ? model.stats.current.boosts : 10}
+          delta24h={!isPlaceholder ? model.stats.delta_24h.boosts : 0}
+          delta8h={!isPlaceholder ? model.stats.delta_8h.boosts : 0}
+          delta1h={!isPlaceholder ? model.stats.delta_1h.boosts : 0}
+          Icon={RocketIcon}
+          isPlaceholder={isPlaceholder}
+        />
+        <Stat
+          value={!isPlaceholder ? model.stats.current.likes : 100}
+          delta24h={!isPlaceholder ? model.stats.delta_24h.likes : 0}
+          delta8h={!isPlaceholder ? model.stats.delta_8h.likes : 0}
+          delta1h={!isPlaceholder ? model.stats.delta_1h.likes : 0}
+          Icon={ThumbsUpIcon}
+          isPlaceholder={isPlaceholder}
+        />
       </div>
     </div>
   );
@@ -100,61 +98,4 @@ function ModelCardContent({ model, isPlaceholder }: TProps) {
 
 function getModelUrl(id: number) {
   return `https://makerworld.com/en/models/${id}`;
-}
-
-function Stat({
-  value,
-  delta24h,
-  delta8h,
-  delta1h,
-  Icon,
-  isPlaceholder,
-}: {
-  value: number;
-  delta24h: number;
-  delta8h: number;
-  delta1h: number;
-  Icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
-  isPlaceholder?: boolean;
-  showDelta?: boolean;
-}) {
-  return (
-    <div
-      data-placeholder={isPlaceholder ? true : undefined}
-      className="flex shrink min-w-0 overflow-hidden flex-col text-sm gap-px group font-mono"
-    >
-      <div className="flex shrink min-w-0 overflow-hidden items-center gap-0.75 font-semibold py-px">
-        <Icon className="size-3 shrink-0 group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-foreground group-data-placeholder:text-transparent" />
-        <p className="shrink min-w-0 overflow-hidden leading-tight overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-foreground group-data-placeholder:text-transparent">
-          {value.toLocaleString(appLocale)}
-        </p>
-      </div>
-      <div className="shrink min-w-0 overflow-hidden flex flex-col text-xs mt-px gap-px">
-        <div
-          data-positive={delta1h > 0 ? true : undefined}
-          className="flex items-center gap-1 text-muted-foreground data-positive:text-success"
-        >
-          <p className="shrink leading-tight min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent">
-            +{delta1h.toLocaleString(appLocale)}
-          </p>
-        </div>
-        <div
-          data-positive={delta8h > 0 ? true : undefined}
-          className="flex items-center gap-1 text-muted-foreground data-positive:text-success"
-        >
-          <p className="shrink leading-tight min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent">
-            +{delta8h.toLocaleString(appLocale)}
-          </p>
-        </div>
-        <div
-          data-positive={delta24h > 0 ? true : undefined}
-          className="flex items-center gap-1 text-muted-foreground data-positive:text-success"
-        >
-          <p className="shrink leading-tight min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent">
-            +{delta24h.toLocaleString(appLocale)}
-          </p>
-        </div>
-      </div>
-    </div>
-  );
 }

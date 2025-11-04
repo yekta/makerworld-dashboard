@@ -1,7 +1,7 @@
 "use client";
 
 import { useStats } from "@/components/providers/stats-provider";
-import { appLocale } from "@/lib/constants";
+import Stat from "@/components/stat";
 import {
   BoxIcon,
   DownloadIcon,
@@ -70,67 +70,8 @@ export default function UserStatsSection() {
 
 function Wrapper({ children }: { children: React.ReactNode }) {
   return (
-    <div className="w-full flex-wrap flex items-center justify-center gap-1 md:gap-2 px-2 md:px-4">
+    <div className="w-full flex-wrap flex items-center justify-center gap-5 md:gap-8 px-2 md:px-4">
       {children}
-    </div>
-  );
-}
-
-function Stat({
-  value,
-  delta1h,
-  delta8h,
-  delta24h,
-  Icon,
-  isPlaceholder,
-}: {
-  value: number;
-  delta1h: number;
-  delta8h: number;
-  delta24h: number;
-  Icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
-  isPlaceholder?: boolean;
-}) {
-  return (
-    <div
-      data-placeholder={isPlaceholder ? true : undefined}
-      className="flex shrink min-w-0 overflow-hidden flex-col px-2 md:px-3 group gap-0.5 font-mono"
-    >
-      <div className="flex items-center gap-0.75 font-semibold overflow-hidden overflow-ellipsis">
-        <Icon className="size-3.5 shrink-0 group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-foreground group-data-placeholder:text-transparent" />
-        <p className="shrink leading-tight min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded-sm group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-foreground group-data-placeholder:text-transparent">
-          {value.toLocaleString(appLocale)}
-        </p>
-      </div>
-      <div className="shrink min-w-0 overflow-hidden flex flex-col text-sm gap-px">
-        <div
-          data-positive={delta1h > 0 ? true : undefined}
-          className="shrink min-w-0 overflow-hidden flex items-center gap-1 text-muted-foreground data-positive:text-success"
-        >
-          {/* <div className="size-3.5 shrink-0" /> */}
-          <p className="shrink min-w-0 leading-tight overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent">
-            +{delta1h.toLocaleString(appLocale)}
-          </p>
-        </div>
-        <div
-          data-positive={delta8h > 0 ? true : undefined}
-          className="shrink min-w-0 overflow-hidden flex items-center gap-1 text-muted-foreground data-positive:text-success"
-        >
-          {/* <div className="size-3.5 shrink-0" /> */}
-          <p className="shrink min-w-0 leading-tight overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent">
-            +{delta8h.toLocaleString(appLocale)}
-          </p>
-        </div>
-        <div
-          data-positive={delta24h > 0 ? true : undefined}
-          className="shrink min-w-0 overflow-hidden flex items-center gap-1 text-muted-foreground data-positive:text-success"
-        >
-          {/* <div className="size-3.5 shrink-0" /> */}
-          <p className="shrink min-w-0 leading-tight overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent">
-            +{delta24h.toLocaleString(appLocale)}
-          </p>
-        </div>
-      </div>
     </div>
   );
 }
