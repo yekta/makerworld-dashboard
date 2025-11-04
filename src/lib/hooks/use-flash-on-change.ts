@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 export default function useFlashOnChange<T>(
   value: T,
   {
-    duration = 5000,
+    duration = 4000,
     enabled = true,
   }: { duration?: number; enabled?: boolean } = {}
 ) {
