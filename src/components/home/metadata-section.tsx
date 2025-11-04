@@ -21,13 +21,18 @@ export default function MetadataSection() {
     <Wrapper isPending={isPending}>
       <p
         suppressHydrationWarning
-        className="shrink font-mono text-center px-2 text-muted-foreground min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent"
+        className="shrink font-mono text-center px-3 text-muted-foreground min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent"
       >
         △1h:{" "}
         {timeAgo(
           data ? data.metadata.delta_1h_timestamp : placeholderTimestamp
         )}
-        <span>{" • "}</span>
+        <span>{" | "}</span>
+        △8h:{" "}
+        {timeAgo(
+          data ? data.metadata.delta_8h_timestamp : placeholderTimestamp
+        )}
+        <span>{" | "}</span>
         △24h:{" "}
         {timeAgo(
           data ? data.metadata.delta_24h_timestamp : placeholderTimestamp
