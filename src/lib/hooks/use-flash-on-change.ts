@@ -14,6 +14,10 @@ export default function useFlashOnChange<T>(
 
   useEffect(() => {
     if (!enabled) {
+      if (timeoutRef.current !== null) {
+        clearTimeout(timeoutRef.current);
+        timeoutRef.current = null;
+      }
       prev.current = value;
       setFlash(false);
       return;
@@ -21,17 +25,27 @@ export default function useFlashOnChange<T>(
 
     if (didMount.current && prev.current !== value) {
       setFlash(true);
-      if (timeoutRef.current) clearTimeout(timeoutRef.current);
-      timeoutRef.current = window.setTimeout(() => setFlash(false), duration);
+      if (timeoutRef.current !== null) {
+        clearTimeout(timeoutRef.current);
+      }
+      timeoutRef.current = window.setTimeout(() => {
+        setFlash(false);
+        timeoutRef.current = null;
+      }, duration);
     }
 
     didMount.current = true;
     prev.current = value;
-
-    return () => {
-      if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    };
   }, [value, duration, enabled]);
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current !== null) {
+        clearTimeout(timeoutRef.current);
+        timeoutRef.current = null;
+      }
+    };
+  }, []);
 
   return flash;
 }

@@ -69,13 +69,14 @@ function MainStat({
   isPlaceholder?: boolean;
 }) {
   const shouldFlash = useFlashOnChange(value, { enabled: !isPlaceholder });
+
   return (
     <div
       data-flash={shouldFlash ? true : undefined}
       className="flex shrink min-w-0 overflow-hidden items-center gap-0.75 font-semibold py-px group/main"
     >
-      <Icon className="group-data-flash/main:text-success-highlight text-foreground transition-colors duration-300 size-3 shrink-0 group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-foreground group-data-placeholder:text-transparent" />
-      <p className="group-data-flash/main:text-success-highlight text-foreground transition-colors duration-300 shrink min-w-0 overflow-hidden leading-tight overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-foreground group-data-placeholder:text-transparent">
+      <Icon className="group-data-flash/main:text-success-highlight text-foreground transition-colors duration-400 size-3 shrink-0 group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-foreground group-data-placeholder:text-transparent" />
+      <p className="group-data-flash/main:text-success-highlight text-foreground transition-colors duration-400 shrink min-w-0 overflow-hidden leading-tight overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-foreground group-data-placeholder:text-transparent">
         {value.toLocaleString(appLocale)}
       </p>
     </div>
