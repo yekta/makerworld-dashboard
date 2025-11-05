@@ -18,7 +18,7 @@ export default async function Home() {
     <StatsProvider
       initialData={initialData.isOk() ? initialData.value : undefined}
     >
-      <div className="w-full flex justify-center items-start px-1 py-4 md:px-5 md:py-5 lg:px-6 lg:py-6">
+      <div className="w-full flex justify-center items-start px-1 py-4 md:px-5 md:py-5">
         <RefetchIndicator />
         <div className="w-full max-w-6xl flex flex-col">
           <UserStatsSection />
