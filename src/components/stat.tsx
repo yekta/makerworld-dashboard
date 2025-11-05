@@ -25,7 +25,7 @@ export default function Stat({
     <div
       data-placeholder={isPlaceholder ? true : undefined}
       className={cn(
-        "flex shrink min-w-0 overflow-hidden flex-col text-sm gap-px group font-mono",
+        "flex shrink min-w-0 flex-col text-sm gap-px group font-mono",
         className
       )}
     >
@@ -92,8 +92,9 @@ function MainStat({
     <div
       data-can-flash={canFlash ? true : undefined}
       data-flash={shouldFlash ? true : undefined}
-      className="flex shrink min-w-0 overflow-hidden items-center gap-0.75 font-semibold py-px group/main"
+      className="flex shrink min-w-0 items-center gap-0.75 font-semibold py-px group/main relative"
     >
+      <div className="absolute -left-1.25 top-0 w-[calc(100%+0.7rem)] h-full rounded-full bg-success-highlight/0 group-data-can-flash/main:transition-colors group-data-can-flash/main:duration-400 group-data-flash/main:bg-success-highlight/15" />
       <Icon className="group-data-flash/main:text-success-highlight text-foreground group-data-can-flash/main:transition-colors group-data-can-flash/main:duration-400 size-3 shrink-0 group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-foreground group-data-placeholder:text-transparent" />
       <p className="group-data-flash/main:text-success-highlight text-foreground group-data-can-flash/main:transition-colors group-data-can-flash/main:duration-400 shrink min-w-0 overflow-hidden leading-tight overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-foreground group-data-placeholder:text-transparent">
         {value.toLocaleString(appLocale)}

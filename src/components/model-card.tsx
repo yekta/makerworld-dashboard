@@ -58,7 +58,7 @@ function ModelCardContent({ model, isPlaceholder }: TProps) {
           {!isPlaceholder ? model.title : "Loading This Model's Title"}
         </h2>
       </div>
-      <div className="w-full flex flex-row overflow-hidden gap-5 pb-px px-1 relative">
+      <div className="w-full flex flex-row gap-5 pb-px px-1 relative">
         <Stat
           value={!isPlaceholder ? model.stats.current.prints : 100}
           delta24h={!isPlaceholder ? model.stats.delta_24h.prints : 0}
