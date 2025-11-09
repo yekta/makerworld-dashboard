@@ -43,7 +43,7 @@ function ModelCardContent(props: TProps) {
   const { model, isPlaceholder } = props;
   return (
     <div className="p-2 border group-active:bg-border group-hover:bg-border rounded-xl flex flex-col gap-1 relative overflow-hidden">
-      <div className="w-20 absolute -bottom-px -right-px aspect-4/3 bg-border border rounded-tl-md overflow-hidden group-data-placeholder:animate-pulse">
+      <div className="w-20 absolute -bottom-px -right-px aspect-4/3 bg-border border rounded-tl-xl overflow-hidden group-data-placeholder:animate-pulse">
         {!isPlaceholder && (
           <Image
             src={model.image}
