@@ -63,37 +63,37 @@ function ModelCardContent(props: TProps) {
       <div className="w-full flex flex-row gap-5 px-1 relative">
         <Stat
           value={!isPlaceholder ? model.stats.current.prints : 100}
-          delta24h={!isPlaceholder ? model.stats.delta_24h.prints : 0}
-          delta12h={!isPlaceholder ? model.stats.delta_12h.prints : 0}
-          delta4h={!isPlaceholder ? model.stats.delta_4h.prints : 0}
           delta1h={!isPlaceholder ? model.stats.delta_1h.prints : 0}
+          delta4h={!isPlaceholder ? model.stats.delta_4h.prints : 0}
+          delta12h={!isPlaceholder ? model.stats.delta_12h.prints : 0}
+          delta24h={!isPlaceholder ? model.stats.delta_24h.prints : 0}
           Icon={BoxIcon}
           isPlaceholder={isPlaceholder}
         />
         <Stat
           value={!isPlaceholder ? model.stats.current.downloads : 200}
-          delta24h={!isPlaceholder ? model.stats.delta_24h.downloads : 0}
-          delta12h={!isPlaceholder ? model.stats.delta_12h.downloads : 0}
-          delta4h={!isPlaceholder ? model.stats.delta_4h.downloads : 0}
           delta1h={!isPlaceholder ? model.stats.delta_1h.downloads : 0}
+          delta4h={!isPlaceholder ? model.stats.delta_4h.downloads : 0}
+          delta12h={!isPlaceholder ? model.stats.delta_12h.downloads : 0}
+          delta24h={!isPlaceholder ? model.stats.delta_24h.downloads : 0}
           Icon={DownloadIcon}
           isPlaceholder={isPlaceholder}
         />
         <Stat
           value={!isPlaceholder ? model.stats.current.boosts : 10}
-          delta24h={!isPlaceholder ? model.stats.delta_24h.boosts : 0}
-          delta12h={!isPlaceholder ? model.stats.delta_12h.boosts : 0}
-          delta4h={!isPlaceholder ? model.stats.delta_4h.boosts : 0}
           delta1h={!isPlaceholder ? model.stats.delta_1h.boosts : 0}
+          delta4h={!isPlaceholder ? model.stats.delta_4h.boosts : 0}
+          delta12h={!isPlaceholder ? model.stats.delta_12h.boosts : 0}
+          delta24h={!isPlaceholder ? model.stats.delta_24h.boosts : 0}
           Icon={RocketIcon}
           isPlaceholder={isPlaceholder}
         />
         <Stat
           value={!isPlaceholder ? model.stats.current.likes : 100}
-          delta24h={!isPlaceholder ? model.stats.delta_24h.likes : 0}
-          delta12h={!isPlaceholder ? model.stats.delta_12h.likes : 0}
-          delta4h={!isPlaceholder ? model.stats.delta_4h.likes : 0}
           delta1h={!isPlaceholder ? model.stats.delta_1h.likes : 0}
+          delta4h={!isPlaceholder ? model.stats.delta_4h.likes : 0}
+          delta12h={!isPlaceholder ? model.stats.delta_12h.likes : 0}
+          delta24h={!isPlaceholder ? model.stats.delta_24h.likes : 0}
           Icon={ThumbsUpIcon}
           isPlaceholder={isPlaceholder}
           showDelta={true}
