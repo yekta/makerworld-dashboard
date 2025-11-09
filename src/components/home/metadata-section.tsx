@@ -23,12 +23,17 @@ export default function MetadataSection() {
         suppressHydrationWarning
         className="shrink font-mono text-center px-3 text-muted-foreground min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent"
       >
-        △1h:{" "}
+        △00h:{" "}
+        {timeAgo(
+          data ? data.metadata.delta_0h_timestamp : placeholderTimestamp
+        )}
+        <span>{" | "}</span>
+        △01h:{" "}
         {timeAgo(
           data ? data.metadata.delta_1h_timestamp : placeholderTimestamp
         )}
-        <span>{" | "}</span>
-        △8h:{" "}
+        <br />
+        △08h:{" "}
         {timeAgo(
           data ? data.metadata.delta_8h_timestamp : placeholderTimestamp
         )}

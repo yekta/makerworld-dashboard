@@ -44,6 +44,7 @@ export const TStatResponseSchema = z.object({
   models: z.array(TModelSchema),
   latest_batch: z.number(),
   metadata: z.object({
+    delta_0h_timestamp: z.number(),
     delta_1h_timestamp: z.number(),
     delta_8h_timestamp: z.number(),
     delta_24h_timestamp: z.number(),

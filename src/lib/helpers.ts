@@ -3,7 +3,7 @@ export function timeAgo(timestamp: number) {
   const secondsAgo = Math.floor((now - timestamp) / 1000);
 
   if (secondsAgo < 60) {
-    return `${Math.floor(secondsAgo)}s`;
+    return `00m ${Math.floor(secondsAgo).toString().padStart(2, "0")}s`;
   } else if (secondsAgo < 3600) {
     const minutes = Math.floor(secondsAgo / 60);
     const remainingSeconds = secondsAgo % 60;
