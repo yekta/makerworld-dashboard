@@ -76,7 +76,7 @@ export default function UserStatsSection() {
 
 function Wrapper({ children }: { children: React.ReactNode }) {
   return (
-    <div className="w-full flex-wrap flex items-center justify-center gap-5 md:gap-8 px-2 md:px-4">
+    <div className="w-full flex-wrap flex items-center justify-center gap-4 md:gap-8 px-2 md:px-4">
       {children}
     </div>
   );
