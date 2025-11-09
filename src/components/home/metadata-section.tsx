@@ -1,7 +1,9 @@
 "use client";
 
+import { useNow } from "@/components/providers/now-provider";
 import { useStats } from "@/components/providers/stats-provider";
 import { timeAgo } from "@/lib/helpers";
+import { AppRouterOutputs, AppRouterQueryResult } from "@/server/trpc/api/root";
 
 const placeholderTimestamp = Date.now() - 1000 * 60 * 60; // 1 hour ago
 
@@ -19,31 +21,46 @@ export default function MetadataSection() {
 
   return (
     <Wrapper isPending={isPending}>
-      <p
-        suppressHydrationWarning
-        className="shrink font-mono text-center px-3 text-muted-foreground min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent"
-      >
-        △00h:{" "}
-        {timeAgo(
-          data ? data.metadata.delta_0h_timestamp : placeholderTimestamp
-        )}
-        <span>{" | "}</span>
-        △01h:{" "}
-        {timeAgo(
-          data ? data.metadata.delta_1h_timestamp : placeholderTimestamp
-        )}
-        <br />
-        △08h:{" "}
-        {timeAgo(
-          data ? data.metadata.delta_8h_timestamp : placeholderTimestamp
-        )}
-        <span>{" | "}</span>
-        △24h:{" "}
-        {timeAgo(
-          data ? data.metadata.delta_24h_timestamp : placeholderTimestamp
-        )}
-      </p>
+      <Metadata data={data} />
     </Wrapper>
+  );
+}
+
+function Metadata({
+  data,
+}: {
+  data: AppRouterQueryResult<AppRouterOutputs["stats"]["get"]>["data"];
+}) {
+  const now = useNow();
+  return (
+    <p
+      suppressHydrationWarning
+      className="shrink font-mono leading-normal text-center px-3 text-muted-foreground min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent"
+    >
+      △00h:{" "}
+      {timeAgo(
+        data ? data.metadata.delta_0h_timestamp : placeholderTimestamp,
+        now
+      )}
+      <span>{" | "}</span>
+      △01h:{" "}
+      {timeAgo(
+        data ? data.metadata.delta_1h_timestamp : placeholderTimestamp,
+        now
+      )}
+      <br />
+      △08h:{" "}
+      {timeAgo(
+        data ? data.metadata.delta_8h_timestamp : placeholderTimestamp,
+        now
+      )}
+      <span>{" | "}</span>
+      △24h:{" "}
+      {timeAgo(
+        data ? data.metadata.delta_24h_timestamp : placeholderTimestamp,
+        now
+      )}
+    </p>
   );
 }
 

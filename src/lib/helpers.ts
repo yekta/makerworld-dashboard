@@ -1,5 +1,4 @@
-export function timeAgo(timestamp: number) {
-  const now = Date.now();
+export function timeAgo(timestamp: number, now: number = Date.now()) {
   const secondsAgo = Math.floor((now - timestamp) / 1000);
 
   if (secondsAgo < 60) {
