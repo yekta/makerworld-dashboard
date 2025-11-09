@@ -37,14 +37,14 @@ function Metadata({
       suppressHydrationWarning
       className="shrink font-mono leading-normal text-center px-3 text-muted-foreground min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent"
     >
-      △00h:{" "}
+      Latest:{" "}
       {timeAgo({
         timestamp: data
           ? data.metadata.delta_0h_timestamp
           : placeholderTimestamp,
         now,
       })}
-      <span>{" | "}</span>
+      <br />
       △01h:{" "}
       {timeAgo({
         timestamp: data
@@ -52,11 +52,19 @@ function Metadata({
           : placeholderTimestamp,
         now,
       })}
-      <br />
-      △08h:{" "}
+      <span>{" | "}</span>
+      △4h:{" "}
       {timeAgo({
         timestamp: data
-          ? data.metadata.delta_8h_timestamp
+          ? data.metadata.delta_4h_timestamp
+          : placeholderTimestamp,
+        now,
+      })}
+      <span>{" | "}</span>
+      △12h:{" "}
+      {timeAgo({
+        timestamp: data
+          ? data.metadata.delta_12h_timestamp
           : placeholderTimestamp,
         now,
       })}

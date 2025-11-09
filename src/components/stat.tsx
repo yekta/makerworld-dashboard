@@ -6,7 +6,8 @@ import { useEffect, useRef, useState } from "react";
 export default function Stat({
   value,
   delta24h,
-  delta8h,
+  delta12h,
+  delta4h,
   delta1h,
   Icon,
   isPlaceholder,
@@ -14,7 +15,8 @@ export default function Stat({
 }: {
   value: number;
   delta24h: number;
-  delta8h: number;
+  delta12h: number;
+  delta4h: number;
   delta1h: number;
   Icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   isPlaceholder?: boolean;
@@ -40,11 +42,19 @@ export default function Stat({
           </p>
         </div>
         <div
-          data-positive={delta8h > 0 ? true : undefined}
+          data-positive={delta4h > 0 ? true : undefined}
           className="flex items-center gap-1 text-muted-foreground data-positive:text-success"
         >
           <p className="shrink leading-tight min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent">
-            +{delta8h.toLocaleString(appLocale)}
+            +{delta4h.toLocaleString(appLocale)}
+          </p>
+        </div>
+        <div
+          data-positive={delta12h > 0 ? true : undefined}
+          className="flex items-center gap-1 text-muted-foreground data-positive:text-success"
+        >
+          <p className="shrink leading-tight min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent">
+            +{delta12h.toLocaleString(appLocale)}
           </p>
         </div>
         <div

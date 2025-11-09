@@ -43,7 +43,7 @@ function ModelCardContent(props: TProps) {
   const { model, isPlaceholder } = props;
   return (
     <div className="p-2 border group-active:bg-border group-hover:bg-border rounded-xl flex flex-col gap-1 relative overflow-hidden">
-      <div className="w-18 absolute -bottom-px -right-px aspect-4/3 bg-border border rounded-tl-md overflow-hidden group-data-placeholder:animate-pulse">
+      <div className="w-20 absolute -bottom-px -right-px aspect-4/3 bg-border border rounded-tl-md overflow-hidden group-data-placeholder:animate-pulse">
         {!isPlaceholder && (
           <Image
             src={model.image}
@@ -51,7 +51,7 @@ function ModelCardContent(props: TProps) {
             width={1916}
             height={1437}
             className="w-full shrink-0 h-auto bg-border"
-            sizes="72px"
+            sizes="80px"
           />
         )}
       </div>
@@ -64,16 +64,17 @@ function ModelCardContent(props: TProps) {
         <Stat
           value={!isPlaceholder ? model.stats.current.prints : 100}
           delta24h={!isPlaceholder ? model.stats.delta_24h.prints : 0}
-          delta8h={!isPlaceholder ? model.stats.delta_8h.prints : 0}
+          delta12h={!isPlaceholder ? model.stats.delta_12h.prints : 0}
+          delta4h={!isPlaceholder ? model.stats.delta_4h.prints : 0}
           delta1h={!isPlaceholder ? model.stats.delta_1h.prints : 0}
-          showDelta={true}
           Icon={BoxIcon}
           isPlaceholder={isPlaceholder}
         />
         <Stat
           value={!isPlaceholder ? model.stats.current.downloads : 200}
           delta24h={!isPlaceholder ? model.stats.delta_24h.downloads : 0}
-          delta8h={!isPlaceholder ? model.stats.delta_8h.downloads : 0}
+          delta12h={!isPlaceholder ? model.stats.delta_12h.downloads : 0}
+          delta4h={!isPlaceholder ? model.stats.delta_4h.downloads : 0}
           delta1h={!isPlaceholder ? model.stats.delta_1h.downloads : 0}
           Icon={DownloadIcon}
           isPlaceholder={isPlaceholder}
@@ -81,7 +82,8 @@ function ModelCardContent(props: TProps) {
         <Stat
           value={!isPlaceholder ? model.stats.current.boosts : 10}
           delta24h={!isPlaceholder ? model.stats.delta_24h.boosts : 0}
-          delta8h={!isPlaceholder ? model.stats.delta_8h.boosts : 0}
+          delta12h={!isPlaceholder ? model.stats.delta_12h.boosts : 0}
+          delta4h={!isPlaceholder ? model.stats.delta_4h.boosts : 0}
           delta1h={!isPlaceholder ? model.stats.delta_1h.boosts : 0}
           Icon={RocketIcon}
           isPlaceholder={isPlaceholder}
@@ -89,10 +91,12 @@ function ModelCardContent(props: TProps) {
         <Stat
           value={!isPlaceholder ? model.stats.current.likes : 100}
           delta24h={!isPlaceholder ? model.stats.delta_24h.likes : 0}
-          delta8h={!isPlaceholder ? model.stats.delta_8h.likes : 0}
+          delta12h={!isPlaceholder ? model.stats.delta_12h.likes : 0}
+          delta4h={!isPlaceholder ? model.stats.delta_4h.likes : 0}
           delta1h={!isPlaceholder ? model.stats.delta_1h.likes : 0}
           Icon={ThumbsUpIcon}
           isPlaceholder={isPlaceholder}
+          showDelta={true}
         />
       </div>
       <div className="w-full flex justify-start pb-px pt-px">
