@@ -38,28 +38,36 @@ function Metadata({
       className="shrink font-mono leading-normal text-center px-3 text-muted-foreground min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent"
     >
       △00h:{" "}
-      {timeAgo(
-        data ? data.metadata.delta_0h_timestamp : placeholderTimestamp,
-        now
-      )}
+      {timeAgo({
+        timestamp: data
+          ? data.metadata.delta_0h_timestamp
+          : placeholderTimestamp,
+        now,
+      })}
       <span>{" | "}</span>
       △01h:{" "}
-      {timeAgo(
-        data ? data.metadata.delta_1h_timestamp : placeholderTimestamp,
-        now
-      )}
+      {timeAgo({
+        timestamp: data
+          ? data.metadata.delta_1h_timestamp
+          : placeholderTimestamp,
+        now,
+      })}
       <br />
       △08h:{" "}
-      {timeAgo(
-        data ? data.metadata.delta_8h_timestamp : placeholderTimestamp,
-        now
-      )}
+      {timeAgo({
+        timestamp: data
+          ? data.metadata.delta_8h_timestamp
+          : placeholderTimestamp,
+        now,
+      })}
       <span>{" | "}</span>
       △24h:{" "}
-      {timeAgo(
-        data ? data.metadata.delta_24h_timestamp : placeholderTimestamp,
-        now
-      )}
+      {timeAgo({
+        timestamp: data
+          ? data.metadata.delta_24h_timestamp
+          : placeholderTimestamp,
+        now,
+      })}
     </p>
   );
 }

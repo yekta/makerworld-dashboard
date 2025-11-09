@@ -12,6 +12,7 @@ export const TModelSchema = z.object({
   model_id: z.number(),
   title: z.string(),
   image: z.string(),
+  model_created_at: z.number(),
   stats: z.object({
     current: TModelStatSchema,
     delta_1h: TModelStatSchema,
