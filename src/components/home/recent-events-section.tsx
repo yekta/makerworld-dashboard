@@ -75,7 +75,7 @@ function getRecentEventsText(
             downloadsInLast10Min > 1 ? "s" : ""
           }`}
         </span>
-        {` in the last 10 minutes.`}
+        {` in the last 15 minutes.`}
       </span>
     );
   }
@@ -86,7 +86,7 @@ function getRecentEventsText(
         <span className="text-foreground">
           {`${printsInLast10Min} print${printsInLast10Min > 1 ? "s" : ""}`}
         </span>
-        {` in the last 10 minutes.`}
+        {` in the last 15 minutes.`}
       </span>
     );
   }
@@ -99,7 +99,7 @@ function getRecentEventsText(
             downloadsInLast10Min > 1 ? "s" : ""
           }`}
         </span>
-        {` in the last 10 minutes.`}
+        {` in the last 15 minutes.`}
       </span>
     );
   }
