@@ -53,14 +53,14 @@ function Metadata({
         now,
       })}
       <span>{" | "}</span>
-      △4h:{" "}
+      △04h:{" "}
       {timeAgo({
         timestamp: data
           ? data.metadata.delta_4h_timestamp
           : placeholderTimestamp,
         now,
       })}
-      <span>{" | "}</span>
+      <br />
       △12h:{" "}
       {timeAgo({
         timestamp: data
