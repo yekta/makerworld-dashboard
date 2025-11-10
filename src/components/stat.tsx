@@ -79,7 +79,10 @@ function MainStat({
   Icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   isPlaceholder?: boolean;
 }) {
-  const shouldFlash = useFlashOnChange(value, { enabled: !isPlaceholder });
+  const shouldFlash = useFlashOnChange(value, {
+    enabled: !isPlaceholder,
+    duration: 8000,
+  });
   const [canFlash, setCanFlash] = useState(false);
   const canFlashTimeoutRef = useRef<number | null>(null);
 
