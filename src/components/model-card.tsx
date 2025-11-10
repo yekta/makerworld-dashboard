@@ -63,10 +63,10 @@ function ModelCardContent(props: TProps) {
           (model.stats.delta_0_25h.boosts > 0 ||
             model.stats.delta_0_25h.prints > 0 ||
             model.stats.delta_0_25h.downloads > 0) && (
-            <p className="ml-auto flex shrink-0 min-w-0 overflow-hidden gap-px items-end text-xs text-success font-mono -mr-1.5">
+            <p className="ml-auto flex shrink-0 max-w-1/2 min-w-0 overflow-hidden gap-px items-end text-xs text-success font-mono -mr-1.5">
               {model.stats.delta_0_25h.boosts > 0 && (
                 <>
-                  <RocketIcon className="size-2.75 inline-block mb-0.5" />
+                  <RocketIcon className="size-2.75 shrink-0 inline-block mb-0.5" />
                   <span className="shrink min-w-0 overflow-hidden overflow-ellipsis leading-tight text-right pr-2">
                     +{model.stats.delta_0_25h.boosts}
                   </span>
@@ -74,7 +74,7 @@ function ModelCardContent(props: TProps) {
               )}
               {model.stats.delta_0_25h.prints > 0 && (
                 <>
-                  <BoxIcon className="size-2.75 inline-block mb-0.5" />
+                  <BoxIcon className="size-2.75 shrink-0 inline-block mb-0.5" />
                   <span className="shrink min-w-0 overflow-hidden overflow-ellipsis leading-tight text-right pr-2">
                     +{model.stats.delta_0_25h.prints}
                   </span>
@@ -82,7 +82,7 @@ function ModelCardContent(props: TProps) {
               )}
               {model.stats.delta_0_25h.downloads > 0 && (
                 <>
-                  <DownloadIcon className="size-2.75 inline-block mb-0.5" />
+                  <DownloadIcon className="size-2.75 shrink-0 inline-block mb-0.5" />
                   <span className="shrink min-w-0 overflow-hidden overflow-ellipsis leading-tight text-right pr-2">
                     +{model.stats.delta_0_25h.downloads}
                   </span>
