@@ -132,7 +132,7 @@ function ModelCardContent(props: TProps) {
           showDelta={true}
         />
       </div>
-      <div className="w-full flex justify-start pb-px pt-px relative">
+      <div className="w-full flex justify-start pb-px pt-0.5 relative">
         <CreatedAtParagraph {...props} />
       </div>
     </div>
