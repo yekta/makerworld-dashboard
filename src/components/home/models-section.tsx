@@ -39,7 +39,7 @@ export default function ModelsSection() {
 
 function Wrapper({ children }: { children: React.ReactNode }) {
   return (
-    <div className="w-full flex flex-wrap mt-4 md:mt-5 justify-center">
+    <div className="w-full flex flex-wrap mt-2 md:mt-3 justify-center">
       {children}
     </div>
   );

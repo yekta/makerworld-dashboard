@@ -15,6 +15,8 @@ export const TModelSchema = z.object({
   model_created_at: z.number(),
   stats: z.object({
     current: TModelStatSchema,
+    delta_0_08333h: TModelStatSchema,
+    delta_0_25h: TModelStatSchema,
     delta_1h: TModelStatSchema,
     delta_2h: TModelStatSchema,
     delta_4h: TModelStatSchema,
@@ -37,6 +39,8 @@ export const TUserStatSchema = z.object({
 export const TUserSchema = z.object({
   stats: z.object({
     current: TUserStatSchema,
+    delta_0_08333h: TUserStatSchema,
+    delta_0_25h: TUserStatSchema,
     delta_1h: TUserStatSchema,
     delta_2h: TUserStatSchema,
     delta_4h: TUserStatSchema,
@@ -52,6 +56,8 @@ export const TStatResponseSchema = z.object({
   latest_batch: z.number(),
   metadata: z.object({
     delta_0h_timestamp: z.number(),
+    delta_0_08333h_timestamp: z.number(),
+    delta_0_25h_timestamp: z.number(),
     delta_1h_timestamp: z.number(),
     delta_2h_timestamp: z.number(),
     delta_4h_timestamp: z.number(),

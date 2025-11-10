@@ -1,5 +1,6 @@
 import MetadataSection from "@/components/home/metadata-section";
 import ModelsSection from "@/components/home/models-section";
+import RecentEventsSection from "@/components/home/recent-events-section";
 import RefetchIndicator from "@/components/home/refetch-indicator";
 import UserStatsSection from "@/components/home/user-stats-section";
 import StatsProvider from "@/components/providers/stats-provider";
@@ -22,6 +23,7 @@ export default async function Home() {
         <RefetchIndicator />
         <div className="w-full max-w-6xl flex flex-col">
           <UserStatsSection />
+          <RecentEventsSection />
           <ModelsSection />
           <MetadataSection />
         </div>

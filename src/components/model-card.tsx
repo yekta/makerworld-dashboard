@@ -54,6 +54,28 @@ function ModelCardContent(props: TProps) {
             sizes="80px"
           />
         )}
+        {!isPlaceholder && model.stats.delta_0_25h.prints > 0 && (
+          <div className="absolute right-0.5 bottom-0.75 max-w-full pl-2 pr-0.5">
+            <div className="flex items-center justify-end gap-1 bg-background pl-1.25 pr-1.5 py-0.5 rounded-full text-success text-xs font-mono">
+              <BoxIcon className="size-3 shrink-0" />
+              <p className="shrink min-w-0 overflow-hidden overflow-ellipsis">
+                {model.stats.delta_0_25h.prints}
+              </p>
+            </div>
+          </div>
+        )}
+        {!isPlaceholder &&
+          model.stats.delta_0_25h.prints <= 0 &&
+          model.stats.delta_0_25h.downloads > 0 && (
+            <div className="absolute right-0.5 bottom-0.75 max-w-full pl-2 pr-0.5">
+              <div className="flex items-center justify-end gap-1 bg-background pl-1.25 pr-1.5 py-0.5 rounded-full text-success text-xs font-mono">
+                <DownloadIcon className="size-3 shrink-0" />
+                <p className="shrink min-w-0 overflow-hidden overflow-ellipsis">
+                  {model.stats.delta_0_25h.downloads}
+                </p>
+              </div>
+            </div>
+          )}
       </div>
       <div className="w-full flex items-center overflow-hidden gap-0.5 relative">
         <h2 className="text-xs font-light px-1 shrink min-w-0 text-muted-foreground whitespace-nowrap overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent">
