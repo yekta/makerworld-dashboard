@@ -2,6 +2,7 @@
 
 import { useStats } from "@/components/providers/stats-provider";
 import { AppRouterOutputs, AppRouterQueryResult } from "@/server/trpc/api/root";
+import { BoxIcon, DownloadIcon, RocketIcon, UsersIcon } from "lucide-react";
 
 export default function RecentEventsSection() {
   const { data, isPending, isError } = useStats();
@@ -55,10 +56,6 @@ function Wrapper({
   );
 }
 
-const Highlight = ({ children }: { children: React.ReactNode }) => (
-  <span className="text-foreground">{children}</span>
-);
-
 function getRecentEventsText(
   data: AppRouterQueryResult<AppRouterOutputs["stats"]["get"]>["data"]
 ) {
@@ -69,40 +66,55 @@ function getRecentEventsText(
   const downloadsInLast15Min = data.user.stats.delta_0_25h.downloads;
   const followersInLast15Min = data.user.stats.delta_0_25h.followers;
 
-  let text: string[] = [];
+  let stats: { value: number; Icon: React.ElementType; label: string }[] = [];
 
   if (boostsInLast15Min > 0) {
-    text.push(`${boostsInLast15Min} boost${boostsInLast15Min > 1 ? "s" : ""}`);
+    stats.push({
+      value: boostsInLast15Min,
+      Icon: RocketIcon,
+      label: "boost",
+    });
   }
 
   if (printsInLast15Min > 0) {
-    text.push(`${printsInLast15Min} print${printsInLast15Min > 1 ? "s" : ""}`);
+    stats.push({
+      value: printsInLast15Min,
+      Icon: BoxIcon,
+      label: "print",
+    });
   }
 
   if (downloadsInLast15Min > 0) {
-    text.push(
-      `${downloadsInLast15Min} download${downloadsInLast15Min > 1 ? "s" : ""}`
-    );
+    stats.push({
+      value: downloadsInLast15Min,
+      Icon: DownloadIcon,
+      label: "download",
+    });
   }
 
   if (followersInLast15Min > 0) {
-    text.push(
-      `${followersInLast15Min} follower${followersInLast15Min > 1 ? "s" : ""}`
-    );
+    stats.push({
+      value: followersInLast15Min,
+      Icon: UsersIcon,
+      label: "follower",
+    });
   }
 
-  if (text.length > 0) {
-    const spans = text.map((item, index) => (
-      <>
-        {index > 0 && text.length === 2
+  if (stats.length > 0) {
+    const spans = stats.map((item, index) => (
+      <span key={index}>
+        {index > 0 && stats.length === 2
           ? " and "
-          : index > 0 && index === text.length - 1
+          : index > 0 && index === stats.length - 1
           ? ", and "
           : index > 0
           ? ", "
           : ""}
-        <Highlight key={index}>{item}</Highlight>
-      </>
+        <span className="text-foreground">
+          <item.Icon className="inline-block size-2.75 mb-px mr-[0.2ch]" />
+          {item.value} {item.label}
+        </span>
+      </span>
     ));
     return (
       <span>
