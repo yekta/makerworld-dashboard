@@ -59,7 +59,8 @@ function Wrapper({
 function getRecentEventsText(
   data: AppRouterQueryResult<AppRouterOutputs["stats"]["get"]>["data"]
 ) {
-  if (!data) return "No events in the last 15 minutes.";
+  const noEventsText = "No events in the last 15 minutes.";
+  if (!data) return noEventsText;
 
   const boostsInLast15Min = data.user.stats.delta_0_25h.boosts;
   const printsInLast15Min = data.user.stats.delta_0_25h.prints;
@@ -125,5 +126,5 @@ function getRecentEventsText(
     );
   }
 
-  return "No events in the last 15 minutes.";
+  return noEventsText;
 }
