@@ -56,9 +56,9 @@ function ModelCardContent(props: TProps) {
         )}
         {!isPlaceholder && model.stats.delta_0_25h.prints > 0 && (
           <div className="absolute right-0.5 bottom-0.75 max-w-full pl-2 pr-0.5">
-            <div className="flex items-center justify-end gap-1 bg-background pl-1.25 pr-1.5 py-0.5 rounded-full text-success text-xs font-mono">
-              <BoxIcon className="size-3 shrink-0" />
-              <p className="shrink min-w-0 overflow-hidden overflow-ellipsis">
+            <div className="flex items-center justify-end gap-0.5 bg-background pl-1 pr-1.25 py-0.5 rounded-full text-success text-xxs font-mono">
+              <BoxIcon className="size-2.5 shrink-0" />
+              <p className="shrink min-w-0 overflow-hidden overflow-ellipsis leading-tight">
                 {model.stats.delta_0_25h.prints}
               </p>
             </div>
@@ -68,9 +68,9 @@ function ModelCardContent(props: TProps) {
           model.stats.delta_0_25h.prints <= 0 &&
           model.stats.delta_0_25h.downloads > 0 && (
             <div className="absolute right-0.5 bottom-0.75 max-w-full pl-2 pr-0.5">
-              <div className="flex items-center justify-end gap-1 bg-background pl-1.25 pr-1.5 py-0.5 rounded-full text-success text-xs font-mono">
-                <DownloadIcon className="size-3 shrink-0" />
-                <p className="shrink min-w-0 overflow-hidden overflow-ellipsis">
+              <div className="flex items-center justify-end gap-0.5 bg-background pl-1 pr-1.25 py-0.5 rounded-full text-success text-xxs font-mono">
+                <DownloadIcon className="size-2.5 shrink-0" />
+                <p className="shrink min-w-0 overflow-hidden overflow-ellipsis leading-tight">
                   {model.stats.delta_0_25h.downloads}
                 </p>
               </div>
