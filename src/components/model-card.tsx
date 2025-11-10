@@ -54,44 +54,42 @@ function ModelCardContent(props: TProps) {
             sizes="80px"
           />
         )}
+      </div>
+      <div className="w-full flex items-center overflow-hidden gap-2 relative">
+        <h2 className="text-xs font-light px-1 shrink min-w-0 text-muted-foreground whitespace-nowrap overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent">
+          {!isPlaceholder ? model.title : "Loading This Model's Title"}
+        </h2>
         {!isPlaceholder &&
           (model.stats.delta_0_25h.boosts > 0 ||
             model.stats.delta_0_25h.prints > 0 ||
             model.stats.delta_0_25h.downloads > 0) && (
-            <div className="absolute right-px top-0.5 flex min-w-0 overflow-hidden max-w-full pl-2 pr-0.5">
-              <div className="flex max-w-full overflow-hidden flex-col gap-px items-end bg-background pl-[0.28125rem] pr-1.25 py-[0.15625rem] rounded-xs text-success text-xxs font-mono">
-                {model.stats.delta_0_25h.boosts > 0 && (
-                  <div className="max-w-full flex gap-px items-center justify-end">
-                    <RocketIcon className="size-2.5 shrink-0" />
-                    <p className="shrink min-w-0 overflow-hidden overflow-ellipsis leading-tight text-right">
-                      +{model.stats.delta_0_25h.boosts}
-                    </p>
-                  </div>
-                )}
-                {model.stats.delta_0_25h.prints > 0 && (
-                  <div className="max-w-full flex gap-px items-center justify-end">
-                    <BoxIcon className="size-2.5 shrink-0" />
-                    <p className="shrink min-w-0 overflow-hidden overflow-ellipsis leading-tight text-right">
-                      +{model.stats.delta_0_25h.prints}
-                    </p>
-                  </div>
-                )}
-                {model.stats.delta_0_25h.downloads > 0 && (
-                  <div className="max-w-full flex gap-px items-center justify-end">
-                    <DownloadIcon className="size-2.5 shrink-0" />
-                    <p className="shrink min-w-0 overflow-hidden overflow-ellipsis leading-tight text-right">
-                      +{model.stats.delta_0_25h.downloads}
-                    </p>
-                  </div>
-                )}
-              </div>
-            </div>
+            <p className="ml-auto flex shrink-0 min-w-0 overflow-hidden gap-px items-end text-xs text-success font-mono -mr-1.5">
+              {model.stats.delta_0_25h.boosts > 0 && (
+                <>
+                  <RocketIcon className="size-2.75 inline-block mb-0.5" />
+                  <span className="shrink min-w-0 overflow-hidden overflow-ellipsis leading-tight text-right pr-2">
+                    +{model.stats.delta_0_25h.boosts}
+                  </span>
+                </>
+              )}
+              {model.stats.delta_0_25h.prints > 0 && (
+                <>
+                  <BoxIcon className="size-2.75 inline-block mb-0.5" />
+                  <span className="shrink min-w-0 overflow-hidden overflow-ellipsis leading-tight text-right pr-2">
+                    +{model.stats.delta_0_25h.prints}
+                  </span>
+                </>
+              )}
+              {model.stats.delta_0_25h.downloads > 0 && (
+                <>
+                  <DownloadIcon className="size-2.75 inline-block mb-0.5" />
+                  <span className="shrink min-w-0 overflow-hidden overflow-ellipsis leading-tight text-right pr-2">
+                    +{model.stats.delta_0_25h.downloads}
+                  </span>
+                </>
+              )}
+            </p>
           )}
-      </div>
-      <div className="w-full flex items-center overflow-hidden gap-0.5 relative">
-        <h2 className="text-xs font-light px-1 shrink min-w-0 text-muted-foreground whitespace-nowrap overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent">
-          {!isPlaceholder ? model.title : "Loading This Model's Title"}
-        </h2>
       </div>
       <div className="w-full flex flex-row gap-5 px-1 relative">
         <Stat
