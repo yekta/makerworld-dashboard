@@ -58,22 +58,32 @@ function ModelCardContent(props: TProps) {
           (model.stats.delta_0_25h.boosts > 0 ||
             model.stats.delta_0_25h.prints > 0 ||
             model.stats.delta_0_25h.downloads > 0) && (
-            <div className="absolute right-0.5 bottom-0.75 max-w-full pl-2 pr-0.5">
-              <div className="flex items-center justify-end gap-[0.15625rem] bg-background pl-1 pr-1.25 py-0.5 rounded-full text-success text-xxs font-mono">
-                {model.stats.delta_0_25h.boosts > 0 ? (
-                  <RocketIcon className="size-2.5 shrink-0" />
-                ) : model.stats.delta_0_25h.prints > 0 ? (
-                  <BoxIcon className="size-2.5 shrink-0" />
-                ) : (
-                  <DownloadIcon className="size-2.5 shrink-0" />
+            <div className="absolute right-px top-0.5 flex min-w-0 overflow-hidden max-w-full pl-2 pr-0.5">
+              <div className="flex max-w-full overflow-hidden flex-col gap-0.5 items-end bg-background pl-1 pr-1.25 py-0.5 rounded-xs text-success text-xxs font-mono">
+                {model.stats.delta_0_25h.boosts > 0 && (
+                  <div className="max-w-full flex gap-[0.15625rem] items-center justify-end">
+                    <RocketIcon className="size-2.5 shrink-0" />
+                    <p className="shrink min-w-0 overflow-hidden overflow-ellipsis leading-tight text-right">
+                      {model.stats.delta_0_25h.boosts}
+                    </p>
+                  </div>
                 )}
-                <p className="shrink min-w-0 overflow-hidden overflow-ellipsis leading-tight">
-                  {model.stats.delta_0_25h.boosts > 0
-                    ? model.stats.delta_0_25h.boosts
-                    : model.stats.delta_0_25h.prints > 0
-                    ? model.stats.delta_0_25h.prints
-                    : model.stats.delta_0_25h.downloads}
-                </p>
+                {model.stats.delta_0_25h.prints > 0 && (
+                  <div className="max-w-full flex gap-[0.15625rem] items-center justify-end">
+                    <BoxIcon className="size-2.5 shrink-0" />
+                    <p className="shrink min-w-0 overflow-hidden overflow-ellipsis leading-tight text-right">
+                      {model.stats.delta_0_25h.prints}
+                    </p>
+                  </div>
+                )}
+                {model.stats.delta_0_25h.downloads > 0 && (
+                  <div className="max-w-full flex gap-[0.15625rem] items-center justify-end">
+                    <DownloadIcon className="size-2.5 shrink-0" />
+                    <p className="shrink min-w-0 overflow-hidden overflow-ellipsis leading-tight text-right">
+                      {model.stats.delta_0_25h.downloads}
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
           )}
