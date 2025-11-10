@@ -113,6 +113,7 @@ function getRecentEventsText(
         <span className="text-foreground">
           <item.Icon className="inline-block size-2.75 mb-px mr-[0.2ch]" />
           {item.value} {item.label}
+          {item.value > 1 ? "s" : ""}
         </span>
       </span>
     ));
