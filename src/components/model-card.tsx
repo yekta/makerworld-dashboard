@@ -59,7 +59,7 @@ function ModelCardContent(props: TProps) {
             model.stats.delta_0_25h.prints > 0 ||
             model.stats.delta_0_25h.downloads > 0) && (
             <div className="absolute right-0.5 bottom-0.75 max-w-full pl-2 pr-0.5">
-              <div className="flex items-center justify-end gap-0.75 bg-background pl-1 pr-1.25 py-0.5 rounded-full text-success text-xxs font-mono">
+              <div className="flex items-center justify-end gap-[0.15625rem] bg-background pl-1 pr-1.25 py-0.5 rounded-full text-success text-xxs font-mono">
                 {model.stats.delta_0_25h.boosts > 0 ? (
                   <RocketIcon className="size-2.5 shrink-0" />
                 ) : model.stats.delta_0_25h.prints > 0 ? (
