@@ -61,26 +61,26 @@ function ModelCardContent(props: TProps) {
             <div className="absolute right-px top-0.5 flex min-w-0 overflow-hidden max-w-full pl-2 pr-0.5">
               <div className="flex max-w-full overflow-hidden flex-col gap-px items-end bg-background pl-[0.28125rem] pr-1.25 py-[0.15625rem] rounded-xs text-success text-xxs font-mono">
                 {model.stats.delta_0_25h.boosts > 0 && (
-                  <div className="max-w-full flex gap-[0.15625rem] items-center justify-end">
+                  <div className="max-w-full flex gap-px items-center justify-end">
                     <RocketIcon className="size-2.5 shrink-0" />
                     <p className="shrink min-w-0 overflow-hidden overflow-ellipsis leading-tight text-right">
-                      {model.stats.delta_0_25h.boosts}
+                      +{model.stats.delta_0_25h.boosts}
                     </p>
                   </div>
                 )}
                 {model.stats.delta_0_25h.prints > 0 && (
-                  <div className="max-w-full flex gap-[0.15625rem] items-center justify-end">
+                  <div className="max-w-full flex gap-px items-center justify-end">
                     <BoxIcon className="size-2.5 shrink-0" />
                     <p className="shrink min-w-0 overflow-hidden overflow-ellipsis leading-tight text-right">
-                      {model.stats.delta_0_25h.prints}
+                      +{model.stats.delta_0_25h.prints}
                     </p>
                   </div>
                 )}
                 {model.stats.delta_0_25h.downloads > 0 && (
-                  <div className="max-w-full flex gap-[0.15625rem] items-center justify-end">
+                  <div className="max-w-full flex gap-px items-center justify-end">
                     <DownloadIcon className="size-2.5 shrink-0" />
                     <p className="shrink min-w-0 overflow-hidden overflow-ellipsis leading-tight text-right">
-                      {model.stats.delta_0_25h.downloads}
+                      +{model.stats.delta_0_25h.downloads}
                     </p>
                   </div>
                 )}
