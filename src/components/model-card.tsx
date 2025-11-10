@@ -54,24 +54,25 @@ function ModelCardContent(props: TProps) {
             sizes="80px"
           />
         )}
-        {!isPlaceholder && model.stats.delta_0_25h.prints > 0 && (
-          <div className="absolute right-0.5 bottom-0.75 max-w-full pl-2 pr-0.5">
-            <div className="flex items-center justify-end gap-0.5 bg-background pl-1 pr-1.25 py-0.5 rounded-full text-success text-xxs font-mono">
-              <BoxIcon className="size-2.5 shrink-0" />
-              <p className="shrink min-w-0 overflow-hidden overflow-ellipsis leading-tight">
-                {model.stats.delta_0_25h.prints}
-              </p>
-            </div>
-          </div>
-        )}
         {!isPlaceholder &&
-          model.stats.delta_0_25h.prints <= 0 &&
-          model.stats.delta_0_25h.downloads > 0 && (
+          (model.stats.delta_0_25h.boosts > 0 ||
+            model.stats.delta_0_25h.prints > 0 ||
+            model.stats.delta_0_25h.downloads > 0) && (
             <div className="absolute right-0.5 bottom-0.75 max-w-full pl-2 pr-0.5">
-              <div className="flex items-center justify-end gap-0.5 bg-background pl-1 pr-1.25 py-0.5 rounded-full text-success text-xxs font-mono">
-                <DownloadIcon className="size-2.5 shrink-0" />
+              <div className="flex items-center justify-end gap-0.75 bg-background pl-1 pr-1.25 py-0.5 rounded-full text-success text-xxs font-mono">
+                {model.stats.delta_0_25h.boosts > 0 ? (
+                  <RocketIcon className="size-2.5 shrink-0" />
+                ) : model.stats.delta_0_25h.prints > 0 ? (
+                  <BoxIcon className="size-2.5 shrink-0" />
+                ) : (
+                  <DownloadIcon className="size-2.5 shrink-0" />
+                )}
                 <p className="shrink min-w-0 overflow-hidden overflow-ellipsis leading-tight">
-                  {model.stats.delta_0_25h.downloads}
+                  {model.stats.delta_0_25h.boosts > 0
+                    ? model.stats.delta_0_25h.boosts
+                    : model.stats.delta_0_25h.prints > 0
+                    ? model.stats.delta_0_25h.prints
+                    : model.stats.delta_0_25h.downloads}
                 </p>
               </div>
             </div>

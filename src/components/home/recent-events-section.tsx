@@ -48,58 +48,59 @@ function Wrapper({
   return (
     <div
       data-placeholder={isPending ? true : undefined}
-      className="w-full flex items-center justify-center mt-2 md:mt-3 text-xs group"
+      className="w-full py-2 md:py-3  flex items-center justify-center text-xs group"
     >
       {children}
     </div>
   );
 }
 
+const Highlight = ({ children }: { children: React.ReactNode }) => (
+  <span className="text-foreground">{children}</span>
+);
+
 function getRecentEventsText(
   data: AppRouterQueryResult<AppRouterOutputs["stats"]["get"]>["data"]
 ) {
   if (!data) return "No events in the last 15 minutes.";
 
-  const printsInLast10Min = data.user.stats.delta_0_25h.prints;
-  const downloadsInLast10Min = data.user.stats.delta_0_25h.downloads;
+  const boostsInLast15Min = data.user.stats.delta_0_25h.boosts;
+  const printsInLast15Min = data.user.stats.delta_0_25h.prints;
+  const downloadsInLast15Min = data.user.stats.delta_0_25h.downloads;
 
-  if (printsInLast10Min > 0 && downloadsInLast10Min > 0) {
-    return (
-      <span>
-        <span className="text-foreground">
-          {`${printsInLast10Min} print${printsInLast10Min > 1 ? "s" : ""}`}
-        </span>
-        {" & "}
-        <span className="text-foreground">
-          {`${downloadsInLast10Min} download${
-            downloadsInLast10Min > 1 ? "s" : ""
-          }`}
-        </span>
-        {` in the last 15 minutes.`}
-      </span>
+  let text: string[] = [];
+
+  if (boostsInLast15Min > 0) {
+    text.push(`${boostsInLast15Min} boost${boostsInLast15Min > 1 ? "s" : ""}`);
+  }
+
+  if (printsInLast15Min > 0) {
+    text.push(`${printsInLast15Min} print${printsInLast15Min > 1 ? "s" : ""}`);
+  }
+
+  if (downloadsInLast15Min > 0) {
+    text.push(
+      `${downloadsInLast15Min} download${downloadsInLast15Min > 1 ? "s" : ""}`
     );
   }
 
-  if (printsInLast10Min > 0) {
+  if (text.length > 0) {
+    const spans = text.map((item, index) => (
+      <>
+        {index > 0 && index === text.length - 1 && text.length > 2
+          ? ", and "
+          : index > 0 && index === text.length - 1
+          ? " and "
+          : index > 0
+          ? ", "
+          : ""}
+        <Highlight key={index}>{item}</Highlight>
+      </>
+    ));
     return (
       <span>
-        <span className="text-foreground">
-          {`${printsInLast10Min} print${printsInLast10Min > 1 ? "s" : ""}`}
-        </span>
-        {` in the last 15 minutes.`}
-      </span>
-    );
-  }
-
-  if (downloadsInLast10Min > 0) {
-    return (
-      <span>
-        <span className="text-foreground">
-          {`${downloadsInLast10Min} download${
-            downloadsInLast10Min > 1 ? "s" : ""
-          }`}
-        </span>
-        {` in the last 15 minutes.`}
+        {...spans}
+        <span>{" in the last 15 minutes."}</span>
       </span>
     );
   }
