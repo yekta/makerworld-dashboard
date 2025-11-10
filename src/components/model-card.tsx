@@ -55,38 +55,38 @@ function ModelCardContent(props: TProps) {
           />
         )}
       </div>
-      <div className="w-full flex items-center overflow-hidden gap-2 relative">
-        <h2 className="text-xs font-light px-1 shrink min-w-0 text-muted-foreground whitespace-nowrap overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent">
+      <div className="w-full flex items-center overflow-hidden gap-3 relative px-1">
+        <h2 className="text-xs font-light shrink min-w-0 text-muted-foreground whitespace-nowrap overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent">
           {!isPlaceholder ? model.title : "Loading This Model's Title"}
         </h2>
         {!isPlaceholder &&
           (model.stats.delta_0_25h.boosts > 0 ||
             model.stats.delta_0_25h.prints > 0 ||
             model.stats.delta_0_25h.downloads > 0) && (
-            <p className="ml-auto flex shrink-0 max-w-1/2 min-w-0 overflow-hidden gap-px items-end text-xs text-success font-mono -mr-1">
+            <p className="ml-auto flex shrink-0 max-w-1/2 min-w-0 overflow-hidden gap-2 items-end text-xs text-success font-mono">
               {model.stats.delta_0_25h.boosts > 0 && (
-                <>
-                  <RocketIcon className="size-2.75 shrink-0 inline-block mb-0.5" />
-                  <span className="shrink min-w-0 overflow-hidden overflow-ellipsis leading-tight text-right pr-1.75">
-                    +{model.stats.delta_0_25h.boosts}
+                <span>
+                  <RocketIcon className="size-2.75 shrink-0 inline-block mb-0.5 mr-[0.2ch]" />
+                  <span className="shrink min-w-0 overflow-hidden overflow-ellipsis leading-tight text-right">
+                    {model.stats.delta_0_25h.boosts}
                   </span>
-                </>
+                </span>
               )}
               {model.stats.delta_0_25h.prints > 0 && (
-                <>
-                  <BoxIcon className="size-2.75 shrink-0 inline-block mb-0.5" />
-                  <span className="shrink min-w-0 overflow-hidden overflow-ellipsis leading-tight text-right pr-1.75">
-                    +{model.stats.delta_0_25h.prints}
+                <span>
+                  <BoxIcon className="size-2.75 shrink-0 inline-block mb-0.5 mr-[0.2ch]" />
+                  <span className="shrink min-w-0 overflow-hidden overflow-ellipsis leading-tight text-right">
+                    {model.stats.delta_0_25h.prints}
                   </span>
-                </>
+                </span>
               )}
               {model.stats.delta_0_25h.downloads > 0 && (
-                <>
-                  <DownloadIcon className="size-2.75 shrink-0 inline-block mb-0.5" />
-                  <span className="shrink min-w-0 overflow-hidden overflow-ellipsis leading-tight text-right pr-1.75">
-                    +{model.stats.delta_0_25h.downloads}
+                <span>
+                  <DownloadIcon className="size-2.75 shrink-0 inline-block mb-0.5 mr-[0.2ch]" />
+                  <span className="shrink min-w-0 overflow-hidden overflow-ellipsis leading-tight text-right">
+                    {model.stats.delta_0_25h.downloads}
                   </span>
-                </>
+                </span>
               )}
             </p>
           )}
