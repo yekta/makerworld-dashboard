@@ -67,6 +67,7 @@ function getRecentEventsText(
   const boostsInLast15Min = data.user.stats.delta_0_25h.boosts;
   const printsInLast15Min = data.user.stats.delta_0_25h.prints;
   const downloadsInLast15Min = data.user.stats.delta_0_25h.downloads;
+  const followersInLast15Min = data.user.stats.delta_0_25h.followers;
 
   let text: string[] = [];
 
@@ -84,13 +85,19 @@ function getRecentEventsText(
     );
   }
 
+  if (followersInLast15Min > 0) {
+    text.push(
+      `${followersInLast15Min} follower${followersInLast15Min > 1 ? "s" : ""}`
+    );
+  }
+
   if (text.length > 0) {
     const spans = text.map((item, index) => (
       <>
-        {index > 0 && index === text.length - 1 && text.length > 2
-          ? ", and "
-          : index > 0 && index === text.length - 1
+        {index > 0 && text.length === 2
           ? " and "
+          : index > 0 && index === text.length - 1
+          ? ", and "
           : index > 0
           ? ", "
           : ""}
