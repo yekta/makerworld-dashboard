@@ -51,12 +51,12 @@ function ModelCardContent(props: TProps) {
           ? true
           : undefined
       }
-      className="p-2 rounded-xl group/content flex flex-col gap-1 relative overflow-hidden"
+      className="p-2 rounded-[14px] group/content flex flex-col gap-1 relative overflow-hidden"
     >
       {/* Flare effect */}
-      <div className="w-full h-full absolute right-0 top-0 p-px transition bg-linear-to-bl via-15% from-border via-border to-border group-data-highlighted/content:from-success/30 group-data-highlighted/content:via-border group-highlighted/content:to-border rounded-xl">
-        <div className="w-[calc(100%-2px)] h-[calc(100%-2px)] absolute right-px top-px bg-background rounded-xl" />
-        <div className="w-full h-full rounded-xl group-active:bg-border group-hover:bg-border relative" />
+      <div className="w-full h-full absolute right-0 top-0 p-px transition bg-linear-to-bl via-15% from-border via-border to-border group-data-highlighted/content:from-success/30 group-data-highlighted/content:via-border group-highlighted/content:to-border rounded-[14px]">
+        <div className="w-[calc(100%-2px)] h-[calc(100%-2px)] absolute right-px top-px bg-background rounded-[13px]" />
+        <div className="w-full h-full rounded-[13px] group-active:bg-border group-hover:bg-border relative" />
       </div>
       <div className="opacity-0 transition-opacity duration-300 group-data-highlighted/content:opacity-100 absolute h-1/6 aspect-5/1 translate-x-full -translate-y-full group-data-highlighted/content:translate-x-1/2 group-data-highlighted/content:-translate-y-1/2 top-0 right-0 bg-success/15 blur-xl" />
       <div className="opacity-0 transition-opacity duration-300 group-data-highlighted/content:opacity-100 absolute h-1/4 aspect-5/1 translate-x-full -translate-y-full group-data-highlighted/content:translate-x-1/2 group-data-highlighted/content:-translate-y-1/2 top-0 right-0 bg-success/30 blur-2xl" />

@@ -41,11 +41,6 @@
   --color-card: var(--card);
   --color-success: var(--success);
   --color-success-highlight: var(--success-highlight);
-  --radius-xs: calc(var(--radius) - 5px);
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
   --text-xxs: 0.625rem;
 }
 
