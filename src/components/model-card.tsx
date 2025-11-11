@@ -42,7 +42,21 @@ export default function ModelCard(props: TProps) {
 function ModelCardContent(props: TProps) {
   const { model, isPlaceholder } = props;
   return (
-    <div className="p-2 border group-active:bg-border group-hover:bg-border rounded-xl flex flex-col gap-1 relative overflow-hidden">
+    <div
+      data-highlighted={
+        !isPlaceholder &&
+        (model.stats.delta_0_25h.boosts > 0 ||
+          model.stats.delta_0_25h.prints > 0 ||
+          model.stats.delta_0_25h.downloads > 0)
+          ? true
+          : undefined
+      }
+      className="p-2 border group-active:bg-border group-hover:bg-border rounded-xl group/content flex flex-col gap-1 relative overflow-hidden"
+    >
+      {/* Flare effect */}
+      <div className="opacity-0 transition-opacity duration-300 group-data-highlighted/content:opacity-100 absolute h-1/6 aspect-5/1 translate-x-full -translate-y-full group-data-highlighted/content:translate-x-1/2 group-data-highlighted/content:-translate-y-1/2 top-0 right-0 bg-success/15 blur-xl" />
+      <div className="opacity-0 transition-opacity duration-300 group-data-highlighted/content:opacity-100 absolute h-1/4 aspect-5/1 translate-x-full -translate-y-full group-data-highlighted/content:translate-x-1/2 group-data-highlighted/content:-translate-y-1/2 top-0 right-0 bg-success/30 blur-2xl" />
+      {/* Flare effect end */}
       <div className="w-20 absolute -bottom-px -right-px aspect-4/3 bg-border border rounded-tl-xl overflow-hidden group-data-placeholder:animate-pulse">
         {!isPlaceholder && (
           <Image
