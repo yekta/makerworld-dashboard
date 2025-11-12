@@ -30,8 +30,10 @@ export default function UserStatsSection() {
         delta4h={data ? data.user.stats.delta_4h.prints : 10}
         delta12h={data ? data.user.stats.delta_12h.prints : 10}
         delta24h={data ? data.user.stats.delta_24h.prints : 10}
+        delta48h={data ? data.user.stats.delta_48h.prints : 10}
         Icon={BoxIcon}
         isPlaceholder={isPending}
+        show48hDelta={true}
       />
       <Stat
         value={data ? data.user.stats.current.downloads : 2000}
@@ -39,6 +41,7 @@ export default function UserStatsSection() {
         delta4h={data ? data.user.stats.delta_4h.downloads : 10}
         delta12h={data ? data.user.stats.delta_12h.downloads : 10}
         delta24h={data ? data.user.stats.delta_24h.downloads : 10}
+        delta48h={data ? data.user.stats.delta_48h.downloads : 10}
         Icon={DownloadIcon}
         isPlaceholder={isPending}
       />
@@ -48,6 +51,7 @@ export default function UserStatsSection() {
         delta4h={data ? data.user.stats.delta_4h.boosts : 1}
         delta12h={data ? data.user.stats.delta_12h.boosts : 1}
         delta24h={data ? data.user.stats.delta_24h.boosts : 10}
+        delta48h={data ? data.user.stats.delta_48h.boosts : 10}
         Icon={RocketIcon}
         isPlaceholder={isPending}
       />
@@ -57,6 +61,7 @@ export default function UserStatsSection() {
         delta4h={data ? data.user.stats.delta_4h.likes : 10}
         delta12h={data ? data.user.stats.delta_12h.likes : 10}
         delta24h={data ? data.user.stats.delta_24h.likes : 100}
+        delta48h={data ? data.user.stats.delta_48h.likes : 100}
         Icon={ThumbsUp}
         isPlaceholder={isPending}
       />
@@ -66,9 +71,9 @@ export default function UserStatsSection() {
         delta4h={data ? data.user.stats.delta_4h.followers : 10}
         delta12h={data ? data.user.stats.delta_12h.followers : 10}
         delta24h={data ? data.user.stats.delta_24h.followers : 10}
+        delta48h={data ? data.user.stats.delta_48h.followers : 10}
         Icon={UsersIcon}
         isPlaceholder={isPending}
-        showDelta={true}
       />
     </Wrapper>
   );

@@ -5,22 +5,25 @@ import { useEffect, useRef, useState } from "react";
 
 export default function Stat({
   value,
+  delta48h,
   delta24h,
   delta12h,
   delta4h,
   delta1h,
   Icon,
   isPlaceholder,
+  show48hDelta = false,
   className,
 }: {
   value: number;
+  delta48h: number;
   delta24h: number;
   delta12h: number;
   delta4h: number;
   delta1h: number;
   Icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   isPlaceholder?: boolean;
-  showDelta?: boolean;
+  show48hDelta?: boolean;
   className?: string;
 }) {
   return (
@@ -63,6 +66,12 @@ export default function Stat({
         >
           <p className="shrink leading-tight min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent">
             +{delta24h.toLocaleString(appLocale)}
+            {!isPlaceholder && show48hDelta && (
+              <span className="text-muted-foreground text-xxs leading-tight">
+                <span className="mx-[0.3ch]">|</span>
+                {(delta48h - delta24h).toLocaleString(appLocale)}
+              </span>
+            )}
           </p>
         </div>
       </div>
