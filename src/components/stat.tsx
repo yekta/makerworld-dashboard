@@ -57,7 +57,7 @@ export default function Stat({
             +{delta1h.toLocaleString(appLocale)}
             {!isPlaceholder && showPrevDayStats && (
               <span className="text-muted-foreground text-xxs leading-tight">
-                <span className="px-[0.4ch]">|</span>
+                <span className="px-[0.4ch] text-muted-more-foreground">|</span>
                 {delta24to25h.toLocaleString(appLocale)}
               </span>
             )}
@@ -76,7 +76,7 @@ export default function Stat({
             +{delta4h.toLocaleString(appLocale)}
             {!isPlaceholder && showPrevDayStats && (
               <span className="text-muted-foreground text-xxs leading-tight">
-                <span className="px-[0.4ch]">|</span>
+                <span className="px-[0.4ch] text-muted-more-foreground">|</span>
                 {delta24to28h.toLocaleString(appLocale)}
               </span>
             )}
@@ -95,7 +95,7 @@ export default function Stat({
             +{delta12h.toLocaleString(appLocale)}
             {!isPlaceholder && showPrevDayStats && (
               <span className="text-muted-foreground text-xxs leading-tight">
-                <span className="px-[0.4ch]">|</span>
+                <span className="px-[0.4ch] text-muted-more-foreground">|</span>
                 {delta24to36h.toLocaleString(appLocale)}
               </span>
             )}
@@ -114,7 +114,7 @@ export default function Stat({
             +{delta24h.toLocaleString(appLocale)}
             {!isPlaceholder && showPrevDayStats && (
               <span className="text-muted-foreground text-xxs leading-tight">
-                <span className="px-[0.4ch]">|</span>
+                <span className="px-[0.4ch] text-muted-more-foreground">|</span>
                 {delta24to48h.toLocaleString(appLocale)}
               </span>
             )}
