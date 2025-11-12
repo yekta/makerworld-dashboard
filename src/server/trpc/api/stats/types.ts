@@ -23,6 +23,7 @@ export const TModelSchema = z.object({
     delta_8h: TModelStatSchema,
     delta_12h: TModelStatSchema,
     delta_24h: TModelStatSchema,
+    delta_48h: TModelStatSchema,
   }),
 });
 
@@ -47,6 +48,7 @@ export const TUserSchema = z.object({
     delta_8h: TUserStatSchema,
     delta_12h: TUserStatSchema,
     delta_24h: TUserStatSchema,
+    delta_48h: TUserStatSchema,
   }),
 });
 
@@ -64,6 +66,7 @@ export const TStatResponseSchema = z.object({
     delta_8h_timestamp: z.number(),
     delta_12h_timestamp: z.number(),
     delta_24h_timestamp: z.number(),
+    delta_48h_timestamp: z.number(),
   }),
 });
 
