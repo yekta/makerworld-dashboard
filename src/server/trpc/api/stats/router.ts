@@ -11,6 +11,7 @@ export const statsRouter = createTRPCRouter({
     const data = await res.json();
     const result = TStatResponseSchema.safeParse(data);
     if (!result.success) {
+      console.log("Stats response validation error:", result.error);
       throw new TRPCError({
         code: "NOT_FOUND",
         message: "Failed to type check stats response",

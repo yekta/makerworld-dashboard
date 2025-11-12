@@ -62,10 +62,10 @@ function getRecentEventsText(
   const noEventsText = "No events in the last 15 minutes.";
   if (!data) return noEventsText;
 
-  const boostsInLast15Min = data.user.stats.delta_0_25h.boosts;
-  const printsInLast15Min = data.user.stats.delta_0_25h.prints;
-  const downloadsInLast15Min = data.user.stats.delta_0_25h.downloads;
-  const followersInLast15Min = data.user.stats.delta_0_25h.followers;
+  const boostsInLast15Min = data.user.stats["delta_0-0.25h"].boosts;
+  const printsInLast15Min = data.user.stats["delta_0-0.25h"].prints;
+  const downloadsInLast15Min = data.user.stats["delta_0-0.25h"].downloads;
+  const followersInLast15Min = data.user.stats["delta_0-0.25h"].followers;
 
   let stats: { value: number; Icon: React.ElementType; label: string }[] = [];
 

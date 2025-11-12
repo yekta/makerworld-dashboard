@@ -45,9 +45,9 @@ function ModelCardContent(props: TProps) {
     <div
       data-highlighted={
         !isPlaceholder &&
-        (model.stats.delta_0_25h.boosts > 0 ||
-          model.stats.delta_0_25h.prints > 0 ||
-          model.stats.delta_0_25h.downloads > 0)
+        (model.stats["delta_0-0.25h"].boosts > 0 ||
+          model.stats["delta_0-0.25h"].prints > 0 ||
+          model.stats["delta_0-0.25h"].downloads > 0)
           ? true
           : undefined
       }
@@ -78,31 +78,31 @@ function ModelCardContent(props: TProps) {
           {!isPlaceholder ? model.title : "Loading This Model's Title"}
         </h2>
         {!isPlaceholder &&
-          (model.stats.delta_0_25h.boosts > 0 ||
-            model.stats.delta_0_25h.prints > 0 ||
-            model.stats.delta_0_25h.downloads > 0) && (
+          (model.stats["delta_0-0.25h"].boosts > 0 ||
+            model.stats["delta_0-0.25h"].prints > 0 ||
+            model.stats["delta_0-0.25h"].downloads > 0) && (
             <p className="ml-auto flex shrink-0 max-w-1/2 min-w-0 overflow-hidden gap-2 items-end text-xs text-success font-mono">
-              {model.stats.delta_0_25h.boosts > 0 && (
+              {model.stats["delta_0-0.25h"].boosts > 0 && (
                 <span>
                   <RocketIcon className="size-2.75 shrink-0 inline-block mb-0.5 mr-[0.2ch]" />
                   <span className="shrink min-w-0 overflow-hidden overflow-ellipsis leading-tight text-right">
-                    {model.stats.delta_0_25h.boosts}
+                    {model.stats["delta_0-0.25h"].boosts}
                   </span>
                 </span>
               )}
-              {model.stats.delta_0_25h.prints > 0 && (
+              {model.stats["delta_0-0.25h"].prints > 0 && (
                 <span>
                   <BoxIcon className="size-2.75 shrink-0 inline-block mb-0.5 mr-[0.2ch]" />
                   <span className="shrink min-w-0 overflow-hidden overflow-ellipsis leading-tight text-right">
-                    {model.stats.delta_0_25h.prints}
+                    {model.stats["delta_0-0.25h"].prints}
                   </span>
                 </span>
               )}
-              {model.stats.delta_0_25h.downloads > 0 && (
+              {model.stats["delta_0-0.25h"].downloads > 0 && (
                 <span>
                   <DownloadIcon className="size-2.75 shrink-0 inline-block mb-0.5 mr-[0.2ch]" />
                   <span className="shrink min-w-0 overflow-hidden overflow-ellipsis leading-tight text-right">
-                    {model.stats.delta_0_25h.downloads}
+                    {model.stats["delta_0-0.25h"].downloads}
                   </span>
                 </span>
               )}
@@ -112,42 +112,62 @@ function ModelCardContent(props: TProps) {
       <div className="w-full flex flex-row gap-5 px-1 relative">
         <Stat
           value={!isPlaceholder ? model.stats.current.prints : 100}
-          delta1h={!isPlaceholder ? model.stats.delta_1h.prints : 0}
-          delta4h={!isPlaceholder ? model.stats.delta_4h.prints : 0}
-          delta12h={!isPlaceholder ? model.stats.delta_12h.prints : 0}
-          delta24h={!isPlaceholder ? model.stats.delta_24h.prints : 0}
-          delta48h={!isPlaceholder ? model.stats.delta_48h.prints : 0}
+          delta1h={!isPlaceholder ? model.stats["delta_0-1h"].prints : 0}
+          delta4h={!isPlaceholder ? model.stats["delta_0-4h"].prints : 0}
+          delta12h={!isPlaceholder ? model.stats["delta_0-12h"].prints : 0}
+          delta24h={!isPlaceholder ? model.stats["delta_0-24h"].prints : 0}
+          delta24to25h={!isPlaceholder ? model.stats["delta_24-25h"].prints : 0}
+          delta24to28h={!isPlaceholder ? model.stats["delta_24-28h"].prints : 0}
+          delta24to36h={!isPlaceholder ? model.stats["delta_24-36h"].prints : 0}
+          delta24to48h={!isPlaceholder ? model.stats["delta_24-48h"].prints : 0}
           Icon={BoxIcon}
           isPlaceholder={isPlaceholder}
-          show48hDelta={true}
+          showPrevDayStats={true}
         />
         <Stat
           value={!isPlaceholder ? model.stats.current.downloads : 200}
-          delta1h={!isPlaceholder ? model.stats.delta_1h.downloads : 0}
-          delta4h={!isPlaceholder ? model.stats.delta_4h.downloads : 0}
-          delta12h={!isPlaceholder ? model.stats.delta_12h.downloads : 0}
-          delta24h={!isPlaceholder ? model.stats.delta_24h.downloads : 0}
-          delta48h={!isPlaceholder ? model.stats.delta_48h.downloads : 0}
+          delta1h={!isPlaceholder ? model.stats["delta_0-1h"].downloads : 0}
+          delta4h={!isPlaceholder ? model.stats["delta_0-4h"].downloads : 0}
+          delta12h={!isPlaceholder ? model.stats["delta_0-12h"].downloads : 0}
+          delta24h={!isPlaceholder ? model.stats["delta_0-24h"].downloads : 0}
+          delta24to25h={
+            !isPlaceholder ? model.stats["delta_24-25h"].downloads : 0
+          }
+          delta24to28h={
+            !isPlaceholder ? model.stats["delta_24-28h"].downloads : 0
+          }
+          delta24to36h={
+            !isPlaceholder ? model.stats["delta_24-36h"].downloads : 0
+          }
+          delta24to48h={
+            !isPlaceholder ? model.stats["delta_24-48h"].downloads : 0
+          }
           Icon={DownloadIcon}
           isPlaceholder={isPlaceholder}
         />
         <Stat
           value={!isPlaceholder ? model.stats.current.boosts : 10}
-          delta1h={!isPlaceholder ? model.stats.delta_1h.boosts : 0}
-          delta4h={!isPlaceholder ? model.stats.delta_4h.boosts : 0}
-          delta12h={!isPlaceholder ? model.stats.delta_12h.boosts : 0}
-          delta24h={!isPlaceholder ? model.stats.delta_24h.boosts : 0}
-          delta48h={!isPlaceholder ? model.stats.delta_48h.boosts : 0}
+          delta1h={!isPlaceholder ? model.stats["delta_0-1h"].boosts : 0}
+          delta4h={!isPlaceholder ? model.stats["delta_0-4h"].boosts : 0}
+          delta12h={!isPlaceholder ? model.stats["delta_0-12h"].boosts : 0}
+          delta24h={!isPlaceholder ? model.stats["delta_0-24h"].boosts : 0}
+          delta24to25h={!isPlaceholder ? model.stats["delta_24-25h"].boosts : 0}
+          delta24to28h={!isPlaceholder ? model.stats["delta_24-28h"].boosts : 0}
+          delta24to36h={!isPlaceholder ? model.stats["delta_24-36h"].boosts : 0}
+          delta24to48h={!isPlaceholder ? model.stats["delta_24-48h"].boosts : 0}
           Icon={RocketIcon}
           isPlaceholder={isPlaceholder}
         />
         <Stat
           value={!isPlaceholder ? model.stats.current.likes : 100}
-          delta1h={!isPlaceholder ? model.stats.delta_1h.likes : 0}
-          delta4h={!isPlaceholder ? model.stats.delta_4h.likes : 0}
-          delta12h={!isPlaceholder ? model.stats.delta_12h.likes : 0}
-          delta24h={!isPlaceholder ? model.stats.delta_24h.likes : 0}
-          delta48h={!isPlaceholder ? model.stats.delta_48h.likes : 0}
+          delta1h={!isPlaceholder ? model.stats["delta_0-1h"].likes : 0}
+          delta4h={!isPlaceholder ? model.stats["delta_0-4h"].likes : 0}
+          delta12h={!isPlaceholder ? model.stats["delta_0-12h"].likes : 0}
+          delta24h={!isPlaceholder ? model.stats["delta_0-24h"].likes : 0}
+          delta24to25h={!isPlaceholder ? model.stats["delta_24-25h"].likes : 0}
+          delta24to28h={!isPlaceholder ? model.stats["delta_24-28h"].likes : 0}
+          delta24to36h={!isPlaceholder ? model.stats["delta_24-36h"].likes : 0}
+          delta24to48h={!isPlaceholder ? model.stats["delta_24-48h"].likes : 0}
           Icon={ThumbsUpIcon}
           isPlaceholder={isPlaceholder}
         />

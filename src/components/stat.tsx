@@ -5,25 +5,31 @@ import { useEffect, useRef, useState } from "react";
 
 export default function Stat({
   value,
-  delta48h,
-  delta24h,
-  delta12h,
-  delta4h,
   delta1h,
+  delta4h,
+  delta12h,
+  delta24h,
+  delta24to25h,
+  delta24to28h,
+  delta24to36h,
+  delta24to48h,
+  showPrevDayStats = false,
   Icon,
   isPlaceholder,
-  show48hDelta = false,
   className,
 }: {
   value: number;
-  delta48h: number;
-  delta24h: number;
-  delta12h: number;
-  delta4h: number;
   delta1h: number;
+  delta4h: number;
+  delta12h: number;
+  delta24h: number;
+  delta24to25h: number;
+  delta24to28h: number;
+  delta24to36h: number;
+  delta24to48h: number;
+  showPrevDayStats?: boolean;
   Icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   isPlaceholder?: boolean;
-  show48hDelta?: boolean;
   className?: string;
 }) {
   return (
@@ -42,6 +48,12 @@ export default function Stat({
         >
           <p className="shrink leading-tight min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent">
             +{delta1h.toLocaleString(appLocale)}
+            {!isPlaceholder && showPrevDayStats && (
+              <span className="text-muted-foreground text-xxs leading-tight">
+                <span className="px-[0.4ch]">|</span>
+                {delta24to25h.toLocaleString(appLocale)}
+              </span>
+            )}
           </p>
         </div>
         <div
@@ -50,6 +62,12 @@ export default function Stat({
         >
           <p className="shrink leading-tight min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent">
             +{delta4h.toLocaleString(appLocale)}
+            {!isPlaceholder && showPrevDayStats && (
+              <span className="text-muted-foreground text-xxs leading-tight">
+                <span className="px-[0.4ch]">|</span>
+                {delta24to28h.toLocaleString(appLocale)}
+              </span>
+            )}
           </p>
         </div>
         <div
@@ -58,6 +76,12 @@ export default function Stat({
         >
           <p className="shrink leading-tight min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent">
             +{delta12h.toLocaleString(appLocale)}
+            {!isPlaceholder && showPrevDayStats && (
+              <span className="text-muted-foreground text-xxs leading-tight">
+                <span className="px-[0.4ch]">|</span>
+                {delta24to36h.toLocaleString(appLocale)}
+              </span>
+            )}
           </p>
         </div>
         <div
@@ -66,10 +90,10 @@ export default function Stat({
         >
           <p className="shrink leading-tight min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent">
             +{delta24h.toLocaleString(appLocale)}
-            {!isPlaceholder && show48hDelta && (
+            {!isPlaceholder && showPrevDayStats && (
               <span className="text-muted-foreground text-xxs leading-tight">
-                <span className="px-[0.25ch]">|</span>
-                {(delta48h - delta24h).toLocaleString(appLocale)}
+                <span className="px-[0.4ch]">|</span>
+                {delta24to48h.toLocaleString(appLocale)}
               </span>
             )}
           </p>

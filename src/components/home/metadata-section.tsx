@@ -32,57 +32,52 @@ function Metadata({
   data: AppRouterQueryResult<AppRouterOutputs["stats"]["get"]>["data"];
 }) {
   const now = useNow();
+  const columns = 2;
+  const keysToShow: Array<keyof AppRouterOutputs["stats"]["get"]["metadata"]> =
+    [
+      "delta_0h_timestamp",
+      "delta_0-4h_timestamp",
+      "delta_0-12h_timestamp",
+      "delta_0-24h_timestamp",
+      "delta_24-25h_timestamp",
+      "delta_24-28h_timestamp",
+      "delta_24-36h_timestamp",
+      "delta_24-48h_timestamp",
+    ];
+
   return (
     <p
       suppressHydrationWarning
       className="shrink font-mono leading-normal text-center px-3 text-muted-foreground min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent"
     >
-      △00h:{" "}
-      {timeAgo({
-        timestamp: data
-          ? data.metadata.delta_0h_timestamp
-          : placeholderTimestamp,
-        now,
-      })}
-      <span>{" | "}</span>
-      △01h:{" "}
-      {timeAgo({
-        timestamp: data
-          ? data.metadata.delta_1h_timestamp
-          : placeholderTimestamp,
-        now,
-      })}
-      <br />
-      △04h:{" "}
-      {timeAgo({
-        timestamp: data
-          ? data.metadata.delta_4h_timestamp
-          : placeholderTimestamp,
-        now,
-      })}
-      <span>{" | "}</span>
-      △12h:{" "}
-      {timeAgo({
-        timestamp: data
-          ? data.metadata.delta_12h_timestamp
-          : placeholderTimestamp,
-        now,
-      })}
-      <br />
-      △24h:{" "}
-      {timeAgo({
-        timestamp: data
-          ? data.metadata.delta_24h_timestamp
-          : placeholderTimestamp,
-        now,
-      })}
-      <span>{" | "}</span>
-      △48h:{" "}
-      {timeAgo({
-        timestamp: data
-          ? data.metadata.delta_48h_timestamp
-          : placeholderTimestamp,
-        now,
+      {keysToShow.map((key, index) => {
+        const cleanedKeyStr = key
+          .replace("delta_", "")
+          .replace("_timestamp", "")
+          .replace("h", "")
+          .split("-");
+        const cleanedKey =
+          cleanedKeyStr.length === 1
+            ? cleanedKeyStr[0]
+            : cleanedKeyStr.length === 2
+            ? cleanedKeyStr[1]
+            : key;
+        return (
+          <span key={key}>
+            △{cleanedKey.padStart(2, "0")}h:{" "}
+            {timeAgo({
+              timestamp: data ? data.metadata[key] : placeholderTimestamp,
+              now,
+            })}
+            {index % columns === columns - 1 ? (
+              index === keysToShow.length - 1 ? null : (
+                <br />
+              )
+            ) : (
+              " | "
+            )}
+          </span>
+        );
       })}
     </p>
   );
