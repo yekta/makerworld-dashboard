@@ -123,6 +123,7 @@ function ModelCardContent(props: TProps) {
           Icon={BoxIcon}
           isPlaceholder={isPlaceholder}
           showPrevDayStats={true}
+          showTimeRange={true}
         />
         <Stat
           value={!isPlaceholder ? model.stats.current.downloads : 200}

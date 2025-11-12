@@ -14,6 +14,7 @@ export default function Stat({
   delta24to36h,
   delta24to48h,
   showPrevDayStats = false,
+  showTimeRange = false,
   Icon,
   isPlaceholder,
   className,
@@ -28,6 +29,7 @@ export default function Stat({
   delta24to36h: number;
   delta24to48h: number;
   showPrevDayStats?: boolean;
+  showTimeRange?: boolean;
   Icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   isPlaceholder?: boolean;
   className?: string;
@@ -47,6 +49,11 @@ export default function Stat({
           className="flex items-center gap-1 text-muted-foreground data-positive:text-success"
         >
           <p className="shrink leading-tight min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent">
+            {showTimeRange && (
+              <span className="text-muted-more-foreground text-xxs leading-tight pr-[0.25ch]">
+                01h:
+              </span>
+            )}
             +{delta1h.toLocaleString(appLocale)}
             {!isPlaceholder && showPrevDayStats && (
               <span className="text-muted-foreground text-xxs leading-tight">
@@ -61,6 +68,11 @@ export default function Stat({
           className="flex items-center gap-1 text-muted-foreground data-positive:text-success"
         >
           <p className="shrink leading-tight min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent">
+            {showTimeRange && (
+              <span className="text-muted-more-foreground text-xxs leading-tight pr-[0.25ch]">
+                04h:
+              </span>
+            )}
             +{delta4h.toLocaleString(appLocale)}
             {!isPlaceholder && showPrevDayStats && (
               <span className="text-muted-foreground text-xxs leading-tight">
@@ -75,6 +87,11 @@ export default function Stat({
           className="flex items-center gap-1 text-muted-foreground data-positive:text-success"
         >
           <p className="shrink leading-tight min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent">
+            {showTimeRange && (
+              <span className="text-muted-more-foreground text-xxs leading-tight pr-[0.25ch]">
+                12h:
+              </span>
+            )}
             +{delta12h.toLocaleString(appLocale)}
             {!isPlaceholder && showPrevDayStats && (
               <span className="text-muted-foreground text-xxs leading-tight">
@@ -89,6 +106,11 @@ export default function Stat({
           className="flex items-center gap-1 text-muted-foreground data-positive:text-success"
         >
           <p className="shrink leading-tight min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent">
+            {showTimeRange && (
+              <span className="text-muted-more-foreground text-xxs leading-tight pr-[0.25ch]">
+                24h:
+              </span>
+            )}
             +{delta24h.toLocaleString(appLocale)}
             {!isPlaceholder && showPrevDayStats && (
               <span className="text-muted-foreground text-xxs leading-tight">
