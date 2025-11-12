@@ -44,6 +44,7 @@ export default function UserStatsSection() {
         delta48h={data ? data.user.stats.delta_48h.downloads : 10}
         Icon={DownloadIcon}
         isPlaceholder={isPending}
+        show48hDelta={true}
       />
       <Stat
         value={data ? data.user.stats.current.boosts : 100}
@@ -54,6 +55,7 @@ export default function UserStatsSection() {
         delta48h={data ? data.user.stats.delta_48h.boosts : 10}
         Icon={RocketIcon}
         isPlaceholder={isPending}
+        show48hDelta={true}
       />
       <Stat
         value={data ? data.user.stats.current.likes : 1000}
@@ -64,6 +66,7 @@ export default function UserStatsSection() {
         delta48h={data ? data.user.stats.delta_48h.likes : 100}
         Icon={ThumbsUp}
         isPlaceholder={isPending}
+        show48hDelta={true}
       />
       <Stat
         value={data ? data.user.stats.current.followers : 500}
@@ -74,6 +77,7 @@ export default function UserStatsSection() {
         delta48h={data ? data.user.stats.delta_48h.followers : 10}
         Icon={UsersIcon}
         isPlaceholder={isPending}
+        show48hDelta={true}
       />
     </Wrapper>
   );
