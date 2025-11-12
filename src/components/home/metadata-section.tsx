@@ -37,14 +37,14 @@ function Metadata({
       suppressHydrationWarning
       className="shrink font-mono leading-normal text-center px-3 text-muted-foreground min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent"
     >
-      Latest:{" "}
+      △00h:{" "}
       {timeAgo({
         timestamp: data
           ? data.metadata.delta_0h_timestamp
           : placeholderTimestamp,
         now,
       })}
-      <br />
+      <span>{" | "}</span>
       △01h:{" "}
       {timeAgo({
         timestamp: data
@@ -52,7 +52,7 @@ function Metadata({
           : placeholderTimestamp,
         now,
       })}
-      <span>{" | "}</span>
+      <br />
       △04h:{" "}
       {timeAgo({
         timestamp: data
@@ -60,7 +60,7 @@ function Metadata({
           : placeholderTimestamp,
         now,
       })}
-      <br />
+      <span>{" | "}</span>
       △12h:{" "}
       {timeAgo({
         timestamp: data
@@ -68,11 +68,19 @@ function Metadata({
           : placeholderTimestamp,
         now,
       })}
-      <span>{" | "}</span>
+      <br />
       △24h:{" "}
       {timeAgo({
         timestamp: data
           ? data.metadata.delta_24h_timestamp
+          : placeholderTimestamp,
+        now,
+      })}
+      <span>{" | "}</span>
+      △48h:{" "}
+      {timeAgo({
+        timestamp: data
+          ? data.metadata.delta_48h_timestamp
           : placeholderTimestamp,
         now,
       })}
