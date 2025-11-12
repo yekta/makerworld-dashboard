@@ -68,7 +68,7 @@ export default function Stat({
             +{delta24h.toLocaleString(appLocale)}
             {!isPlaceholder && show48hDelta && (
               <span className="text-muted-foreground text-xxs leading-tight">
-                <span className="mx-[0.3ch]">|</span>
+                <span className="px-[0.25ch]">|</span>
                 {(delta48h - delta24h).toLocaleString(appLocale)}
               </span>
             )}
