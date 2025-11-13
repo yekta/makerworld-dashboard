@@ -58,8 +58,8 @@ function ModelCardContent(props: TProps) {
         <div className="w-[calc(100%-2px)] h-[calc(100%-2px)] absolute right-px top-px bg-background rounded-[13px]" />
         <div className="w-full h-full rounded-[13px] group-active:bg-border group-hover:bg-border relative" />
       </div>
-      <div className="opacity-0 transition-opacity duration-300 group-data-highlighted/content:opacity-100 absolute h-1/6 aspect-5/1 translate-x-full -translate-y-full group-data-highlighted/content:translate-x-1/2 group-data-highlighted/content:-translate-y-1/2 top-0 right-0 bg-success/20 blur-xl" />
-      <div className="opacity-0 transition-opacity duration-300 group-data-highlighted/content:opacity-100 absolute h-1/4 aspect-5/1 translate-x-full -translate-y-full group-data-highlighted/content:translate-x-1/2 group-data-highlighted/content:-translate-y-1/2 top-0 right-0 bg-success/40 blur-2xl" />
+      <div className="opacity-0 transition-opacity duration-300 group-data-highlighted/content:opacity-100 absolute h-1/6 aspect-5/1 translate-x-full -translate-y-full group-data-highlighted/content:translate-x-1/2 group-data-highlighted/content:-translate-y-1/2 top-0 right-0 bg-success/15 blur-xl" />
+      <div className="opacity-0 transition-opacity duration-300 group-data-highlighted/content:opacity-100 absolute h-1/4 aspect-5/1 translate-x-full -translate-y-full group-data-highlighted/content:translate-x-1/2 group-data-highlighted/content:-translate-y-1/2 top-0 right-0 bg-success/30 blur-2xl" />
       {/* <div className="w-full h-full absolute right-0 top-0 rounded-[18px] overflow-hidden p-px group-hover:opacity-0 group-active:opacity-0">
         <div
           style={{
@@ -91,7 +91,7 @@ function ModelCardContent(props: TProps) {
           (model.stats["delta_0-0.25h"].boosts > 0 ||
             model.stats["delta_0-0.25h"].prints > 0 ||
             model.stats["delta_0-0.25h"].downloads > 0) && (
-            <p className="ml-auto flex shrink-0 max-w-1/2 min-w-0 overflow-hidden gap-2 items-end text-xs text-success font-mono">
+            <p className="ml-auto flex shrink-0 max-w-1/2 min-w-0 overflow-hidden gap-2 items-end text-xs text-success font-mono font-medium">
               {model.stats["delta_0-0.25h"].boosts > 0 && (
                 <span>
                   <RocketIcon className="size-2.75 shrink-0 inline-block mb-0.5 mr-[0.2ch]" />
