@@ -65,7 +65,7 @@ function ModelCardContent(props: TProps) {
           style={{
             backgroundColor: "transparent",
             background:
-              "repeating-linear-gradient(-45deg, var(--background), var(--background) 1px, transparent 1px, transparent 3.5px)",
+              "repeating-linear-gradient(-45deg, var(--background), var(--background) 1px, transparent 1px, transparent 3px)",
           }}
           className="w-full h-full"
         />
