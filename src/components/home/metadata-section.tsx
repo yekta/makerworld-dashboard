@@ -43,6 +43,8 @@ function Metadata({
       "delta_24-28h_timestamp",
       "delta_24-36h_timestamp",
       "delta_24-48h_timestamp",
+      "delta_0-168h_timestamp",
+      "delta_168-336h_timestamp",
     ];
 
   return (
@@ -62,9 +64,13 @@ function Metadata({
             : cleanedKeyStr.length === 2
             ? cleanedKeyStr[1]
             : key;
+        const keyNumber = Number(cleanedKey);
+        const unit = keyNumber >= 168 ? "d" : "h";
+        const keyValue = Math.round(unit === "d" ? keyNumber / 24 : keyNumber);
         return (
           <span suppressHydrationWarning key={key}>
-            △{cleanedKey.padStart(2, "0")}h:{" "}
+            △{keyValue.toString().padStart(2, "0")}
+            {unit}:{" "}
             {timeAgo({
               timestamp: data ? data.metadata[key] : placeholderTimestamp,
               now,
