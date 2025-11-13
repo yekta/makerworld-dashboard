@@ -184,7 +184,7 @@ function getModelUrl(id: number) {
   return `https://makerworld.com/en/models/${id}`;
 }
 
-const placeholderTimestamp = Date.now();
+const placeholderTimestamp = new Date("2025-01-01T00:00:00Z").getTime();
 
 function CreatedAtParagraph({ model, isPlaceholder }: TProps) {
   const now = useNow();

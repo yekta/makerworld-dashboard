@@ -5,7 +5,7 @@ import { useStats } from "@/components/providers/stats-provider";
 import { timeAgo } from "@/lib/helpers";
 import { AppRouterOutputs, AppRouterQueryResult } from "@/server/trpc/api/root";
 
-const placeholderTimestamp = Date.now() - 1000 * 60 * 60; // 1 hour ago
+const placeholderTimestamp = new Date("2025-01-01T00:00:00Z").getTime();
 
 export default function MetadataSection() {
   const { data, isPending, isError } = useStats();
@@ -63,7 +63,7 @@ function Metadata({
             ? cleanedKeyStr[1]
             : key;
         return (
-          <span key={key}>
+          <span suppressHydrationWarning key={key}>
             △{cleanedKey.padStart(2, "0")}h:{" "}
             {timeAgo({
               timestamp: data ? data.metadata[key] : placeholderTimestamp,

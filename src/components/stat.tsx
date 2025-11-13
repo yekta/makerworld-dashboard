@@ -44,83 +44,65 @@ export default function Stat({
     >
       <MainStat value={value} Icon={Icon} isPlaceholder={isPlaceholder} />
       <div className="shrink min-w-0 overflow-hidden flex flex-col text-xs mt-px gap-px">
-        <div
-          data-positive={delta1h > 0 ? true : undefined}
-          className="flex items-center gap-1 text-muted-foreground data-positive:text-success"
-        >
-          <p className="shrink leading-tight min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent">
-            {showTimeRange && (
-              <span className="text-muted-more-foreground text-xxs leading-tight pr-[0.25ch]">
-                01h:
-              </span>
-            )}
-            +{delta1h.toLocaleString(appLocale)}
-            {!isPlaceholder && showPrevDayStats && (
-              <span className="text-muted-foreground text-xxs leading-tight">
-                <span className="px-[0.4ch] text-muted-more-foreground">|</span>
-                {delta24to25h.toLocaleString(appLocale)}
-              </span>
-            )}
-          </p>
-        </div>
-        <div
-          data-positive={delta4h > 0 ? true : undefined}
-          className="flex items-center gap-1 text-muted-foreground data-positive:text-success"
-        >
-          <p className="shrink leading-tight min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent">
-            {showTimeRange && (
-              <span className="text-muted-more-foreground text-xxs leading-tight pr-[0.25ch]">
-                04h:
-              </span>
-            )}
-            +{delta4h.toLocaleString(appLocale)}
-            {!isPlaceholder && showPrevDayStats && (
-              <span className="text-muted-foreground text-xxs leading-tight">
-                <span className="px-[0.4ch] text-muted-more-foreground">|</span>
-                {delta24to28h.toLocaleString(appLocale)}
-              </span>
-            )}
-          </p>
-        </div>
-        <div
-          data-positive={delta12h > 0 ? true : undefined}
-          className="flex items-center gap-1 text-muted-foreground data-positive:text-success"
-        >
-          <p className="shrink leading-tight min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent">
-            {showTimeRange && (
-              <span className="text-muted-more-foreground text-xxs leading-tight pr-[0.25ch]">
-                12h:
-              </span>
-            )}
-            +{delta12h.toLocaleString(appLocale)}
-            {!isPlaceholder && showPrevDayStats && (
-              <span className="text-muted-foreground text-xxs leading-tight">
-                <span className="px-[0.4ch] text-muted-more-foreground">|</span>
-                {delta24to36h.toLocaleString(appLocale)}
-              </span>
-            )}
-          </p>
-        </div>
-        <div
-          data-positive={delta24h > 0 ? true : undefined}
-          className="flex items-center gap-1 text-muted-foreground data-positive:text-success"
-        >
-          <p className="shrink leading-tight min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent">
-            {showTimeRange && (
-              <span className="text-muted-more-foreground text-xxs leading-tight pr-[0.25ch]">
-                24h:
-              </span>
-            )}
-            +{delta24h.toLocaleString(appLocale)}
-            {!isPlaceholder && showPrevDayStats && (
-              <span className="text-muted-foreground text-xxs leading-tight">
-                <span className="px-[0.4ch] text-muted-more-foreground">|</span>
-                {delta24to48h.toLocaleString(appLocale)}
-              </span>
-            )}
-          </p>
-        </div>
+        <StatForTimeRange
+          value={delta1h}
+          prevDayValue={delta24to25h}
+          showPrevDayStats={showPrevDayStats}
+          timeRangeLabel={showTimeRange ? "01h" : undefined}
+        />
+        <StatForTimeRange
+          value={delta4h}
+          prevDayValue={delta24to28h}
+          showPrevDayStats={showPrevDayStats}
+          timeRangeLabel={showTimeRange ? "04h" : undefined}
+        />
+        <StatForTimeRange
+          value={delta12h}
+          prevDayValue={delta24to36h}
+          showPrevDayStats={showPrevDayStats}
+          timeRangeLabel={showTimeRange ? "12h" : undefined}
+        />
+        <StatForTimeRange
+          value={delta24h}
+          prevDayValue={delta24to48h}
+          showPrevDayStats={showPrevDayStats}
+          timeRangeLabel={showTimeRange ? "24h" : undefined}
+        />
       </div>
+    </div>
+  );
+}
+
+function StatForTimeRange({
+  value,
+  prevDayValue,
+  showPrevDayStats = false,
+  timeRangeLabel,
+}: {
+  value: number;
+  prevDayValue: number;
+  showPrevDayStats?: boolean;
+  timeRangeLabel?: string;
+}) {
+  return (
+    <div
+      data-positive={value > 0 ? true : undefined}
+      className="flex items-center gap-1 text-muted-foreground data-positive:text-success"
+    >
+      <p className="shrink leading-tight min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent">
+        {timeRangeLabel !== undefined && (
+          <span className="text-muted-more-foreground group-data-placeholder:text-transparent text-xxs leading-tight pr-[0.25ch]">
+            {timeRangeLabel}:
+          </span>
+        )}
+        +{value.toLocaleString(appLocale)}
+        {showPrevDayStats && (
+          <span className="text-muted-foreground text-xxs leading-tight group-data-placeholder:text-transparent">
+            <span className="px-[0.4ch] text-muted-more-foreground">|</span>
+            {prevDayValue.toLocaleString(appLocale)}
+          </span>
+        )}
+      </p>
     </div>
   );
 }
