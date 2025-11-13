@@ -58,7 +58,7 @@ function Section({
               maximumFractionDigits: 0,
             })}
           </span>
-          {" projected monthly (based on last week)."}
+          {"/mo forecast based on last week."}
         </p>
       </div>
       <div className="w-full flex items-center justify-center">
@@ -95,7 +95,7 @@ function RecentEventsText({
 }: {
   data: AppRouterQueryResult<AppRouterOutputs["stats"]["get"]>["data"];
 }) {
-  const noEventsText = "No events in the last 15 minutes.";
+  const noEventsText = "No events in the last 15 min.";
   if (!data) return noEventsText;
 
   const boostsInLast15Min = data.user.stats["delta_0-0.25h"].boosts;
@@ -158,7 +158,7 @@ function RecentEventsText({
     return (
       <span>
         {...spans}
-        <span>{" in the last 15 minutes."}</span>
+        <span>{" in the last 15 min."}</span>
       </span>
     );
   }
