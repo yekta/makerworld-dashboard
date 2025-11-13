@@ -10,6 +10,7 @@ export const TModelStatSchema = z.object({
 
 export const TModelSchema = z.object({
   model_id: z.number(),
+  slug: z.string(),
   title: z.string(),
   image: z.string(),
   model_created_at: z.number(),

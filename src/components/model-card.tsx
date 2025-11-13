@@ -30,7 +30,7 @@ export default function ModelCard(props: TProps) {
 
   return (
     <Link
-      href={getModelUrl(props.model.model_id)}
+      href={getModelUrl(props.model)}
       target="_blank"
       className="w-full md:w-1/2 lg:w-1/2 xl:w-1/3 p-1 group rounded-2xl group"
     >
@@ -162,8 +162,10 @@ function ModelCardContent(props: TProps) {
   );
 }
 
-function getModelUrl(id: number) {
-  return `https://makerworld.com/en/models/${id}`;
+function getModelUrl(
+  model: AppRouterOutputs["stats"]["get"]["models"][number]
+) {
+  return `https://makerworld.com/en/models/${model.model_id}-${model.slug}`;
 }
 
 const placeholderTimestamp = new Date("2025-01-01T00:00:00Z").getTime();
