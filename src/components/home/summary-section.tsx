@@ -36,7 +36,6 @@ function Section({
 }: {
   data: AppRouterQueryResult<AppRouterOutputs["stats"]["get"]>["data"];
 }) {
-  const text = useMemo(() => getRecentEventsText(data), [data]);
   const projectedMonthlyUSDRevenue = useMemo(() => {
     if (!data) return 100;
     const lastWeekPrints = data.user.stats["delta_0-168h"].prints;
@@ -67,7 +66,7 @@ function Section({
           suppressHydrationWarning
           className="shrink whitespace-nowrap leading-normal text-center px-3 text-muted-foreground min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent"
         >
-          {text}
+          <RecentEventsText data={data} />
         </p>
       </div>
     </div>
@@ -91,9 +90,11 @@ function Wrapper({
   );
 }
 
-function getRecentEventsText(
-  data: AppRouterQueryResult<AppRouterOutputs["stats"]["get"]>["data"]
-) {
+function RecentEventsText({
+  data,
+}: {
+  data: AppRouterQueryResult<AppRouterOutputs["stats"]["get"]>["data"];
+}) {
   const noEventsText = "No events in the last 15 minutes.";
   if (!data) return noEventsText;
 
@@ -153,6 +154,7 @@ function getRecentEventsText(
         </span>
       </span>
     ));
+
     return (
       <span>
         {...spans}
