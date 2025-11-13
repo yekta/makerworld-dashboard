@@ -83,7 +83,7 @@ function Wrapper({
   return (
     <div
       data-placeholder={isPending ? true : undefined}
-      className="w-full py-2.5 md:py-3 flex items-center justify-center text-xs group"
+      className="w-full py-3 flex items-center justify-center text-xs group"
     >
       {children}
     </div>
