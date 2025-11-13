@@ -98,7 +98,7 @@ function StatForTimeRange({
         +{value.toLocaleString(appLocale)}
         {showPrevDayStats && (
           <span className="text-muted-foreground text-xxs leading-tight group-data-placeholder:text-transparent">
-            <span className="px-[0.4ch] text-muted-more-foreground">|</span>
+            <span className="px-[0.35ch] text-muted-more-foreground">|</span>
             {prevDayValue.toLocaleString(appLocale)}
           </span>
         )}
