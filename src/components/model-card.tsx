@@ -111,66 +111,38 @@ function ModelCardContent(props: TProps) {
       </div>
       <div className="w-full flex flex-row gap-5 px-1 relative">
         <Stat
-          value={!isPlaceholder ? model.stats.current.prints : 100}
-          delta1h={!isPlaceholder ? model.stats["delta_0-1h"].prints : 0}
-          delta4h={!isPlaceholder ? model.stats["delta_0-4h"].prints : 0}
-          delta12h={!isPlaceholder ? model.stats["delta_0-12h"].prints : 0}
-          delta24h={!isPlaceholder ? model.stats["delta_0-24h"].prints : 0}
-          delta24to25h={!isPlaceholder ? model.stats["delta_24-25h"].prints : 0}
-          delta24to28h={!isPlaceholder ? model.stats["delta_24-28h"].prints : 0}
-          delta24to36h={!isPlaceholder ? model.stats["delta_24-36h"].prints : 0}
-          delta24to48h={!isPlaceholder ? model.stats["delta_24-48h"].prints : 0}
+          statType="model"
+          statKey="prints"
+          {...(isPlaceholder
+            ? { isPlaceholder: true }
+            : { stats: model.stats })}
           Icon={BoxIcon}
-          isPlaceholder={isPlaceholder}
           showPrevDayStats={true}
           showTimeRange={true}
         />
         <Stat
-          value={!isPlaceholder ? model.stats.current.downloads : 200}
-          delta1h={!isPlaceholder ? model.stats["delta_0-1h"].downloads : 0}
-          delta4h={!isPlaceholder ? model.stats["delta_0-4h"].downloads : 0}
-          delta12h={!isPlaceholder ? model.stats["delta_0-12h"].downloads : 0}
-          delta24h={!isPlaceholder ? model.stats["delta_0-24h"].downloads : 0}
-          delta24to25h={
-            !isPlaceholder ? model.stats["delta_24-25h"].downloads : 0
-          }
-          delta24to28h={
-            !isPlaceholder ? model.stats["delta_24-28h"].downloads : 0
-          }
-          delta24to36h={
-            !isPlaceholder ? model.stats["delta_24-36h"].downloads : 0
-          }
-          delta24to48h={
-            !isPlaceholder ? model.stats["delta_24-48h"].downloads : 0
-          }
+          statType="model"
+          statKey="downloads"
+          {...(isPlaceholder
+            ? { isPlaceholder: true }
+            : { stats: model.stats })}
           Icon={DownloadIcon}
-          isPlaceholder={isPlaceholder}
         />
         <Stat
-          value={!isPlaceholder ? model.stats.current.boosts : 10}
-          delta1h={!isPlaceholder ? model.stats["delta_0-1h"].boosts : 0}
-          delta4h={!isPlaceholder ? model.stats["delta_0-4h"].boosts : 0}
-          delta12h={!isPlaceholder ? model.stats["delta_0-12h"].boosts : 0}
-          delta24h={!isPlaceholder ? model.stats["delta_0-24h"].boosts : 0}
-          delta24to25h={!isPlaceholder ? model.stats["delta_24-25h"].boosts : 0}
-          delta24to28h={!isPlaceholder ? model.stats["delta_24-28h"].boosts : 0}
-          delta24to36h={!isPlaceholder ? model.stats["delta_24-36h"].boosts : 0}
-          delta24to48h={!isPlaceholder ? model.stats["delta_24-48h"].boosts : 0}
+          statType="model"
+          statKey="boosts"
+          {...(isPlaceholder
+            ? { isPlaceholder: true }
+            : { stats: model.stats })}
           Icon={RocketIcon}
-          isPlaceholder={isPlaceholder}
         />
         <Stat
-          value={!isPlaceholder ? model.stats.current.likes : 100}
-          delta1h={!isPlaceholder ? model.stats["delta_0-1h"].likes : 0}
-          delta4h={!isPlaceholder ? model.stats["delta_0-4h"].likes : 0}
-          delta12h={!isPlaceholder ? model.stats["delta_0-12h"].likes : 0}
-          delta24h={!isPlaceholder ? model.stats["delta_0-24h"].likes : 0}
-          delta24to25h={!isPlaceholder ? model.stats["delta_24-25h"].likes : 0}
-          delta24to28h={!isPlaceholder ? model.stats["delta_24-28h"].likes : 0}
-          delta24to36h={!isPlaceholder ? model.stats["delta_24-36h"].likes : 0}
-          delta24to48h={!isPlaceholder ? model.stats["delta_24-48h"].likes : 0}
+          statType="model"
+          statKey="likes"
+          {...(isPlaceholder
+            ? { isPlaceholder: true }
+            : { stats: model.stats })}
           Icon={ThumbsUpIcon}
-          isPlaceholder={isPlaceholder}
         />
       </div>
       <div className="w-full flex justify-start pb-px pt-[0.09375rem] relative">

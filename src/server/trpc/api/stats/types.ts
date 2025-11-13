@@ -26,6 +26,8 @@ export const TModelSchema = z.object({
     "delta_24-32h": TModelStatSchema,
     "delta_24-36h": TModelStatSchema,
     "delta_24-48h": TModelStatSchema,
+    "delta_0-168h": TModelStatSchema,
+    "delta_168-336h": TModelStatSchema,
   }),
 });
 
@@ -53,6 +55,8 @@ export const TUserSchema = z.object({
     "delta_24-32h": TUserStatSchema,
     "delta_24-36h": TUserStatSchema,
     "delta_24-48h": TUserStatSchema,
+    "delta_0-168h": TUserStatSchema,
+    "delta_168-336h": TUserStatSchema,
   }),
 });
 
@@ -73,6 +77,8 @@ export const TStatResponseSchema = z.object({
     "delta_24-32h_timestamp": z.number(),
     "delta_24-36h_timestamp": z.number(),
     "delta_24-48h_timestamp": z.number(),
+    "delta_0-168h_timestamp": z.number(),
+    "delta_168-336h_timestamp": z.number(),
   }),
 });
 

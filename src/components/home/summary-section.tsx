@@ -1,10 +1,12 @@
 "use client";
 
 import { useStats } from "@/components/providers/stats-provider";
+import { appLocale } from "@/lib/constants";
 import { AppRouterOutputs, AppRouterQueryResult } from "@/server/trpc/api/root";
 import { BoxIcon, DownloadIcon, RocketIcon, UsersIcon } from "lucide-react";
+import { useMemo } from "react";
 
-export default function RecentEventsSection() {
+export default function SummarySection() {
   const { data, isPending, isError } = useStats();
   if (!data && isError) {
     return (
@@ -23,19 +25,49 @@ export default function RecentEventsSection() {
   );
 }
 
+const printToPointRatio = 3.4;
+const pointToUsdRatio = 0.066;
+
 function Section({
   data,
 }: {
   data: AppRouterQueryResult<AppRouterOutputs["stats"]["get"]>["data"];
 }) {
-  const text = getRecentEventsText(data);
+  const text = useMemo(() => getRecentEventsText(data), [data]);
+  const projectedMonthlyUSDRevenue = useMemo(() => {
+    if (!data) return 100;
+    const lastWeekPrints = data.user.stats["delta_0-168h"].prints;
+    const avgDailyPrints = lastWeekPrints / 7;
+    const projectedMonthlyPrints = avgDailyPrints * 30;
+    const projectedMonthlyPoints = projectedMonthlyPrints * printToPointRatio;
+    const projectedMonthlyUsd = projectedMonthlyPoints * pointToUsdRatio;
+    return projectedMonthlyUsd;
+  }, [data]);
   return (
-    <p
-      suppressHydrationWarning
-      className="shrink whitespace-nowrap leading-normal text-center px-3 text-muted-foreground min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent"
-    >
-      {text}
-    </p>
+    <div className="w-full flex flex-col items-center gap-0.5">
+      <div className="w-full flex items-center justify-center">
+        <p
+          suppressHydrationWarning
+          className="shrink whitespace-nowrap leading-normal text-center px-3 text-muted-foreground min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent"
+        >
+          <span className="text-foreground font-semibold group-data-placeholder:text-transparent">
+            $
+            {projectedMonthlyUSDRevenue.toLocaleString(appLocale, {
+              maximumFractionDigits: 0,
+            })}
+          </span>
+          {" projected monthly (based on last week)."}
+        </p>
+      </div>
+      <div className="w-full flex items-center justify-center">
+        <p
+          suppressHydrationWarning
+          className="shrink whitespace-nowrap leading-normal text-center px-3 text-muted-foreground min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent"
+        >
+          {text}
+        </p>
+      </div>
+    </div>
   );
 }
 
@@ -111,7 +143,7 @@ function getRecentEventsText(
           : index > 0
           ? ", "
           : ""}
-        <span className="text-foreground">
+        <span className="text-foreground font-semibold">
           <item.Icon className="inline-block size-2.75 mb-px mr-[0.2ch]" />
           {item.value} {item.label}
           {item.value > 1 ? "s" : ""}

@@ -1,37 +1,44 @@
 import { appLocale } from "@/lib/constants";
 import useFlashOnChange from "@/lib/hooks/use-flash-on-change";
 import { cn } from "@/lib/utils";
+import { AppRouterOutputs } from "@/server/trpc/api/root";
 import { useEffect, useRef, useState } from "react";
 
+type TUserOrModelStat =
+  | {
+      stats: AppRouterOutputs["stats"]["get"]["models"][number]["stats"];
+      statKey: keyof AppRouterOutputs["stats"]["get"]["models"][number]["stats"]["current"];
+      statType: "model";
+      isPlaceholder?: never;
+    }
+  | {
+      stats: AppRouterOutputs["stats"]["get"]["user"]["stats"];
+      statKey: keyof AppRouterOutputs["stats"]["get"]["user"]["stats"]["current"];
+      statType: "user";
+      isPlaceholder?: never;
+    }
+  | {
+      stats?: never;
+      statKey:
+        | keyof AppRouterOutputs["stats"]["get"]["models"][number]["stats"]["current"]
+        | keyof AppRouterOutputs["stats"]["get"]["user"]["stats"]["current"];
+      statType: "model" | "user";
+      isPlaceholder: true;
+    };
+
 export default function Stat({
-  value,
-  delta1h,
-  delta4h,
-  delta12h,
-  delta24h,
-  delta24to25h,
-  delta24to28h,
-  delta24to36h,
-  delta24to48h,
+  stats,
+  statKey,
+  statType,
+  isPlaceholder,
   showPrevDayStats = false,
   showTimeRange = false,
   Icon,
-  isPlaceholder,
   className,
-}: {
-  value: number;
-  delta1h: number;
-  delta4h: number;
-  delta12h: number;
-  delta24h: number;
-  delta24to25h: number;
-  delta24to28h: number;
-  delta24to36h: number;
-  delta24to48h: number;
+}: TUserOrModelStat & {
   showPrevDayStats?: boolean;
   showTimeRange?: boolean;
   Icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
-  isPlaceholder?: boolean;
   className?: string;
 }) {
   return (
@@ -42,31 +49,107 @@ export default function Stat({
         className
       )}
     >
-      <MainStat value={value} Icon={Icon} isPlaceholder={isPlaceholder} />
+      <MainStat
+        value={
+          isPlaceholder
+            ? 100
+            : statType === "model"
+            ? stats.current[statKey]
+            : stats.current[statKey]
+        }
+        Icon={Icon}
+        isPlaceholder={isPlaceholder}
+      />
       <div className="shrink min-w-0 overflow-hidden flex flex-col text-xs mt-px gap-px">
         <StatForTimeRange
-          value={delta1h}
-          prevDayValue={delta24to25h}
+          value={
+            isPlaceholder
+              ? 100
+              : statType === "model"
+              ? stats["delta_0-1h"][statKey]
+              : stats["delta_0-1h"][statKey]
+          }
+          prevDayValue={
+            isPlaceholder
+              ? 100
+              : statType === "model"
+              ? stats["delta_24-25h"][statKey]
+              : stats["delta_24-25h"][statKey]
+          }
           showPrevDayStats={showPrevDayStats}
           timeRangeLabel={showTimeRange ? "01h" : undefined}
         />
         <StatForTimeRange
-          value={delta4h}
-          prevDayValue={delta24to28h}
+          value={
+            isPlaceholder
+              ? 100
+              : statType === "model"
+              ? stats["delta_0-4h"][statKey]
+              : stats["delta_0-4h"][statKey]
+          }
+          prevDayValue={
+            isPlaceholder
+              ? 100
+              : statType === "model"
+              ? stats["delta_24-28h"][statKey]
+              : stats["delta_24-28h"][statKey]
+          }
           showPrevDayStats={showPrevDayStats}
           timeRangeLabel={showTimeRange ? "04h" : undefined}
         />
         <StatForTimeRange
-          value={delta12h}
-          prevDayValue={delta24to36h}
+          value={
+            isPlaceholder
+              ? 100
+              : statType === "model"
+              ? stats["delta_0-12h"][statKey]
+              : stats["delta_0-12h"][statKey]
+          }
+          prevDayValue={
+            isPlaceholder
+              ? 100
+              : statType === "model"
+              ? stats["delta_24-36h"][statKey]
+              : stats["delta_24-36h"][statKey]
+          }
           showPrevDayStats={showPrevDayStats}
           timeRangeLabel={showTimeRange ? "12h" : undefined}
         />
         <StatForTimeRange
-          value={delta24h}
-          prevDayValue={delta24to48h}
+          value={
+            isPlaceholder
+              ? 100
+              : statType === "model"
+              ? stats["delta_0-24h"][statKey]
+              : stats["delta_0-24h"][statKey]
+          }
+          prevDayValue={
+            isPlaceholder
+              ? 100
+              : statType === "model"
+              ? stats["delta_24-48h"][statKey]
+              : stats["delta_24-48h"][statKey]
+          }
           showPrevDayStats={showPrevDayStats}
           timeRangeLabel={showTimeRange ? "24h" : undefined}
+        />
+        <StatForTimeRange
+          value={
+            isPlaceholder
+              ? 100
+              : statType === "model"
+              ? stats["delta_0-168h"][statKey]
+              : stats["delta_0-168h"][statKey]
+          }
+          prevDayValue={
+            isPlaceholder
+              ? 100
+              : statType === "model"
+              ? stats["delta_168-336h"][statKey]
+              : stats["delta_168-336h"][statKey]
+          }
+          showPrevDayStats={showPrevDayStats}
+          timeRangeLabel={showTimeRange ? "07d" : undefined}
         />
       </div>
     </div>

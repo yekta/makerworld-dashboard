@@ -1,6 +1,6 @@
 import MetadataSection from "@/components/home/metadata-section";
 import ModelsSection from "@/components/home/models-section";
-import RecentEventsSection from "@/components/home/recent-events-section";
+import RecentEventsSection from "@/components/home/summary-section";
 import RefetchIndicator from "@/components/home/refetch-indicator";
 import UserStatsSection from "@/components/home/user-stats-section";
 import StatsProvider from "@/components/providers/stats-provider";
