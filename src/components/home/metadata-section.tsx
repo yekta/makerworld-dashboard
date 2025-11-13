@@ -36,6 +36,7 @@ function Metadata({
   const keysToShow: Array<keyof AppRouterOutputs["stats"]["get"]["metadata"]> =
     [
       "delta_0h_timestamp",
+      "delta_0-1h_timestamp",
       "delta_0-4h_timestamp",
       "delta_0-12h_timestamp",
       "delta_0-24h_timestamp",
@@ -67,18 +68,20 @@ function Metadata({
         const keyNumber = Number(cleanedKey);
         const unit = keyNumber >= 168 ? "d" : "h";
         const keyValue = Math.round(unit === "d" ? keyNumber / 24 : keyNumber);
+        const extraSeconds =
+          data && now - data.metadata[key] > 24 * 60 * 60 * 1000
+            ? 75 * 1000
+            : 0;
+        const timestamp = data
+          ? data.metadata[key] - extraSeconds
+          : placeholderTimestamp;
         return (
           <span suppressHydrationWarning key={key}>
             △{keyValue.toString().padStart(2, "0")}
-            {unit}:{" "}
-            {timeAgo({
-              timestamp: data ? data.metadata[key] : placeholderTimestamp,
-              now,
-            })}
-            {index % columns === columns - 1 ? (
-              index === keysToShow.length - 1 ? null : (
-                <br />
-              )
+            {unit}:{timeAgo({ timestamp, now })}
+            {index === keysToShow.length - 1 ? null : index % columns ===
+              columns - 1 ? (
+              <br />
             ) : (
               " | "
             )}
