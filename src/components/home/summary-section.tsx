@@ -52,7 +52,7 @@ function Section({
           suppressHydrationWarning
           className="shrink whitespace-nowrap leading-normal text-center px-3 text-muted-foreground min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent"
         >
-          <span className="text-foreground font-semibold group-data-placeholder:text-transparent">
+          <span className="text-foreground font-medium group-data-placeholder:text-transparent">
             $
             {projectedMonthlyUSDRevenue.toLocaleString(appLocale, {
               maximumFractionDigits: 0,
@@ -147,7 +147,7 @@ function RecentEventsText({
           : index > 0
           ? ", "
           : ""}
-        <span className="text-foreground font-semibold">
+        <span className="text-foreground font-medium">
           <item.Icon className="inline-block size-2.75 mb-px mr-[0.2ch]" />
           {item.value} {item.label}
           {item.value > 1 ? "s" : ""}

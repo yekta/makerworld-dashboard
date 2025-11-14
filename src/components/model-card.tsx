@@ -1,5 +1,6 @@
 import { useNow } from "@/components/providers/now-provider";
 import Stat from "@/components/stat";
+import { appLocale } from "@/lib/constants";
 import { timeAgo } from "@/lib/helpers";
 import { AppRouterOutputs } from "@/server/trpc/api/root";
 import { BoxIcon, DownloadIcon, RocketIcon, ThumbsUpIcon } from "lucide-react";
@@ -156,7 +157,7 @@ function ModelCardContent(props: TProps) {
         />
       </div>
       <div className="w-full flex justify-start pb-px pt-[0.09375rem] relative">
-        <CreatedAtParagraph {...props} />
+        <Footer {...props} />
       </div>
     </div>
   );
@@ -170,12 +171,18 @@ function getModelUrl(
 
 const placeholderTimestamp = new Date("2025-01-01T00:00:00Z").getTime();
 
-function CreatedAtParagraph({ model, isPlaceholder }: TProps) {
+function Footer({ model, isPlaceholder }: TProps) {
   const now = useNow();
+  const sinceCreation = !isPlaceholder
+    ? now - model.model_created_at
+    : 24 * 60 * 60 * 1000;
+  const printsPerDay = !isPlaceholder
+    ? model.stats.current.prints / (sinceCreation / (1000 * 60 * 60 * 24))
+    : 10;
   return (
     <p
       suppressHydrationWarning
-      className="shrink min-w-0 font-light overflow-hidden overflow-ellipsis text-xs px-1 text-muted-foreground group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent"
+      className="shrink whitespace-nowrap min-w-0 font-light overflow-hidden overflow-ellipsis text-xs px-1 text-muted-foreground group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent"
     >
       {timeAgo({
         timestamp: !isPlaceholder
@@ -186,6 +193,13 @@ function CreatedAtParagraph({ model, isPlaceholder }: TProps) {
         fullUnitText: true,
       })}{" "}
       ago
+      <span className="text-muted-more-foreground px-[0.75ch]">{"|"}</span>
+      <span className="font-medium">
+        <BoxIcon className="inline-block size-2.75 mb-px mr-[0.2ch]" />
+        {printsPerDay.toLocaleString(appLocale, { maximumFractionDigits: 1 })}
+        {" prints"}
+      </span>
+      {"/day"}
     </p>
   );
 }
