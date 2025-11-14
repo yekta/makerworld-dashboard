@@ -77,7 +77,7 @@ export default function Stat({
               : stats["delta_24-25h"][statKey]
           }
           showPrevDayStats={showPrevDayStats}
-          timeRangeLabel={showTimeRange ? "01h" : undefined}
+          timeRangeLabel={showTimeRange ? "01H" : undefined}
         />
         <StatForTimeRange
           value={
@@ -95,7 +95,7 @@ export default function Stat({
               : stats["delta_24-28h"][statKey]
           }
           showPrevDayStats={showPrevDayStats}
-          timeRangeLabel={showTimeRange ? "04h" : undefined}
+          timeRangeLabel={showTimeRange ? "04H" : undefined}
         />
         <StatForTimeRange
           value={
@@ -113,7 +113,7 @@ export default function Stat({
               : stats["delta_24-36h"][statKey]
           }
           showPrevDayStats={showPrevDayStats}
-          timeRangeLabel={showTimeRange ? "12h" : undefined}
+          timeRangeLabel={showTimeRange ? "12H" : undefined}
         />
         <StatForTimeRange
           value={
@@ -131,7 +131,7 @@ export default function Stat({
               : stats["delta_24-48h"][statKey]
           }
           showPrevDayStats={showPrevDayStats}
-          timeRangeLabel={showTimeRange ? "24h" : undefined}
+          timeRangeLabel={showTimeRange ? "24H" : undefined}
         />
         <StatForTimeRange
           value={
@@ -149,7 +149,7 @@ export default function Stat({
               : stats["delta_168-336h"][statKey]
           }
           showPrevDayStats={showPrevDayStats}
-          timeRangeLabel={showTimeRange ? "07d" : undefined}
+          timeRangeLabel={showTimeRange ? "07D" : undefined}
         />
       </div>
     </div>
@@ -174,7 +174,7 @@ function StatForTimeRange({
     >
       <p className="shrink leading-tight min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent">
         {timeRangeLabel !== undefined && (
-          <span className="text-muted-more-foreground group-data-placeholder:text-transparent text-xxs leading-tight pr-[0.25ch]">
+          <span className="text-muted-more-foreground relative group/span group-data-placeholder:text-transparent text-xxs leading-tight mr-[0.25ch]">
             {timeRangeLabel}:
           </span>
         )}
