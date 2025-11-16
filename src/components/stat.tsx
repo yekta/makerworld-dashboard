@@ -61,7 +61,7 @@ export default function Stat({
         isPlaceholder={isPlaceholder}
       />
       <div className="shrink min-w-0 overflow-hidden flex flex-col text-xs mt-px gap-px">
-        <StatForTimeRange
+        <StatDelta
           value={
             isPlaceholder
               ? 100
@@ -79,7 +79,7 @@ export default function Stat({
           showPrevDayStats={showPrevDayStats}
           timeRangeLabel={showTimeRange ? "01H" : undefined}
         />
-        <StatForTimeRange
+        <StatDelta
           value={
             isPlaceholder
               ? 100
@@ -97,7 +97,7 @@ export default function Stat({
           showPrevDayStats={showPrevDayStats}
           timeRangeLabel={showTimeRange ? "04H" : undefined}
         />
-        <StatForTimeRange
+        <StatDelta
           value={
             isPlaceholder
               ? 100
@@ -115,7 +115,7 @@ export default function Stat({
           showPrevDayStats={showPrevDayStats}
           timeRangeLabel={showTimeRange ? "12H" : undefined}
         />
-        <StatForTimeRange
+        <StatDelta
           value={
             isPlaceholder
               ? 100
@@ -132,8 +132,9 @@ export default function Stat({
           }
           showPrevDayStats={showPrevDayStats}
           timeRangeLabel={showTimeRange ? "24H" : undefined}
+          highlight={true}
         />
-        <StatForTimeRange
+        <StatDelta
           value={
             isPlaceholder
               ? 100
@@ -156,21 +157,24 @@ export default function Stat({
   );
 }
 
-function StatForTimeRange({
+function StatDelta({
   value,
   prevDayValue,
   showPrevDayStats = false,
   timeRangeLabel,
+  highlight = false,
 }: {
   value: number;
   prevDayValue: number;
   showPrevDayStats?: boolean;
   timeRangeLabel?: string;
+  highlight?: boolean;
 }) {
   return (
     <div
       data-positive={value > 0 ? true : undefined}
-      className="flex items-center gap-1 text-muted-foreground data-positive:text-success"
+      data-highlight={highlight ? true : undefined}
+      className="flex items-center gap-1 text-muted-foreground data-positive:text-success group/delta"
     >
       <p className="shrink leading-tight min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent">
         {timeRangeLabel !== undefined && (
