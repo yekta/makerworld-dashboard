@@ -25,7 +25,7 @@ export default function SummarySection() {
   );
 }
 
-const printToPointRatioRaw = 3.4;
+const printToPointRatioRaw = 3.1;
 const printToPointRatioSafetyMargin = 0.1;
 const pointToUsdRatio = 0.066;
 const printToPointRatio =
