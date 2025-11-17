@@ -13,7 +13,7 @@ export default function PrintIcon({ className, style }: ComponentProps<"svg">) {
       viewBox="0 0 24 24"
     >
       <path
-        stroke="#fff"
+        stroke="currentColor"
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth="2"
