@@ -1,14 +1,9 @@
 "use client";
 
+import PrintIcon from "@/components/icons/print-icon";
 import { useStats } from "@/components/providers/stats-provider";
 import Stat from "@/components/stat";
-import {
-  BoxIcon,
-  DownloadIcon,
-  RocketIcon,
-  ThumbsUp,
-  UsersIcon,
-} from "lucide-react";
+import { DownloadIcon, RocketIcon, ThumbsUp, UsersIcon } from "lucide-react";
 
 export default function UserStatsSection() {
   const { data, isPending, isError } = useStats();
@@ -28,7 +23,7 @@ export default function UserStatsSection() {
         statType="user"
         statKey="prints"
         {...(isPending ? { isPlaceholder: true } : { stats: data.user.stats })}
-        Icon={BoxIcon}
+        Icon={PrintIcon}
         showPrevDayStats={true}
         showTimeRange={true}
       />

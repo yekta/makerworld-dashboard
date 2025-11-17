@@ -1,9 +1,10 @@
 "use client";
 
+import PrintIcon from "@/components/icons/print-icon";
 import { useStats } from "@/components/providers/stats-provider";
 import { appLocale } from "@/lib/constants";
 import { AppRouterOutputs, AppRouterQueryResult } from "@/server/trpc/api/root";
-import { BoxIcon, DownloadIcon, RocketIcon, UsersIcon } from "lucide-react";
+import { DownloadIcon, RocketIcon, UsersIcon } from "lucide-react";
 import { useMemo } from "react";
 
 export default function SummarySection() {
@@ -116,7 +117,7 @@ function RecentEventsText({
   if (printsInLast15Min > 0) {
     stats.push({
       value: printsInLast15Min,
-      Icon: BoxIcon,
+      Icon: PrintIcon,
       label: "print",
     });
   }

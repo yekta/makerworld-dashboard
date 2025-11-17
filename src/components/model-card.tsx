@@ -1,9 +1,10 @@
+import PrintIcon from "@/components/icons/print-icon";
 import { useNow } from "@/components/providers/now-provider";
 import Stat from "@/components/stat";
 import { appLocale } from "@/lib/constants";
 import { timeAgo } from "@/lib/helpers";
 import { AppRouterOutputs } from "@/server/trpc/api/root";
-import { BoxIcon, DownloadIcon, RocketIcon, ThumbsUpIcon } from "lucide-react";
+import { DownloadIcon, RocketIcon, ThumbsUpIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -103,7 +104,7 @@ function ModelCardContent(props: TProps) {
               )}
               {model.stats["delta_0-0.25h"].prints > 0 && (
                 <span>
-                  <BoxIcon className="size-2.75 shrink-0 inline-block mb-0.5 mr-[0.2ch]" />
+                  <PrintIcon className="size-2.75 shrink-0 inline-block mb-0.5 mr-[0.2ch]" />
                   <span className="shrink min-w-0 overflow-hidden overflow-ellipsis leading-tight text-right">
                     {model.stats["delta_0-0.25h"].prints}
                   </span>
@@ -127,7 +128,7 @@ function ModelCardContent(props: TProps) {
           {...(isPlaceholder
             ? { isPlaceholder: true }
             : { stats: model.stats })}
-          Icon={BoxIcon}
+          Icon={PrintIcon}
           showPrevDayStats={true}
           showTimeRange={true}
         />
@@ -195,7 +196,7 @@ function Footer({ model, isPlaceholder }: TProps) {
       ago
       <span className="text-muted-more-foreground px-[0.75ch]">{"|"}</span>
       <span className="font-medium">
-        <BoxIcon className="inline-block size-2.75 mb-px mr-[0.2ch]" />
+        <PrintIcon className="inline-block size-2.75 mb-px mr-[0.2ch]" />
         {printsPerDay.toLocaleString(appLocale, { maximumFractionDigits: 1 })}
         {" prints"}
       </span>
