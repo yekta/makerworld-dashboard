@@ -32,7 +32,7 @@ export default function ModelsSection() {
     return (
       <Wrapper>
         <p className="w-full text-center py-2 text-destructive font-semibold">
-          Couldn't load model stats :(
+          {`Couldn't load model stats :(`}
         </p>
       </Wrapper>
     );
@@ -71,28 +71,28 @@ function Models({
       return models;
     }
 
-    if (modelSort === "print_24h") {
-      return [...models].sort((a, b) => {
-        const aPrints = a.stats["delta_0-24h"].prints ?? 0;
-        const bPrints = b.stats["delta_0-24h"].prints ?? 0;
-        if (modelOrder === "asc") {
-          return aPrints - bPrints;
-        }
-        return bPrints - aPrints;
-      });
-    }
+    const timeframe: keyof (typeof models)[number]["stats"] =
+      modelSort === "prints_1h" || modelSort === "boosts_1h"
+        ? "delta_0-1h"
+        : modelSort === "prints_24h" || modelSort === "boosts_24h"
+        ? "delta_0-24h"
+        : "current";
 
-    if (modelSort === "print_current") {
-      return [...models].sort((a, b) => {
-        const aPrints = a.stats["current"].prints ?? 0;
-        const bPrints = b.stats["current"].prints ?? 0;
-        if (modelOrder === "asc") {
-          return aPrints - bPrints;
-        }
-        return bPrints - aPrints;
-      });
-    }
-    return models;
+    const stat: keyof (typeof models)[number]["stats"][keyof (typeof models)[number]["stats"]] =
+      modelSort === "boosts_current" ||
+      modelSort === "boosts_1h" ||
+      modelSort === "boosts_24h"
+        ? "boosts"
+        : "prints";
+
+    return [...models].sort((a, b) => {
+      const aPrints = a.stats[timeframe][stat] ?? 0;
+      const bPrints = b.stats[timeframe][stat] ?? 0;
+      if (modelOrder === "asc") {
+        return aPrints - bPrints;
+      }
+      return bPrints - aPrints;
+    });
   }, [models, modelSort, modelOrder]);
 
   return orderedModels.map((model) => (

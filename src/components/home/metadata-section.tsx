@@ -13,7 +13,7 @@ export default function MetadataSection() {
     return (
       <Wrapper>
         <p className="w-full text-center py-2 text-destructive font-semibold">
-          Couldn't load metadata :(
+          {`Couldn't load metadata :(`}
         </p>
       </Wrapper>
     );

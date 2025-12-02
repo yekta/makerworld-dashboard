@@ -13,7 +13,7 @@ export default function SummarySection() {
     return (
       <Wrapper>
         <p className="w-full text-center py-2 text-destructive font-semibold">
-          Couldn't load metadata :(
+          {`Couldn't load metadata :(`}
         </p>
       </Wrapper>
     );
@@ -104,7 +104,7 @@ function RecentEventsText({
   const downloadsInLast15Min = data.user.stats["delta_0-0.25h"].downloads;
   const followersInLast15Min = data.user.stats["delta_0-0.25h"].followers;
 
-  let stats: { value: number; Icon: React.ElementType; label: string }[] = [];
+  const stats: { value: number; Icon: React.ElementType; label: string }[] = [];
 
   if (boostsInLast15Min > 0) {
     stats.push({

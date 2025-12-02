@@ -11,7 +11,7 @@ export default function UserStatsSection() {
     return (
       <Wrapper>
         <p className="w-full text-center py-2 text-destructive font-semibold">
-          Couldn't load user stats :(
+          {`Couldn't load user stats :(`}
         </p>
       </Wrapper>
     );
