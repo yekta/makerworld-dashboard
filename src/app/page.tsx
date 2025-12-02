@@ -6,6 +6,7 @@ import UserStatsSection from "@/components/home/user-stats-section";
 import StatsProvider from "@/components/providers/stats-provider";
 import { apiServer } from "@/server/trpc/setup/server";
 import { ResultAsync } from "neverthrow";
+import SortAndOrderSection from "@/components/home/sort-and-order-section/sort-and-order-section";
 
 export const dynamic = "force-dynamic";
 
@@ -24,6 +25,7 @@ export default async function Home() {
         <div className="w-full max-w-6xl flex flex-col">
           <UserStatsSection />
           <RecentEventsSection />
+          <SortAndOrderSection />
           <ModelsSection />
           <MetadataSection />
         </div>
