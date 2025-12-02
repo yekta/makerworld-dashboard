@@ -9,12 +9,15 @@ export const MODEL_ORDER_KEY = "order";
 export const TModelOrderEnum = z.enum(["desc", "asc"]);
 export const TModelSortEnum = z.enum([
   "print_current",
-  "boost_current",
-  "print_1h",
   "print_24h",
-  "boost_1h",
+  "print_1h",
+  "boost_current",
   "boost_24h",
+  "boost_1h",
 ]);
+
+export type TModelOrder = z.infer<typeof TModelOrderEnum>;
+export type TModelSort = z.infer<typeof TModelSortEnum>;
 
 export const MODEL_SORT_DEFAULT: (typeof TModelSortEnum.options)[number] =
   "print_current";
