@@ -171,6 +171,27 @@ export default function Stat({
             timeRangeLabel={showTimeRange ? "07D" : undefined}
           />
         )}
+        {(isUnaffectedByFilters ||
+          modelDeltaStatRows.includes("delta_0-720h")) && (
+          <StatDelta
+            value={
+              isPlaceholder
+                ? 100
+                : statType === "model"
+                ? stats["delta_0-720h"][statKey]
+                : stats["delta_0-720h"][statKey]
+            }
+            prevDayValue={
+              isPlaceholder
+                ? 100
+                : statType === "model"
+                ? stats["delta_720-1440h"][statKey]
+                : stats["delta_720-1440h"][statKey]
+            }
+            showPrevDayStats={showPrevDayStats}
+            timeRangeLabel={showTimeRange ? "30D" : undefined}
+          />
+        )}
       </div>
     </div>
   );

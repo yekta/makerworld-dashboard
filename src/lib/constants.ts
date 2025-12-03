@@ -22,6 +22,7 @@ export const TModelDeltaStatRowsEnum = z.enum([
   "delta_0-12h",
   "delta_0-24h",
   "delta_0-168h",
+  "delta_0-720h",
 ]);
 
 export type TModelOrder = z.infer<typeof TModelOrderEnum>;
@@ -71,6 +72,8 @@ export function getModelDeltaStatRowsEnumLabel(
       return "24h";
     case "delta_0-168h":
       return "7d";
+    case "delta_0-720h":
+      return "30d";
     default:
       return timeframe;
   }
@@ -81,4 +84,11 @@ export const MODEL_SORT_DEFAULT: z.infer<typeof TModelSortEnum> =
 export const MODEL_ORDER_DEFAULT: z.infer<typeof TModelOrderEnum> = "desc";
 export const MODEL_DELTA_STAT_ROWS_TO_SHOW_DEFAULT: z.infer<
   typeof TModelDeltaStatRowsEnum
->[] = TModelDeltaStatRowsEnum.options;
+>[] = [
+  "delta_0-1h",
+  "delta_0-4h",
+  "delta_0-12h",
+  "delta_0-24h",
+  "delta_0-168h",
+  "delta_0-720h",
+];

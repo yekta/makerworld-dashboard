@@ -204,7 +204,7 @@ function ImageSection({
     <div
       data-small={modelDeltaStatRows.length === 0 ? true : undefined}
       data-medium={modelDeltaStatRows.length === 1 ? true : undefined}
-      className="w-18 data-small:w-11 data-medium:w-14 data-medium:rounded-tl-lg data-small:rounded-tl-md absolute -bottom-px -right-px aspect-4/3 bg-border border rounded-tl-xl overflow-hidden group-data-placeholder:animate-pulse"
+      className="w-16 data-small:w-11 data-medium:w-14 data-medium:rounded-tl-lg data-small:rounded-tl-md absolute -bottom-px -right-px aspect-4/3 bg-border border rounded-tl-lg overflow-hidden group-data-placeholder:animate-pulse"
     >
       {!isPlaceholder && model && (
         <Image
@@ -213,7 +213,7 @@ function ImageSection({
           width={1916}
           height={1437}
           className="w-full shrink-0 h-auto bg-border"
-          sizes="72px"
+          sizes="64px"
         />
       )}
     </div>

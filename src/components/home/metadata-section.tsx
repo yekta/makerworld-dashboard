@@ -40,12 +40,14 @@ function Metadata({
       "delta_0-4h_timestamp",
       "delta_0-12h_timestamp",
       "delta_0-24h_timestamp",
+      "delta_0-168h_timestamp",
+      "delta_0-720h_timestamp",
       "delta_24-25h_timestamp",
       "delta_24-28h_timestamp",
       "delta_24-36h_timestamp",
       "delta_24-48h_timestamp",
-      "delta_0-168h_timestamp",
       "delta_168-336h_timestamp",
+      "delta_720-1440h_timestamp",
     ];
 
   return (
