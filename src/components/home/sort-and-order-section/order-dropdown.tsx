@@ -7,7 +7,7 @@ import {
   MODEL_ORDER_KEY,
   TModelOrderEnum,
 } from "@/lib/constants";
-import { ArrowDownWideNarrow, ArrowUpWideNarrow } from "lucide-react";
+import { MoveDownIcon, MoveUpIcon } from "lucide-react";
 import { parseAsStringEnum, useQueryState } from "nuqs";
 import { useState } from "react";
 
@@ -19,11 +19,7 @@ const items = TModelOrderEnum.options.map((order) => ({
   label: getModelOrderEnumLabel(order),
   value: order,
   Icon:
-    order === "asc"
-      ? ArrowUpWideNarrow
-      : order === "desc"
-      ? ArrowDownWideNarrow
-      : undefined,
+    order === "asc" ? MoveUpIcon : order === "desc" ? MoveDownIcon : undefined,
 }));
 
 export default function OrderDropdown({ className }: TProps) {
@@ -35,9 +31,7 @@ export default function OrderDropdown({ className }: TProps) {
   return (
     <OptionDropdown
       items={items}
-      TriggerIcon={
-        modelOrder === "asc" ? ArrowUpWideNarrow : ArrowDownWideNarrow
-      }
+      TriggerIcon={modelOrder === "asc" ? MoveUpIcon : MoveDownIcon}
       currentValue={modelOrder}
       isOpen={isOpen}
       setIsOpen={setIsOpen}

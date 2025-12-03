@@ -22,17 +22,17 @@ export type TModelSort = z.infer<typeof TModelSortEnum>;
 export function getModelSortEnumLabel(sort: TModelSort) {
   switch (sort) {
     case "prints_current":
-      return "Prints (Current)";
+      return "Prints: Current";
     case "prints_24h":
-      return "Prints (24h)";
+      return "Prints: 24h";
     case "prints_1h":
-      return "Prints (1h)";
+      return "Prints: 1h";
     case "boosts_current":
-      return "Boosts (Current)";
+      return "Boosts: Current";
     case "boosts_24h":
-      return "Boosts (24h)";
+      return "Boosts: 24h";
     case "boosts_1h":
-      return "Boosts (1h)";
+      return "Boosts: 1h";
     default:
       return sort;
   }
