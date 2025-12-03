@@ -1,16 +1,14 @@
 "use client";
 
-import OptionDropdown from "@/components/home/sort-and-order-section/option-dropdown";
+import { useModelSort } from "@/components/home/filters-section/hooks";
+import OptionDropdown from "@/components/home/filters-section/option-dropdown";
 import PrintIcon from "@/components/icons/print-icon";
 import {
   getModelSortEnumLabel,
-  MODEL_SORT_DEFAULT,
-  MODEL_SORT_KEY,
   TModelSort,
   TModelSortEnum,
 } from "@/lib/constants";
-import { ArrowDownWideNarrow, RocketIcon } from "lucide-react";
-import { parseAsStringEnum, useQueryState } from "nuqs";
+import { RocketIcon } from "lucide-react";
 import { useState } from "react";
 
 type TProps = {
@@ -29,10 +27,7 @@ const items = TModelSortEnum.options.map((sort) => ({
 
 export default function SortDropdown({ className }: TProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [modelSort, setModelSort] = useQueryState(
-    MODEL_SORT_KEY,
-    parseAsStringEnum(TModelSortEnum.options).withDefault(MODEL_SORT_DEFAULT)
-  );
+  const [modelSort, setModelSort] = useModelSort();
   return (
     <OptionDropdown
       items={items}

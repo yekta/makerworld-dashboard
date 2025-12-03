@@ -1,3 +1,4 @@
+import { useModelDataStatRows } from "@/components/home/filters-section/hooks";
 import { appLocale } from "@/lib/constants";
 import useFlashOnChange from "@/lib/hooks/use-flash-on-change";
 import { cn } from "@/lib/utils";
@@ -33,14 +34,17 @@ export default function Stat({
   isPlaceholder,
   showPrevDayStats = false,
   showTimeRange = false,
+  isUnaffectedByFilters = false,
   Icon,
   className,
 }: TUserOrModelStat & {
   showPrevDayStats?: boolean;
   showTimeRange?: boolean;
+  isUnaffectedByFilters?: boolean;
   Icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   className?: string;
 }) {
+  const [modelDeltaStatRows] = useModelDataStatRows();
   return (
     <div
       data-placeholder={isPlaceholder ? true : undefined}
@@ -61,97 +65,112 @@ export default function Stat({
         isPlaceholder={isPlaceholder}
       />
       <div className="shrink min-w-0 overflow-hidden flex flex-col text-xs mt-px gap-px">
-        <StatDelta
-          value={
-            isPlaceholder
-              ? 100
-              : statType === "model"
-              ? stats["delta_0-1h"][statKey]
-              : stats["delta_0-1h"][statKey]
-          }
-          prevDayValue={
-            isPlaceholder
-              ? 100
-              : statType === "model"
-              ? stats["delta_24-25h"][statKey]
-              : stats["delta_24-25h"][statKey]
-          }
-          showPrevDayStats={showPrevDayStats}
-          timeRangeLabel={showTimeRange ? "01H" : undefined}
-        />
-        <StatDelta
-          value={
-            isPlaceholder
-              ? 100
-              : statType === "model"
-              ? stats["delta_0-4h"][statKey]
-              : stats["delta_0-4h"][statKey]
-          }
-          prevDayValue={
-            isPlaceholder
-              ? 100
-              : statType === "model"
-              ? stats["delta_24-28h"][statKey]
-              : stats["delta_24-28h"][statKey]
-          }
-          showPrevDayStats={showPrevDayStats}
-          timeRangeLabel={showTimeRange ? "04H" : undefined}
-        />
-        <StatDelta
-          value={
-            isPlaceholder
-              ? 100
-              : statType === "model"
-              ? stats["delta_0-12h"][statKey]
-              : stats["delta_0-12h"][statKey]
-          }
-          prevDayValue={
-            isPlaceholder
-              ? 100
-              : statType === "model"
-              ? stats["delta_24-36h"][statKey]
-              : stats["delta_24-36h"][statKey]
-          }
-          showPrevDayStats={showPrevDayStats}
-          timeRangeLabel={showTimeRange ? "12H" : undefined}
-        />
-        <StatDelta
-          value={
-            isPlaceholder
-              ? 100
-              : statType === "model"
-              ? stats["delta_0-24h"][statKey]
-              : stats["delta_0-24h"][statKey]
-          }
-          prevDayValue={
-            isPlaceholder
-              ? 100
-              : statType === "model"
-              ? stats["delta_24-48h"][statKey]
-              : stats["delta_24-48h"][statKey]
-          }
-          showPrevDayStats={showPrevDayStats}
-          timeRangeLabel={showTimeRange ? "24H" : undefined}
-          highlight={true}
-        />
-        <StatDelta
-          value={
-            isPlaceholder
-              ? 100
-              : statType === "model"
-              ? stats["delta_0-168h"][statKey]
-              : stats["delta_0-168h"][statKey]
-          }
-          prevDayValue={
-            isPlaceholder
-              ? 100
-              : statType === "model"
-              ? stats["delta_168-336h"][statKey]
-              : stats["delta_168-336h"][statKey]
-          }
-          showPrevDayStats={showPrevDayStats}
-          timeRangeLabel={showTimeRange ? "07D" : undefined}
-        />
+        {(isUnaffectedByFilters ||
+          modelDeltaStatRows.includes("delta_0-1h")) && (
+          <StatDelta
+            value={
+              isPlaceholder
+                ? 100
+                : statType === "model"
+                ? stats["delta_0-1h"][statKey]
+                : stats["delta_0-1h"][statKey]
+            }
+            prevDayValue={
+              isPlaceholder
+                ? 100
+                : statType === "model"
+                ? stats["delta_24-25h"][statKey]
+                : stats["delta_24-25h"][statKey]
+            }
+            showPrevDayStats={showPrevDayStats}
+            timeRangeLabel={showTimeRange ? "01H" : undefined}
+          />
+        )}
+        {(isUnaffectedByFilters ||
+          modelDeltaStatRows.includes("delta_0-4h")) && (
+          <StatDelta
+            value={
+              isPlaceholder
+                ? 100
+                : statType === "model"
+                ? stats["delta_0-4h"][statKey]
+                : stats["delta_0-4h"][statKey]
+            }
+            prevDayValue={
+              isPlaceholder
+                ? 100
+                : statType === "model"
+                ? stats["delta_24-28h"][statKey]
+                : stats["delta_24-28h"][statKey]
+            }
+            showPrevDayStats={showPrevDayStats}
+            timeRangeLabel={showTimeRange ? "04H" : undefined}
+          />
+        )}
+        {(isUnaffectedByFilters ||
+          modelDeltaStatRows.includes("delta_0-12h")) && (
+          <StatDelta
+            value={
+              isPlaceholder
+                ? 100
+                : statType === "model"
+                ? stats["delta_0-12h"][statKey]
+                : stats["delta_0-12h"][statKey]
+            }
+            prevDayValue={
+              isPlaceholder
+                ? 100
+                : statType === "model"
+                ? stats["delta_24-36h"][statKey]
+                : stats["delta_24-36h"][statKey]
+            }
+            showPrevDayStats={showPrevDayStats}
+            timeRangeLabel={showTimeRange ? "12H" : undefined}
+          />
+        )}
+        {(isUnaffectedByFilters ||
+          modelDeltaStatRows.includes("delta_0-24h")) && (
+          <StatDelta
+            value={
+              isPlaceholder
+                ? 100
+                : statType === "model"
+                ? stats["delta_0-24h"][statKey]
+                : stats["delta_0-24h"][statKey]
+            }
+            prevDayValue={
+              isPlaceholder
+                ? 100
+                : statType === "model"
+                ? stats["delta_24-48h"][statKey]
+                : stats["delta_24-48h"][statKey]
+            }
+            showPrevDayStats={showPrevDayStats}
+            timeRangeLabel={showTimeRange ? "24H" : undefined}
+            highlight={true}
+          />
+        )}
+        {(isUnaffectedByFilters ||
+          modelDeltaStatRows.includes("delta_0-168h")) && (
+          <StatDelta
+            value={
+              isPlaceholder
+                ? 100
+                : statType === "model"
+                ? stats["delta_0-168h"][statKey]
+                : stats["delta_0-168h"][statKey]
+            }
+            prevDayValue={
+              isPlaceholder
+                ? 100
+                : statType === "model"
+                ? stats["delta_168-336h"][statKey]
+                : stats["delta_168-336h"][statKey]
+            }
+            showPrevDayStats={showPrevDayStats}
+            timeRangeLabel={showTimeRange ? "07D" : undefined}
+          />
+        )}
       </div>
     </div>
   );

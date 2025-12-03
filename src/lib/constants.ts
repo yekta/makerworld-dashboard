@@ -5,6 +5,7 @@ export const trpcPath = "/api/trpc";
 
 export const MODEL_SORT_KEY = "sort";
 export const MODEL_ORDER_KEY = "order";
+export const MODEL_DELTA_STAT_ROWS_KEY = "Stats";
 
 export const TModelOrderEnum = z.enum(["desc", "asc"]);
 export const TModelSortEnum = z.enum([
@@ -14,6 +15,13 @@ export const TModelSortEnum = z.enum([
   "boosts_current",
   "boosts_24h",
   "boosts_1h",
+]);
+export const TModelDeltaStatRowsEnum = z.enum([
+  "delta_0-1h",
+  "delta_0-4h",
+  "delta_0-12h",
+  "delta_0-24h",
+  "delta_0-168h",
 ]);
 
 export type TModelOrder = z.infer<typeof TModelOrderEnum>;
@@ -49,7 +57,28 @@ export function getModelOrderEnumLabel(order: TModelOrder) {
   }
 }
 
-export const MODEL_SORT_DEFAULT: (typeof TModelSortEnum.options)[number] =
+export function getModelDeltaStatRowsEnumLabel(
+  timeframe: z.infer<typeof TModelDeltaStatRowsEnum>
+) {
+  switch (timeframe) {
+    case "delta_0-1h":
+      return "1h";
+    case "delta_0-4h":
+      return "4h";
+    case "delta_0-12h":
+      return "12h";
+    case "delta_0-24h":
+      return "24h";
+    case "delta_0-168h":
+      return "7d";
+    default:
+      return timeframe;
+  }
+}
+
+export const MODEL_SORT_DEFAULT: z.infer<typeof TModelSortEnum> =
   "prints_current";
-export const MODEL_ORDER_DEFAULT: (typeof TModelOrderEnum.options)[number] =
-  "desc";
+export const MODEL_ORDER_DEFAULT: z.infer<typeof TModelOrderEnum> = "desc";
+export const MODEL_DELTA_STAT_ROWS_TO_SHOW_DEFAULT: z.infer<
+  typeof TModelDeltaStatRowsEnum
+>[] = TModelDeltaStatRowsEnum.options;

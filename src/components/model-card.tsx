@@ -1,3 +1,4 @@
+import { useModelDataStatRows } from "@/components/home/filters-section/hooks";
 import PrintIcon from "@/components/icons/print-icon";
 import { useNow } from "@/components/providers/now-provider";
 import Stat from "@/components/stat";
@@ -53,7 +54,7 @@ function ModelCardContent(props: TProps) {
           ? true
           : undefined
       }
-      className="p-2 rounded-[14px] group/content flex flex-col gap-1 relative overflow-hidden"
+      className="p-2 min-h-20 rounded-[14px] group/content flex flex-col gap-1 relative overflow-hidden"
     >
       {/* Flare effect */}
       <div className="w-full h-full absolute right-0 top-0 p-px transition bg-linear-to-bl via-15% from-border via-border to-border group-data-highlighted/content:from-success/40 group-data-highlighted/content:via-border group-highlighted/content:to-border rounded-[14px]">
@@ -73,18 +74,7 @@ function ModelCardContent(props: TProps) {
         />
       </div> */}
       {/* Flare effect end */}
-      <div className="w-20 absolute -bottom-px -right-px aspect-4/3 bg-border border rounded-tl-xl overflow-hidden group-data-placeholder:animate-pulse">
-        {!isPlaceholder && (
-          <Image
-            src={model.image}
-            alt={model.title}
-            width={1916}
-            height={1437}
-            className="w-full shrink-0 h-auto bg-border"
-            sizes="80px"
-          />
-        )}
-      </div>
+      <ImageSection model={model} isPlaceholder={isPlaceholder} />
       <div className="w-full flex items-center overflow-hidden gap-3 relative px-1">
         <h2 className="text-xs font-light shrink min-w-0 text-muted-foreground whitespace-nowrap overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent">
           {!isPlaceholder ? model.title : "Loading This Model's Title"}
@@ -157,7 +147,7 @@ function ModelCardContent(props: TProps) {
           Icon={ThumbsUpIcon}
         />
       </div>
-      <div className="w-full flex justify-start pb-px pt-[0.09375rem] relative">
+      <div className="w-full mt-auto flex justify-start pb-px pt-[0.09375rem] relative">
         <Footer {...props} />
       </div>
     </div>
@@ -202,5 +192,30 @@ function Footer({ model, isPlaceholder }: TProps) {
       </span>
       {"/day"}
     </p>
+  );
+}
+
+function ImageSection({
+  model,
+  isPlaceholder,
+}: Pick<TProps, "model" | "isPlaceholder">) {
+  const [modelDeltaStatRows] = useModelDataStatRows();
+  return (
+    <div
+      data-small={modelDeltaStatRows.length === 0 ? true : undefined}
+      data-medium={modelDeltaStatRows.length === 1 ? true : undefined}
+      className="w-18 data-small:w-11 data-medium:w-14 data-medium:rounded-tl-lg data-small:rounded-tl-md absolute -bottom-px -right-px aspect-4/3 bg-border border rounded-tl-xl overflow-hidden group-data-placeholder:animate-pulse"
+    >
+      {!isPlaceholder && model && (
+        <Image
+          src={model.image}
+          alt={model.title}
+          width={1916}
+          height={1437}
+          className="w-full shrink-0 h-auto bg-border"
+          sizes="72px"
+        />
+      )}
+    </div>
   );
 }

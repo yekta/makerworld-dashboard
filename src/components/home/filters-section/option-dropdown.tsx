@@ -20,6 +20,7 @@ type TProps<T> = {
     value: T;
     Icon?: React.ElementType;
   }[];
+  arrayMode?: boolean;
   onSelect: (value: T) => void;
   currentValue: T;
   className?: string;
@@ -30,6 +31,7 @@ export default function OptionDropdown<T>({
   setIsOpen,
   TriggerIcon,
   triggerLabel,
+  arrayMode,
   items,
   onSelect,
   currentValue,
@@ -61,10 +63,22 @@ export default function OptionDropdown<T>({
           <DropdownMenuGroup>
             {items.map((item) => (
               <DropdownMenuItem
-                data-selected={item.value === currentValue ? true : undefined}
+                data-selected={
+                  item.value === currentValue ||
+                  (arrayMode &&
+                    Array.isArray(item.value) &&
+                    (item.value as unknown as T[]).every((i) => {
+                      return (currentValue as unknown as T[]).includes(i);
+                    }))
+                    ? true
+                    : undefined
+                }
                 className="font-medium px-2 text-sm group/item text-muted-foreground data-selected:text-foreground"
                 key={String(item.value)}
-                onSelect={() => {
+                onSelect={(e) => {
+                  if (arrayMode) {
+                    e.preventDefault();
+                  }
                   onSelect(item.value);
                 }}
               >

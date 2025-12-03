@@ -1,16 +1,12 @@
 "use client";
 
+import {
+  useModelOrder,
+  useModelSort,
+} from "@/components/home/filters-section/hooks";
 import ModelCard from "@/components/model-card";
 import { useStats } from "@/components/providers/stats-provider";
-import {
-  MODEL_ORDER_DEFAULT,
-  MODEL_ORDER_KEY,
-  MODEL_SORT_DEFAULT,
-  MODEL_SORT_KEY,
-  TModelOrderEnum,
-  TModelSortEnum,
-} from "@/lib/constants";
-import { parseAsStringEnum, useQueryState } from "nuqs";
+import { MODEL_ORDER_DEFAULT, MODEL_SORT_DEFAULT } from "@/lib/constants";
 import { useMemo } from "react";
 
 const placeholderArray = Array.from({ length: 30 });
@@ -54,14 +50,8 @@ function Models({
 }: {
   models: NonNullable<ReturnType<typeof useStats>["data"]>["models"];
 }) {
-  const [modelSort] = useQueryState(
-    MODEL_SORT_KEY,
-    parseAsStringEnum(TModelSortEnum.options).withDefault(MODEL_SORT_DEFAULT)
-  );
-  const [modelOrder] = useQueryState(
-    MODEL_ORDER_KEY,
-    parseAsStringEnum(TModelOrderEnum.options).withDefault(MODEL_ORDER_DEFAULT)
-  );
+  const [modelSort] = useModelSort();
+  const [modelOrder] = useModelOrder();
 
   const orderedModels = useMemo(() => {
     if (

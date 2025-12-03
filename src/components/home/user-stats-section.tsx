@@ -26,6 +26,7 @@ export default function UserStatsSection() {
         Icon={PrintIcon}
         showPrevDayStats={true}
         showTimeRange={true}
+        isUnaffectedByFilters={true}
       />
       <Stat
         statType="user"
@@ -33,6 +34,7 @@ export default function UserStatsSection() {
         {...(isPending ? { isPlaceholder: true } : { stats: data.user.stats })}
         Icon={DownloadIcon}
         showPrevDayStats={true}
+        isUnaffectedByFilters={true}
       />
       <Stat
         statType="user"
@@ -40,6 +42,7 @@ export default function UserStatsSection() {
         {...(isPending ? { isPlaceholder: true } : { stats: data.user.stats })}
         Icon={RocketIcon}
         showPrevDayStats={true}
+        isUnaffectedByFilters={true}
       />
       <Stat
         statType="user"
@@ -47,6 +50,7 @@ export default function UserStatsSection() {
         {...(isPending ? { isPlaceholder: true } : { stats: data.user.stats })}
         Icon={ThumbsUp}
         showPrevDayStats={true}
+        isUnaffectedByFilters={true}
       />
       <Stat
         statType="user"
@@ -54,6 +58,7 @@ export default function UserStatsSection() {
         {...(isPending ? { isPlaceholder: true } : { stats: data.user.stats })}
         Icon={UsersIcon}
         showPrevDayStats={true}
+        isUnaffectedByFilters={true}
       />
     </Wrapper>
   );
