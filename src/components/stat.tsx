@@ -217,7 +217,9 @@ function StatDelta({
       className="flex items-center gap-1 text-muted-foreground data-positive:text-success group/delta"
     >
       <div className="shrink min-w-0 flex relative">
-        <p className="shrink whitespace-nowrap leading-tight min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent">
+        <span className="group-data-highlight/delta:bg-muted-more-foreground/50 -left-0.5 top-0 absolute w-[calc(100%+0.25rem)] h-px rounded-full" />
+        <span className="group-data-highlight/delta:bg-muted-more-foreground/50 -left-0.5 -bottom-px absolute w-[calc(100%+0.25rem)] h-px rounded-full" />
+        <p className="shrink relative whitespace-nowrap leading-tight min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent">
           {timeRangeLabel !== undefined && (
             <span className="text-muted-more-foreground relative group/span group-data-placeholder:text-transparent text-xxs leading-tight mr-[0.25ch]">
               {timeRangeLabel}:
@@ -231,8 +233,6 @@ function StatDelta({
             </span>
           )}
         </p>
-        <span className="group-data-highlight/delta:bg-muted-more-foreground/60 -left-0.5 top-0 absolute w-[calc(100%+0.25rem)] h-[0.5px] rounded-full" />
-        <span className="group-data-highlight/delta:bg-muted-more-foreground/60 -left-0.5 bottom-0 absolute w-[calc(100%+0.25rem)] h-[0.5px] rounded-full" />
       </div>
     </div>
   );
