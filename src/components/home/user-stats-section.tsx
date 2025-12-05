@@ -46,14 +46,6 @@ export default function UserStatsSection() {
       />
       <Stat
         statType="user"
-        statKey="likes"
-        {...(isPending ? { isPlaceholder: true } : { stats: data.user.stats })}
-        Icon={ThumbsUp}
-        showPrevDayStats={true}
-        isUnaffectedByFilters={true}
-      />
-      <Stat
-        statType="user"
         statKey="followers"
         {...(isPending ? { isPlaceholder: true } : { stats: data.user.stats })}
         Icon={UsersIcon}
