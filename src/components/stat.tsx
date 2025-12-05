@@ -64,7 +64,7 @@ export default function Stat({
         Icon={Icon}
         isPlaceholder={isPlaceholder}
       />
-      <div className="shrink min-w-0 overflow-hidden flex flex-col text-xs mt-px gap-px">
+      <div className="shrink min-w-0 flex flex-col text-xs mt-px gap-px">
         {(isUnaffectedByFilters ||
           modelDeltaStatRows.includes("delta_0-1h")) && (
           <StatDelta
@@ -216,20 +216,24 @@ function StatDelta({
       data-highlight={highlight ? true : undefined}
       className="flex items-center gap-1 text-muted-foreground data-positive:text-success group/delta"
     >
-      <p className="shrink leading-tight min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent">
-        {timeRangeLabel !== undefined && (
-          <span className="text-muted-more-foreground relative group/span group-data-placeholder:text-transparent text-xxs leading-tight mr-[0.25ch]">
-            {timeRangeLabel}:
-          </span>
-        )}
-        +{value.toLocaleString(appLocale)}
-        {showPrevDayStats && (
-          <span className="text-muted-foreground text-xxs leading-tight group-data-placeholder:text-transparent">
-            <span className="px-[0.35ch] text-muted-more-foreground">|</span>
-            {prevDayValue.toLocaleString(appLocale)}
-          </span>
-        )}
-      </p>
+      <div className="shrink min-w-0 flex relative">
+        <p className="shrink whitespace-nowrap leading-tight min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent">
+          {timeRangeLabel !== undefined && (
+            <span className="text-muted-more-foreground relative group/span group-data-placeholder:text-transparent text-xxs leading-tight mr-[0.25ch]">
+              {timeRangeLabel}:
+            </span>
+          )}
+          +{value.toLocaleString(appLocale)}
+          {showPrevDayStats && (
+            <span className="text-muted-foreground text-xxs leading-tight group-data-placeholder:text-transparent">
+              <span className="px-[0.35ch] text-muted-more-foreground">|</span>
+              {prevDayValue.toLocaleString(appLocale)}
+            </span>
+          )}
+        </p>
+        <span className="group-data-highlight/delta:bg-muted-more-foreground/60 -left-0.5 top-0 absolute w-[calc(100%+0.25rem)] h-[0.5px] rounded-full" />
+        <span className="group-data-highlight/delta:bg-muted-more-foreground/60 -left-0.5 bottom-0 absolute w-[calc(100%+0.25rem)] h-[0.5px] rounded-full" />
+      </div>
     </div>
   );
 }
