@@ -74,7 +74,6 @@ function ModelCardContent(props: TProps) {
         />
       </div> */}
       {/* Flare effect end */}
-      <ImageSection model={model} isPlaceholder={isPlaceholder} />
       <div className="w-full flex items-center overflow-hidden gap-3 relative px-1">
         <h2 className="text-xs font-light shrink min-w-0 text-muted-foreground whitespace-nowrap overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent">
           {!isPlaceholder ? model.title : "Loading This Model's Title"}
@@ -147,7 +146,7 @@ function ModelCardContent(props: TProps) {
           Icon={ThumbsUpIcon}
         />
       </div>
-      <div className="w-full mt-auto flex justify-start pb-px pt-[0.09375rem] relative">
+      <div className="w-full mt-auto flex justify-start pt-[0.09375rem] relative">
         <Footer {...props} />
       </div>
     </div>
@@ -170,28 +169,44 @@ function Footer({ model, isPlaceholder }: TProps) {
   const printsPerDay = !isPlaceholder
     ? model.stats.current.prints / (sinceCreation / (1000 * 60 * 60 * 24))
     : 10;
+  const boostRate = !isPlaceholder
+    ? (model.stats.current.boosts / (model.stats.current.prints || 1)) * 100
+    : 5;
   return (
-    <p
-      suppressHydrationWarning
-      className="shrink whitespace-nowrap min-w-0 font-light overflow-hidden overflow-ellipsis text-xs px-1 text-muted-foreground group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent"
-    >
-      {timeAgo({
-        timestamp: !isPlaceholder
-          ? model.model_created_at
-          : placeholderTimestamp,
-        now,
-        dontPad: true,
-        fullUnitText: true,
-      })}{" "}
-      ago
-      <span className="text-muted-more-foreground px-[0.75ch]">{"|"}</span>
-      <span className="font-medium">
-        <PrintIcon className="inline-block size-2.75 mb-px mr-[0.2ch]" />
-        {printsPerDay.toLocaleString(appLocale, { maximumFractionDigits: 1 })}
-        {" prints"}
-      </span>
-      {"/day"}
-    </p>
+    <div className="w-full flex justify-center items-end gap-2">
+      <div className="flex-1 min-w-0 flex flex-col pb-px">
+        <p className="shrink min-w-0 font-light overflow-hidden overflow-ellipsis text-xs px-1 text-muted-foreground group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent">
+          <span className="font-medium">
+            <PrintIcon className="inline-block size-2.75 mb-px mr-[0.2ch]" />
+            {printsPerDay.toLocaleString(appLocale, {
+              maximumFractionDigits: 1,
+            })}
+          </span>
+          {" daily"}
+          <span className="text-muted-more-foreground px-[0.75ch]">{"|"}</span>
+          <span className="font-medium">
+            <RocketIcon className="inline-block size-2.75 mb-px mr-[0.2ch]" />
+            {boostRate.toLocaleString(appLocale, { maximumFractionDigits: 1 })}
+            {"%"}
+          </span>
+        </p>
+        <p
+          suppressHydrationWarning
+          className="shrink mt-0.5 min-w-0 font-light overflow-hidden overflow-ellipsis text-xs px-1 text-muted-foreground group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent"
+        >
+          {timeAgo({
+            timestamp: !isPlaceholder
+              ? model.model_created_at
+              : placeholderTimestamp,
+            now,
+            dontPad: true,
+            fullUnitText: true,
+          })}{" "}
+          ago
+        </p>
+      </div>
+      <ImageSection model={model} isPlaceholder={isPlaceholder} />
+    </div>
   );
 }
 
@@ -199,13 +214,8 @@ function ImageSection({
   model,
   isPlaceholder,
 }: Pick<TProps, "model" | "isPlaceholder">) {
-  const [modelDeltaStatRows] = useModelDataStatRows();
   return (
-    <div
-      data-small={modelDeltaStatRows.length === 0 ? true : undefined}
-      data-medium={modelDeltaStatRows.length === 1 ? true : undefined}
-      className="w-13 data-small:w-11 data-medium:w-13 data-medium:rounded-tl-lg data-small:rounded-tl-md absolute -bottom-px -right-px aspect-4/3 bg-border border rounded-tl-lg overflow-hidden group-data-placeholder:animate-pulse"
-    >
+    <div className="w-14 aspect-4/3 -mr-2.25 -mb-2.25 bg-border border rounded-tl-lg overflow-hidden group-data-placeholder:animate-pulse">
       {!isPlaceholder && model && (
         <Image
           src={model.image}
@@ -213,7 +223,7 @@ function ImageSection({
           width={1916}
           height={1437}
           className="w-full shrink-0 h-auto bg-border"
-          sizes="52px"
+          sizes="56px"
         />
       )}
     </div>
