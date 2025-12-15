@@ -150,8 +150,7 @@ function RecentEventsText({
           : ""}
         <span className="text-foreground font-medium">
           <item.Icon className="inline-block size-2.75 mb-px mr-[0.2ch]" />
-          {item.value} {item.label}
-          {item.value > 1 ? "s" : ""}
+          {item.value}
         </span>
       </span>
     ));
