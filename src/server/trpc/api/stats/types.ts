@@ -63,6 +63,11 @@ export const TUserSchema = z.object({
     "delta_168-336h": TUserStatSchema,
     "delta_720-1440h": TUserStatSchema,
   }),
+  records: z.object({
+    "24": z.number(),
+    "168": z.number(),
+    "720": z.number(),
+  }),
 });
 
 export const TStatResponseSchema = z.object({
