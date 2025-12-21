@@ -11,7 +11,7 @@ type TUserOrModelStat =
       stats: AppRouterOutputs["stats"]["get"]["models"][number]["stats"];
       statKey: keyof AppRouterOutputs["stats"]["get"]["models"][number]["stats"]["current"];
       statType: "model";
-      records: AppRouterOutputs["stats"]["get"]["user"]["records"];
+      records?: never;
       isPlaceholder?: never;
     }
   | {
