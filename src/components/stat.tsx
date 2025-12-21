@@ -244,7 +244,7 @@ function StatDelta({
               :
             </span>
           )}
-          +{value.toLocaleString(appLocale)}
+          {value.toLocaleString(appLocale)}
           {showPrevDayStats && prevDayValue !== undefined && (
             <span className="text-muted-foreground text-xxs leading-tight group-data-placeholder:text-transparent">
               <span className="px-[0.35ch] text-muted-more-foreground">|</span>
