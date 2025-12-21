@@ -6,20 +6,23 @@ import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
 export const statsRouter = createTRPCRouter({
-  get: publicProcedure.input(z.object({})).query(async ({}) => {
-    const dayStart = "01:30";
-    const res = await fetch(
-      env.API_URL + "/v1/stats" + `?day_start=${dayStart}`
-    );
-    const data = await res.json();
-    const result = TStatResponseSchema.safeParse(data);
-    if (!result.success) {
-      console.log("Stats response validation error:", result.error);
-      throw new TRPCError({
-        code: "NOT_FOUND",
-        message: "Failed to type check stats response",
-      });
-    }
-    return result.data;
-  }),
+  get: publicProcedure
+    .input(z.object({ dayStart: z.string().default("01:30").nullable() }))
+    .query(async ({ input: { dayStart } }) => {
+      const url = new URL(env.API_URL + "/v1/stats");
+      if (dayStart !== null) {
+        url.searchParams.append("day_start", dayStart);
+      }
+      const res = await fetch(url.toString());
+      const data = await res.json();
+      const result = TStatResponseSchema.safeParse(data);
+      if (!result.success) {
+        console.log("Stats response validation error:", result.error);
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Failed to type check stats response",
+        });
+      }
+      return result.data;
+    }),
 });
