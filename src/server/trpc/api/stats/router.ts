@@ -7,7 +7,7 @@ import { z } from "zod";
 
 export const statsRouter = createTRPCRouter({
   get: publicProcedure
-    .input(z.object({ dayStart: z.string().default("01:30").nullable() }))
+    .input(z.object({ dayStart: z.string().default("22:30").nullable() }))
     .query(async ({ input: { dayStart } }) => {
       const url = new URL(env.API_URL + "/v1/stats");
       if (dayStart !== null) {
