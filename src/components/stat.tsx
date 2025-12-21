@@ -3,6 +3,7 @@ import { appLocale } from "@/lib/constants";
 import useFlashOnChange from "@/lib/hooks/use-flash-on-change";
 import { cn } from "@/lib/utils";
 import { AppRouterOutputs } from "@/server/trpc/api/root";
+import { Trophy } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 type TUserOrModelStat =
@@ -10,12 +11,14 @@ type TUserOrModelStat =
       stats: AppRouterOutputs["stats"]["get"]["models"][number]["stats"];
       statKey: keyof AppRouterOutputs["stats"]["get"]["models"][number]["stats"]["current"];
       statType: "model";
+      records: AppRouterOutputs["stats"]["get"]["user"]["records"];
       isPlaceholder?: never;
     }
   | {
       stats: AppRouterOutputs["stats"]["get"]["user"]["stats"];
       statKey: keyof AppRouterOutputs["stats"]["get"]["user"]["stats"]["current"];
       statType: "user";
+      records: AppRouterOutputs["stats"]["get"]["user"]["records"];
       isPlaceholder?: never;
     }
   | {
@@ -24,6 +27,7 @@ type TUserOrModelStat =
         | keyof AppRouterOutputs["stats"]["get"]["models"][number]["stats"]["current"]
         | keyof AppRouterOutputs["stats"]["get"]["user"]["stats"]["current"];
       statType: "model" | "user";
+      records?: never;
       isPlaceholder: true;
     };
 
@@ -31,6 +35,7 @@ export default function Stat({
   stats,
   statKey,
   statType,
+  records,
   isPlaceholder,
   showPrevDayStats = false,
   showTimeRange = false,
@@ -192,6 +197,14 @@ export default function Stat({
             timeRangeLabel={showTimeRange ? "30D" : undefined}
           />
         )}
+        {statType === "user" && (
+          <StatDelta
+            value={isPlaceholder ? 100 : records["24"][statKey]}
+            showPrevDayStats={false}
+            timeRangeLabel={showTimeRange ? "24H" : undefined}
+            isRecord={true}
+          />
+        )}
       </div>
     </div>
   );
@@ -203,12 +216,14 @@ function StatDelta({
   showPrevDayStats = false,
   timeRangeLabel,
   highlight = false,
+  isRecord = false,
 }: {
   value: number;
-  prevDayValue: number;
+  prevDayValue?: number;
   showPrevDayStats?: boolean;
   timeRangeLabel?: string;
   highlight?: boolean;
+  isRecord?: boolean;
 }) {
   return (
     <div
@@ -222,11 +237,15 @@ function StatDelta({
         <p className="shrink relative whitespace-nowrap leading-tight min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent">
           {timeRangeLabel !== undefined && (
             <span className="text-muted-more-foreground relative group/span group-data-placeholder:text-transparent text-xxs leading-tight mr-[0.25ch]">
-              {timeRangeLabel}:
+              {timeRangeLabel}
+              {isRecord && (
+                <Trophy className="inline-block size-2.5 ml-[0.4ch] mb-[0.3ch]" />
+              )}
+              :
             </span>
           )}
           +{value.toLocaleString(appLocale)}
-          {showPrevDayStats && (
+          {showPrevDayStats && prevDayValue !== undefined && (
             <span className="text-muted-foreground text-xxs leading-tight group-data-placeholder:text-transparent">
               <span className="px-[0.35ch] text-muted-more-foreground">|</span>
               {prevDayValue.toLocaleString(appLocale)}

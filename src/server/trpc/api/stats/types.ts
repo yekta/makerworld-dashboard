@@ -64,9 +64,9 @@ export const TUserSchema = z.object({
     "delta_720-1440h": TUserStatSchema,
   }),
   records: z.object({
-    "24": z.number(),
-    "168": z.number(),
-    "720": z.number(),
+    "24": TUserStatSchema,
+    "168": TUserStatSchema,
+    "720": TUserStatSchema,
   }),
 });
 

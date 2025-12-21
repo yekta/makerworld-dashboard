@@ -3,7 +3,7 @@
 import PrintIcon from "@/components/icons/print-icon";
 import { useStats } from "@/components/providers/stats-provider";
 import Stat from "@/components/stat";
-import { DownloadIcon, RocketIcon, ThumbsUp, UsersIcon } from "lucide-react";
+import { DownloadIcon, RocketIcon, UsersIcon } from "lucide-react";
 
 export default function UserStatsSection() {
   const { data, isPending, isError } = useStats();
@@ -22,7 +22,9 @@ export default function UserStatsSection() {
       <Stat
         statType="user"
         statKey="prints"
-        {...(isPending ? { isPlaceholder: true } : { stats: data.user.stats })}
+        {...(isPending
+          ? { isPlaceholder: true }
+          : { stats: data.user.stats, records: data.user.records })}
         Icon={PrintIcon}
         showPrevDayStats={true}
         showTimeRange={true}
@@ -31,7 +33,9 @@ export default function UserStatsSection() {
       <Stat
         statType="user"
         statKey="downloads"
-        {...(isPending ? { isPlaceholder: true } : { stats: data.user.stats })}
+        {...(isPending
+          ? { isPlaceholder: true }
+          : { stats: data.user.stats, records: data.user.records })}
         Icon={DownloadIcon}
         showPrevDayStats={true}
         isUnaffectedByFilters={true}
@@ -39,7 +43,9 @@ export default function UserStatsSection() {
       <Stat
         statType="user"
         statKey="boosts"
-        {...(isPending ? { isPlaceholder: true } : { stats: data.user.stats })}
+        {...(isPending
+          ? { isPlaceholder: true }
+          : { stats: data.user.stats, records: data.user.records })}
         Icon={RocketIcon}
         showPrevDayStats={true}
         isUnaffectedByFilters={true}
@@ -47,7 +53,9 @@ export default function UserStatsSection() {
       <Stat
         statType="user"
         statKey="followers"
-        {...(isPending ? { isPlaceholder: true } : { stats: data.user.stats })}
+        {...(isPending
+          ? { isPlaceholder: true }
+          : { stats: data.user.stats, records: data.user.records })}
         Icon={UsersIcon}
         showPrevDayStats={true}
         isUnaffectedByFilters={true}
