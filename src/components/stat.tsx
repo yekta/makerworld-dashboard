@@ -3,7 +3,7 @@ import { appLocale } from "@/lib/constants";
 import useFlashOnChange from "@/lib/hooks/use-flash-on-change";
 import { cn } from "@/lib/utils";
 import { AppRouterOutputs } from "@/server/trpc/api/root";
-import { Trophy } from "lucide-react";
+import { TrophyIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 type TUserOrModelStat =
@@ -205,6 +205,14 @@ export default function Stat({
             isRecord={true}
           />
         )}
+        {statType === "user" && (
+          <StatDelta
+            value={isPlaceholder ? 100 : records["168"][statKey]}
+            showPrevDayStats={false}
+            timeRangeLabel={showTimeRange ? "07D" : undefined}
+            isRecord={true}
+          />
+        )}
       </div>
     </div>
   );
@@ -237,11 +245,10 @@ function StatDelta({
         <p className="shrink relative whitespace-nowrap leading-tight min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent">
           {timeRangeLabel !== undefined && (
             <span className="text-muted-more-foreground relative group/span group-data-placeholder:text-transparent text-xxs leading-tight mr-[0.25ch]">
-              {timeRangeLabel}
               {isRecord && (
-                <Trophy className="inline-block size-2.5 ml-[0.4ch] mb-[0.3ch]" />
+                <TrophyIcon className="inline-block size-2.5 mr-[0.2ch] mb-[0.3ch]" />
               )}
-              :
+              {timeRangeLabel}:
             </span>
           )}
           {value.toLocaleString(appLocale)}
