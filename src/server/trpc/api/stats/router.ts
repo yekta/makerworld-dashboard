@@ -5,9 +5,11 @@ import { TRPCError } from "@trpc/server";
 
 import { z } from "zod";
 
+const DAY_START = "22:20";
+
 export const statsRouter = createTRPCRouter({
   get: publicProcedure
-    .input(z.object({ dayStart: z.string().default("22:30").nullable() }))
+    .input(z.object({ dayStart: z.string().default(DAY_START).nullable() }))
     .query(async ({ input: { dayStart } }) => {
       const url = new URL(env.API_URL + "/v1/stats");
       if (dayStart !== null) {
