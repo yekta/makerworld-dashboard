@@ -199,7 +199,7 @@ export default function Stat({
         )}
         {statType === "user" && (
           <StatDelta
-            value={isPlaceholder ? 100 : records["24"][statKey]}
+            value={isPlaceholder ? 100 : records["day"][statKey]}
             showPrevDayStats={false}
             timeRangeLabel={showTimeRange ? "24H" : undefined}
             isRecord={true}
@@ -207,7 +207,7 @@ export default function Stat({
         )}
         {statType === "user" && (
           <StatDelta
-            value={isPlaceholder ? 100 : records["168"][statKey]}
+            value={isPlaceholder ? 100 : records["week"][statKey]}
             showPrevDayStats={false}
             timeRangeLabel={showTimeRange ? "07D" : undefined}
             isRecord={true}

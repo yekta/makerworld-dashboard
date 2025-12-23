@@ -64,9 +64,10 @@ export const TUserSchema = z.object({
     "delta_720-1440h": TUserStatSchema,
   }),
   records: z.object({
-    "24": TUserStatSchema,
-    "168": TUserStatSchema,
-    "720": TUserStatSchema,
+    hour: TUserStatSchema,
+    day: TUserStatSchema,
+    week: TUserStatSchema,
+    month: TUserStatSchema,
   }),
 });
 
