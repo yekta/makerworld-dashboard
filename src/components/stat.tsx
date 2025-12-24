@@ -199,10 +199,19 @@ export default function Stat({
         )}
         {statType === "user" && (
           <StatDelta
+            value={isPlaceholder ? 100 : records["hour"][statKey]}
+            showPrevDayStats={false}
+            timeRangeLabel={showTimeRange ? "01H" : undefined}
+            isRecord={true}
+          />
+        )}
+        {statType === "user" && (
+          <StatDelta
             value={isPlaceholder ? 100 : records["day"][statKey]}
             showPrevDayStats={false}
             timeRangeLabel={showTimeRange ? "24H" : undefined}
             isRecord={true}
+            highlight={true}
           />
         )}
         {statType === "user" && (
