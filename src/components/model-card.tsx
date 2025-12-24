@@ -174,9 +174,9 @@ function Footer({ model, isPlaceholder }: TProps) {
     ? (model.stats.current.boosts / (model.stats.current.prints || 1)) * 100
     : 5;
 
-  const timeAgoString = useMemo(
-    () =>
-      timeAgo({
+  const { timeAgoString, releaseDate } = useMemo(
+    () => ({
+      timeAgoString: timeAgo({
         timestamp: !isPlaceholder
           ? model.model_created_at
           : placeholderTimestamp,
@@ -184,18 +184,14 @@ function Footer({ model, isPlaceholder }: TProps) {
         dontPad: true,
         fullUnitText: true,
       }),
-    [isPlaceholder, model, now]
-  );
-
-  const releaseDate = useMemo(
-    () =>
-      format(
+      releaseDate: format(
         new Date(
           !isPlaceholder ? model.model_created_at : placeholderTimestamp
         ),
         "HH:mm - yyyy-MM-dd"
       ),
-    [isPlaceholder, model]
+    }),
+    [isPlaceholder, model, now]
   );
 
   return (
