@@ -1,13 +1,14 @@
-import { useModelDataStatRows } from "@/components/home/filters-section/hooks";
 import PrintIcon from "@/components/icons/print-icon";
 import { useNow } from "@/components/providers/now-provider";
 import Stat from "@/components/stat";
 import { appLocale } from "@/lib/constants";
 import { timeAgo } from "@/lib/helpers";
 import { AppRouterOutputs } from "@/server/trpc/api/root";
+import { format } from "date-fns";
 import { DownloadIcon, RocketIcon, ThumbsUpIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useMemo } from "react";
 
 type TProps =
   | {
@@ -172,6 +173,31 @@ function Footer({ model, isPlaceholder }: TProps) {
   const boostRate = !isPlaceholder
     ? (model.stats.current.boosts / (model.stats.current.prints || 1)) * 100
     : 5;
+
+  const timeAgoString = useMemo(
+    () =>
+      timeAgo({
+        timestamp: !isPlaceholder
+          ? model.model_created_at
+          : placeholderTimestamp,
+        now,
+        dontPad: true,
+        fullUnitText: true,
+      }),
+    [isPlaceholder, model, now]
+  );
+
+  const releaseDate = useMemo(
+    () =>
+      format(
+        new Date(
+          !isPlaceholder ? model.model_created_at : placeholderTimestamp
+        ),
+        "HH:mm - yyyy-MM-dd"
+      ),
+    [isPlaceholder, model]
+  );
+
   return (
     <div className="w-full flex justify-center items-end gap-2">
       <div className="flex-1 min-w-0 flex flex-col pb-px">
@@ -194,15 +220,9 @@ function Footer({ model, isPlaceholder }: TProps) {
           suppressHydrationWarning
           className="shrink mt-0.5 min-w-0 font-light overflow-hidden overflow-ellipsis text-xs px-1 text-muted-foreground group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent"
         >
-          {timeAgo({
-            timestamp: !isPlaceholder
-              ? model.model_created_at
-              : placeholderTimestamp,
-            now,
-            dontPad: true,
-            fullUnitText: true,
-          })}{" "}
-          ago
+          {timeAgoString} ago
+          <span className="text-muted-more-foreground px-[0.75ch]">{"|"}</span>
+          {releaseDate}
         </p>
       </div>
       <ImageSection model={model} isPlaceholder={isPlaceholder} />
