@@ -191,7 +191,7 @@ function Footer({ model, isPlaceholder }: TProps) {
         "EEE, HH:mm - yyyy-MM-dd"
       ),
     }),
-    [isPlaceholder, model, now]
+    [isPlaceholder, model, now, typeof window !== undefined]
   );
 
   return (
