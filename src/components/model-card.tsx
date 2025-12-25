@@ -188,7 +188,7 @@ function Footer({ model, isPlaceholder }: TProps) {
         new Date(
           !isPlaceholder ? model.model_created_at : placeholderTimestamp
         ),
-        "HH:mm - yyyy-MM-dd"
+        "EEE, HH:mm - yyyy-MM-dd"
       ),
     }),
     [isPlaceholder, model, now]
@@ -216,7 +216,7 @@ function Footer({ model, isPlaceholder }: TProps) {
           suppressHydrationWarning
           className="shrink mt-0.5 min-w-0 font-light overflow-hidden overflow-ellipsis text-xs px-1 text-muted-foreground group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent"
         >
-          {timeAgoString} ago
+          {timeAgoString}
           <span className="text-muted-more-foreground px-[0.75ch]">{"|"}</span>
           {releaseDate}
         </p>
