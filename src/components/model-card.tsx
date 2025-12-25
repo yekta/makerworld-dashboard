@@ -194,7 +194,7 @@ function Footer({ model, isPlaceholder }: TProps) {
       ),
       currentTime: new Date().toLocaleString(),
     }),
-    [isPlaceholder, model, now, typeof window !== "undefined"]
+    [isPlaceholder, model, now]
   );
 
   return (
