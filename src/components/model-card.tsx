@@ -1,5 +1,3 @@
-"use client";
-
 import PrintIcon from "@/components/icons/print-icon";
 import { useNow } from "@/components/providers/now-provider";
 import Stat from "@/components/stat";
@@ -10,6 +8,7 @@ import { format } from "date-fns";
 import { DownloadIcon, RocketIcon, ThumbsUpIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useMemo } from "react";
 
 type TProps =
   | {
@@ -175,16 +174,24 @@ function Footer({ model, isPlaceholder }: TProps) {
     ? (model.stats.current.boosts / (model.stats.current.prints || 1)) * 100
     : 5;
 
-  const timeAgoString = timeAgo({
-    timestamp: !isPlaceholder ? model.model_created_at : placeholderTimestamp,
-    now,
-    dontPad: true,
-    fullUnitText: true,
-  });
-
-  const releaseDate = format(
-    new Date(!isPlaceholder ? model.model_created_at : placeholderTimestamp),
-    "EEE, HH:mm - yyyy-MM-dd"
+  const { timeAgoString, releaseDate } = useMemo(
+    () => ({
+      timeAgoString: timeAgo({
+        timestamp: !isPlaceholder
+          ? model.model_created_at
+          : placeholderTimestamp,
+        now,
+        dontPad: true,
+        fullUnitText: true,
+      }),
+      releaseDate: format(
+        new Date(
+          !isPlaceholder ? model.model_created_at : placeholderTimestamp
+        ),
+        "EEE, HH:mm - yyyy-MM-dd"
+      ),
+    }),
+    [isPlaceholder, model, now]
   );
 
   return (
@@ -212,6 +219,8 @@ function Footer({ model, isPlaceholder }: TProps) {
           {timeAgoString}
           <span className="text-muted-more-foreground px-[0.75ch]">{"|"}</span>
           {releaseDate}
+          <br />
+          {new Date().toLocaleString()}
         </p>
       </div>
       <ImageSection model={model} isPlaceholder={isPlaceholder} />
