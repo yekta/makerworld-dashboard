@@ -8,7 +8,6 @@ import { format } from "date-fns";
 import { DownloadIcon, RocketIcon, ThumbsUpIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useMemo } from "react";
 
 type TProps =
   | {
@@ -174,24 +173,16 @@ function Footer({ model, isPlaceholder }: TProps) {
     ? (model.stats.current.boosts / (model.stats.current.prints || 1)) * 100
     : 5;
 
-  const { timeAgoString, releaseDate } = useMemo(
-    () => ({
-      timeAgoString: timeAgo({
-        timestamp: !isPlaceholder
-          ? model.model_created_at
-          : placeholderTimestamp,
-        now,
-        dontPad: true,
-        fullUnitText: true,
-      }),
-      releaseDate: format(
-        new Date(
-          !isPlaceholder ? model.model_created_at : placeholderTimestamp
-        ),
-        "EEE, HH:mm - yyyy-MM-dd"
-      ),
-    }),
-    [isPlaceholder, model, now]
+  const timeAgoString = timeAgo({
+    timestamp: !isPlaceholder ? model.model_created_at : placeholderTimestamp,
+    now,
+    dontPad: true,
+    fullUnitText: true,
+  });
+
+  const releaseDate = format(
+    new Date(!isPlaceholder ? model.model_created_at : placeholderTimestamp),
+    "EEE, HH:mm - yyyy-MM-dd"
   );
 
   return (
