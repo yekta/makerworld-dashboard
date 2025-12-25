@@ -1,3 +1,5 @@
+"use client";
+
 import PrintIcon from "@/components/icons/print-icon";
 import { useNow } from "@/components/providers/now-provider";
 import Stat from "@/components/stat";
