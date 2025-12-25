@@ -176,7 +176,7 @@ function Footer({ model, isPlaceholder }: TProps) {
     ? (model.stats.current.boosts / (model.stats.current.prints || 1)) * 100
     : 5;
 
-  const { timeAgoString, releaseDate } = useMemo(
+  const { timeAgoString, releaseDate, currentTime } = useMemo(
     () => ({
       timeAgoString: timeAgo({
         timestamp: !isPlaceholder
@@ -192,6 +192,7 @@ function Footer({ model, isPlaceholder }: TProps) {
         ),
         "EEE, HH:mm - yyyy-MM-dd"
       ),
+      currentTime: new Date().toLocaleString(),
     }),
     [isPlaceholder, model, now, typeof window !== "undefined"]
   );
@@ -222,7 +223,7 @@ function Footer({ model, isPlaceholder }: TProps) {
           <span className="text-muted-more-foreground px-[0.75ch]">{"|"}</span>
           {releaseDate}
           <br />
-          {new Date().toLocaleString()}
+          {currentTime}
         </p>
       </div>
       <ImageSection model={model} isPlaceholder={isPlaceholder} />
