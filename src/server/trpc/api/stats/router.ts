@@ -5,15 +5,38 @@ import { TRPCError } from "@trpc/server";
 
 import { z } from "zod";
 
-const DAY_START = "22:20";
+const TWeekDayEnum = z.enum([
+  "monday",
+  "tuesday",
+  "wednesday",
+  "thursday",
+  "friday",
+  "saturday",
+  "sunday",
+]);
+const DEFAULT_DAY_START = "22:20";
+const DEFAULT_WEEK_START: z.infer<typeof TWeekDayEnum> = "sunday";
+const DEFAULT_MONTH_START = 1;
 
 export const statsRouter = createTRPCRouter({
   get: publicProcedure
-    .input(z.object({ dayStart: z.string().default(DAY_START).nullable() }))
-    .query(async ({ input: { dayStart } }) => {
+    .input(
+      z.object({
+        dayStart: z.string().default(DEFAULT_DAY_START).nullable(),
+        weekStart: TWeekDayEnum.default(DEFAULT_WEEK_START).nullable(),
+        monthStart: z.number().default(DEFAULT_MONTH_START).nullable(),
+      })
+    )
+    .query(async ({ input: { dayStart, weekStart, monthStart } }) => {
       const url = new URL(env.API_URL + "/v1/stats");
       if (dayStart !== null) {
         url.searchParams.append("day_start", dayStart);
+      }
+      if (weekStart !== null) {
+        url.searchParams.append("week_start", weekStart);
+      }
+      if (monthStart !== null) {
+        url.searchParams.append("month_start", monthStart.toString());
       }
       const res = await fetch(url.toString());
       const data = await res.json();
