@@ -9,6 +9,7 @@ export const MODEL_DELTA_STAT_ROWS_KEY = "Stats";
 
 export const TModelOrderEnum = z.enum(["desc", "asc"]);
 export const TModelSortEnum = z.enum([
+  "created_at",
   "prints_current",
   "prints_24h",
   "prints_1h",
@@ -42,6 +43,8 @@ export function getModelSortEnumLabel(sort: TModelSort) {
       return "Boosts: 24h";
     case "boosts_1h":
       return "Boosts: 1h";
+    case "created_at":
+      return "Creation Date";
     default:
       return sort;
   }

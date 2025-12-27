@@ -73,7 +73,7 @@ export default function OptionDropdown<T>({
                     ? true
                     : undefined
                 }
-                className="font-medium px-2 text-sm group/item text-muted-foreground data-selected:text-foreground"
+                className="font-medium px-2 overflow-hidden text-sm group/item text-muted-foreground data-selected:text-foreground"
                 key={String(item.value)}
                 onSelect={(e) => {
                   if (arrayMode) {
@@ -82,7 +82,7 @@ export default function OptionDropdown<T>({
                   onSelect(item.value);
                 }}
               >
-                <div className="w-full gap-2 justify-between items-center overflow-hidden flex">
+                <div className="w-full gap-2 justify-between items-center flex">
                   <div className="shrink min-w-0 flex gap-2 items-center">
                     {item.Icon && (
                       <item.Icon className="size-3.5 -ml-0.5 -mr-0.5" />

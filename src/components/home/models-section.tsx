@@ -61,6 +61,21 @@ function Models({
       return models;
     }
 
+    if (modelSort === "created_at") {
+      return [...models].sort((a, b) => {
+        if (modelOrder === "asc") {
+          return (
+            new Date(a.model_created_at).getTime() -
+            new Date(b.model_created_at).getTime()
+          );
+        }
+        return (
+          new Date(b.model_created_at).getTime() -
+          new Date(a.model_created_at).getTime()
+        );
+      });
+    }
+
     const timeframe: keyof (typeof models)[number]["stats"] =
       modelSort === "prints_1h" || modelSort === "boosts_1h"
         ? "delta_0-1h"

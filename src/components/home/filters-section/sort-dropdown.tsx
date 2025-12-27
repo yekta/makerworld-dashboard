@@ -8,7 +8,7 @@ import {
   TModelSort,
   TModelSortEnum,
 } from "@/lib/constants";
-import { RocketIcon } from "lucide-react";
+import { CalendarIcon, RocketIcon } from "lucide-react";
 import { useState } from "react";
 
 type TProps = {
@@ -18,11 +18,7 @@ type TProps = {
 const items = TModelSortEnum.options.map((sort) => ({
   label: getModelSortEnumLabel(sort),
   value: sort,
-  Icon: sort.startsWith("prints")
-    ? PrintIcon
-    : sort.startsWith("boosts")
-    ? RocketIcon
-    : undefined,
+  Icon: getIconForSort(sort),
 }));
 
 export default function SortDropdown({ className }: TProps) {
@@ -56,6 +52,9 @@ function getIconForSort(sort: TModelSort) {
     sort === "boosts_current"
   ) {
     return RocketIcon;
+  }
+  if (sort === "created_at") {
+    return CalendarIcon;
   }
   return undefined;
 }
