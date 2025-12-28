@@ -98,7 +98,7 @@ export default function ModelStatsChart({
             left: 4,
             right: 4,
             top: 8,
-            bottom: 4,
+            bottom: 2,
           }}
         >
           <CartesianGrid vertical={false} horizontal={false} />
