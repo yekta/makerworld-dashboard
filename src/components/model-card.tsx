@@ -250,7 +250,7 @@ function ImageSection({
   isPlaceholder,
 }: Pick<TProps, "model" | "isPlaceholder">) {
   return (
-    <div className="w-14 group/image aspect-4/3 -mr-2.25 relative transition hover:ring-[1.5px] ring-0 focus-within:ring-[1.5px] ring-foreground/75 -mb-2.25 bg-border border rounded-tl-lg overflow-hidden group-data-placeholder:animate-pulse">
+    <div className="w-14 group/image aspect-4/3 -mr-2.25 relative transition hover:ring-[1.5px] ring-0 has-focus-visible:ring-[1.5px] ring-foreground/50 -mb-2.25 bg-border border rounded-tl-lg overflow-hidden group-data-placeholder:animate-pulse">
       {!isPlaceholder && model && (
         <>
           <Image
@@ -262,11 +262,11 @@ function ImageSection({
             sizes="56px"
           />
           <Link
-            className="w-full group/link opacity-0 focus:opacity-100 active:opacity-100 group-hover/image:opacity-100 duration-150 flex items-center justify-center h-full absolute left-0 top-0 bg-background/75"
+            className="w-full group/link opacity-0 focus-visible:opacity-100 active:opacity-100 group-hover/image:opacity-100 duration-150 flex items-center justify-center h-full absolute left-0 top-0 bg-background/75"
             href={isPlaceholder ? "" : getModelUrl(model)}
             target="_blank"
           >
-            <ExternalLink className="size-5 translate-y-3 group-active/link:opacity-100 group-active/link:translate-y-0 group-focus/link:opacity-100 group-focus/link:translate-y-0 group opacity-0 group-hover/image:opacity-100 duration-150 group-hover/image:translate-y-0 transition" />
+            <ExternalLink className="size-5 translate-y-3 group-active/link:opacity-100 group-active/link:translate-y-0 group-focus-visible/link:opacity-100 group-focus-visible/link:translate-y-0 group opacity-0 group-hover/image:opacity-100 duration-150 group-hover/image:translate-y-0 transition" />
           </Link>
         </>
       )}
