@@ -96,7 +96,7 @@ export default function ModelStatsChart({
   }
 
   return (
-    <div className={cn("w-full h-24 touch-manipulation", className)}>
+    <div className={cn("w-full h-24", className)}>
       <ChartContainer config={chartConfig} className={"h-full w-full"}>
         <AreaChart
           accessibilityLayer
@@ -119,7 +119,6 @@ export default function ModelStatsChart({
           />
           <ChartTooltip
             cursor={true}
-            wrapperStyle={{ pointerEvents: "none" }}
             content={
               <ChartTooltipContent
                 labelFormatter={(_value, payload) => {
