@@ -22,10 +22,12 @@ import { useMemo } from "react";
 type TProps =
   | {
       model: AppRouterOutputs["stats"]["get"]["models"][number];
+      metadata: AppRouterOutputs["stats"]["get"]["metadata"];
       isPlaceholder?: never;
     }
   | {
       model?: never;
+      metadata?: never;
       isPlaceholder: true;
     };
 
@@ -49,7 +51,7 @@ export default function ModelCard(props: TProps) {
 }
 
 function ModelCardContent(props: TProps) {
-  const { model, isPlaceholder } = props;
+  const { model, metadata, isPlaceholder } = props;
   const [statVisibilityPreferences] = useModelStatVisibilityPreferences();
   const isChartActive = statVisibilityPreferences.includes("chart");
   return (
@@ -166,10 +168,7 @@ function ModelCardContent(props: TProps) {
         />
       </div>
       <div className="w-full relative z-10">
-        <ModelStatsChart
-          className="h-12"
-          {...(isPlaceholder ? { isPlaceholder: true } : { model })}
-        />
+        <ModelStatsChart className="h-12" {...props} />
       </div>
       <div className="w-full z-0 mt-auto flex justify-start pt-[0.09375rem] relative">
         <Footer {...props} />
@@ -186,7 +185,7 @@ function getModelUrl(
 
 const placeholderTimestamp = new Date("2025-01-01T00:00:00Z").getTime();
 
-function Footer({ model, isPlaceholder }: TProps) {
+function Footer({ model, metadata, isPlaceholder }: TProps) {
   const now = useNow();
   const sinceCreation = !isPlaceholder
     ? now - model.model_created_at
@@ -243,7 +242,7 @@ function Footer({ model, isPlaceholder }: TProps) {
         </p>
       </div>
       <ImageSection
-        {...(isPlaceholder ? { isPlaceholder: true } : { model })}
+        {...(isPlaceholder ? { isPlaceholder: true } : { model, metadata })}
       />
     </div>
   );

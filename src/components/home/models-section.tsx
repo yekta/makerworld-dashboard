@@ -36,7 +36,7 @@ export default function ModelsSection() {
 
   return (
     <Wrapper>
-      <Models models={data.models} />
+      <Models models={data.models} metadata={data.metadata} />
     </Wrapper>
   );
 }
@@ -47,8 +47,10 @@ function Wrapper({ children }: { children: React.ReactNode }) {
 
 function Models({
   models,
+  metadata,
 }: {
   models: NonNullable<ReturnType<typeof useStats>["data"]>["models"];
+  metadata: NonNullable<ReturnType<typeof useStats>["data"]>["metadata"];
 }) {
   const [modelSort] = useModelSort();
   const [modelOrder] = useModelOrder();
@@ -101,6 +103,6 @@ function Models({
   }, [models, modelSort, modelOrder]);
 
   return orderedModels.map((model) => (
-    <ModelCard key={model.model_id} model={model} />
+    <ModelCard key={model.model_id} model={model} metadata={metadata} />
   ));
 }
