@@ -6,6 +6,7 @@ import {
   ChartTooltipContent,
   type ChartConfig,
 } from "@/components/ui/chart";
+import { appLocale } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { AppRouterOutputs } from "@/server/trpc/api/root";
 import { useMemo } from "react";
@@ -30,7 +31,15 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const days = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+];
 const placeholderData = Array.from({ length: 7 }).map((_, index) => ({
   prints: Math.floor(Math.random() * 100),
   day: days[index],
