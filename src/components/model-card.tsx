@@ -165,11 +165,13 @@ function ModelCardContent(props: TProps) {
           Icon={ThumbsUpIcon}
         />
       </div>
-      <ModelStatsChart
-        className="h-12"
-        {...(isPlaceholder ? { isPlaceholder: true } : { model })}
-      />
-      <div className="w-full mt-auto flex justify-start pt-[0.09375rem] relative">
+      <div className="w-full relative z-10">
+        <ModelStatsChart
+          className="h-12"
+          {...(isPlaceholder ? { isPlaceholder: true } : { model })}
+        />
+      </div>
+      <div className="w-full z-0 mt-auto flex justify-start pt-[0.09375rem] relative">
         <Footer {...props} />
       </div>
     </div>
@@ -262,7 +264,7 @@ function ImageSection({
             sizes="56px"
           />
           <Link
-            className="w-full group/link z-10 opacity-0 focus-visible:opacity-100 active:opacity-100 group-hover/image:opacity-100 duration-150 flex items-center justify-center h-full absolute left-0 top-0 bg-background/75"
+            className="w-full group/link z-10 overflow-hidden opacity-0 focus-visible:opacity-100 active:opacity-100 group-hover/image:opacity-100 duration-150 flex items-center justify-center h-full absolute left-0 top-0 bg-background/75"
             href={isPlaceholder ? "" : getModelUrl(model)}
             target="_blank"
           >
