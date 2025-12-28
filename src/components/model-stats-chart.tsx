@@ -9,7 +9,7 @@ import {
 import { cn } from "@/lib/utils";
 import { AppRouterOutputs } from "@/server/trpc/api/root";
 import { useMemo } from "react";
-import { Area, AreaChart, XAxis } from "recharts";
+import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
 
 type TProps =
   | {
@@ -36,7 +36,7 @@ const placeholderData = Array.from({ length: 7 }).map((_, index) => ({
   day: days[index],
 }));
 
-export default function ModelChart({
+export default function ModelStatsChart({
   model,
   isPlaceholder,
   className,
@@ -48,6 +48,10 @@ export default function ModelChart({
       return placeholderData;
     }
     const data: { prints: number; day: string }[] = [
+      {
+        prints: model.stats["delta_168-192h"].prints,
+        day: days[(dayOfWeek - 7 + 7) % 7],
+      },
       {
         prints: model.stats["delta_144-168h"].prints,
         day: days[(dayOfWeek - 6 + 7) % 7],
@@ -91,13 +95,13 @@ export default function ModelChart({
           accessibilityLayer
           data={chartData}
           margin={{
-            left: 6,
-            right: 6,
+            left: 4,
+            right: 4,
             top: 8,
             bottom: 4,
           }}
         >
-          {/* <CartesianGrid vertical={false} horizontal={false} /> */}
+          <CartesianGrid vertical={false} horizontal={false} />
           <XAxis
             hide
             dataKey="day"
@@ -106,7 +110,7 @@ export default function ModelChart({
             tickMargin={8}
             tickFormatter={(value) => value.slice(0, 3)}
           />
-          <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
+          <ChartTooltip cursor={true} content={<ChartTooltipContent />} />
           <defs>
             <linearGradient id="fillPrints" x1="0" y1="0" x2="0" y2="1">
               <stop
@@ -123,6 +127,7 @@ export default function ModelChart({
           </defs>
           <Area
             animationDuration={500}
+            type="bump"
             dataKey="prints"
             fill="url(#fillPrints)"
             fillOpacity={1}

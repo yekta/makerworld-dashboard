@@ -1,14 +1,20 @@
 "use client";
 
+import { useModelStatVisibilityPreferences } from "@/components/home/filters-section/hooks";
 import PrintIcon from "@/components/icons/print-icon";
-import ModelChart from "@/components/model-chart";
+import ModelStatsChart from "@/components/model-stats-chart";
 import { useNow } from "@/components/providers/now-provider";
 import Stat from "@/components/stat";
 import { appLocale } from "@/lib/constants";
 import { timeAgo } from "@/lib/helpers";
 import { AppRouterOutputs } from "@/server/trpc/api/root";
 import { format } from "date-fns";
-import { DownloadIcon, RocketIcon, ThumbsUpIcon } from "lucide-react";
+import {
+  DownloadIcon,
+  ExternalLink,
+  RocketIcon,
+  ThumbsUpIcon,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useMemo } from "react";
@@ -44,6 +50,8 @@ export default function ModelCard(props: TProps) {
 
 function ModelCardContent(props: TProps) {
   const { model, isPlaceholder } = props;
+  const [statVisibilityPreferences] = useModelStatVisibilityPreferences();
+  const isChartActive = statVisibilityPreferences.includes("chart");
   return (
     <div
       data-highlighted={
@@ -60,8 +68,14 @@ function ModelCardContent(props: TProps) {
       <div className="w-full h-full absolute right-0 top-0 p-px transition bg-linear-to-bl via-15% from-border via-border to-border group-data-highlighted/content:from-success/40 group-data-highlighted/content:via-border group-highlighted/content:to-border rounded-[14px]">
         <div className="w-[calc(100%-2px)] h-[calc(100%-2px)] absolute right-px top-px bg-background rounded-[13px]" />
       </div>
-      <div className="opacity-0 transition-opacity duration-300 group-data-highlighted/content:opacity-100 absolute h-1/6 aspect-5/1 translate-x-full -translate-y-full group-data-highlighted/content:translate-x-1/2 group-data-highlighted/content:-translate-y-1/2 top-0 right-0 bg-success/15 blur-xl" />
-      <div className="opacity-0 transition-opacity duration-300 group-data-highlighted/content:opacity-100 absolute h-1/4 aspect-5/1 translate-x-full -translate-y-full group-data-highlighted/content:translate-x-1/2 group-data-highlighted/content:-translate-y-1/2 top-0 right-0 bg-success/30 blur-2xl" />
+      <div
+        data-has-chart={isChartActive ? true : undefined}
+        className="opacity-0 transition-opacity duration-300 group-data-highlighted/content:opacity-100 absolute h-1/6 data-has-chart:h-1/8 aspect-5/1 translate-x-full -translate-y-full group-data-highlighted/content:translate-x-1/2 group-data-highlighted/content:-translate-y-1/2 top-0 right-0 bg-success/15 blur-xl"
+      />
+      <div
+        data-has-chart={isChartActive ? true : undefined}
+        className="opacity-0 transition-opacity duration-300 group-data-highlighted/content:opacity-100 absolute h-1/4 data-has-chart:h-1/6 aspect-5/1 translate-x-full -translate-y-full group-data-highlighted/content:translate-x-1/2 group-data-highlighted/content:-translate-y-1/2 top-0 right-0 bg-success/30 blur-2xl"
+      />
       {/* <div className="w-full h-full absolute right-0 top-0 rounded-[18px] overflow-hidden p-px group-hover:opacity-0 group-active:opacity-0">
         <div
           style={{
@@ -151,8 +165,8 @@ function ModelCardContent(props: TProps) {
           Icon={ThumbsUpIcon}
         />
       </div>
-      <ModelChart
-        className="h-16 relative"
+      <ModelStatsChart
+        className="h-12"
         {...(isPlaceholder ? { isPlaceholder: true } : { model })}
       />
       <div className="w-full mt-auto flex justify-start pt-[0.09375rem] relative">
@@ -236,16 +250,25 @@ function ImageSection({
   isPlaceholder,
 }: Pick<TProps, "model" | "isPlaceholder">) {
   return (
-    <div className="w-14 aspect-4/3 -mr-2.25 -mb-2.25 bg-border border rounded-tl-lg overflow-hidden group-data-placeholder:animate-pulse">
+    <div className="w-14 group/image aspect-4/3 -mr-2.25 relative transition hover:ring-[1.5px] ring-0 focus-within:ring-[1.5px] ring-foreground/75 -mb-2.25 bg-border border rounded-tl-lg overflow-hidden group-data-placeholder:animate-pulse">
       {!isPlaceholder && model && (
-        <Image
-          src={model.image}
-          alt={model.title}
-          width={1916}
-          height={1437}
-          className="w-full shrink-0 h-auto bg-border"
-          sizes="56px"
-        />
+        <>
+          <Image
+            src={model.image}
+            alt={model.title}
+            width={1916}
+            height={1437}
+            className="w-full shrink-0 h-auto bg-border"
+            sizes="56px"
+          />
+          <Link
+            className="w-full group/link opacity-0 focus:opacity-100 active:opacity-100 group-hover/image:opacity-100 duration-150 flex items-center justify-center h-full absolute left-0 top-0 bg-background/75"
+            href={isPlaceholder ? "" : getModelUrl(model)}
+            target="_blank"
+          >
+            <ExternalLink className="size-5 translate-y-3 group-active/link:opacity-100 group-active/link:translate-y-0 group-focus/link:opacity-100 group-focus/link:translate-y-0 group opacity-0 group-hover/image:opacity-100 duration-150 group-hover/image:translate-y-0 transition" />
+          </Link>
+        </>
       )}
     </div>
   );

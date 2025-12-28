@@ -92,6 +92,7 @@ export const CHART_VISIBILITY_DEFAULT = true;
 export const MODEL_STAT_VISIBLITY_PREFERENCES_DEFAULT: z.infer<
   typeof TModelStatVisibilityPreferencesEnum
 >[] = [
+  "chart",
   "delta_0-1h",
   "delta_0-4h",
   "delta_0-12h",
