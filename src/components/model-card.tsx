@@ -242,17 +242,20 @@ function Footer({ model, isPlaceholder }: TProps) {
           {releaseDate}
         </p>
       </div>
-      <ImageSection model={model} isPlaceholder={isPlaceholder} />
+      <ImageSection
+        {...(isPlaceholder ? { isPlaceholder: true } : { model })}
+      />
     </div>
   );
 }
 
-function ImageSection({
-  model,
-  isPlaceholder,
-}: Pick<TProps, "model" | "isPlaceholder">) {
+function ImageSection({ model, isPlaceholder }: TProps) {
   return (
-    <div className="w-14 group/image aspect-4/3 -mr-2.25 relative transition hover:ring-[1.5px] ring-0 has-focus-visible:ring-[1.5px] ring-foreground/50 -mb-2.25 bg-border border rounded-tl-lg overflow-hidden group-data-placeholder:animate-pulse">
+    <Link
+      href={isPlaceholder ? "" : getModelUrl(model)}
+      target="_blank"
+      className="w-14 group/link aspect-4/3 -mr-2.25 relative outline-0 transition duration-150 hover:ring-[1.5px] ring-0 focus-visible:ring-[1.5px] ring-foreground/50 -mb-2.25 bg-border border rounded-tl-lg overflow-hidden group-data-placeholder:animate-pulse"
+    >
       {!isPlaceholder && model && (
         <>
           <Image
@@ -263,15 +266,11 @@ function ImageSection({
             className="w-full shrink-0 h-auto bg-border relative z-0"
             sizes="56px"
           />
-          <Link
-            className="w-full group/link z-10 overflow-hidden opacity-0 focus-visible:opacity-100 active:opacity-100 group-hover/image:opacity-100 duration-150 flex items-center justify-center h-full absolute left-0 top-0 bg-background/75"
-            href={isPlaceholder ? "" : getModelUrl(model)}
-            target="_blank"
-          >
-            <ExternalLink className="size-5 translate-y-3 group-active/link:opacity-100 group-active/link:translate-y-0 group-focus-visible/link:opacity-100 group-focus-visible/link:translate-y-0 group opacity-0 group-hover/image:opacity-100 duration-150 group-hover/image:translate-y-0 transition" />
-          </Link>
+          <div className="w-full group/link z-10 overflow-hidden opacity-0 group-focus-visible/link:opacity-100 group-active/link:opacity-100 group-hover/link:opacity-100 duration-150 flex items-center justify-center h-full absolute left-0 top-0 bg-background/75">
+            <ExternalLink className="size-5 translate-y-3 group-active/link:opacity-100 group-active/link:translate-y-0 group-focus-visible/link:opacity-100 group-focus-visible/link:translate-y-0 group opacity-0 group-hover/link:opacity-100 duration-150 group-hover/link:translate-y-0 transition" />
+          </div>
         </>
       )}
-    </div>
+    </Link>
   );
 }
