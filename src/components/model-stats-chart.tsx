@@ -116,12 +116,12 @@ export default function ModelStatsChart({
               <stop
                 offset="5%"
                 stopColor="var(--color-prints)"
-                stopOpacity={0.12}
+                stopOpacity={0.08}
               />
               <stop
                 offset="95%"
                 stopColor="var(--color-prints)"
-                stopOpacity={0.04}
+                stopOpacity={0.08}
               />
             </linearGradient>
           </defs>
@@ -132,7 +132,7 @@ export default function ModelStatsChart({
             fill="url(#fillPrints)"
             fillOpacity={1}
             stroke="var(--color-prints)"
-            strokeOpacity={0.36}
+            strokeOpacity={0.32}
             stackId="a"
           />
         </AreaChart>
