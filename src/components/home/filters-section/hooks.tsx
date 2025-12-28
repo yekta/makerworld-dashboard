@@ -1,22 +1,22 @@
 import {
-  MODEL_DELTA_STAT_ROWS_KEY,
-  MODEL_DELTA_STAT_ROWS_TO_SHOW_DEFAULT,
+  MODEL_STAT_VISIBLITY_PREFERENCES_KEY,
+  MODEL_STAT_VISIBLITY_PREFERENCES_DEFAULT,
   MODEL_ORDER_DEFAULT,
   MODEL_ORDER_KEY,
   MODEL_SORT_DEFAULT,
   MODEL_SORT_KEY,
-  TModelDeltaStatRowsEnum,
+  TModelStatVisibilityPreferencesEnum,
   TModelOrderEnum,
   TModelSortEnum,
 } from "@/lib/constants";
 import { parseAsArrayOf, parseAsStringEnum, useQueryState } from "nuqs";
 
-export function useModelDataStatRows() {
+export function useModelStatVisibilityPreferences() {
   const res = useQueryState(
-    MODEL_DELTA_STAT_ROWS_KEY,
+    MODEL_STAT_VISIBLITY_PREFERENCES_KEY,
     parseAsArrayOf(
-      parseAsStringEnum(TModelDeltaStatRowsEnum.options)
-    ).withDefault(MODEL_DELTA_STAT_ROWS_TO_SHOW_DEFAULT)
+      parseAsStringEnum(TModelStatVisibilityPreferencesEnum.options)
+    ).withDefault(MODEL_STAT_VISIBLITY_PREFERENCES_DEFAULT)
   );
   return res;
 }

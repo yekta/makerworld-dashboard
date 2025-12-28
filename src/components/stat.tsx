@@ -1,4 +1,4 @@
-import { useModelDataStatRows } from "@/components/home/filters-section/hooks";
+import { useModelStatVisibilityPreferences } from "@/components/home/filters-section/hooks";
 import { appLocale } from "@/lib/constants";
 import useFlashOnChange from "@/lib/hooks/use-flash-on-change";
 import { cn } from "@/lib/utils";
@@ -49,7 +49,7 @@ export default function Stat({
   Icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   className?: string;
 }) {
-  const [modelDeltaStatRows] = useModelDataStatRows();
+  const [modelStatVisibilityPreferences] = useModelStatVisibilityPreferences();
   return (
     <div
       data-placeholder={isPlaceholder ? true : undefined}
@@ -71,7 +71,7 @@ export default function Stat({
       />
       <div className="shrink min-w-0 flex flex-col text-xs mt-px gap-px">
         {(isUnaffectedByFilters ||
-          modelDeltaStatRows.includes("delta_0-1h")) && (
+          modelStatVisibilityPreferences.includes("delta_0-1h")) && (
           <StatDelta
             value={
               isPlaceholder
@@ -92,7 +92,7 @@ export default function Stat({
           />
         )}
         {(isUnaffectedByFilters ||
-          modelDeltaStatRows.includes("delta_0-4h")) && (
+          modelStatVisibilityPreferences.includes("delta_0-4h")) && (
           <StatDelta
             value={
               isPlaceholder
@@ -113,7 +113,7 @@ export default function Stat({
           />
         )}
         {(isUnaffectedByFilters ||
-          modelDeltaStatRows.includes("delta_0-12h")) && (
+          modelStatVisibilityPreferences.includes("delta_0-12h")) && (
           <StatDelta
             value={
               isPlaceholder
@@ -134,7 +134,7 @@ export default function Stat({
           />
         )}
         {(isUnaffectedByFilters ||
-          modelDeltaStatRows.includes("delta_0-24h")) && (
+          modelStatVisibilityPreferences.includes("delta_0-24h")) && (
           <StatDelta
             value={
               isPlaceholder
@@ -156,7 +156,7 @@ export default function Stat({
           />
         )}
         {(isUnaffectedByFilters ||
-          modelDeltaStatRows.includes("delta_0-168h")) && (
+          modelStatVisibilityPreferences.includes("delta_0-168h")) && (
           <StatDelta
             value={
               isPlaceholder
@@ -177,7 +177,7 @@ export default function Stat({
           />
         )}
         {(isUnaffectedByFilters ||
-          modelDeltaStatRows.includes("delta_0-720h")) && (
+          modelStatVisibilityPreferences.includes("delta_0-720h")) && (
           <StatDelta
             value={
               isPlaceholder

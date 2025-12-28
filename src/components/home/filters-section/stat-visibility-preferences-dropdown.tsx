@@ -1,10 +1,10 @@
 "use client";
 
-import { useModelDataStatRows } from "@/components/home/filters-section/hooks";
+import { useModelStatVisibilityPreferences } from "@/components/home/filters-section/hooks";
 import OptionDropdown from "@/components/home/filters-section/option-dropdown";
 import {
-  getModelDeltaStatRowsEnumLabel,
-  TModelDeltaStatRowsEnum,
+  getModelStatVisibilityPreferencesEnumLabel,
+  TModelStatVisibilityPreferencesEnum,
 } from "@/lib/constants";
 import { Rows3Icon } from "lucide-react";
 import { useState } from "react";
@@ -13,25 +13,30 @@ type TProps = {
   className?: string;
 };
 
-const items = TModelDeltaStatRowsEnum.options.map((timeframe) => ({
-  label: getModelDeltaStatRowsEnumLabel(timeframe),
-  value: [timeframe],
-}));
+const items = [
+  ...TModelStatVisibilityPreferencesEnum.options.map((opt) => ({
+    label: getModelStatVisibilityPreferencesEnumLabel(opt),
+    value: [opt],
+  })),
+];
 
-export default function DeltaStatRowsDropdown({ className }: TProps) {
+export default function StatVisibilityPreferencesDropdown({
+  className,
+}: TProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [modelDeltaStatRows, setModelDeltaStatRows] = useModelDataStatRows();
+  const [modelStatVisibilityPreferences, setModelStatVisibilityPreferences] =
+    useModelStatVisibilityPreferences();
   return (
     <OptionDropdown
       items={items}
       TriggerIcon={Rows3Icon}
-      currentValue={modelDeltaStatRows}
+      currentValue={modelStatVisibilityPreferences}
       isOpen={isOpen}
       setIsOpen={setIsOpen}
       arrayMode={true}
       triggerLabel="Stats"
       onSelect={(value) => {
-        setModelDeltaStatRows((prev) => {
+        setModelStatVisibilityPreferences((prev) => {
           let newArr = [...prev];
           for (const v of value) {
             if (newArr.includes(v)) {
@@ -42,8 +47,8 @@ export default function DeltaStatRowsDropdown({ className }: TProps) {
           }
           return newArr.sort((a, b) => {
             return (
-              TModelDeltaStatRowsEnum.options.indexOf(a) -
-              TModelDeltaStatRowsEnum.options.indexOf(b)
+              TModelStatVisibilityPreferencesEnum.options.indexOf(a) -
+              TModelStatVisibilityPreferencesEnum.options.indexOf(b)
             );
           });
         });

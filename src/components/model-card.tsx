@@ -1,6 +1,7 @@
 "use client";
 
 import PrintIcon from "@/components/icons/print-icon";
+import ModelChart from "@/components/model-chart";
 import { useNow } from "@/components/providers/now-provider";
 import Stat from "@/components/stat";
 import { appLocale } from "@/lib/constants";
@@ -35,13 +36,9 @@ export default function ModelCard(props: TProps) {
   }
 
   return (
-    <Link
-      href={getModelUrl(props.model)}
-      target="_blank"
-      className="w-full md:w-1/2 lg:w-1/2 xl:w-1/3 p-1 group rounded-2xl group"
-    >
+    <div className="w-full md:w-1/2 lg:w-1/2 xl:w-1/3 p-1 group rounded-2xl group">
       <ModelCardContent {...props} />
-    </Link>
+    </div>
   );
 }
 
@@ -62,7 +59,6 @@ function ModelCardContent(props: TProps) {
       {/* Flare effect */}
       <div className="w-full h-full absolute right-0 top-0 p-px transition bg-linear-to-bl via-15% from-border via-border to-border group-data-highlighted/content:from-success/40 group-data-highlighted/content:via-border group-highlighted/content:to-border rounded-[14px]">
         <div className="w-[calc(100%-2px)] h-[calc(100%-2px)] absolute right-px top-px bg-background rounded-[13px]" />
-        <div className="w-full h-full rounded-[13px] group-active:bg-border group-hover:bg-border relative" />
       </div>
       <div className="opacity-0 transition-opacity duration-300 group-data-highlighted/content:opacity-100 absolute h-1/6 aspect-5/1 translate-x-full -translate-y-full group-data-highlighted/content:translate-x-1/2 group-data-highlighted/content:-translate-y-1/2 top-0 right-0 bg-success/15 blur-xl" />
       <div className="opacity-0 transition-opacity duration-300 group-data-highlighted/content:opacity-100 absolute h-1/4 aspect-5/1 translate-x-full -translate-y-full group-data-highlighted/content:translate-x-1/2 group-data-highlighted/content:-translate-y-1/2 top-0 right-0 bg-success/30 blur-2xl" />
@@ -77,10 +73,16 @@ function ModelCardContent(props: TProps) {
         />
       </div> */}
       {/* Flare effect end */}
-      <div className="w-full flex items-center overflow-hidden gap-3 relative px-1">
-        <h2 className="text-xs font-light shrink min-w-0 text-muted-foreground whitespace-nowrap overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent">
-          {!isPlaceholder ? model.title : "Loading This Model's Title"}
-        </h2>
+      <div className="w-full flex items-center overflow-hidden gap-4 relative px-1">
+        <Link
+          href={isPlaceholder ? "" : getModelUrl(model)}
+          target="_blank"
+          className="active:underline hover:underline group/link decoration-foreground flex min-w-0 overflow-hidden"
+        >
+          <h2 className="text-xs font-light shrink min-w-0 text-muted-foreground group-active/link:text-foreground group-hover/link:text-foreground whitespace-nowrap overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent">
+            {!isPlaceholder ? model.title : "Loading This Model's Title"}
+          </h2>
+        </Link>
         {!isPlaceholder &&
           (model.stats["delta_0-0.25h"].boosts > 0 ||
             model.stats["delta_0-0.25h"].prints > 0 ||
@@ -149,6 +151,10 @@ function ModelCardContent(props: TProps) {
           Icon={ThumbsUpIcon}
         />
       </div>
+      <ModelChart
+        className="h-16 relative"
+        {...(isPlaceholder ? { isPlaceholder: true } : { model })}
+      />
       <div className="w-full mt-auto flex justify-start pt-[0.09375rem] relative">
         <Footer {...props} />
       </div>

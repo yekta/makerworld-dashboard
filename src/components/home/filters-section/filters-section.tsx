@@ -1,6 +1,6 @@
 import OrderDropdown from "@/components/home/filters-section/order-dropdown";
 import SortDropdown from "@/components/home/filters-section/sort-dropdown";
-import DeltaStatRowsDropdown from "@/components/home/filters-section/delta-stat-rows-dropdown";
+import StatVisiblityPreferencesDropdown from "@/components/home/filters-section/stat-visibility-preferences-dropdown";
 import { cn } from "@/lib/utils";
 
 type TProps = {
@@ -19,7 +19,7 @@ export default function FiltersSection({ className }: TProps) {
         <SortDropdown className="flex-1 sm:flex-none sm:w-48 rounded-r-none" />
         <OrderDropdown className="w-26 rounded-l-none -ml-px" />
       </div>
-      <DeltaStatRowsDropdown className="w-full sm:w-26" />
+      <StatVisiblityPreferencesDropdown className="w-full sm:w-26" />
     </div>
   );
 }
