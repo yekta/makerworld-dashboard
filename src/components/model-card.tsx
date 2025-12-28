@@ -258,11 +258,11 @@ function ImageSection({
             alt={model.title}
             width={1916}
             height={1437}
-            className="w-full shrink-0 h-auto bg-border"
+            className="w-full shrink-0 h-auto bg-border relative z-0"
             sizes="56px"
           />
           <Link
-            className="w-full group/link opacity-0 focus-visible:opacity-100 active:opacity-100 group-hover/image:opacity-100 duration-150 flex items-center justify-center h-full absolute left-0 top-0 bg-background/75"
+            className="w-full group/link z-10 opacity-0 focus-visible:opacity-100 active:opacity-100 group-hover/image:opacity-100 duration-150 flex items-center justify-center h-full absolute left-0 top-0 bg-background/75"
             href={isPlaceholder ? "" : getModelUrl(model)}
             target="_blank"
           >
