@@ -30,7 +30,7 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const placeholderData = Array.from({ length: 7 }).map((_, index) => ({
   prints: Math.floor(Math.random() * 100),
   day: days[index],
@@ -42,7 +42,7 @@ export default function ModelChart({
   className,
 }: TProps) {
   const now = useNow();
-  const dayOfWeek = new Date(now).getUTCDay();
+  const dayOfWeek = new Date(now).getDay();
   const chartData = useMemo(() => {
     if (isPlaceholder || !model) {
       return placeholderData;
@@ -50,28 +50,28 @@ export default function ModelChart({
     const data: { prints: number; day: string }[] = [
       {
         prints: model.stats["delta_144-168h"].prints,
-        day: days[(dayOfWeek - 6) % 7],
+        day: days[(dayOfWeek - 6 + 7) % 7],
       },
       {
         prints: model.stats["delta_120-144h"].prints,
-        day: days[(dayOfWeek - 5) % 7],
+        day: days[(dayOfWeek - 5 + 7) % 7],
       },
       {
         prints: model.stats["delta_96-120h"].prints,
-        day: days[(dayOfWeek - 4) % 7],
+        day: days[(dayOfWeek - 4 + 7) % 7],
       },
       {
         prints: model.stats["delta_72-96h"].prints,
-        day: days[(dayOfWeek - 3) % 7],
+        day: days[(dayOfWeek - 3 + 7) % 7],
       },
 
       {
         prints: model.stats["delta_48-72h"].prints,
-        day: days[(dayOfWeek - 2) % 7],
+        day: days[(dayOfWeek - 2 + 7) % 7],
       },
       {
         prints: model.stats["delta_24-48h"].prints,
-        day: days[(dayOfWeek - 1) % 7],
+        day: days[(dayOfWeek - 1 + 7) % 7],
       },
       { prints: model.stats["delta_0-24h"].prints, day: days[dayOfWeek] },
     ];
@@ -86,6 +86,7 @@ export default function ModelChart({
 
   return (
     <div className={cn("w-full h-24", className)}>
+      {dayOfWeek}
       <ChartContainer config={chartConfig} className={"h-full w-full"}>
         <AreaChart
           accessibilityLayer
