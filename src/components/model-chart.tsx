@@ -86,7 +86,6 @@ export default function ModelChart({
 
   return (
     <div className={cn("w-full h-24", className)}>
-      {dayOfWeek}
       <ChartContainer config={chartConfig} className={"h-full w-full"}>
         <AreaChart
           accessibilityLayer
