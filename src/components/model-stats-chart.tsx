@@ -119,6 +119,7 @@ export default function ModelStatsChart({
           />
           <ChartTooltip
             cursor={true}
+            wrapperStyle={{ pointerEvents: "none" }}
             content={
               <ChartTooltipContent
                 labelFormatter={(_value, payload) => {
