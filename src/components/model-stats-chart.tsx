@@ -100,6 +100,8 @@ export default function ModelStatsChart({
         <AreaChart
           accessibilityLayer
           data={chartData}
+          width="100%"
+          height="100%"
           margin={{
             left: 4,
             right: 4,
