@@ -250,7 +250,7 @@ function Footer({ model, metadata, isPlaceholder }: TProps) {
 
 function ImageSection({ model, isPlaceholder }: TProps) {
   const classNameWrapper =
-    "w-14 group/link aspect-4/3 -mr-2.25 relative outline-0 transition duration-150 active:ring-[1.5px] hover:ring-[1.5px] ring-0 focus-visible:ring-[1.5px] ring-foreground/50 -mb-2.25 bg-border border rounded-tl-lg overflow-hidden group-data-placeholder:animate-pulse";
+    "w-14 group/link aspect-4/3 -mr-2 relative outline-0 transition duration-150 active:ring-[1.5px] hover:ring-[1.5px] ring-0 focus-visible:ring-[1.5px] ring-foreground/50 -mb-2 bg-border rounded-tl-lg overflow-hidden group-data-placeholder:animate-pulse";
 
   if (isPlaceholder) {
     return <div className={classNameWrapper} />;
