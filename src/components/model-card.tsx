@@ -51,7 +51,7 @@ export default function ModelCard(props: TProps) {
 }
 
 function ModelCardContent(props: TProps) {
-  const { model, metadata, isPlaceholder } = props;
+  const { model, isPlaceholder } = props;
   const [statVisibilityPreferences] = useModelStatVisibilityPreferences();
   const isChartActive = statVisibilityPreferences.includes("chart");
   return (
@@ -249,18 +249,17 @@ function Footer({ model, metadata, isPlaceholder }: TProps) {
 }
 
 function ImageSection({ model, isPlaceholder }: TProps) {
-  const classNameWrapper =
-    "w-14 group/link aspect-4/3 -mr-2 relative outline-0 transition duration-150 active:ring-[1.5px] hover:ring-[1.5px] ring-0 focus-visible:ring-[1.5px] ring-foreground/50 -mb-2 bg-border rounded-tl-lg overflow-hidden group-data-placeholder:animate-pulse";
-
   if (isPlaceholder) {
-    return <div className={classNameWrapper} />;
+    return (
+      <div className="w-14 group/link aspect-4/3 border border-border rounded-br-[0.9rem] -mr-2 relative outline-0 transition duration-150 active:ring-[1.5px] hover:ring-[1.5px] ring-0 focus-visible:ring-[1.5px] ring-foreground/50 -mb-2 bg-border rounded-tl-lg overflow-hidden group-data-placeholder:animate-pulse" />
+    );
   }
 
   return (
     <Link
       href={getModelUrl(model)}
       target="_blank"
-      className={classNameWrapper}
+      className="w-14 group/link aspect-4/3 border border-border rounded-br-[0.9rem] -mr-2 relative outline-0 transition duration-150 active:ring-[1.5px] hover:ring-[1.5px] ring-0 focus-visible:ring-[1.5px] ring-foreground/50 -mb-2 bg-border rounded-tl-lg overflow-hidden group-data-placeholder:animate-pulse"
     >
       <Image
         src={model.image}
