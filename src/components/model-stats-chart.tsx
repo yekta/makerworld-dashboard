@@ -6,7 +6,6 @@ import {
   ChartTooltipContent,
   type ChartConfig,
 } from "@/components/ui/chart";
-import { timeAgo } from "@/lib/helpers";
 import { cn } from "@/lib/utils";
 import { AppRouterOutputs } from "@/server/trpc/api/root";
 import { format } from "date-fns";
@@ -96,7 +95,7 @@ export default function ModelStatsChart({
   }
 
   return (
-    <div className={cn("w-full h-24", className)}>
+    <div className={cn("w-full h-24 -mb-0.5 pt-1", className)}>
       <ChartContainer config={chartConfig} className={"h-full w-full"}>
         <AreaChart
           accessibilityLayer
@@ -104,8 +103,8 @@ export default function ModelStatsChart({
           margin={{
             left: 4,
             right: 4,
-            top: 8,
-            bottom: 2,
+            top: 4,
+            bottom: 4,
           }}
         >
           <CartesianGrid vertical={false} horizontal={false} />
