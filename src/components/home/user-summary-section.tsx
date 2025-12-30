@@ -108,7 +108,7 @@ function Section({
       </div>
       {/* Divider */}
       <div className="w-full md:w-px py-2 md:py-px flex items-center justify-center md:self-stretch">
-        <div className="w-1/2 md:w-full bg-muted-more-foreground/50 h-px md:h-full rounded-full" />
+        <div className="w-1/2 md:w-full bg-border h-px md:h-full rounded-full" />
       </div>
       {/* Right Column / Bottom Row */}
       <div className="w-full flex flex-col items-center gap-0.5 md:w-1/2 md:items-start">
