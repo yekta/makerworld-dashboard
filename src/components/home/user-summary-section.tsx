@@ -7,7 +7,7 @@ import { appLocale } from "@/lib/constants";
 import { timeAgo } from "@/lib/helpers";
 import { AppRouterOutputs, AppRouterQueryResult } from "@/server/trpc/api/root";
 import { format } from "date-fns";
-import { DownloadIcon, RocketIcon, UsersIcon, WeightIcon } from "lucide-react";
+import { DownloadIcon, RocketIcon, UsersIcon } from "lucide-react";
 import { useMemo } from "react";
 
 export default function UserSummarySection() {
@@ -72,10 +72,6 @@ function Section({
     : (data.user.stats.current.boosts / (data.user.stats.current.prints || 1)) *
       100;
 
-  const totalMaterialUsedByPrintsKg = !data
-    ? 50
-    : data.user.stats.current.total_material_used_by_prints_gr / 1000;
-
   return (
     <div className="w-full flex flex-col md:flex-row">
       {/* Left Column / Top Row */}
@@ -130,16 +126,6 @@ function Section({
                 maximumFractionDigits: 1,
               })}
               {"%"}
-            </span>
-            <span className="text-muted-more-foreground px-[0.75ch]">
-              {"|"}
-            </span>
-            <span className="font-medium">
-              <WeightIcon className="inline-block size-2.75 mb-px mr-[0.2ch]" />
-              {totalMaterialUsedByPrintsKg.toLocaleString(appLocale, {
-                maximumFractionDigits: 1,
-              })}
-              {" kg"}
             </span>
           </p>
         </div>

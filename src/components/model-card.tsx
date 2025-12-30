@@ -14,7 +14,6 @@ import {
   ExternalLink,
   RocketIcon,
   ThumbsUpIcon,
-  WeightIcon,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -197,9 +196,6 @@ function Footer({ model, metadata, isPlaceholder }: TProps) {
   const boostRatePercentage = !isPlaceholder
     ? (model.stats.current.boosts / (model.stats.current.prints || 1)) * 100
     : 5;
-  const totalMaterialUsedByPrintsKg = !isPlaceholder
-    ? model.stats.current.total_material_used_by_prints_gr / 1000
-    : 2;
 
   const { timeAgoString, releaseDate } = useMemo(
     () => ({
@@ -239,14 +235,6 @@ function Footer({ model, metadata, isPlaceholder }: TProps) {
               maximumFractionDigits: 1,
             })}
             {"%"}
-          </span>
-          <span className="text-muted-more-foreground px-[0.75ch]">{"|"}</span>
-          <span className="font-medium">
-            <WeightIcon className="inline-block size-2.75 mb-px mr-[0.2ch]" />
-            {totalMaterialUsedByPrintsKg.toLocaleString(appLocale, {
-              maximumFractionDigits: 1,
-            })}
-            {" kg"}
           </span>
         </p>
         <p className="shrink mt-0.5 min-w-0 font-light overflow-hidden overflow-ellipsis text-xs px-1 text-muted-foreground group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent">
