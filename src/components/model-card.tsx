@@ -194,7 +194,7 @@ function Footer({ model, metadata, isPlaceholder }: TProps) {
   const printsPerDay = !isPlaceholder
     ? model.stats.current.prints / (sinceCreation / (1000 * 60 * 60 * 24))
     : 10;
-  const boostRate = !isPlaceholder
+  const boostRatePercentage = !isPlaceholder
     ? (model.stats.current.boosts / (model.stats.current.prints || 1)) * 100
     : 5;
   const totalMaterialUsedByPrintsKg = !isPlaceholder
@@ -235,7 +235,9 @@ function Footer({ model, metadata, isPlaceholder }: TProps) {
           <span className="text-muted-more-foreground px-[0.75ch]">{"|"}</span>
           <span className="font-medium">
             <RocketIcon className="inline-block size-2.75 mb-px mr-[0.2ch]" />
-            {boostRate.toLocaleString(appLocale, { maximumFractionDigits: 1 })}
+            {boostRatePercentage.toLocaleString(appLocale, {
+              maximumFractionDigits: 1,
+            })}
             {"%"}
           </span>
           <span className="text-muted-more-foreground px-[0.75ch]">{"|"}</span>

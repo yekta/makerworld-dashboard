@@ -1,10 +1,13 @@
 "use client";
 
 import PrintIcon from "@/components/icons/print-icon";
+import { useNow } from "@/components/providers/now-provider";
 import { useStats } from "@/components/providers/stats-provider";
 import { appLocale } from "@/lib/constants";
+import { timeAgo } from "@/lib/helpers";
 import { AppRouterOutputs, AppRouterQueryResult } from "@/server/trpc/api/root";
-import { DownloadIcon, RocketIcon, UsersIcon } from "lucide-react";
+import { format } from "date-fns";
+import { DownloadIcon, RocketIcon, UsersIcon, WeightIcon } from "lucide-react";
 import { useMemo } from "react";
 
 export default function UserSummarySection() {
@@ -32,6 +35,8 @@ const pointToUsdRatio = 0.066;
 const printToPointRatio =
   printToPointRatioRaw * (1 - printToPointRatioSafetyMargin);
 
+const placeholderTimestamp = new Date().getTime() - 1000 * 60 * 60 * 24 * 30;
+
 function Section({
   data,
 }: {
@@ -46,29 +51,104 @@ function Section({
     const projectedMonthlyUsd = projectedMonthlyPoints * pointToUsdRatio;
     return projectedMonthlyUsd;
   }, [data]);
+
+  const veryFirstModelCreationTimestamp = useMemo(() => {
+    if (!data) return placeholderTimestamp;
+    const modelCreationTimestamps = data.models.map(
+      (model) => model.model_created_at
+    );
+    return Math.min(...modelCreationTimestamps);
+  }, [data]);
+
+  const printsPerDayBasedOnLastWeek = useMemo(() => {
+    if (!data) return 100;
+    const lastWeekPrints = data.user.stats["delta_0-168h"].prints;
+    const avgDailyPrints = lastWeekPrints / 7;
+    return avgDailyPrints;
+  }, [data]);
+
+  const boostRatePercentage = !data
+    ? 5
+    : (data.user.stats.current.boosts / (data.user.stats.current.prints || 1)) *
+      100;
+
+  const totalMaterialUsedByPrintsKg = !data
+    ? 50
+    : data.user.stats.current.total_material_used_by_prints_gr / 1000;
+
   return (
-    <div className="w-full flex flex-col items-center gap-0.5">
-      <div className="w-full flex items-center justify-center">
-        <p
-          suppressHydrationWarning
-          className="shrink whitespace-nowrap leading-normal text-center px-3 text-muted-foreground min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent"
-        >
-          <span className="text-foreground font-medium group-data-placeholder:text-transparent">
-            $
-            {projectedMonthlyUSDRevenue.toLocaleString(appLocale, {
-              maximumFractionDigits: 0,
-            })}
-          </span>
-          {"/mo forecast based on last week."}
-        </p>
+    <div className="w-full flex flex-col md:flex-row">
+      {/* Left Column / Top Row */}
+      <div className="w-full flex flex-col items-center gap-0.5 md:w-1/2 md:items-end">
+        <div className="w-full flex items-center justify-center md:justify-end">
+          <p
+            suppressHydrationWarning
+            className="shrink whitespace-nowrap leading-normal text-center md:text-right px-3 text-muted-foreground min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent"
+          >
+            <span className="text-foreground font-medium group-data-placeholder:text-transparent">
+              $
+              {projectedMonthlyUSDRevenue.toLocaleString(appLocale, {
+                maximumFractionDigits: 0,
+              })}
+            </span>
+            {"/mo forecast based on last week"}
+          </p>
+        </div>
+        <div className="w-full flex items-center justify-center md:justify-end">
+          <p
+            suppressHydrationWarning
+            className="shrink whitespace-nowrap leading-normal text-center md:text-right px-3 text-muted-foreground min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent"
+          >
+            <RecentEventsText data={data} />
+          </p>
+        </div>
       </div>
-      <div className="w-full flex items-center justify-center">
-        <p
-          suppressHydrationWarning
-          className="shrink whitespace-nowrap leading-normal text-center px-3 text-muted-foreground min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent"
-        >
-          <RecentEventsText data={data} />
-        </p>
+      <div className="w-full md:w-px py-2 md:py-0.5 flex items-center justify-center md:self-stretch">
+        <div className="w-1/2 md:w-full bg-border h-px md:h-full rounded-full" />
+      </div>
+      <div className="w-full flex flex-col items-center gap-0.5 md:w-1/2 md:items-start">
+        <div className="w-full flex items-center justify-center md:justify-start">
+          <p
+            suppressHydrationWarning
+            className="shrink whitespace-nowrap leading-normal text-center md:text-left px-3 text-muted-foreground min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent"
+          >
+            <span className="font-medium">
+              <PrintIcon className="inline-block size-2.75 mb-px mr-[0.2ch]" />
+              {printsPerDayBasedOnLastWeek.toLocaleString(appLocale, {
+                maximumFractionDigits: 1,
+              })}
+            </span>
+            {" daily"}
+            <span className="text-muted-more-foreground px-[0.75ch]">
+              {"|"}
+            </span>
+            <span className="font-medium">
+              <RocketIcon className="inline-block size-2.75 mb-px mr-[0.2ch]" />
+              {boostRatePercentage.toLocaleString(appLocale, {
+                maximumFractionDigits: 1,
+              })}
+              {"%"}
+            </span>
+            <span className="text-muted-more-foreground px-[0.75ch]">
+              {"|"}
+            </span>
+            <span className="font-medium">
+              <WeightIcon className="inline-block size-2.75 mb-px mr-[0.2ch]" />
+              {totalMaterialUsedByPrintsKg.toLocaleString(appLocale, {
+                maximumFractionDigits: 1,
+              })}
+              {" kg"}
+            </span>
+          </p>
+        </div>
+        <div className="w-full flex items-center justify-center md:justify-start">
+          <p className="shrink whitespace-nowrap leading-normal text-center md:text-left px-3 text-muted-foreground min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent">
+            <DatesSpan
+              isPlaceholder={!data}
+              timestamp={veryFirstModelCreationTimestamp}
+            />
+          </p>
+        </div>
       </div>
     </div>
   );
@@ -91,12 +171,45 @@ function Wrapper({
   );
 }
 
+function DatesSpan({
+  timestamp,
+  isPlaceholder,
+}: {
+  timestamp: number;
+  isPlaceholder?: boolean;
+}) {
+  const now = useNow();
+  const { timeAgoString, releaseDate } = useMemo(
+    () => ({
+      timeAgoString: timeAgo({
+        timestamp: !isPlaceholder ? timestamp : placeholderTimestamp,
+        now,
+        dontPad: true,
+        fullUnitText: true,
+      }),
+      releaseDate: format(
+        new Date(!isPlaceholder ? timestamp : placeholderTimestamp),
+        "EEE, HH:mm - yyyy-MM-dd"
+      ),
+    }),
+    [isPlaceholder, timestamp, now]
+  );
+
+  return (
+    <span>
+      {timeAgoString}
+      <span className="text-muted-more-foreground px-[0.75ch]">{"|"}</span>
+      {releaseDate}
+    </span>
+  );
+}
+
 function RecentEventsText({
   data,
 }: {
   data: AppRouterQueryResult<AppRouterOutputs["stats"]["get"]>["data"];
 }) {
-  const noEventsText = "No events in the last 15 min.";
+  const noEventsText = "No events in the last 15 min";
   if (!data) return noEventsText;
 
   const boostsInLast15Min = data.user.stats["delta_0-0.25h"].boosts;
@@ -158,7 +271,7 @@ function RecentEventsText({
     return (
       <span>
         {...spans}
-        <span>{" in the last 15 min."}</span>
+        <span>{" in the last 15 min"}</span>
       </span>
     );
   }
