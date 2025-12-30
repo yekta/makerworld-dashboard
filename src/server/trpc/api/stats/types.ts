@@ -2,6 +2,7 @@ import { z } from "zod";
 
 export const TModelStatSchema = z.object({
   prints: z.number(),
+  total_material_used_by_prints_gr: z.number(),
   downloads: z.number(),
   boosts: z.number(),
   likes: z.number(),
@@ -49,6 +50,7 @@ export const TModelSchema = z.object({
 
 export const TUserStatSchema = z.object({
   prints: z.number(),
+  total_material_used_by_prints_gr: z.number(),
   downloads: z.number(),
   boosts: z.number(),
   followers: z.number(),
