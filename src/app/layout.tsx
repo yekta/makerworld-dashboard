@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "@yekta | Makerworld",
-  description: "@yekta on Makerworld.",
+  title: "@yekta | MakerWorld",
+  description: "Statistics dashboard for @yekta on MakerWorld.",
 };
 
 export default function RootLayout({
