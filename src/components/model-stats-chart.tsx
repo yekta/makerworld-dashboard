@@ -96,7 +96,7 @@ export default function ModelStatsChart({
 
   return (
     <div className={cn("w-full h-24 -mb-0.5 pt-1", className)}>
-      <ChartContainer config={chartConfig} className={"h-full w-full"}>
+      <ChartContainer config={chartConfig} className="w-full h-full">
         <AreaChart
           accessibilityLayer
           data={chartData}
