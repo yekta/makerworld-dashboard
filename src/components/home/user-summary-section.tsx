@@ -7,7 +7,7 @@ import { AppRouterOutputs, AppRouterQueryResult } from "@/server/trpc/api/root";
 import { DownloadIcon, RocketIcon, UsersIcon } from "lucide-react";
 import { useMemo } from "react";
 
-export default function SummarySection() {
+export default function UserSummarySection() {
   const { data, isPending, isError } = useStats();
   if (!data && isError) {
     return (
