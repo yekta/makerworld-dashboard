@@ -67,6 +67,13 @@ function Section({
     return avgDailyPrints;
   }, [data]);
 
+  const boostsPerDayBasedOnLastWeek = useMemo(() => {
+    if (!data) return 0;
+    const lastWeekBoosts = data.user.stats["delta_0-168h"].boosts;
+    const avgDailyBoosts = lastWeekBoosts / 7;
+    return avgDailyBoosts;
+  }, [data]);
+
   const boostRatePercentage = !data
     ? 5
     : (data.user.stats.current.boosts / (data.user.stats.current.prints || 1)) *
@@ -79,7 +86,7 @@ function Section({
         <div className="w-full flex items-center justify-center md:justify-end">
           <p
             suppressHydrationWarning
-            className="shrink whitespace-nowrap leading-normal text-center md:text-right px-3 text-muted-foreground min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent"
+            className="shrink font-light whitespace-nowrap leading-normal text-center md:text-right px-3 text-muted-foreground min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent"
           >
             <span className="text-foreground font-medium group-data-placeholder:text-transparent">
               $
@@ -93,7 +100,7 @@ function Section({
         <div className="w-full flex items-center justify-center md:justify-end">
           <p
             suppressHydrationWarning
-            className="shrink whitespace-nowrap leading-normal text-center md:text-right px-3 text-muted-foreground min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent"
+            className="shrink font-light whitespace-nowrap leading-normal text-center md:text-right px-3 text-muted-foreground min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent"
           >
             <RecentEventsText data={data} />
           </p>
@@ -108,11 +115,21 @@ function Section({
         <div className="w-full flex items-center justify-center md:justify-start">
           <p
             suppressHydrationWarning
-            className="shrink whitespace-nowrap leading-normal text-center md:text-left px-3 text-muted-foreground min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent"
+            className="shrink font-light whitespace-nowrap leading-normal text-center md:text-left px-3 text-muted-foreground min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent"
           >
             <span className="font-medium">
               <PrintIcon className="inline-block size-2.75 mb-px mr-[0.2ch]" />
               {printsPerDayBasedOnLastWeek.toLocaleString(appLocale, {
+                maximumFractionDigits: 1,
+              })}
+            </span>
+            {" daily"}
+            <span className="text-muted-more-foreground px-[0.75ch]">
+              {"|"}
+            </span>
+            <span className="font-medium">
+              <RocketIcon className="inline-block size-2.75 mb-px mr-[0.2ch]" />
+              {boostsPerDayBasedOnLastWeek.toLocaleString(appLocale, {
                 maximumFractionDigits: 1,
               })}
             </span>
@@ -130,7 +147,7 @@ function Section({
           </p>
         </div>
         <div className="w-full flex items-center justify-center md:justify-start">
-          <p className="shrink whitespace-nowrap leading-normal text-center md:text-left px-3 text-muted-foreground min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent">
+          <p className="shrink font-light whitespace-nowrap leading-normal text-center md:text-left px-3 text-muted-foreground min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent">
             <DatesSpan
               isPlaceholder={!data}
               timestamp={veryFirstModelCreationTimestamp}
@@ -177,7 +194,7 @@ function DatesSpan({
       }),
       releaseDate: format(
         new Date(!isPlaceholder ? timestamp : placeholderTimestamp),
-        "EEE, HH:mm - yyyy-MM-dd"
+        "yyyy-MM-dd"
       ),
     }),
     [isPlaceholder, timestamp, now]
