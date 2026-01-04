@@ -29,7 +29,7 @@ export default function UserSummarySection() {
   );
 }
 
-const printToPointRatioRaw = 2.8;
+const printToPointRatioRaw = 2.55;
 const printToPointRatioSafetyMargin = 0.1;
 const pointToUsdRatio = 0.066;
 const printToPointRatio =
