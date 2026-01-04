@@ -167,9 +167,7 @@ function ModelCardContent(props: TProps) {
           Icon={ThumbsUpIcon}
         />
       </div>
-      <div className="w-full relative z-10">
-        <ModelStatsChart className="h-12" {...props} />
-      </div>
+      <ModelStatsChart className="h-12" {...props} />
       <div className="w-full z-0 mt-auto flex justify-start pt-[0.09375rem] relative">
         <Footer {...props} />
       </div>
