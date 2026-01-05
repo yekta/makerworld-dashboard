@@ -14,7 +14,7 @@ const TWeekDayEnum = z.enum([
   "saturday",
   "sunday",
 ]);
-const DEFAULT_DAY_START = "22:20";
+const DEFAULT_DAY_START = "22:25";
 const DEFAULT_WEEK_START: z.infer<typeof TWeekDayEnum> = "sunday";
 const DEFAULT_MONTH_START = 1;
 
