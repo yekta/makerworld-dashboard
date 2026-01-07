@@ -1,5 +1,6 @@
 "use client";
 
+import { useTimeMachine } from "@/components/providers/time-machine-provider";
 import { AppRouterOutputs, AppRouterQueryResult } from "@/server/trpc/api/root";
 import { api } from "@/server/trpc/setup/client";
 import { createContext, ReactNode, useContext } from "react";
@@ -12,8 +13,12 @@ export const StatsProvider: React.FC<{
   initialData?: AppRouterOutputs["stats"]["get"];
   children: ReactNode;
 }> = ({ initialData, children }) => {
+  const { headCutoffTimestamp } = useTimeMachine();
   const query = api.stats.get.useQuery(
-    {},
+    {
+      headCutoffTimestamp:
+        headCutoffTimestamp !== null ? headCutoffTimestamp : undefined,
+    },
     { initialData, refetchInterval: 6000 }
   );
   return (
@@ -27,6 +32,11 @@ export const useStats = () => {
     throw new Error("useStats must be used within an StatsProvider");
   }
   return context;
+};
+
+export const useStatsUtils = () => {
+  const utils = api.useUtils();
+  return utils.stats;
 };
 
 export default StatsProvider;

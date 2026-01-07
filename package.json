@@ -10,8 +10,9 @@
   },
   "dependencies": {
     "@radix-ui/react-dropdown-menu": "^2.1.16",
+    "@radix-ui/react-popover": "^1.1.15",
     "@radix-ui/react-scroll-area": "^1.2.10",
-    "@radix-ui/react-slot": "^1.2.3",
+    "@radix-ui/react-slot": "^1.2.4",
     "@t3-oss/env-nextjs": "^0.13.8",
     "@trpc/client": "^11.7.1",
     "@trpc/react-query": "^11.7.1",
@@ -24,6 +25,7 @@
     "next": "16.0.1",
     "nuqs": "^2.8.2",
     "react": "19.2.0",
+    "react-day-picker": "^9.13.0",
     "react-dom": "19.2.0",
     "recharts": "3.6.0",
     "superjson": "^2.2.5",
