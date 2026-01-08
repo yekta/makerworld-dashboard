@@ -4,6 +4,7 @@ import { useModelStatVisibilityPreferences } from "@/components/home/filters-sec
 import PrintIcon from "@/components/icons/print-icon";
 import ModelStatsChart from "@/components/model-stats-chart";
 import { useNow } from "@/components/providers/now-provider";
+import { useTimeMachine } from "@/components/providers/time-machine-provider";
 import Stat from "@/components/stat";
 import { appLocale } from "@/lib/constants";
 import { timeAgo } from "@/lib/helpers";
@@ -184,9 +185,13 @@ function getModelUrl(
 const placeholderTimestamp = new Date("2025-01-01T00:00:00Z").getTime();
 
 function Footer({ model, metadata, isPlaceholder }: TProps) {
+  const { headCutoffTimestamp } = useTimeMachine();
   const now = useNow();
+  const adjustedNow = headCutoffTimestamp
+    ? Math.min(now, headCutoffTimestamp)
+    : now;
   const sinceCreation = !isPlaceholder
-    ? now - model.model_created_at
+    ? adjustedNow - model.model_created_at
     : 24 * 60 * 60 * 1000;
   const printsPerDay = !isPlaceholder
     ? model.stats.current.prints / (sinceCreation / (1000 * 60 * 60 * 24))
@@ -204,7 +209,7 @@ function Footer({ model, metadata, isPlaceholder }: TProps) {
         timestamp: !isPlaceholder
           ? model.model_created_at
           : placeholderTimestamp,
-        now,
+        now: adjustedNow,
         dontPad: true,
         fullUnitText: true,
       }),
@@ -215,7 +220,7 @@ function Footer({ model, metadata, isPlaceholder }: TProps) {
         "EEE, HH:mm - yyyy-MM-dd"
       ),
     }),
-    [isPlaceholder, model, now]
+    [isPlaceholder, model, adjustedNow]
   );
 
   return (

@@ -3,6 +3,7 @@
 import PrintIcon from "@/components/icons/print-icon";
 import { useNow } from "@/components/providers/now-provider";
 import { useStats } from "@/components/providers/stats-provider";
+import { useTimeMachine } from "@/components/providers/time-machine-provider";
 import { appLocale } from "@/lib/constants";
 import { timeAgo } from "@/lib/helpers";
 import { AppRouterOutputs, AppRouterQueryResult } from "@/server/trpc/api/root";
@@ -183,12 +184,16 @@ function DatesSpan({
   timestamp: number;
   isPlaceholder?: boolean;
 }) {
+  const { headCutoffTimestamp } = useTimeMachine();
   const now = useNow();
+  const adjustedNow = headCutoffTimestamp
+    ? Math.min(now, headCutoffTimestamp)
+    : now;
   const { timeAgoString, releaseDate } = useMemo(
     () => ({
       timeAgoString: timeAgo({
         timestamp: !isPlaceholder ? timestamp : placeholderTimestamp,
-        now,
+        now: adjustedNow,
         dontPad: true,
         fullUnitText: true,
       }),
@@ -197,7 +202,7 @@ function DatesSpan({
         "yyyy-MM-dd"
       ),
     }),
-    [isPlaceholder, timestamp, now]
+    [isPlaceholder, timestamp, adjustedNow]
   );
 
   return (

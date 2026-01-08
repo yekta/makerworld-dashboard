@@ -1,11 +1,13 @@
 "use client";
 
-import { parseAsInteger, useQueryState } from "nuqs";
+import { parseAsBoolean, parseAsInteger, useQueryState } from "nuqs";
 import { createContext, ReactNode, useContext, useMemo } from "react";
 
 type TTimeMachineContext = {
   setHeadCutoffTimestamp: (timestamp: number | null) => void;
   headCutoffTimestamp: number | null;
+  isOpen: boolean;
+  setIsOpen: (open: boolean | ((prevOpen: boolean) => boolean)) => void;
 };
 
 const TimeMachineContext = createContext<TTimeMachineContext | null>(null);
@@ -13,13 +15,17 @@ const TimeMachineContext = createContext<TTimeMachineContext | null>(null);
 export const TimeMachineProvider: React.FC<{
   children: ReactNode;
 }> = ({ children }) => {
+  const [isOpen, setIsOpen] = useQueryState(
+    "time_machine",
+    parseAsBoolean.withDefault(false)
+  );
   const [headCutoffTimestamp, setHeadCutoffTimestamp] = useQueryState(
     "head_cutoff_timestamp",
     parseAsInteger
   );
   const value = useMemo(
-    () => ({ headCutoffTimestamp, setHeadCutoffTimestamp }),
-    [headCutoffTimestamp, setHeadCutoffTimestamp]
+    () => ({ headCutoffTimestamp, setHeadCutoffTimestamp, isOpen, setIsOpen }),
+    [headCutoffTimestamp, setHeadCutoffTimestamp, isOpen, setIsOpen]
   );
 
   return (

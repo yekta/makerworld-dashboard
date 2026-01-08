@@ -15,7 +15,7 @@ export const StatsProvider: React.FC<{
   const { headCutoffTimestamp } = useTimeMachine();
   const query = api.stats.get.useQuery(
     {
-      headCutoffTimestamp,
+      headCutoffTimestamp: headCutoffTimestamp ?? null,
     },
     { refetchInterval: 6000 }
   );
