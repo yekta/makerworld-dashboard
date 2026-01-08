@@ -11,6 +11,10 @@ import { format } from "date-fns";
 import { DownloadIcon, RocketIcon, UsersIcon } from "lucide-react";
 import { useMemo } from "react";
 
+const printToPointRatioRaw = 2.5;
+const printToPointRatioSafetyMargin = 0.1;
+const pointToUsdRatio = 0.066;
+
 export default function UserSummarySection() {
   const { data, isPending, isError } = useStats();
   if (!data && isError) {
@@ -30,13 +34,9 @@ export default function UserSummarySection() {
   );
 }
 
-const printToPointRatioRaw = 2.55;
-const printToPointRatioSafetyMargin = 0.1;
-const pointToUsdRatio = 0.066;
+const placeholderTimestamp = new Date().getTime() - 1000 * 60 * 60 * 24 * 30;
 const printToPointRatio =
   printToPointRatioRaw * (1 - printToPointRatioSafetyMargin);
-
-const placeholderTimestamp = new Date().getTime() - 1000 * 60 * 60 * 24 * 30;
 
 function Section({
   data,
