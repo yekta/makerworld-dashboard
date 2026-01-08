@@ -25,7 +25,7 @@ export const statsRouter = createTRPCRouter({
         dayStart: z.string().default(DEFAULT_DAY_START).nullable(),
         weekStart: TWeekDayEnum.default(DEFAULT_WEEK_START).nullable(),
         monthStart: z.number().default(DEFAULT_MONTH_START).nullable(),
-        headCutoffTimestamp: z.number().optional(),
+        headCutoffTimestamp: z.number().nullable(),
       })
     )
     .query(
@@ -42,7 +42,7 @@ export const statsRouter = createTRPCRouter({
         if (monthStart !== null) {
           url.searchParams.append("month_start", monthStart.toString());
         }
-        if (headCutoffTimestamp !== undefined) {
+        if (headCutoffTimestamp !== undefined && headCutoffTimestamp !== null) {
           url.searchParams.append(
             "head_cutoff_timestamp",
             headCutoffTimestamp.toString()

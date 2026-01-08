@@ -1,8 +1,7 @@
 import NowProvider from "@/components/providers/now-provider";
 import { TRPCReactProvider } from "@/server/trpc/setup/client";
-import React from "react";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
-import TimeMachineProvider from "@/components/providers/time-machine-provider";
+import React from "react";
 
 export default async function Providers({
   children,
@@ -10,9 +9,7 @@ export default async function Providers({
   return (
     <TRPCReactProvider>
       <NowProvider>
-        <NuqsAdapter>
-          <TimeMachineProvider>{children}</TimeMachineProvider>
-        </NuqsAdapter>
+        <NuqsAdapter>{children}</NuqsAdapter>
       </NowProvider>
     </TRPCReactProvider>
   );

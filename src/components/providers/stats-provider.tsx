@@ -10,16 +10,14 @@ type TStatsContext = AppRouterQueryResult<AppRouterOutputs["stats"]["get"]>;
 const StatsContext = createContext<TStatsContext | null>(null);
 
 export const StatsProvider: React.FC<{
-  initialData?: AppRouterOutputs["stats"]["get"];
   children: ReactNode;
-}> = ({ initialData, children }) => {
+}> = ({ children }) => {
   const { headCutoffTimestamp } = useTimeMachine();
   const query = api.stats.get.useQuery(
     {
-      headCutoffTimestamp:
-        headCutoffTimestamp !== null ? headCutoffTimestamp : undefined,
+      headCutoffTimestamp,
     },
-    { initialData, refetchInterval: 6000 }
+    { refetchInterval: 6000 }
   );
   return (
     <StatsContext.Provider value={query}>{children}</StatsContext.Provider>
@@ -32,11 +30,6 @@ export const useStats = () => {
     throw new Error("useStats must be used within an StatsProvider");
   }
   return context;
-};
-
-export const useStatsUtils = () => {
-  const utils = api.useUtils();
-  return utils.stats;
 };
 
 export default StatsProvider;
