@@ -301,7 +301,7 @@ function MainStat({
 }) {
   const shouldFlash = useFlashOnChange(value, {
     enabled: !isPlaceholder,
-    duration: 8000,
+    duration: 5000,
   });
   const [canFlash, setCanFlash] = useState(false);
   const canFlashTimeoutRef = useRef<number | null>(null);
