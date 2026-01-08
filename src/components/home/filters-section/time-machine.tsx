@@ -1,9 +1,10 @@
 import { useTimeMachine } from "@/components/providers/time-machine-provider";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
-import { ChevronDown, ChevronsLeft, HistoryIcon, XIcon } from "lucide-react";
+import { ChevronDown, ChevronsLeft, HistoryIcon } from "lucide-react";
 import { useState } from "react";
 import { useDebounceCallback } from "usehooks-ts";
 
@@ -47,6 +48,7 @@ const dayMs = 1000 * 60 * 60 * 24;
 export function TimeMachineSlider({ className }: TProps) {
   const { isOpen, headCutoffTimestamp, setHeadCutoffTimestamp } =
     useTimeMachine();
+  const [time, setTime] = useState(format(new Date(), "HH:mm"));
 
   const min = 0;
   const max = 30;
@@ -71,25 +73,67 @@ export function TimeMachineSlider({ className }: TProps) {
   if (!isOpen) return null;
 
   return (
-    <div className={cn("w-full border rounded-lg px-4", className)}>
-      <p className="w-full text-center pt-1.75 -mb-1.25 text-sm font-mono">
-        {value[0] === min
-          ? "Today"
-          : `${numberOfDaysAgo} day${numberOfDaysAgo === 1 ? "" : "s"} ago`}
-        <span className="text-muted-more-foreground px-[0.5ch]">|</span>
-        <span className="text-muted-foreground">
-          {format(timeMachineDate, "yyyy-MM-dd")}
-        </span>
-      </p>
+    <div className={cn("w-full border rounded-lg px-3", className)}>
+      <div className="w-full flex flex-wrap items-center justify-end pt-3 -mb-0.5 gap-3">
+        <div className="min-h-8 shrink min-w-0 flex items-center justify-end">
+          <p className="shrink text-right min-w-0 text-sm font-mono">
+            {value[0] === min ? "Today" : `${numberOfDaysAgo}d ago`}
+            <span className="text-muted-more-foreground px-[0.5ch]">|</span>
+            <span className="text-muted-foreground">
+              {format(timeMachineDate, "yyyy-MM-dd")}
+            </span>
+          </p>
+        </div>
+        {value[0] !== min && (
+          <Input
+            type="time"
+            id="time-picker"
+            step="60"
+            value={time}
+            onChange={(e) => {
+              setTime(e.target.value);
+              const [hours, minutes] = e.target.value
+                .split(":")
+                .map((v) => parseInt(v, 10));
+              const updatedDate = new Date(timeMachineDate);
+              updatedDate.setHours(hours, minutes, 0, 0);
+              debouncedSetHeadCutoffTimestamp(
+                value[0] === min ? null : updatedDate.getTime()
+              );
+            }}
+            className="w-auto shrink-0 font-mono h-8 px-2.5 appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
+          />
+        )}
+        {value[0] !== min && (
+          <Button
+            className="h-8 px-3 font-mono font-bold shrink-0"
+            onClick={() => {
+              setValue([min]);
+              setTime(format(new Date(), "HH:mm"));
+              debouncedSetHeadCutoffTimestamp(null);
+            }}
+          >
+            Reset
+          </Button>
+        )}
+      </div>
       <Slider
         inverted
         defaultValue={[max]}
         value={value}
         onValueChange={(v) => {
           setValue(v);
+          const updatedDate = new Date(Date.now());
+          const [hours, minutes] = time
+            .split(":")
+            .map((val) => parseInt(val, 10));
+          updatedDate.setHours(hours, minutes, 0, 0);
           debouncedSetHeadCutoffTimestamp(
-            v[0] === min ? null : Date.now() - v[0] * 1000 * 60 * 60 * 24
+            v[0] === min ? null : updatedDate.getTime() - v[0] * dayMs
           );
+          if (v[0] === min) {
+            setTime(format(new Date(), "HH:mm"));
+          }
         }}
         min={min}
         max={max}
