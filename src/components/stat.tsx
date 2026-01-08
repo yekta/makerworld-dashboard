@@ -90,6 +90,7 @@ export default function Stat({
             }
             showPrevDayStats={showPrevDayStats}
             timeRangeLabel={showTimeRange ? "01H" : undefined}
+            isPlaceholder={isPlaceholder}
           />
         )}
         {(isUnaffectedByFilters ||
@@ -111,6 +112,7 @@ export default function Stat({
             }
             showPrevDayStats={showPrevDayStats}
             timeRangeLabel={showTimeRange ? "04H" : undefined}
+            isPlaceholder={isPlaceholder}
           />
         )}
         {(isUnaffectedByFilters ||
@@ -132,6 +134,7 @@ export default function Stat({
             }
             showPrevDayStats={showPrevDayStats}
             timeRangeLabel={showTimeRange ? "12H" : undefined}
+            isPlaceholder={isPlaceholder}
           />
         )}
         {(isUnaffectedByFilters ||
@@ -154,6 +157,7 @@ export default function Stat({
             showPrevDayStats={showPrevDayStats}
             timeRangeLabel={showTimeRange ? "24H" : undefined}
             highlight={true}
+            isPlaceholder={isPlaceholder}
           />
         )}
         {(isUnaffectedByFilters ||
@@ -175,6 +179,7 @@ export default function Stat({
             }
             showPrevDayStats={showPrevDayStats}
             timeRangeLabel={showTimeRange ? "07D" : undefined}
+            isPlaceholder={isPlaceholder}
           />
         )}
         {(isUnaffectedByFilters ||
@@ -196,6 +201,7 @@ export default function Stat({
             }
             showPrevDayStats={showPrevDayStats}
             timeRangeLabel={showTimeRange ? "30D" : undefined}
+            isPlaceholder={isPlaceholder}
           />
         )}
         {statType === "user" && (
@@ -204,6 +210,7 @@ export default function Stat({
             showPrevDayStats={false}
             timeRangeLabel={showTimeRange ? "01H" : undefined}
             isRecord={true}
+            isPlaceholder={isPlaceholder}
           />
         )}
         {statType === "user" && (
@@ -213,6 +220,7 @@ export default function Stat({
             timeRangeLabel={showTimeRange ? "24H" : undefined}
             isRecord={true}
             highlight={true}
+            isPlaceholder={isPlaceholder}
           />
         )}
         {statType === "user" && (
@@ -221,6 +229,7 @@ export default function Stat({
             showPrevDayStats={false}
             timeRangeLabel={showTimeRange ? "07D" : undefined}
             isRecord={true}
+            isPlaceholder={isPlaceholder}
           />
         )}
       </div>
@@ -235,6 +244,7 @@ function StatDelta({
   timeRangeLabel,
   highlight = false,
   isRecord = false,
+  isPlaceholder,
 }: {
   value: number;
   prevDayValue?: number;
@@ -242,16 +252,22 @@ function StatDelta({
   timeRangeLabel?: string;
   highlight?: boolean;
   isRecord?: boolean;
+  isPlaceholder?: boolean;
 }) {
   return (
     <div
       data-positive={value > 0 ? true : undefined}
       data-highlight={highlight ? true : undefined}
+      data-placeholder={isPlaceholder ? true : undefined}
       className="flex items-center gap-1 text-muted-foreground data-positive:text-success group/delta"
     >
       <div className="shrink min-w-0 flex relative">
-        <span className="group-data-highlight/delta:bg-muted-more-foreground/50 -left-0.5 top-0 absolute w-[calc(100%+0.25rem)] h-px rounded-full" />
-        <span className="group-data-highlight/delta:bg-muted-more-foreground/50 -left-0.5 -bottom-px absolute w-[calc(100%+0.25rem)] h-px rounded-full" />
+        {!isPlaceholder && (
+          <span className="group-data-highlight/delta:bg-muted-more-foreground/50 -left-0.5 top-0 absolute w-[calc(100%+0.25rem)] h-px rounded-full" />
+        )}
+        {!isPlaceholder && (
+          <span className="group-data-highlight/delta:bg-muted-more-foreground/50 -left-0.5 -bottom-px absolute w-[calc(100%+0.25rem)] h-px rounded-full" />
+        )}
         <p className="shrink relative whitespace-nowrap leading-tight min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent">
           {timeRangeLabel !== undefined && (
             <span className="text-muted-more-foreground relative group/span group-data-placeholder:text-transparent text-xxs leading-tight mr-[0.25ch]">
@@ -312,8 +328,8 @@ function MainStat({
       className="flex shrink mr-auto min-w-0 items-center gap-0.75 font-semibold py-px group/main relative"
     >
       <div className="absolute -left-1 top-0 w-[calc(100%+0.55rem)] h-full rounded-sm bg-success-highlight/0 group-data-can-flash/main:transition-colors group-data-can-flash/main:duration-400 group-data-flash/main:bg-success-highlight/20" />
-      <Icon className="group-data-flash/main:text-success-highlight text-foreground group-data-can-flash/main:transition-colors group-data-can-flash/main:duration-400 size-3 shrink-0 group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-foreground group-data-placeholder:text-transparent" />
-      <p className="group-data-flash/main:text-success-highlight text-foreground group-data-can-flash/main:transition-colors group-data-can-flash/main:duration-400 shrink min-w-0 overflow-hidden leading-tight overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-foreground group-data-placeholder:text-transparent">
+      <Icon className="group-data-flash/main:text-success-highlight text-foreground group-data-can-flash/main:transition-colors group-data-can-flash/main:duration-400 size-3 shrink-0 rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-foreground group-data-placeholder:text-transparent" />
+      <p className="group-data-flash/main:text-success-highlight text-foreground group-data-can-flash/main:transition-colors group-data-can-flash/main:duration-400 shrink min-w-0 overflow-hidden leading-tight overflow-ellipsis rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-foreground group-data-placeholder:text-transparent">
         {value.toLocaleString(appLocale)}
       </p>
     </div>

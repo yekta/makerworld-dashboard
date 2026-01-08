@@ -84,10 +84,10 @@ function Section({
     <div className="w-full flex flex-col md:flex-row">
       {/* Left Column / Top Row */}
       <div className="w-full flex flex-col items-center gap-0.5 md:w-1/2 md:items-end">
-        <div className="w-full flex items-center justify-center md:justify-end">
+        <div className="w-full flex items-center justify-center md:justify-end px-3">
           <p
             suppressHydrationWarning
-            className="shrink font-light whitespace-nowrap leading-normal text-center md:text-right px-3 text-muted-foreground min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent"
+            className="shrink font-light whitespace-nowrap leading-normal text-center md:text-right text-muted-foreground min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent"
           >
             <span className="text-foreground font-medium group-data-placeholder:text-transparent">
               $
@@ -98,10 +98,10 @@ function Section({
             {"/mo forecast based on last week"}
           </p>
         </div>
-        <div className="w-full flex items-center justify-center md:justify-end">
+        <div className="w-full flex items-center justify-center md:justify-end px-3">
           <p
             suppressHydrationWarning
-            className="shrink font-light whitespace-nowrap leading-normal text-center md:text-right px-3 text-muted-foreground min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent"
+            className="shrink font-light whitespace-nowrap leading-normal text-center md:text-right text-muted-foreground min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent"
           >
             <RecentEventsText data={data} />
           </p>
@@ -113,10 +113,10 @@ function Section({
       </div>
       {/* Right Column / Bottom Row */}
       <div className="w-full flex flex-col items-center gap-0.5 md:w-1/2 md:items-start">
-        <div className="w-full flex items-center justify-center md:justify-start">
+        <div className="w-full flex items-center justify-center md:justify-start px-3">
           <p
             suppressHydrationWarning
-            className="shrink font-light whitespace-nowrap leading-normal text-center md:text-left px-3 text-muted-foreground min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent"
+            className="shrink font-light whitespace-nowrap leading-normal text-center md:text-left text-muted-foreground min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent"
           >
             <span className="font-medium">
               <PrintIcon className="inline-block size-2.75 mb-px mr-[0.2ch]" />
@@ -147,8 +147,8 @@ function Section({
             </span>
           </p>
         </div>
-        <div className="w-full flex items-center justify-center md:justify-start">
-          <p className="shrink font-light whitespace-nowrap leading-normal text-center md:text-left px-3 text-muted-foreground min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent">
+        <div className="w-full flex items-center justify-center md:justify-start px-3">
+          <p className="shrink font-light whitespace-nowrap leading-normal text-center md:text-left text-muted-foreground min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent">
             <DatesSpan
               isPlaceholder={!data}
               timestamp={veryFirstModelCreationTimestamp}

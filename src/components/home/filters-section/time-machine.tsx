@@ -29,8 +29,7 @@ export function TimeMachineButton({ className }: TProps) {
         onClick={() => setIsOpen((open) => !open)}
       >
         <div className="size-3.5 -ml-0.5 -mr-0.5 relative">
-          <HistoryIcon className="size-full group-data-travelled-and-closed:text-warning transition-[transform,translate,scale,rotate,opacity] transform group-data-open:opacity-0 group-data-open:-rotate-90 duration-150" />
-          <XIcon className="size-full absolute rotate-90 left-0 top-0 opacity-0 transform transition-[transform,translate,scale,rotate,opacity] group-data-open:opacity-100 group-data-open:rotate-0 duration-150" />
+          <HistoryIcon className="size-full" />
         </div>
         <p className="flex-1 select-none min-w-0 overflow-hidden overflow-ellipsis group-data-travelled-and-closed:text-warning">
           {isTravelledAndClosed

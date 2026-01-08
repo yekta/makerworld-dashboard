@@ -33,18 +33,9 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-const days = [
-  "Sunday",
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-];
 const placeholderData = Array.from({ length: 7 }).map((_, index) => ({
   prints: Math.floor(Math.random() * 100),
-  day: days[index],
+  timestamp: new Date().getTime() - (6 - index) * 24 * 60 * 60 * 1000,
 }));
 
 export default function ModelStatsChart({
@@ -118,42 +109,54 @@ export default function ModelStatsChart({
             tickMargin={8}
             tickFormatter={(value: number) => format(new Date(value), "EEE")}
           />
-          <ChartTooltip
-            cursor={true}
-            content={
-              <ChartTooltipContent
-                labelFormatter={(_value, payload) => {
-                  const ts = payload?.[0]?.payload?.timestamp as
-                    | number
-                    | undefined;
-                  if (!ts) return null;
-                  const date = new Date(ts);
-                  return format(date, "EEEE, do");
-                }}
-              />
-            }
-          />
+          {!isPlaceholder && (
+            <ChartTooltip
+              cursor={true}
+              content={
+                <ChartTooltipContent
+                  labelFormatter={(_value, payload) => {
+                    const ts = payload?.[0]?.payload?.timestamp as
+                      | number
+                      | undefined;
+                    if (!ts) return null;
+                    const date = new Date(ts);
+                    return format(date, "EEEE, do");
+                  }}
+                />
+              }
+            />
+          )}
           <defs>
             <linearGradient id="fillPrints" x1="0" y1="0" x2="0" y2="1">
               <stop
                 offset="5%"
-                stopColor="var(--color-prints)"
+                stopColor={
+                  isPlaceholder
+                    ? "var(--muted-foreground)"
+                    : "var(--color-prints)"
+                }
                 stopOpacity={0.08}
               />
               <stop
                 offset="95%"
-                stopColor="var(--color-prints)"
+                stopColor={
+                  isPlaceholder
+                    ? "var(--muted-foreground)"
+                    : "var(--color-prints)"
+                }
                 stopOpacity={0.08}
               />
             </linearGradient>
           </defs>
           <Area
-            animationDuration={500}
+            animationDuration={isPlaceholder ? 0 : 500}
             type="bump"
             dataKey="prints"
             fill="url(#fillPrints)"
             fillOpacity={1}
-            stroke="var(--color-prints)"
+            stroke={
+              isPlaceholder ? "var(--muted-foreground)" : "var(--color-prints)"
+            }
             strokeOpacity={0.32}
             stackId="a"
           />

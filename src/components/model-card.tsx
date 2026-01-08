@@ -225,7 +225,7 @@ function Footer({ model, metadata, isPlaceholder }: TProps) {
 
   return (
     <div className="w-full flex justify-center items-end gap-2">
-      <div className="flex-1 min-w-0 flex flex-col pb-px">
+      <div className="flex-1 min-w-0 flex flex-col items-start pb-px">
         <p className="shrink min-w-0 font-light overflow-hidden overflow-ellipsis text-xs px-1 text-muted-foreground group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent">
           <span className="font-medium">
             <PrintIcon className="inline-block size-2.75 mb-px mr-[0.2ch]" />
