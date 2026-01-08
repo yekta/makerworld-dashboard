@@ -16,11 +16,9 @@ type Props = {
 };
 
 export default async function Home({ searchParams }: Props) {
-  console.log(await searchParams);
   const { head_cutoff_timestamp } = await cachedHomePageSearchParams.parse(
     searchParams
   );
-  console.log("Home head_cutoff_timestamp:", head_cutoff_timestamp);
   await apiServer.stats.get.prefetch({
     headCutoffTimestamp: head_cutoff_timestamp,
   });

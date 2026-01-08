@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
-import { ChevronDown, HistoryIcon, XIcon } from "lucide-react";
+import { ChevronDown, ChevronsLeft, HistoryIcon, XIcon } from "lucide-react";
 import { useState } from "react";
 import { useDebounceCallback } from "usehooks-ts";
 
@@ -14,6 +14,7 @@ type TProps = {
 export function TimeMachineButton({ className }: TProps) {
   const { isOpen, setIsOpen, headCutoffTimestamp } = useTimeMachine();
   const isTravelledAndClosed = headCutoffTimestamp !== null && !isOpen;
+
   return (
     <div
       data-travelled-and-closed={isTravelledAndClosed ? true : undefined}
@@ -28,8 +29,8 @@ export function TimeMachineButton({ className }: TProps) {
         onClick={() => setIsOpen((open) => !open)}
       >
         <div className="size-3.5 -ml-0.5 -mr-0.5 relative">
-          <HistoryIcon className="size-full group-data-travelled-and-closed:text-warning transform group-data-open:opacity-0 group-data-open:-rotate-90 transition duration-300" />
-          <XIcon className="size-full absolute rotate-90 left-0 top-0 opacity-0 transform transition group-data-open:opacity-100 group-data-open:rotate-0 duration-300" />
+          <HistoryIcon className="size-full group-data-travelled-and-closed:text-warning transition-[transform,translate,scale,rotate,opacity] transform group-data-open:opacity-0 group-data-open:-rotate-90 duration-150" />
+          <XIcon className="size-full absolute rotate-90 left-0 top-0 opacity-0 transform transition-[transform,translate,scale,rotate,opacity] group-data-open:opacity-100 group-data-open:rotate-0 duration-150" />
         </div>
         <p className="flex-1 select-none min-w-0 overflow-hidden overflow-ellipsis group-data-travelled-and-closed:text-warning">
           {isTravelledAndClosed
@@ -72,7 +73,7 @@ export function TimeMachineSlider({ className }: TProps) {
 
   return (
     <div className={cn("w-full border rounded-lg px-4", className)}>
-      <p className="w-full text-center pt-1.5 -mb-1.25 text-sm font-mono">
+      <p className="w-full text-center pt-1.75 -mb-1.25 text-sm font-mono">
         {value[0] === min
           ? "Today"
           : `${numberOfDaysAgo} day${numberOfDaysAgo === 1 ? "" : "s"} ago`}
@@ -94,7 +95,8 @@ export function TimeMachineSlider({ className }: TProps) {
         min={min}
         max={max}
         step={1}
-        className="w-full h-9"
+        className="w-full h-10"
+        ThumbIcon={ChevronsLeft}
       />
     </div>
   );
