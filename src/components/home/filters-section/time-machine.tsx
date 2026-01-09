@@ -82,6 +82,10 @@ export function TimeMachineSlider({ className }: TProps) {
             <span className="text-muted-foreground">
               {format(timeMachineDate, "yyyy-MM-dd")}
             </span>
+            <span className="text-muted-more-foreground px-[0.5ch]">|</span>
+            <span className="text-muted-foreground">
+              {format(timeMachineDate, "EEE")}
+            </span>
           </p>
         </div>
         {value[0] !== min && (
