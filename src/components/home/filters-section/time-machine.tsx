@@ -19,12 +19,15 @@ export function TimeMachineButton({ className }: TProps) {
   return (
     <div
       data-travelled-and-closed={isTravelledAndClosed ? true : undefined}
-      className={cn("group", className)}
+      data-open={isOpen ? true : undefined}
+      className={cn(
+        "group relative data-open:-mb-1.5 sm:data-open:mb-0",
+        className
+      )}
     >
       <Button
-        data-open={isOpen ? true : undefined}
         className={cn(
-          "bg-background relative select-none group px-3 font-medium hover:bg-border active:bg-border text-foreground border justify-start text-left",
+          "bg-background group-data-open:rounded-b-none  group-data-open:border-b-background z-0 relative select-none group px-3 font-medium hover:bg-border active:bg-border text-foreground border justify-start text-left",
           className
         )}
         onClick={() => setIsOpen((open) => !open)}
@@ -39,6 +42,7 @@ export function TimeMachineButton({ className }: TProps) {
         </p>
         <ChevronDown className="shrink-0 text-muted-more-foreground -mr-1 group-data-open:rotate-180 transition-transform group-data-travelled-and-closed:text-warning/50" />
       </Button>
+      <div className="w-full border-l border-r border-border pointer-events-none group-data-open:opacity-100 opacity-0 z-50 h-2.5 absolute left-0 bottom-0 translate-y-[calc(100%-1px)] bg-background" />
     </div>
   );
 }
