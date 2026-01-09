@@ -11,7 +11,7 @@ import { format } from "date-fns";
 import { DownloadIcon, RocketIcon, UsersIcon } from "lucide-react";
 import { useMemo } from "react";
 
-const printToPointRatioRaw = 2.5;
+const printToPointRatioRaw = 2.2;
 const printToPointRatioSafetyMargin = 0.1;
 const pointToUsdRatio = 0.066;
 
