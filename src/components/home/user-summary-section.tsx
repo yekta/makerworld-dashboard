@@ -8,7 +8,7 @@ import { appLocale } from "@/lib/constants";
 import { timeAgo } from "@/lib/helpers";
 import { AppRouterOutputs, AppRouterQueryResult } from "@/server/trpc/api/root";
 import { format } from "date-fns";
-import { DownloadIcon, RocketIcon, UsersIcon } from "lucide-react";
+import { BoxIcon, DownloadIcon, RocketIcon, UsersIcon } from "lucide-react";
 import { useMemo } from "react";
 
 const printToPointRatioRaw = 2.2;
@@ -153,6 +153,13 @@ function Section({
               isPlaceholder={!data}
               timestamp={veryFirstModelCreationTimestamp}
             />
+            <span className="text-muted-more-foreground px-[0.75ch]">
+              {"|"}
+            </span>
+            <span>
+              <BoxIcon className="inline-block size-2.75 mb-px mr-[0.2ch]" />
+              {data?.models.length ?? 0}
+            </span>
           </p>
         </div>
       </div>

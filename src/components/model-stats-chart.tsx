@@ -86,7 +86,7 @@ export default function ModelStatsChart({
   }
 
   return (
-    <div className={cn("w-full h-24 -mb-0.5 pt-1 relative z-10", className)}>
+    <div className={cn("w-full h-24 pt-1 relative z-10", className)}>
       <ChartContainer config={chartConfig} className="w-full h-full">
         <AreaChart
           accessibilityLayer
