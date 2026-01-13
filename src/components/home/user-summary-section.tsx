@@ -125,7 +125,7 @@ function Section({
               })}
             </span>
             {" daily"}
-            <span className="text-muted-more-foreground px-[0.75ch]">
+            <span className="text-muted-more-foreground px-[0.75ch] group-data-placeholder:text-transparent">
               {"|"}
             </span>
             <span className="font-medium">
@@ -135,7 +135,7 @@ function Section({
               })}
             </span>
             {" daily"}
-            <span className="text-muted-more-foreground px-[0.75ch]">
+            <span className="text-muted-more-foreground px-[0.75ch] group-data-placeholder:text-transparent">
               {"|"}
             </span>
             <span className="font-medium">
@@ -153,7 +153,7 @@ function Section({
               isPlaceholder={!data}
               timestamp={veryFirstModelCreationTimestamp}
             />
-            <span className="text-muted-more-foreground px-[0.75ch]">
+            <span className="text-muted-more-foreground px-[0.75ch] group-data-placeholder:text-transparent">
               {"|"}
             </span>
             <span>
