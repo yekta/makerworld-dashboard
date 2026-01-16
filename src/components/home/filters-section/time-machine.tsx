@@ -80,10 +80,7 @@ export function TimeMachineSlider({ className }: TProps) {
       setValue([min]);
       setTime(format(new Date(), "HH:mm"));
     } else {
-      const daysAgo = Math.max(
-        Math.min(Math.round((Date.now() - headCutoffTimestamp) / dayMs), max),
-        min
-      );
+      const daysAgo = Math.round((Date.now() - headCutoffTimestamp) / dayMs);
       setValue([daysAgo]);
       const date = new Date(headCutoffTimestamp);
       setTime(format(date, "HH:mm"));
@@ -91,13 +88,13 @@ export function TimeMachineSlider({ className }: TProps) {
   }, [headCutoffTimestamp]);
 
   const goToPrevDay = useCallback(() => {
-    const newValue = Math.min(value[0] + 1, max);
+    const newValue = value[0] + 1;
     setValue([newValue]);
     const updatedDate = new Date(Date.now());
     const [hours, minutes] = time.split(":").map((val) => parseInt(val, 10));
     updatedDate.setHours(hours, minutes, 0, 0);
     debouncedSetHeadCutoffTimestamp(
-      newValue === min ? null : updatedDate.getTime() - newValue * dayMs
+      newValue <= min ? null : updatedDate.getTime() - newValue * dayMs
     );
     if (newValue === min) {
       setTime(format(new Date(), "HH:mm"));
@@ -111,7 +108,7 @@ export function TimeMachineSlider({ className }: TProps) {
     const [hours, minutes] = time.split(":").map((val) => parseInt(val, 10));
     updatedDate.setHours(hours, minutes, 0, 0);
     debouncedSetHeadCutoffTimestamp(
-      newValue === min ? null : updatedDate.getTime() - newValue * dayMs
+      newValue <= min ? null : updatedDate.getTime() - newValue * dayMs
     );
     if (newValue === min) {
       setTime(format(new Date(), "HH:mm"));
@@ -202,7 +199,6 @@ export function TimeMachineSlider({ className }: TProps) {
             variant="outline"
             className="max-w-full h-8 gap-1 px-3 font-mono"
             onClick={goToPrevDay}
-            disabled={value[0] === max}
           >
             <ChevronLeft className="size-4.5 -ml-1.5 shrink-0" />
             <span className="shrink min-w-0 overflow-hidden overflow-ellipsis">
