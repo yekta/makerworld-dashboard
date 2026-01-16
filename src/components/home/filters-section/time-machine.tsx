@@ -59,7 +59,7 @@ export function TimeMachineSlider({ className }: TProps) {
   const [value, setValue] = useState([
     headCutoffTimestamp
       ? Math.max(
-          Math.min(Math.round((Date.now() - headCutoffTimestamp) / dayMs), max),
+          Math.min(Math.floor((Date.now() - headCutoffTimestamp) / dayMs), max),
           min
         )
       : min,
@@ -80,7 +80,7 @@ export function TimeMachineSlider({ className }: TProps) {
       setValue([min]);
       setTime(format(new Date(), "HH:mm"));
     } else {
-      const daysAgo = Math.round((Date.now() - headCutoffTimestamp) / dayMs);
+      const daysAgo = Math.floor((Date.now() - headCutoffTimestamp) / dayMs);
       setValue([daysAgo]);
       const date = new Date(headCutoffTimestamp);
       setTime(format(date, "HH:mm"));
@@ -88,32 +88,36 @@ export function TimeMachineSlider({ className }: TProps) {
   }, [headCutoffTimestamp]);
 
   const goToPrevDay = useCallback(() => {
-    const newValue = value[0] + 1;
-    setValue([newValue]);
+    // Calculate current days ago from source of truth (headCutoffTimestamp)
+    const currentDaysAgo = headCutoffTimestamp
+      ? Math.floor((Date.now() - headCutoffTimestamp) / dayMs)
+      : 0;
+    const newDaysAgo = currentDaysAgo + 1;
+
     const updatedDate = new Date(Date.now());
     const [hours, minutes] = time.split(":").map((val) => parseInt(val, 10));
     updatedDate.setHours(hours, minutes, 0, 0);
-    debouncedSetHeadCutoffTimestamp(
-      newValue <= min ? null : updatedDate.getTime() - newValue * dayMs
-    );
-    if (newValue === min) {
-      setTime(format(new Date(), "HH:mm"));
-    }
-  }, [value, max, time, debouncedSetHeadCutoffTimestamp]);
+    setHeadCutoffTimestamp(updatedDate.getTime() - newDaysAgo * dayMs);
+  }, [headCutoffTimestamp, time, setHeadCutoffTimestamp]);
 
   const goToNextDay = useCallback(() => {
-    const newValue = Math.max(value[0] - 1, min);
-    setValue([newValue]);
+    // Calculate current days ago from source of truth (headCutoffTimestamp)
+    const currentDaysAgo = headCutoffTimestamp
+      ? Math.floor((Date.now() - headCutoffTimestamp) / dayMs)
+      : 0;
+    const newDaysAgo = Math.max(currentDaysAgo - 1, min);
+
+    if (newDaysAgo <= min) {
+      setHeadCutoffTimestamp(null);
+      setTime(format(new Date(), "HH:mm"));
+      return;
+    }
+
     const updatedDate = new Date(Date.now());
     const [hours, minutes] = time.split(":").map((val) => parseInt(val, 10));
     updatedDate.setHours(hours, minutes, 0, 0);
-    debouncedSetHeadCutoffTimestamp(
-      newValue <= min ? null : updatedDate.getTime() - newValue * dayMs
-    );
-    if (newValue === min) {
-      setTime(format(new Date(), "HH:mm"));
-    }
-  }, [value, min, time, debouncedSetHeadCutoffTimestamp]);
+    setHeadCutoffTimestamp(updatedDate.getTime() - newDaysAgo * dayMs);
+  }, [headCutoffTimestamp, min, time, setHeadCutoffTimestamp]);
 
   if (!isOpen) return null;
 
