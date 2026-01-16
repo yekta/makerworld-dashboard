@@ -53,6 +53,15 @@ export function TimeMachineButton({ className }: TProps) {
 
 const dayMs = 1000 * 60 * 60 * 24;
 
+// Calculate calendar days difference (ignoring time component)
+function getCalendarDaysAgo(timestamp: number): number {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const target = new Date(timestamp);
+  target.setHours(0, 0, 0, 0);
+  return Math.round((today.getTime() - target.getTime()) / dayMs);
+}
+
 export function TimeMachineSlider({ className }: TProps) {
   const { isOpen, headCutoffTimestamp, setHeadCutoffTimestamp } =
     useTimeMachine();
@@ -63,10 +72,7 @@ export function TimeMachineSlider({ className }: TProps) {
 
   const [value, setValue] = useState([
     headCutoffTimestamp
-      ? Math.max(
-          Math.min(Math.floor((Date.now() - headCutoffTimestamp) / dayMs), max),
-          min
-        )
+      ? Math.max(Math.min(getCalendarDaysAgo(headCutoffTimestamp), max), min)
       : min,
   ]);
   const debouncedSetHeadCutoffTimestamp = useDebounceCallback(
@@ -74,19 +80,18 @@ export function TimeMachineSlider({ className }: TProps) {
     500
   );
   const numberOfDaysAgo = headCutoffTimestamp
-    ? Math.floor((Date.now() - headCutoffTimestamp) / dayMs)
+    ? getCalendarDaysAgo(headCutoffTimestamp)
     : value[0];
-  const timeMachineDate = new Date(
-    Date.now() - numberOfDaysAgo * 24 * 60 * 60 * 1000
-  );
+  const timeMachineDate = headCutoffTimestamp
+    ? new Date(headCutoffTimestamp)
+    : new Date(Date.now() - value[0] * dayMs);
 
   useEffect(() => {
     if (headCutoffTimestamp === null) {
       setValue([min]);
       setTime(format(new Date(), "HH:mm"));
     } else {
-      const daysAgo = Math.floor((Date.now() - headCutoffTimestamp) / dayMs);
-      setValue([daysAgo]);
+      setValue([getCalendarDaysAgo(headCutoffTimestamp)]);
       const date = new Date(headCutoffTimestamp);
       setTime(format(date, "HH:mm"));
     }
@@ -99,7 +104,7 @@ export function TimeMachineSlider({ className }: TProps) {
 
   const goToNextDay = useCallback(() => {
     const updatedDate = new Date((headCutoffTimestamp || Date.now()) + dayMs);
-    const newDaysAgo = Math.floor((Date.now() - updatedDate.getTime()) / dayMs);
+    const newDaysAgo = getCalendarDaysAgo(updatedDate.getTime());
     if (newDaysAgo <= min) {
       setHeadCutoffTimestamp(null);
       return;
@@ -138,7 +143,9 @@ export function TimeMachineSlider({ className }: TProps) {
             const [hours, minutes] = e.target.value
               .split(":")
               .map((v) => parseInt(v, 10));
-            const updatedDate = new Date(timeMachineDate);
+            // Use actual headCutoffTimestamp to preserve the original date
+            const baseDate = headCutoffTimestamp ? new Date(headCutoffTimestamp) : new Date();
+            const updatedDate = new Date(baseDate);
             updatedDate.setHours(hours, minutes, 0, 0);
             const now = new Date();
             const inTheFuture = now.getTime() - updatedDate.getTime() <= 0;
