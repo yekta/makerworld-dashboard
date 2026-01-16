@@ -12,7 +12,7 @@ import {
   HistoryIcon,
   TimerResetIcon,
 } from "lucide-react";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDebounceCallback } from "usehooks-ts";
 
 type TProps = {
@@ -68,10 +68,27 @@ export function TimeMachineSlider({ className }: TProps) {
     setHeadCutoffTimestamp,
     500
   );
-  const numberOfDaysAgo = value[0];
+  const numberOfDaysAgo = headCutoffTimestamp
+    ? Math.floor((Date.now() - headCutoffTimestamp) / dayMs)
+    : value[0];
   const timeMachineDate = new Date(
     Date.now() - numberOfDaysAgo * 24 * 60 * 60 * 1000
   );
+
+  useEffect(() => {
+    if (headCutoffTimestamp === null) {
+      setValue([min]);
+      setTime(format(new Date(), "HH:mm"));
+    } else {
+      const daysAgo = Math.max(
+        Math.min(Math.round((Date.now() - headCutoffTimestamp) / dayMs), max),
+        min
+      );
+      setValue([daysAgo]);
+      const date = new Date(headCutoffTimestamp);
+      setTime(format(date, "HH:mm"));
+    }
+  }, [headCutoffTimestamp]);
 
   const goToPrevDay = useCallback(() => {
     const newValue = Math.min(value[0] + 1, max);

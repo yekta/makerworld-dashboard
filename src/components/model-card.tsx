@@ -226,41 +226,90 @@ function Footer({ model, metadata, isPlaceholder }: TProps) {
   return (
     <div className="w-full flex justify-center items-end gap-2">
       <div className="flex-1 min-w-0 flex flex-col items-start pb-px">
-        <p className="shrink min-w-0 font-light overflow-hidden overflow-ellipsis text-xs px-1 text-muted-foreground group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent">
-          <span className="font-medium">
-            <PrintIcon className="inline-block size-2.75 mb-px mr-[0.2ch]" />
-            {printsPerDay.toLocaleString(appLocale, {
-              maximumFractionDigits: 1,
-            })}
-          </span>
-          {" daily"}
-          <span className="text-muted-more-foreground px-[0.75ch]">{"|"}</span>
-          <span className="font-medium">
-            <RocketIcon className="inline-block size-2.75 mb-px mr-[0.2ch]" />
-            {boostsPerDay.toLocaleString(appLocale, {
-              maximumFractionDigits: 1,
-            })}
-          </span>
-          {" daily"}
-          <span className="text-muted-more-foreground px-[0.75ch]">{"|"}</span>
-          <span className="font-medium">
-            <RocketIcon className="inline-block size-2.75 mb-px mr-[0.2ch]" />
-            {boostRatePercentage.toLocaleString(appLocale, {
-              maximumFractionDigits: 1,
-            })}
-            {"%"}
-          </span>
-        </p>
-        <p className="shrink mt-0.5 min-w-0 font-light overflow-hidden overflow-ellipsis text-xs px-1 text-muted-foreground group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent">
-          {timeAgoString}
-          <span className="text-muted-more-foreground px-[0.75ch]">{"|"}</span>
-          {releaseDate}
-        </p>
+        <div className="w-full px-1 flex justify-start flex-wrap">
+          <p className="shrink min-w-0 font-light overflow-hidden overflow-ellipsis text-xs text-muted-foreground group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent">
+            <span className="font-medium">
+              <PrintIcon className="inline-block size-2.75 mb-px mr-[0.2ch]" />
+              {printsPerDay.toLocaleString(appLocale, {
+                maximumFractionDigits: 1,
+              })}
+            </span>
+            {" daily"}
+            <span className="text-muted-more-foreground px-[0.75ch]">
+              {"|"}
+            </span>
+            <span className="font-medium">
+              <RocketIcon className="inline-block size-2.75 mb-px mr-[0.2ch]" />
+              {boostsPerDay.toLocaleString(appLocale, {
+                maximumFractionDigits: 1,
+              })}
+            </span>
+            {" daily"}
+            <span className="text-muted-more-foreground px-[0.75ch]">
+              {"|"}
+            </span>
+            <span className="font-medium">
+              <RocketIcon className="inline-block size-2.75 mb-px mr-[0.2ch]" />
+              {boostRatePercentage.toLocaleString(appLocale, {
+                maximumFractionDigits: 1,
+              })}
+              {"%"}
+            </span>
+          </p>
+        </div>
+        <DateTime
+          releaseDate={releaseDate}
+          timeAgoString={timeAgoString}
+          modelReleaseTimestamp={
+            !isPlaceholder ? model.model_created_at : placeholderTimestamp
+          }
+        />
       </div>
       <ImageSection
         {...(isPlaceholder ? { isPlaceholder: true } : { model, metadata })}
       />
     </div>
+  );
+}
+
+const fiveMinMs = 5 * 60 * 1000;
+
+function DateTime({
+  releaseDate,
+  modelReleaseTimestamp,
+  timeAgoString,
+}: {
+  releaseDate: string;
+  modelReleaseTimestamp: number;
+  timeAgoString: string;
+}) {
+  const { isOpen, setHeadCutoffTimestamp } = useTimeMachine();
+
+  if (isOpen) {
+    return (
+      <button
+        onClick={() =>
+          setHeadCutoffTimestamp(modelReleaseTimestamp + fiveMinMs)
+        }
+        className="shrink px-1 text-left group-data-placeholder:hover:text-transparent group-data-placeholder:active:text-transparent hover:text-foreground active:text-foreground rounded bg-border mt-0.5 min-w-0 font-light overflow-hidden overflow-ellipsis text-xs text-muted-foreground group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent"
+      >
+        {timeAgoString}
+        <span className="text-muted-more-foreground px-[0.75ch] font-light text-xs">
+          {"|"}
+        </span>
+        {releaseDate}
+      </button>
+    );
+  }
+
+  return (
+    <p className="shrink px-1 mt-0.5 min-w-0 font-light overflow-hidden overflow-ellipsis text-xs text-muted-foreground group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent">
+      {timeAgoString}
+      <span className="text-muted-more-foreground px-[0.75ch] font-light text-xs">
+        {"|"}
+      </span>
+      {releaseDate}
+    </p>
   );
 }
 
