@@ -128,29 +128,33 @@ export function TimeMachineSlider({ className }: TProps) {
             </span>
           </p>
         </div>
-        {value[0] !== min && (
-          <Input
-            type="time"
-            id="time-picker"
-            step="60"
-            value={time}
-            onChange={(e) => {
-              setTime(e.target.value);
-              const [hours, minutes] = e.target.value
-                .split(":")
-                .map((v) => parseInt(v, 10));
-              const updatedDate = new Date(timeMachineDate);
-              updatedDate.setHours(hours, minutes, 0, 0);
-              debouncedSetHeadCutoffTimestamp(
-                value[0] === min ? null : updatedDate.getTime()
-              );
-            }}
-            className="w-auto shrink-0 font-mono h-8 px-2.5 appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
-          />
-        )}
-        {value[0] !== min && (
+        <Input
+          type="time"
+          id="time-picker"
+          step="60"
+          value={time}
+          onChange={(e) => {
+            setTime(e.target.value);
+            const [hours, minutes] = e.target.value
+              .split(":")
+              .map((v) => parseInt(v, 10));
+            const updatedDate = new Date(timeMachineDate);
+            updatedDate.setHours(hours, minutes, 0, 0);
+            const now = new Date();
+            const inTheFuture = now.getTime() - updatedDate.getTime() <= 0;
+            debouncedSetHeadCutoffTimestamp(
+              inTheFuture ? null : updatedDate.getTime()
+            );
+            if (inTheFuture) {
+              setTime(format(new Date(), "HH:mm"));
+            }
+          }}
+          className="w-auto shrink-0 font-mono h-8 px-2.5 appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
+        />
+        <div className="w-full flex justify-end sm:w-auto">
           <Button
             className="h-8 px-3 gap-1 font-mono font-bold shrink-0"
+            disabled={headCutoffTimestamp === null}
             onClick={() => {
               setValue([min]);
               setTime(format(new Date(), "HH:mm"));
@@ -164,7 +168,7 @@ export function TimeMachineSlider({ className }: TProps) {
               Reset
             </span>
           </Button>
-        )}
+        </div>
       </div>
       <Slider
         inverted
@@ -187,7 +191,7 @@ export function TimeMachineSlider({ className }: TProps) {
         min={min}
         max={max}
         step={1}
-        className="w-full h-10"
+        className="w-full h-14"
         ThumbIcon={ChevronsLeft}
       />
       <div className="w-[calc(100%+1rem)] -ml-2 -mt-0.5 flex items-center justify-between pb-3">
