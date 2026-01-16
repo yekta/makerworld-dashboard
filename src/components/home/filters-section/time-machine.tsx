@@ -1,7 +1,12 @@
+import {
+  useModelOrder,
+  useModelSort,
+} from "@/components/home/filters-section/hooks";
 import { useTimeMachine } from "@/components/providers/time-machine-provider";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
+import { MODEL_ORDER_DEFAULT, MODEL_SORT_DEFAULT } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import {
@@ -102,6 +107,9 @@ export function TimeMachineSlider({ className }: TProps) {
     setHeadCutoffTimestamp(updatedDate.getTime());
   }, [headCutoffTimestamp, min, time, setHeadCutoffTimestamp]);
 
+  const [, setModelOrder] = useModelOrder();
+  const [, setModelSort] = useModelSort();
+
   if (!isOpen) return null;
 
   return (
@@ -147,6 +155,8 @@ export function TimeMachineSlider({ className }: TProps) {
               setValue([min]);
               setTime(format(new Date(), "HH:mm"));
               debouncedSetHeadCutoffTimestamp(null);
+              setModelOrder(MODEL_ORDER_DEFAULT);
+              setModelSort(MODEL_SORT_DEFAULT);
             }}
           >
             <TimerResetIcon className="size-4.5 -ml-1 shrink-0" />
