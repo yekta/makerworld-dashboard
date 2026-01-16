@@ -1,6 +1,10 @@
 "use client";
 
-import { useModelStatVisibilityPreferences } from "@/components/home/filters-section/hooks";
+import {
+  useModelOrder,
+  useModelSort,
+  useModelStatVisibilityPreferences,
+} from "@/components/home/filters-section/hooks";
 import PrintIcon from "@/components/icons/print-icon";
 import ModelStatsChart from "@/components/model-stats-chart";
 import { useNow } from "@/components/providers/now-provider";
@@ -284,13 +288,18 @@ function DateTime({
   timeAgoString: string;
 }) {
   const { isOpen, setHeadCutoffTimestamp } = useTimeMachine();
+  const [, setModelSort] = useModelSort();
+  const [, setModelOrder] = useModelOrder();
 
   if (isOpen) {
     return (
       <button
-        onClick={() =>
-          setHeadCutoffTimestamp(modelReleaseTimestamp + fiveMinMs)
-        }
+        onClick={() => {
+          setHeadCutoffTimestamp(modelReleaseTimestamp + fiveMinMs);
+          setModelSort("created_at");
+          setModelOrder("desc");
+          document.documentElement.scrollTo({ top: 0, behavior: "smooth" });
+        }}
         className="shrink px-1 text-left group-data-placeholder:hover:text-transparent group-data-placeholder:active:text-transparent hover:text-foreground active:text-foreground rounded bg-border mt-0.5 min-w-0 font-light overflow-hidden overflow-ellipsis text-xs text-muted-foreground group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent"
       >
         {timeAgoString}
