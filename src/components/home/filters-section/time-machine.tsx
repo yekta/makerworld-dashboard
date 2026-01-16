@@ -88,35 +88,18 @@ export function TimeMachineSlider({ className }: TProps) {
   }, [headCutoffTimestamp]);
 
   const goToPrevDay = useCallback(() => {
-    // Calculate current days ago from source of truth (headCutoffTimestamp)
-    const currentDaysAgo = headCutoffTimestamp
-      ? Math.floor((Date.now() - headCutoffTimestamp) / dayMs)
-      : 0;
-    const newDaysAgo = currentDaysAgo + 1;
-
-    const updatedDate = new Date(Date.now());
-    const [hours, minutes] = time.split(":").map((val) => parseInt(val, 10));
-    updatedDate.setHours(hours, minutes, 0, 0);
-    setHeadCutoffTimestamp(updatedDate.getTime() - newDaysAgo * dayMs);
+    const updatedDate = new Date((headCutoffTimestamp || Date.now()) - dayMs);
+    setHeadCutoffTimestamp(updatedDate.getTime());
   }, [headCutoffTimestamp, time, setHeadCutoffTimestamp]);
 
   const goToNextDay = useCallback(() => {
-    // Calculate current days ago from source of truth (headCutoffTimestamp)
-    const currentDaysAgo = headCutoffTimestamp
-      ? Math.floor((Date.now() - headCutoffTimestamp) / dayMs)
-      : 0;
-    const newDaysAgo = Math.max(currentDaysAgo - 1, min);
-
+    const updatedDate = new Date((headCutoffTimestamp || Date.now()) + dayMs);
+    const newDaysAgo = Math.floor((Date.now() - updatedDate.getTime()) / dayMs);
     if (newDaysAgo <= min) {
       setHeadCutoffTimestamp(null);
-      setTime(format(new Date(), "HH:mm"));
       return;
     }
-
-    const updatedDate = new Date(Date.now());
-    const [hours, minutes] = time.split(":").map((val) => parseInt(val, 10));
-    updatedDate.setHours(hours, minutes, 0, 0);
-    setHeadCutoffTimestamp(updatedDate.getTime() - newDaysAgo * dayMs);
+    setHeadCutoffTimestamp(updatedDate.getTime());
   }, [headCutoffTimestamp, min, time, setHeadCutoffTimestamp]);
 
   if (!isOpen) return null;
