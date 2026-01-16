@@ -34,7 +34,7 @@ export function TimeMachineButton({ className }: TProps) {
       data-open={isOpen ? true : undefined}
       className={cn(
         "bg-background data-open:-mb-1.5 sm:data-open:mb-0 group active:before:bg-border hover:before:bg-border before:pointer-events-none data-open:before:pointer-events-auto before:opacity-0 data-open:before:opacity-100 before:w-[calc(100%+2px)] before:h-2.5 before:absolute before:-left-px before:bottom-0 before:translate-y-full before:bg-background before:border-l before:border-r before:border-border data-open:rounded-b-none  data-open:border-b-background z-0 relative select-none group px-3 font-medium hover:bg-border active:bg-border text-foreground border justify-start text-left",
-        className
+        className,
       )}
       onClick={() => setIsOpen((open) => !open)}
     >
@@ -77,7 +77,7 @@ export function TimeMachineSlider({ className }: TProps) {
   ]);
   const debouncedSetHeadCutoffTimestamp = useDebounceCallback(
     setHeadCutoffTimestamp,
-    500
+    500,
   );
   const numberOfDaysAgo = headCutoffTimestamp
     ? getCalendarDaysAgo(headCutoffTimestamp)
@@ -144,13 +144,15 @@ export function TimeMachineSlider({ className }: TProps) {
               .split(":")
               .map((v) => parseInt(v, 10));
             // Use actual headCutoffTimestamp to preserve the original date
-            const baseDate = headCutoffTimestamp ? new Date(headCutoffTimestamp) : new Date();
+            const baseDate = headCutoffTimestamp
+              ? new Date(headCutoffTimestamp)
+              : new Date();
             const updatedDate = new Date(baseDate);
             updatedDate.setHours(hours, minutes, 0, 0);
             const now = new Date();
             const inTheFuture = now.getTime() - updatedDate.getTime() <= 0;
             debouncedSetHeadCutoffTimestamp(
-              inTheFuture ? null : updatedDate.getTime()
+              inTheFuture ? null : updatedDate.getTime(),
             );
             if (inTheFuture) {
               setTime(format(new Date(), "HH:mm"));
@@ -161,7 +163,10 @@ export function TimeMachineSlider({ className }: TProps) {
         <div className="w-full flex justify-end sm:w-auto">
           <Button
             className="h-8 px-3 gap-1 font-mono font-bold shrink-0"
-            disabled={headCutoffTimestamp === null}
+            disabled={
+              (value[0] === min && time === format(new Date(), "HH:mm")) ||
+              headCutoffTimestamp === null
+            }
             onClick={() => {
               setValue([min]);
               setTime(format(new Date(), "HH:mm"));
@@ -189,7 +194,7 @@ export function TimeMachineSlider({ className }: TProps) {
             .map((val) => parseInt(val, 10));
           updatedDate.setHours(hours, minutes, 0, 0);
           debouncedSetHeadCutoffTimestamp(
-            v[0] === min ? null : updatedDate.getTime() - v[0] * dayMs
+            v[0] === min ? null : updatedDate.getTime() - v[0] * dayMs,
           );
           if (v[0] === min) {
             setTime(format(new Date(), "HH:mm"));
