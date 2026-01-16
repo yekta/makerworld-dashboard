@@ -4,8 +4,15 @@ import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
-import { ChevronDown, ChevronsLeft, HistoryIcon } from "lucide-react";
-import { useState } from "react";
+import {
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+  ChevronsLeft,
+  HistoryIcon,
+  TimerResetIcon,
+} from "lucide-react";
+import { useCallback, useState } from "react";
 import { useDebounceCallback } from "usehooks-ts";
 
 type TProps = {
@@ -66,6 +73,34 @@ export function TimeMachineSlider({ className }: TProps) {
     Date.now() - numberOfDaysAgo * 24 * 60 * 60 * 1000
   );
 
+  const goToPrevDay = useCallback(() => {
+    const newValue = Math.min(value[0] + 1, max);
+    setValue([newValue]);
+    const updatedDate = new Date(Date.now());
+    const [hours, minutes] = time.split(":").map((val) => parseInt(val, 10));
+    updatedDate.setHours(hours, minutes, 0, 0);
+    debouncedSetHeadCutoffTimestamp(
+      newValue === min ? null : updatedDate.getTime() - newValue * dayMs
+    );
+    if (newValue === min) {
+      setTime(format(new Date(), "HH:mm"));
+    }
+  }, [value, max, time, debouncedSetHeadCutoffTimestamp]);
+
+  const goToNextDay = useCallback(() => {
+    const newValue = Math.max(value[0] - 1, min);
+    setValue([newValue]);
+    const updatedDate = new Date(Date.now());
+    const [hours, minutes] = time.split(":").map((val) => parseInt(val, 10));
+    updatedDate.setHours(hours, minutes, 0, 0);
+    debouncedSetHeadCutoffTimestamp(
+      newValue === min ? null : updatedDate.getTime() - newValue * dayMs
+    );
+    if (newValue === min) {
+      setTime(format(new Date(), "HH:mm"));
+    }
+  }, [value, min, time, debouncedSetHeadCutoffTimestamp]);
+
   if (!isOpen) return null;
 
   return (
@@ -106,14 +141,17 @@ export function TimeMachineSlider({ className }: TProps) {
         )}
         {value[0] !== min && (
           <Button
-            className="h-8 px-3 font-mono font-bold shrink-0"
+            className="h-8 px-3 gap-1 font-mono font-bold shrink-0"
             onClick={() => {
               setValue([min]);
               setTime(format(new Date(), "HH:mm"));
               debouncedSetHeadCutoffTimestamp(null);
             }}
           >
-            Reset
+            <TimerResetIcon className="size-4.5 -ml-1 shrink-0" />
+            <span className="shrink min-w-0 overflow-hidden overflow-ellipsis">
+              Reset
+            </span>
           </Button>
         )}
       </div>
@@ -141,6 +179,34 @@ export function TimeMachineSlider({ className }: TProps) {
         className="w-full h-10"
         ThumbIcon={ChevronsLeft}
       />
+      <div className="w-[calc(100%+1rem)] -ml-2 -mt-0.5 flex items-center justify-between pb-3">
+        <div className="max-w-1/2 px-2 m">
+          <Button
+            variant="outline"
+            className="max-w-full h-8 gap-1 px-3 font-mono"
+            onClick={goToPrevDay}
+            disabled={value[0] === max}
+          >
+            <ChevronLeft className="size-4.5 -ml-1.5 shrink-0" />
+            <span className="shrink min-w-0 overflow-hidden overflow-ellipsis">
+              Prev Day
+            </span>
+          </Button>
+        </div>
+        <div className="max-w-1/2 flex px-2">
+          <Button
+            variant="outline"
+            className="max-w-full gap-1 px-3 h-8 font-mono"
+            onClick={goToNextDay}
+            disabled={value[0] === min}
+          >
+            <span className="shrink min-w-0 overflow-hidden overflow-ellipsis">
+              Next Day
+            </span>
+            <ChevronRight className="size-4.5 -mr-1.5 shrink-0" />
+          </Button>
+        </div>
+      </div>
     </div>
   );
 }
