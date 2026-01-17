@@ -1,1 +1,1 @@
-export const showResetDebounceMs = 500;
+export const showResetDebounceMs = 300;
