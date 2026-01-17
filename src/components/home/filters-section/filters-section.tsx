@@ -18,16 +18,16 @@ export default function FiltersSection({ className }: TProps) {
     <div
       className={cn(
         "w-full flex flex-wrap justify-end items-center px-1 pt-1.5 gap-2 md:pt-1 pb-1",
-        className
+        className,
       )}
     >
       <TimeMachineButton className="w-full sm:w-40" />
       <TimeMachineSlider className="sm:order-last" />
       <div className="w-full sm:w-auto flex shrink justify-end items-center">
         <SortDropdown className="flex-1 sm:flex-none sm:w-48 rounded-r-none" />
-        <OrderDropdown className="w-26 rounded-l-none -ml-px" />
+        <OrderDropdown className="w-28 rounded-l-none -ml-px" />
       </div>
-      <StatVisiblityPreferencesDropdown className="w-full sm:w-26" />
+      <StatVisiblityPreferencesDropdown className="w-full sm:w-28" />
     </div>
   );
 }

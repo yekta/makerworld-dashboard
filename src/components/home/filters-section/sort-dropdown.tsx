@@ -1,15 +1,18 @@
 "use client";
 
+import { showResetDebounceMs } from "@/components/home/filters-section/constants";
 import { useModelSort } from "@/components/home/filters-section/hooks";
 import OptionDropdown from "@/components/home/filters-section/option-dropdown";
 import PrintIcon from "@/components/icons/print-icon";
 import {
   getModelSortEnumLabel,
+  MODEL_SORT_DEFAULT,
   TModelSort,
   TModelSortEnum,
 } from "@/lib/constants";
 import { CalendarIcon, RocketIcon } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useDebounceValue } from "usehooks-ts";
 
 type TProps = {
   className?: string;
@@ -24,6 +27,15 @@ const items = TModelSortEnum.options.map((sort) => ({
 export default function SortDropdown({ className }: TProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [modelSort, setModelSort] = useModelSort();
+  const [debouncedShowReset, setDebouncedShowReset] = useDebounceValue(
+    modelSort !== MODEL_SORT_DEFAULT,
+    showResetDebounceMs,
+  );
+
+  useEffect(() => {
+    setDebouncedShowReset(modelSort !== MODEL_SORT_DEFAULT);
+  }, [modelSort]);
+
   return (
     <OptionDropdown
       items={items}
@@ -33,6 +45,8 @@ export default function SortDropdown({ className }: TProps) {
       setIsOpen={setIsOpen}
       triggerLabel={getModelSortEnumLabel(modelSort)}
       onSelect={setModelSort}
+      showReset={debouncedShowReset}
+      onReset={() => setModelSort(MODEL_SORT_DEFAULT)}
       className={className}
     />
   );

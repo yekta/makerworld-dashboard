@@ -1,10 +1,16 @@
 "use client";
 
+import { showResetDebounceMs } from "@/components/home/filters-section/constants";
 import { useModelOrder } from "@/components/home/filters-section/hooks";
 import OptionDropdown from "@/components/home/filters-section/option-dropdown";
-import { getModelOrderEnumLabel, TModelOrderEnum } from "@/lib/constants";
+import {
+  getModelOrderEnumLabel,
+  MODEL_ORDER_DEFAULT,
+  TModelOrderEnum,
+} from "@/lib/constants";
 import { MoveDownIcon, MoveUpIcon } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useDebounceValue } from "usehooks-ts";
 
 type TProps = {
   className?: string;
@@ -20,6 +26,15 @@ const items = TModelOrderEnum.options.map((order) => ({
 export default function OrderDropdown({ className }: TProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [modelOrder, setModelOrder] = useModelOrder();
+  const [debouncedShowReset, setDebouncedShowReset] = useDebounceValue(
+    modelOrder !== MODEL_ORDER_DEFAULT,
+    showResetDebounceMs,
+  );
+
+  useEffect(() => {
+    setDebouncedShowReset(modelOrder !== MODEL_ORDER_DEFAULT);
+  }, [modelOrder]);
+
   return (
     <OptionDropdown
       items={items}
@@ -29,6 +44,8 @@ export default function OrderDropdown({ className }: TProps) {
       setIsOpen={setIsOpen}
       triggerLabel={getModelOrderEnumLabel(modelOrder)}
       onSelect={setModelOrder}
+      showReset={debouncedShowReset}
+      onReset={() => setModelOrder(MODEL_ORDER_DEFAULT)}
       className={className}
     />
   );

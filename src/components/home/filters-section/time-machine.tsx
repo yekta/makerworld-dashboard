@@ -62,13 +62,15 @@ function getCalendarDaysAgo(timestamp: number): number {
   return Math.round((today.getTime() - target.getTime()) / dayMs);
 }
 
+const maxDefault = 30;
+
 export function TimeMachineSlider({ className }: TProps) {
   const { isOpen, headCutoffTimestamp, setHeadCutoffTimestamp } =
     useTimeMachine();
   const [time, setTime] = useState(format(new Date(), "HH:mm"));
 
   const min = 0;
-  const max = 30;
+  const [max, setMax] = useState(maxDefault);
 
   const [value, setValue] = useState([
     headCutoffTimestamp
@@ -79,12 +81,14 @@ export function TimeMachineSlider({ className }: TProps) {
     setHeadCutoffTimestamp,
     500,
   );
-  const numberOfDaysAgo = headCutoffTimestamp
-    ? getCalendarDaysAgo(headCutoffTimestamp)
-    : value[0];
-  const timeMachineDate = headCutoffTimestamp
-    ? new Date(headCutoffTimestamp)
-    : new Date(Date.now() - value[0] * dayMs);
+  const numberOfDaysAgo = value[0];
+  const timeMachineDate = new Date(Date.now() - value[0] * dayMs);
+
+  useEffect(() => {
+    if (numberOfDaysAgo > max) {
+      setMax(numberOfDaysAgo);
+    }
+  }, [numberOfDaysAgo]);
 
   useEffect(() => {
     if (headCutoffTimestamp === null) {
@@ -111,6 +115,15 @@ export function TimeMachineSlider({ className }: TProps) {
     }
     setHeadCutoffTimestamp(updatedDate.getTime());
   }, [headCutoffTimestamp, min, time, setHeadCutoffTimestamp]);
+
+  const onReset = useCallback(() => {
+    setValue([min]);
+    setTime(format(new Date(), "HH:mm"));
+    debouncedSetHeadCutoffTimestamp(null);
+    setModelOrder(MODEL_ORDER_DEFAULT);
+    setModelSort(MODEL_SORT_DEFAULT);
+    setMax(maxDefault);
+  }, []);
 
   const [, setModelOrder] = useModelOrder();
   const [, setModelSort] = useModelSort();
@@ -167,13 +180,7 @@ export function TimeMachineSlider({ className }: TProps) {
               (value[0] === min && time === format(new Date(), "HH:mm")) ||
               headCutoffTimestamp === null
             }
-            onClick={() => {
-              setValue([min]);
-              setTime(format(new Date(), "HH:mm"));
-              debouncedSetHeadCutoffTimestamp(null);
-              setModelOrder(MODEL_ORDER_DEFAULT);
-              setModelSort(MODEL_SORT_DEFAULT);
-            }}
+            onClick={onReset}
           >
             <TimerResetIcon className="size-4.5 -ml-1 shrink-0" />
             <span className="shrink min-w-0 overflow-hidden overflow-ellipsis">

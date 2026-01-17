@@ -1,13 +1,16 @@
 "use client";
 
+import { showResetDebounceMs } from "@/components/home/filters-section/constants";
 import { useModelStatVisibilityPreferences } from "@/components/home/filters-section/hooks";
 import OptionDropdown from "@/components/home/filters-section/option-dropdown";
 import {
   getModelStatVisibilityPreferencesEnumLabel,
+  MODEL_STAT_VISIBLITY_PREFERENCES_DEFAULT,
   TModelStatVisibilityPreferencesEnum,
 } from "@/lib/constants";
 import { Rows3Icon } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useDebounceValue } from "usehooks-ts";
 
 type TProps = {
   className?: string;
@@ -26,6 +29,7 @@ export default function StatVisibilityPreferencesDropdown({
   const [isOpen, setIsOpen] = useState(false);
   const [modelStatVisibilityPreferences, setModelStatVisibilityPreferences] =
     useModelStatVisibilityPreferences();
+
   return (
     <OptionDropdown
       items={items}
@@ -52,6 +56,16 @@ export default function StatVisibilityPreferencesDropdown({
             );
           });
         });
+      }}
+      showReset={
+        JSON.stringify(modelStatVisibilityPreferences) !==
+        JSON.stringify(MODEL_STAT_VISIBLITY_PREFERENCES_DEFAULT)
+      }
+      onReset={(e) => {
+        e.preventDefault();
+        setModelStatVisibilityPreferences(
+          MODEL_STAT_VISIBLITY_PREFERENCES_DEFAULT,
+        );
       }}
       className={className}
     />

@@ -8,7 +8,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
-import { CheckIcon, ChevronDown } from "lucide-react";
+import { CheckIcon, ChevronDown, RotateCcwIcon } from "lucide-react";
+import { MouseEventHandler } from "react";
 
 type TProps<T> = {
   triggerLabel: string;
@@ -20,6 +21,8 @@ type TProps<T> = {
     value: T;
     Icon?: React.ElementType;
   }[];
+  showReset: boolean;
+  onReset: MouseEventHandler<HTMLDivElement>;
   arrayMode?: boolean;
   onSelect: (value: T) => void;
   currentValue: T;
@@ -35,6 +38,8 @@ export default function OptionDropdown<T>({
   items,
   onSelect,
   currentValue,
+  showReset,
+  onReset,
   className,
 }: TProps<T>) {
   return (
@@ -44,7 +49,7 @@ export default function OptionDropdown<T>({
           data-open={isOpen ? true : undefined}
           className={cn(
             "bg-background select-none group px-3 font-medium hover:bg-border active:bg-border text-foreground border justify-start text-left",
-            className
+            className,
           )}
         >
           {TriggerIcon && <TriggerIcon className="size-3.5 -ml-0.5 -mr-0.5" />}
@@ -61,6 +66,22 @@ export default function OptionDropdown<T>({
       >
         <ScrollArea>
           <DropdownMenuGroup>
+            {showReset && (
+              <DropdownMenuItem
+                onClick={onReset}
+                className="font-medium px-2 overflow-hidden text-sm group/item text-warning data-selected:text-warning hover:text-warning active:text-warning focus:text-warning data-selected:bg-warning/15 hover:bg-warning/15 active:bg-warning/15 focus:bg-warning/15"
+              >
+                <div className="w-full gap-2 justify-between items-center flex">
+                  <div className="shrink min-w-0 flex gap-2 items-center">
+                    <RotateCcwIcon className="size-3.5 -mr-0.5" />
+                    <p className="min-w-0 shrink leading-tight text-left">
+                      Reset
+                    </p>
+                  </div>
+                  <CheckIcon className="size-4 shrink-0 group-data-selected/item:opacity-100 opacity-0" />
+                </div>
+              </DropdownMenuItem>
+            )}
             {items.map((item) => (
               <DropdownMenuItem
                 data-selected={
@@ -84,9 +105,7 @@ export default function OptionDropdown<T>({
               >
                 <div className="w-full gap-2 justify-between items-center flex">
                   <div className="shrink min-w-0 flex gap-2 items-center">
-                    {item.Icon && (
-                      <item.Icon className="size-3.5 -ml-0.5 -mr-0.5" />
-                    )}
+                    {item.Icon && <item.Icon className="size-3.5 -mr-0.5" />}
                     <p className="min-w-0 shrink leading-tight text-left">
                       {item.label}
                     </p>
