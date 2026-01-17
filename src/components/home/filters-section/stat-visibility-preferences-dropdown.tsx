@@ -57,8 +57,9 @@ export default function StatVisibilityPreferencesDropdown({
           });
         });
       }}
-      showReset={
-        JSON.stringify(modelStatVisibilityPreferences) !==
+      showReset={true}
+      disableReset={
+        JSON.stringify(modelStatVisibilityPreferences) ===
         JSON.stringify(MODEL_STAT_VISIBLITY_PREFERENCES_DEFAULT)
       }
       onReset={(e) => {

@@ -23,6 +23,7 @@ type TProps<T> = {
   }[];
   showReset: boolean;
   onReset: MouseEventHandler<HTMLDivElement>;
+  disableReset?: boolean;
   arrayMode?: boolean;
   onSelect: (value: T) => void;
   currentValue: T;
@@ -40,6 +41,7 @@ export default function OptionDropdown<T>({
   currentValue,
   showReset,
   onReset,
+  disableReset,
   className,
 }: TProps<T>) {
   return (
@@ -68,8 +70,9 @@ export default function OptionDropdown<T>({
           <DropdownMenuGroup>
             {showReset && (
               <DropdownMenuItem
+                disabled={disableReset}
                 onClick={onReset}
-                className="font-medium px-2 overflow-hidden text-sm group/item text-warning data-selected:text-warning hover:text-warning active:text-warning focus:text-warning data-selected:bg-warning/15 hover:bg-warning/15 active:bg-warning/15 focus:bg-warning/15"
+                className="font-medium px-2 overflow-hidden text-sm group/item text-warning data-selected:text-warning active:text-warning focus:text-warning data-selected:bg-warning/15 active:bg-warning/15 focus:bg-warning/15"
               >
                 <div className="w-full gap-2 justify-between items-center flex">
                   <div className="shrink min-w-0 flex gap-2 items-center">
