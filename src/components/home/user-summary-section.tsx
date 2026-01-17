@@ -11,9 +11,10 @@ import { format } from "date-fns";
 import { BoxIcon, DownloadIcon, RocketIcon, UsersIcon } from "lucide-react";
 import { useMemo } from "react";
 
-const printToPointRatioRaw = 2.2;
-const printToPointRatioSafetyMargin = 0.1;
+const printToPointRatio = 1.9;
 const pointToUsdRatio = 0.066;
+
+const placeholderTimestamp = new Date().getTime() - 1000 * 60 * 60 * 24 * 30;
 
 export default function UserSummarySection() {
   const { data, isPending, isError } = useStats();
@@ -34,10 +35,6 @@ export default function UserSummarySection() {
   );
 }
 
-const placeholderTimestamp = new Date().getTime() - 1000 * 60 * 60 * 24 * 30;
-const printToPointRatio =
-  printToPointRatioRaw * (1 - printToPointRatioSafetyMargin);
-
 function Section({
   data,
 }: {
@@ -56,7 +53,7 @@ function Section({
   const veryFirstModelCreationTimestamp = useMemo(() => {
     if (!data) return placeholderTimestamp;
     const modelCreationTimestamps = data.models.map(
-      (model) => model.model_created_at
+      (model) => model.model_created_at,
     );
     return Math.min(...modelCreationTimestamps);
   }, [data]);
@@ -206,10 +203,10 @@ function DatesSpan({
       }),
       releaseDate: format(
         new Date(!isPlaceholder ? timestamp : placeholderTimestamp),
-        "yyyy-MM-dd"
+        "yyyy-MM-dd",
       ),
     }),
-    [isPlaceholder, timestamp, adjustedNow]
+    [isPlaceholder, timestamp, adjustedNow],
   );
 
   return (
@@ -274,10 +271,10 @@ function RecentEventsText({
         {index > 0 && stats.length === 2
           ? " and "
           : index > 0 && index === stats.length - 1
-          ? ", and "
-          : index > 0
-          ? ", "
-          : ""}
+            ? ", and "
+            : index > 0
+              ? ", "
+              : ""}
         <span className="text-foreground font-medium">
           <item.Icon className="inline-block size-2.75 mb-px mr-[0.2ch]" />
           {item.value}
