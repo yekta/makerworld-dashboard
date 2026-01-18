@@ -2,6 +2,7 @@
 
 import { useNow } from "@/components/providers/now-provider";
 import { useStats } from "@/components/providers/stats-provider";
+import { useTimeMachine } from "@/components/providers/time-machine-provider";
 import { timeAgo } from "@/lib/helpers";
 import { AppRouterOutputs, AppRouterQueryResult } from "@/server/trpc/api/root";
 
@@ -32,6 +33,11 @@ function Metadata({
   data: AppRouterQueryResult<AppRouterOutputs["stats"]["get"]>["data"];
 }) {
   const now = useNow();
+  const { headCutoffTimestamp } = useTimeMachine();
+  const adjustedNow = headCutoffTimestamp
+    ? Math.min(now, headCutoffTimestamp)
+    : now;
+
   const columns = 2;
   const keysToShow: Array<keyof AppRouterOutputs["stats"]["get"]["metadata"]> =
     [
@@ -65,13 +71,13 @@ function Metadata({
           cleanedKeyStr.length === 1
             ? cleanedKeyStr[0]
             : cleanedKeyStr.length === 2
-            ? cleanedKeyStr[1]
-            : key;
+              ? cleanedKeyStr[1]
+              : key;
         const keyNumber = Number(cleanedKey);
         const unit = keyNumber >= 168 ? "d" : "h";
         const keyValue = Math.round(unit === "d" ? keyNumber / 24 : keyNumber);
         const extraSeconds =
-          data && now - data.metadata[key] > 24 * 60 * 60 * 1000
+          data && adjustedNow - data.metadata[key] > 24 * 60 * 60 * 1000
             ? 75 * 1000
             : 0;
         const timestamp = data
@@ -80,7 +86,7 @@ function Metadata({
         return (
           <span suppressHydrationWarning key={key}>
             △{keyValue.toString().padStart(2, "0")}
-            {unit}:{timeAgo({ timestamp, now })}
+            {unit}:{timeAgo({ timestamp, now: adjustedNow })}
             {index === keysToShow.length - 1 ? null : index % columns ===
               columns - 1 ? (
               <br />
