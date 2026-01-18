@@ -310,7 +310,15 @@ function MainStat({
   const canFlashTimeoutRef = useRef<number | null>(null);
   const { isTravelled } = useTimeMachine();
 
+  const [isPlaceholderDebounced, setIsPlaceholderDebounced] = useDebounceValue(
+    !!isPlaceholder,
+    300,
+  );
+
+  const [transitionActive, setTransitionActive] = useState(false);
+
   useEffect(() => {
+    setIsPlaceholderDebounced(!!isPlaceholder);
     if (!isPlaceholder) {
       canFlashTimeoutRef.current = window.setTimeout(() => {
         setCanFlash(true);
@@ -330,11 +338,12 @@ function MainStat({
       data-can-flash={canFlash ? true : undefined}
       data-flash={shouldFlash ? true : undefined}
       data-travelled={isTravelled ? true : undefined}
-      className="flex shrink mr-auto min-w-0 items-center gap-0.75 font-semibold py-px group/main relative"
+      data-placeholder={isPlaceholder ? true : undefined}
+      className="flex shrink mr-auto min-w-0 items-center gap-0.75 font-semibold py-px group relative"
     >
-      <div className="absolute -left-1 top-0 w-[calc(100%+0.55rem)] h-full rounded-sm bg-success-highlight/0 group-data-travelled/main:bg-warning-highlight/0 group-data-can-flash/main:transition-colors group-data-can-flash/main:duration-400 group-data-flash/main:bg-success-highlight/20 group-data-flash/main:group-data-travelled/main:bg-warning-highlight/20" />
-      <Icon className="group-data-flash/main:text-success-highlight group-data-flash/main:group-data-travelled/main:text-warning-highlight text-foreground group-data-can-flash/main:transition-colors group-data-can-flash/main:duration-400 size-3 shrink-0 rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-foreground group-data-placeholder:text-transparent" />
-      <p className="group-data-flash/main:text-success-highlight group-data-flash/main:group-data-travelled/main:text-warning-highlight text-foreground group-data-can-flash/main:transition-colors group-data-can-flash/main:duration-400 shrink min-w-0 overflow-hidden leading-tight overflow-ellipsis rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-foreground group-data-placeholder:text-transparent">
+      <div className="absolute -left-1 top-0 w-[calc(100%+0.55rem)] h-full rounded-sm bg-success-highlight/0 group-data-travelled:bg-warning-highlight/0 group-data-flash:bg-success-highlight/20 group-data-flash:group-data-travelled:bg-warning-highlight/20" />
+      <Icon className="group-data-flash:text-success-highlight group-data-placeholder:rounded group-data-flash:group-data-travelled:text-warning-highlight text-foreground size-3 shrink-0 group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-foreground group-data-placeholder:text-transparent" />
+      <p className="group-data-flash:text-success-highlight group-data-placeholder:rounded group-data-flash:group-data-travelled:text-warning-highlight text-foreground shrink min-w-0 overflow-hidden leading-tight overflow-ellipsis group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-foreground group-data-placeholder:text-transparent">
         {value.toLocaleString(appLocale)}
       </p>
     </div>
