@@ -1,5 +1,6 @@
 import { useModelStatVisibilityPreferences } from "@/components/home/filters-section/hooks";
 import { useNow } from "@/components/providers/now-provider";
+import { useTimeMachine } from "@/components/providers/time-machine-provider";
 import {
   ChartContainer,
   ChartTooltip,
@@ -26,13 +27,6 @@ type TProps =
       className?: string;
     };
 
-const chartConfig = {
-  prints: {
-    label: "Prints",
-    color: "var(--success)",
-  },
-} satisfies ChartConfig;
-
 const placeholderData = Array.from({ length: 7 }).map((_, index) => ({
   prints: Math.floor(Math.random() * 100),
   timestamp: new Date().getTime() - (6 - index) * 24 * 60 * 60 * 1000,
@@ -44,6 +38,15 @@ export default function ModelStatsChart({
   isPlaceholder,
   className,
 }: TProps) {
+  const { isTravelled } = useTimeMachine();
+
+  const chartConfig = {
+    prints: {
+      label: "Prints",
+      color: isTravelled ? "var(--warning)" : "var(--success)",
+    },
+  } satisfies ChartConfig;
+
   const now = useNow();
   const dayOfWeek = new Date(now).getDay();
   const chartData = useMemo(() => {

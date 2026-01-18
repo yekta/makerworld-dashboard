@@ -1,4 +1,5 @@
 import { useModelStatVisibilityPreferences } from "@/components/home/filters-section/hooks";
+import { useTimeMachine } from "@/components/providers/time-machine-provider";
 import { appLocale } from "@/lib/constants";
 import useFlashOnChange from "@/lib/hooks/use-flash-on-change";
 import { cn } from "@/lib/utils";
@@ -56,7 +57,7 @@ export default function Stat({
       data-placeholder={isPlaceholder ? true : undefined}
       className={cn(
         "flex shrink min-w-0 flex-col text-sm gap-px group font-mono",
-        className
+        className,
       )}
     >
       <MainStat
@@ -64,8 +65,8 @@ export default function Stat({
           isPlaceholder
             ? 100
             : statType === "model"
-            ? stats.current[statKey]
-            : stats.current[statKey]
+              ? stats.current[statKey]
+              : stats.current[statKey]
         }
         Icon={Icon}
         isPlaceholder={isPlaceholder}
@@ -78,15 +79,15 @@ export default function Stat({
               isPlaceholder
                 ? 100
                 : statType === "model"
-                ? stats["delta_0-1h"][statKey]
-                : stats["delta_0-1h"][statKey]
+                  ? stats["delta_0-1h"][statKey]
+                  : stats["delta_0-1h"][statKey]
             }
             prevDayValue={
               isPlaceholder
                 ? 100
                 : statType === "model"
-                ? stats["delta_24-25h"][statKey]
-                : stats["delta_24-25h"][statKey]
+                  ? stats["delta_24-25h"][statKey]
+                  : stats["delta_24-25h"][statKey]
             }
             showPrevDayStats={showPrevDayStats}
             timeRangeLabel={showTimeRange ? "01H" : undefined}
@@ -100,15 +101,15 @@ export default function Stat({
               isPlaceholder
                 ? 100
                 : statType === "model"
-                ? stats["delta_0-4h"][statKey]
-                : stats["delta_0-4h"][statKey]
+                  ? stats["delta_0-4h"][statKey]
+                  : stats["delta_0-4h"][statKey]
             }
             prevDayValue={
               isPlaceholder
                 ? 100
                 : statType === "model"
-                ? stats["delta_24-28h"][statKey]
-                : stats["delta_24-28h"][statKey]
+                  ? stats["delta_24-28h"][statKey]
+                  : stats["delta_24-28h"][statKey]
             }
             showPrevDayStats={showPrevDayStats}
             timeRangeLabel={showTimeRange ? "04H" : undefined}
@@ -122,15 +123,15 @@ export default function Stat({
               isPlaceholder
                 ? 100
                 : statType === "model"
-                ? stats["delta_0-12h"][statKey]
-                : stats["delta_0-12h"][statKey]
+                  ? stats["delta_0-12h"][statKey]
+                  : stats["delta_0-12h"][statKey]
             }
             prevDayValue={
               isPlaceholder
                 ? 100
                 : statType === "model"
-                ? stats["delta_24-36h"][statKey]
-                : stats["delta_24-36h"][statKey]
+                  ? stats["delta_24-36h"][statKey]
+                  : stats["delta_24-36h"][statKey]
             }
             showPrevDayStats={showPrevDayStats}
             timeRangeLabel={showTimeRange ? "12H" : undefined}
@@ -144,15 +145,15 @@ export default function Stat({
               isPlaceholder
                 ? 100
                 : statType === "model"
-                ? stats["delta_0-24h"][statKey]
-                : stats["delta_0-24h"][statKey]
+                  ? stats["delta_0-24h"][statKey]
+                  : stats["delta_0-24h"][statKey]
             }
             prevDayValue={
               isPlaceholder
                 ? 100
                 : statType === "model"
-                ? stats["delta_24-48h"][statKey]
-                : stats["delta_24-48h"][statKey]
+                  ? stats["delta_24-48h"][statKey]
+                  : stats["delta_24-48h"][statKey]
             }
             showPrevDayStats={showPrevDayStats}
             timeRangeLabel={showTimeRange ? "24H" : undefined}
@@ -167,15 +168,15 @@ export default function Stat({
               isPlaceholder
                 ? 100
                 : statType === "model"
-                ? stats["delta_0-168h"][statKey]
-                : stats["delta_0-168h"][statKey]
+                  ? stats["delta_0-168h"][statKey]
+                  : stats["delta_0-168h"][statKey]
             }
             prevDayValue={
               isPlaceholder
                 ? 100
                 : statType === "model"
-                ? stats["delta_168-336h"][statKey]
-                : stats["delta_168-336h"][statKey]
+                  ? stats["delta_168-336h"][statKey]
+                  : stats["delta_168-336h"][statKey]
             }
             showPrevDayStats={showPrevDayStats}
             timeRangeLabel={showTimeRange ? "07D" : undefined}
@@ -189,15 +190,15 @@ export default function Stat({
               isPlaceholder
                 ? 100
                 : statType === "model"
-                ? stats["delta_0-720h"][statKey]
-                : stats["delta_0-720h"][statKey]
+                  ? stats["delta_0-720h"][statKey]
+                  : stats["delta_0-720h"][statKey]
             }
             prevDayValue={
               isPlaceholder
                 ? 100
                 : statType === "model"
-                ? stats["delta_720-1440h"][statKey]
-                : stats["delta_720-1440h"][statKey]
+                  ? stats["delta_720-1440h"][statKey]
+                  : stats["delta_720-1440h"][statKey]
             }
             showPrevDayStats={showPrevDayStats}
             timeRangeLabel={showTimeRange ? "30D" : undefined}
@@ -254,12 +255,14 @@ function StatDelta({
   isRecord?: boolean;
   isPlaceholder?: boolean;
 }) {
+  const { isTravelled } = useTimeMachine();
   return (
     <div
       data-positive={value > 0 ? true : undefined}
       data-highlight={highlight ? true : undefined}
       data-placeholder={isPlaceholder ? true : undefined}
-      className="flex items-center gap-1 text-muted-foreground data-positive:text-success group/delta"
+      data-travelled={isTravelled ? true : undefined}
+      className="flex items-center gap-1 text-muted-foreground data-positive:text-success data-positive:data-travelled:text-warning group/delta"
     >
       <div className="shrink min-w-0 flex relative">
         {!isPlaceholder && (
@@ -305,6 +308,7 @@ function MainStat({
   });
   const [canFlash, setCanFlash] = useState(false);
   const canFlashTimeoutRef = useRef<number | null>(null);
+  const { isTravelled } = useTimeMachine();
 
   useEffect(() => {
     if (!isPlaceholder) {
@@ -325,11 +329,12 @@ function MainStat({
     <div
       data-can-flash={canFlash ? true : undefined}
       data-flash={shouldFlash ? true : undefined}
+      data-travelled={isTravelled ? true : undefined}
       className="flex shrink mr-auto min-w-0 items-center gap-0.75 font-semibold py-px group/main relative"
     >
-      <div className="absolute -left-1 top-0 w-[calc(100%+0.55rem)] h-full rounded-sm bg-success-highlight/0 group-data-can-flash/main:transition-colors group-data-can-flash/main:duration-400 group-data-flash/main:bg-success-highlight/20" />
-      <Icon className="group-data-flash/main:text-success-highlight text-foreground group-data-can-flash/main:transition-colors group-data-can-flash/main:duration-400 size-3 shrink-0 rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-foreground group-data-placeholder:text-transparent" />
-      <p className="group-data-flash/main:text-success-highlight text-foreground group-data-can-flash/main:transition-colors group-data-can-flash/main:duration-400 shrink min-w-0 overflow-hidden leading-tight overflow-ellipsis rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-foreground group-data-placeholder:text-transparent">
+      <div className="absolute -left-1 top-0 w-[calc(100%+0.55rem)] h-full rounded-sm bg-success-highlight/0 group-data-travelled/main:bg-warning-highlight/0 group-data-can-flash/main:transition-colors group-data-can-flash/main:duration-400 group-data-flash/main:bg-success-highlight/20 group-data-flash/main:group-data-travelled/main:bg-warning-highlight/20" />
+      <Icon className="group-data-flash/main:text-success-highlight group-data-flash/main:group-data-travelled/main:text-warning-highlight text-foreground group-data-can-flash/main:transition-colors group-data-can-flash/main:duration-400 size-3 shrink-0 rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-foreground group-data-placeholder:text-transparent" />
+      <p className="group-data-flash/main:text-success-highlight group-data-flash/main:group-data-travelled/main:text-warning-highlight text-foreground group-data-can-flash/main:transition-colors group-data-can-flash/main:duration-400 shrink min-w-0 overflow-hidden leading-tight overflow-ellipsis rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-foreground group-data-placeholder:text-transparent">
         {value.toLocaleString(appLocale)}
       </p>
     </div>

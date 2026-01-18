@@ -59,6 +59,7 @@ function ModelCardContent(props: TProps) {
   const { model, isPlaceholder } = props;
   const [statVisibilityPreferences] = useModelStatVisibilityPreferences();
   const isChartActive = statVisibilityPreferences.includes("chart");
+  const { isTravelled } = useTimeMachine();
   return (
     <div
       data-highlighted={
@@ -69,20 +70,16 @@ function ModelCardContent(props: TProps) {
           ? true
           : undefined
       }
+      data-chart-active={isChartActive ? true : undefined}
+      data-travelled={isTravelled ? true : undefined}
       className="p-2 min-h-20 rounded-[14px] group/content flex flex-col gap-1 relative overflow-hidden"
     >
       {/* Flare effect */}
-      <div className="w-full h-full absolute right-0 top-0 p-px transition bg-linear-to-bl via-15% from-border via-border to-border group-data-highlighted/content:from-success/40 group-data-highlighted/content:via-border group-highlighted/content:to-border rounded-[14px]">
+      <div className="w-full h-full absolute right-0 top-0 p-px transition bg-linear-to-bl via-15% from-border via-border to-border group-data-highlighted/content:from-success/40 group-data-highlighted/content:group-data-travelled/content:from-warning/40 group-data-highlighted/content:via-border group-data-highlighted/content:to-border rounded-[14px]">
         <div className="w-[calc(100%-2px)] h-[calc(100%-2px)] absolute right-px top-px bg-background rounded-[13px]" />
       </div>
-      <div
-        data-has-chart={isChartActive ? true : undefined}
-        className="opacity-0 transition-opacity duration-300 group-data-highlighted/content:opacity-100 absolute h-1/6 data-has-chart:h-1/8 aspect-5/1 translate-x-full -translate-y-full group-data-highlighted/content:translate-x-1/2 group-data-highlighted/content:-translate-y-1/2 top-0 right-0 bg-success/15 blur-xl"
-      />
-      <div
-        data-has-chart={isChartActive ? true : undefined}
-        className="opacity-0 transition-opacity duration-300 group-data-highlighted/content:opacity-100 absolute h-1/4 data-has-chart:h-1/6 aspect-5/1 translate-x-full -translate-y-full group-data-highlighted/content:translate-x-1/2 group-data-highlighted/content:-translate-y-1/2 top-0 right-0 bg-success/30 blur-2xl"
-      />
+      <div className="opacity-0 transition-opacity duration-300 group-data-highlighted/content:opacity-100 absolute h-1/6 data-has-chart:h-1/8 aspect-5/1 translate-x-full -translate-y-full group-data-highlighted/content:translate-x-1/2 group-data-highlighted/content:-translate-y-1/2 top-0 right-0 bg-success/15 group-data-travelled/content:bg-warning/15 blur-xl" />
+      <div className="opacity-0 transition-opacity duration-300 group-data-highlighted/content:opacity-100 absolute h-1/4 data-has-chart:h-1/6 aspect-5/1 translate-x-full -translate-y-full group-data-highlighted/content:translate-x-1/2 group-data-highlighted/content:-translate-y-1/2 top-0 right-0 bg-success/30 group-data-travelled/content:bg-warning/30 blur-2xl" />
       {/* <div className="w-full h-full absolute right-0 top-0 rounded-[18px] overflow-hidden p-px group-hover:opacity-0 group-active:opacity-0">
         <div
           style={{
@@ -108,7 +105,7 @@ function ModelCardContent(props: TProps) {
           (model.stats["delta_0-0.25h"].boosts > 0 ||
             model.stats["delta_0-0.25h"].prints > 0 ||
             model.stats["delta_0-0.25h"].downloads > 0) && (
-            <p className="ml-auto flex shrink-0 max-w-1/2 min-w-0 overflow-hidden gap-2 items-end text-xs text-success font-mono font-medium">
+            <p className="ml-auto flex shrink-0 max-w-1/2 min-w-0 overflow-hidden gap-2 items-end text-xs text-success group-data-travelled/content:text-warning font-mono font-medium">
               {model.stats["delta_0-0.25h"].boosts > 0 && (
                 <span>
                   <RocketIcon className="size-2.75 shrink-0 inline-block mb-0.5 mr-[0.2ch]" />
@@ -181,7 +178,7 @@ function ModelCardContent(props: TProps) {
 }
 
 function getModelUrl(
-  model: AppRouterOutputs["stats"]["get"]["models"][number]
+  model: AppRouterOutputs["stats"]["get"]["models"][number],
 ) {
   return `https://makerworld.com/en/models/${model.model_id}-${model.slug}`;
 }
@@ -219,12 +216,12 @@ function Footer({ model, metadata, isPlaceholder }: TProps) {
       }),
       releaseDate: format(
         new Date(
-          !isPlaceholder ? model.model_created_at : placeholderTimestamp
+          !isPlaceholder ? model.model_created_at : placeholderTimestamp,
         ),
-        "EEE, HH:mm - yyyy-MM-dd"
+        "EEE, HH:mm - yyyy-MM-dd",
       ),
     }),
-    [isPlaceholder, model, adjustedNow]
+    [isPlaceholder, model, adjustedNow],
   );
 
   return (
