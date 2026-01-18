@@ -40,12 +40,15 @@ export default function ModelStatsChart({
 }: TProps) {
   const { isTravelled } = useTimeMachine();
 
-  const chartConfig = {
-    prints: {
-      label: "Prints",
-      color: isTravelled ? "var(--warning)" : "var(--success)",
-    },
-  } satisfies ChartConfig;
+  const chartConfig = useMemo(
+    () => ({
+      prints: {
+        label: "Prints",
+        color: isTravelled ? "var(--warning)" : "var(--success)",
+      },
+    }),
+    [isTravelled],
+  ) satisfies ChartConfig;
 
   const now = useNow();
   const dayOfWeek = new Date(now).getDay();

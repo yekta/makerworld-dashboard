@@ -130,6 +130,10 @@ export function TimeMachineSlider({ className }: TProps) {
   const [, setModelOrder] = useModelOrder();
   const [, setModelSort] = useModelSort();
 
+  const disableResetButton =
+    (value[0] === min && time === format(new Date(), "HH:mm")) ||
+    headCutoffTimestamp === null;
+
   if (!isOpen) return null;
 
   return (
@@ -184,11 +188,9 @@ export function TimeMachineSlider({ className }: TProps) {
         <div className="w-full flex justify-end sm:w-auto">
           <Button
             className="h-8 px-3 gap-1 font-mono font-bold shrink-0"
-            disabled={
-              (value[0] === min && time === format(new Date(), "HH:mm")) ||
-              headCutoffTimestamp === null
-            }
+            disabled={disableResetButton}
             onClick={onReset}
+            variant={!disableResetButton ? "warning" : "default"}
           >
             <TimerResetIcon className="size-4.5 -ml-1 shrink-0" />
             <span className="shrink min-w-0 overflow-hidden overflow-ellipsis">
