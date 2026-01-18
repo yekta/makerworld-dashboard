@@ -28,8 +28,8 @@ type TProps =
     };
 
 const placeholderData = Array.from({ length: 32 }).map((_, index) => ({
-  prints: Math.floor(Math.random() * 100) + 20,
-  timestamp: new Date().getTime() - (6 - index) * 24 * 60 * 60 * 1000,
+  prints: Math.floor(Math.random() * 75) + 25,
+  timestamp: new Date().getTime() - (31 - index) * 24 * 60 * 60 * 1000,
 }));
 
 export default function ModelStatsChart({
