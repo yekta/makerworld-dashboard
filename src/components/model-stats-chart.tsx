@@ -66,9 +66,26 @@ export default function ModelStatsChart({
       "delta_288-312h",
       "delta_312-336h",
       "delta_336-360h",
+      "delta_360-384h",
+      "delta_384-408h",
+      "delta_408-432h",
+      "delta_432-456h",
+      "delta_456-480h",
+      "delta_480-504h",
+      "delta_504-528h",
+      "delta_528-552h",
+      "delta_552-576h",
+      "delta_576-600h",
+      "delta_600-624h",
+      "delta_624-648h",
+      "delta_648-672h",
+      "delta_672-696h",
+      "delta_696-720h",
+      "delta_720-744h",
+      "delta_744-768h",
     ];
     const timeframeTimestamps: (keyof typeof metadata)[] = timeframes.map(
-      (timeframe) => (timeframe + "_timestamp") as keyof typeof metadata
+      (timeframe) => (timeframe + "_timestamp") as keyof typeof metadata,
     );
     const data: { prints: number; timestamp: number }[] = timeframes
       .map((timeframe, index) => ({
@@ -120,6 +137,14 @@ export default function ModelStatsChart({
                       | undefined;
                     if (!ts) return null;
                     const date = new Date(ts);
+                    const nowDate = new Date(now);
+                    if (date.getFullYear() !== nowDate.getFullYear()) {
+                      return format(date, "EEEE, do (MMM. yyyy)");
+                    }
+                    if (date.getMonth() !== nowDate.getMonth()) {
+                      return format(date, "EEEE, do (MMM)");
+                    }
+
                     return format(date, "EEEE, do");
                   }}
                 />

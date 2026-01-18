@@ -33,7 +33,7 @@ export function TimeMachineButton({ className }: TProps) {
       data-travelled-and-closed={isTravelledAndClosed ? true : undefined}
       data-open={isOpen ? true : undefined}
       className={cn(
-        "bg-background data-open:-mb-1.5 sm:data-open:mb-0 group active:before:bg-border hover:before:bg-border before:pointer-events-none data-open:before:pointer-events-auto before:opacity-0 data-open:before:opacity-100 before:w-[calc(100%+2px)] before:h-2.5 before:absolute before:-left-px before:bottom-0 before:translate-y-full before:bg-background before:border-l before:border-r before:border-border data-open:rounded-b-none  data-open:border-b-background z-0 relative select-none group px-3 font-medium hover:bg-border active:bg-border text-foreground border justify-start text-left",
+        "bg-background data-travelled-and-closed:border-warning/18 data-travelled-and-closed:hover:bg-warning/10 data-travelled-and-closed:active:bg-warning/10 data-open:-mb-1.5 sm:data-open:mb-0 group active:before:bg-border hover:before:bg-border before:pointer-events-none data-open:before:pointer-events-auto before:opacity-0 data-open:before:opacity-100 before:w-[calc(100%+2px)] before:h-2.5 before:absolute before:-left-px before:bottom-0 before:translate-y-full before:bg-background before:border-l before:border-r before:border-border data-open:rounded-b-none  data-open:border-b-background z-0 relative select-none group px-3 font-medium hover:bg-border active:bg-border text-foreground border justify-start text-left",
         className,
       )}
       onClick={() => setIsOpen((open) => !open)}
