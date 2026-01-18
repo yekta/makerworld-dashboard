@@ -27,8 +27,8 @@ type TProps =
       className?: string;
     };
 
-const placeholderData = Array.from({ length: 7 }).map((_, index) => ({
-  prints: Math.floor(Math.random() * 100),
+const placeholderData = Array.from({ length: 32 }).map((_, index) => ({
+  prints: Math.floor(Math.random() * 100) + 20,
   timestamp: new Date().getTime() - (6 - index) * 24 * 60 * 60 * 1000,
 }));
 

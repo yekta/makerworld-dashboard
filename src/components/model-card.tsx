@@ -227,8 +227,8 @@ function Footer({ model, metadata, isPlaceholder }: TProps) {
   return (
     <div className="w-full flex justify-center items-end gap-2">
       <div className="flex-1 min-w-0 flex flex-col items-start pb-px">
-        <div className="w-full px-1 flex justify-start flex-wrap">
-          <p className="shrink min-w-0 font-light overflow-hidden overflow-ellipsis text-xs text-muted-foreground group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent">
+        <div className="w-full flex justify-start flex-wrap">
+          <p className="px-1 shrink min-w-0 font-light overflow-hidden overflow-ellipsis text-xs text-muted-foreground group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent">
             <span className="font-medium">
               <PrintIcon className="inline-block size-2.75 mb-px mr-[0.2ch]" />
               {printsPerDay.toLocaleString(appLocale, {
@@ -297,7 +297,7 @@ function DateTime({
           setModelOrder("desc");
           document.documentElement.scrollTo({ top: 0, behavior: "smooth" });
         }}
-        className="shrink px-1 text-left group-data-placeholder:hover:text-transparent group-data-placeholder:active:text-transparent hover:text-foreground active:text-foreground rounded bg-border mt-0.5 min-w-0 font-light overflow-hidden overflow-ellipsis text-xs text-muted-foreground group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent"
+        className="shrink px-1 ring ring-foreground/15 hover:ring-foreground/25 active:ring-foreground/25 text-left group-data-placeholder:hover:text-transparent group-data-placeholder:ring-0 group-data-placeholder:hover:ring-0 group-data-placeholder:active:ring-0 group-data-placeholder:active:text-transparent hover:text-foreground active:text-foreground rounded bg-border mt-0.5 min-w-0 font-light overflow-hidden overflow-ellipsis text-xs text-muted-foreground group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent"
       >
         {timeAgoString}
         <span className="text-muted-more-foreground px-[0.75ch] font-light text-xs">
