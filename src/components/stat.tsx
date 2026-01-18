@@ -310,15 +310,7 @@ function MainStat({
   const canFlashTimeoutRef = useRef<number | null>(null);
   const { isTravelled } = useTimeMachine();
 
-  const [isPlaceholderDebounced, setIsPlaceholderDebounced] = useDebounceValue(
-    !!isPlaceholder,
-    300,
-  );
-
-  const [transitionActive, setTransitionActive] = useState(false);
-
   useEffect(() => {
-    setIsPlaceholderDebounced(!!isPlaceholder);
     if (!isPlaceholder) {
       canFlashTimeoutRef.current = window.setTimeout(() => {
         setCanFlash(true);
