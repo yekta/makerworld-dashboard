@@ -78,8 +78,8 @@ function ModelCardContent(props: TProps) {
       <div className="w-full h-full absolute right-0 top-0 p-px transition bg-linear-to-bl via-15% from-border via-border to-border group-data-highlighted:from-success/40 group-data-highlighted:group-data-travelled:from-warning/40 group-data-highlighted:via-border group-data-highlighted:to-border rounded-[14px]">
         <div className="w-[calc(100%-2px)] h-[calc(100%-2px)] absolute right-px top-px bg-background rounded-[13px]" />
       </div>
-      <div className="opacity-0 z-0 transition-opacity duration-300 group-data-highlighted:opacity-100 absolute h-1/6 data-has-chart:h-1/8 aspect-5/1 translate-x-full -translate-y-full group-data-highlighted:translate-x-1/2 group-data-highlighted:-translate-y-1/2 top-0 right-0 bg-success/10 group-data-travelled:bg-warning/10 blur-xl" />
-      <div className="opacity-0 z-0 transition-opacity duration-300 group-data-highlighted:opacity-100 absolute h-1/4 data-has-chart:h-1/6 aspect-5/1 translate-x-full -translate-y-full group-data-highlighted:translate-x-1/2 group-data-highlighted:-translate-y-1/2 top-0 right-0 bg-success/20 group-data-travelled:bg-warning/20 blur-2xl" />
+      <div className="opacity-0 z-0 transform translate-z-0 transition-opacity duration-300 group-data-highlighted:opacity-100 absolute h-1/6 data-has-chart:h-1/8 aspect-5/1 translate-x-full -translate-y-full group-data-highlighted:translate-x-1/2 group-data-highlighted:-translate-y-1/2 top-0 right-0 bg-success/10 group-data-travelled:bg-warning/10 blur-xl" />
+      <div className="opacity-0 z-0 transform translate-z-0 transition-opacity duration-300 group-data-highlighted:opacity-100 absolute h-1/4 data-has-chart:h-1/6 aspect-5/1 translate-x-full -translate-y-full group-data-highlighted:translate-x-1/2 group-data-highlighted:-translate-y-1/2 top-0 right-0 bg-success/20 group-data-travelled:bg-warning/20 blur-2xl" />
       {/* <div className="w-full h-full absolute right-0 top-0 rounded-[18px] overflow-hidden p-px group-hover:opacity-0 group-active:opacity-0">
         <div
           style={{
