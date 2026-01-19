@@ -103,20 +103,32 @@ export function TimeMachineSlider({ className }: TProps) {
     }
   }, [headCutoffTimestamp]);
 
+  const setValueAndTimestamp = useCallback(
+    (value: number | number[]) => {
+      const valueAsNum = Array.isArray(value) ? value[0] : value;
+      setValue([valueAsNum]);
+      const updatedDate = new Date(Date.now());
+      const [hours, minutes] = time.split(":").map((val) => parseInt(val, 10));
+      updatedDate.setHours(hours, minutes, 0, 0);
+      debouncedSetHeadCutoffTimestamp(
+        valueAsNum === min ? null : updatedDate.getTime() - valueAsNum * dayMs,
+      );
+      if (valueAsNum === min) {
+        setTime(format(new Date(), "HH:mm"));
+      }
+    },
+    [time, min],
+  );
+
   const goToPrevDay = useCallback(() => {
-    const updatedDate = new Date((headCutoffTimestamp || Date.now()) - dayMs);
-    setHeadCutoffTimestamp(updatedDate.getTime());
-  }, [headCutoffTimestamp, time, setHeadCutoffTimestamp]);
+    const newValue = value[0] + 1;
+    setValueAndTimestamp(newValue);
+  }, [value]);
 
   const goToNextDay = useCallback(() => {
-    const updatedDate = new Date((headCutoffTimestamp || Date.now()) + dayMs);
-    const newDaysAgo = getCalendarDaysAgo(updatedDate.getTime());
-    if (newDaysAgo <= min) {
-      setHeadCutoffTimestamp(null);
-      return;
-    }
-    setHeadCutoffTimestamp(updatedDate.getTime());
-  }, [headCutoffTimestamp, min, time, setHeadCutoffTimestamp]);
+    const newValue = Math.max(value[0] - 1, min);
+    setValueAndTimestamp(newValue);
+  }, [value]);
 
   const onReset = useCallback(() => {
     setValue([min]);
@@ -126,6 +138,30 @@ export function TimeMachineSlider({ className }: TProps) {
     setModelSort(MODEL_SORT_DEFAULT);
     setMax(maxDefault);
   }, []);
+
+  const onChangeTimeInput = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setTime(e.target.value);
+      const [hours, minutes] = e.target.value
+        .split(":")
+        .map((v) => parseInt(v, 10));
+      // Use actual headCutoffTimestamp to preserve the original date
+      const baseDate = headCutoffTimestamp
+        ? new Date(headCutoffTimestamp)
+        : new Date();
+      const updatedDate = new Date(baseDate);
+      updatedDate.setHours(hours, minutes, 0, 0);
+      const now = new Date();
+      const inTheFuture = now.getTime() - updatedDate.getTime() <= 0;
+      debouncedSetHeadCutoffTimestamp(
+        inTheFuture ? null : updatedDate.getTime(),
+      );
+      if (inTheFuture) {
+        setTime(format(new Date(), "HH:mm"));
+      }
+    },
+    [headCutoffTimestamp],
+  );
 
   const [, setModelOrder] = useModelOrder();
   const [, setModelSort] = useModelSort();
@@ -163,26 +199,7 @@ export function TimeMachineSlider({ className }: TProps) {
           id="time-picker"
           step="60"
           value={time}
-          onChange={(e) => {
-            setTime(e.target.value);
-            const [hours, minutes] = e.target.value
-              .split(":")
-              .map((v) => parseInt(v, 10));
-            // Use actual headCutoffTimestamp to preserve the original date
-            const baseDate = headCutoffTimestamp
-              ? new Date(headCutoffTimestamp)
-              : new Date();
-            const updatedDate = new Date(baseDate);
-            updatedDate.setHours(hours, minutes, 0, 0);
-            const now = new Date();
-            const inTheFuture = now.getTime() - updatedDate.getTime() <= 0;
-            debouncedSetHeadCutoffTimestamp(
-              inTheFuture ? null : updatedDate.getTime(),
-            );
-            if (inTheFuture) {
-              setTime(format(new Date(), "HH:mm"));
-            }
-          }}
+          onChange={onChangeTimeInput}
           className="w-auto shrink-0 font-mono h-8 px-2.5 appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
         />
         <div className="w-full flex justify-end sm:w-auto">
@@ -203,20 +220,7 @@ export function TimeMachineSlider({ className }: TProps) {
         inverted
         defaultValue={[max]}
         value={value}
-        onValueChange={(v) => {
-          setValue(v);
-          const updatedDate = new Date(Date.now());
-          const [hours, minutes] = time
-            .split(":")
-            .map((val) => parseInt(val, 10));
-          updatedDate.setHours(hours, minutes, 0, 0);
-          debouncedSetHeadCutoffTimestamp(
-            v[0] === min ? null : updatedDate.getTime() - v[0] * dayMs,
-          );
-          if (v[0] === min) {
-            setTime(format(new Date(), "HH:mm"));
-          }
-        }}
+        onValueChange={setValueAndTimestamp}
         min={min}
         max={max}
         step={1}
