@@ -302,11 +302,11 @@ function MainStat({
   Icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   isPlaceholder?: boolean;
 }) {
+  const [canFlash, setCanFlash] = useState(false);
   const shouldFlash = useFlashOnChange(value, {
-    enabled: !isPlaceholder,
+    enabled: !isPlaceholder && canFlash,
     duration: 5000,
   });
-  const [canFlash, setCanFlash] = useState(false);
   const canFlashTimeoutRef = useRef<number | null>(null);
   const { isTravelled } = useTimeMachine();
 
@@ -316,6 +316,12 @@ function MainStat({
         setCanFlash(true);
         canFlashTimeoutRef.current = null;
       }, 500);
+    } else {
+      setCanFlash(false);
+      if (canFlashTimeoutRef.current !== null) {
+        clearTimeout(canFlashTimeoutRef.current);
+        canFlashTimeoutRef.current = null;
+      }
     }
     return () => {
       if (canFlashTimeoutRef.current !== null) {
@@ -327,8 +333,7 @@ function MainStat({
 
   return (
     <div
-      data-can-flash={canFlash ? true : undefined}
-      data-flash={shouldFlash ? true : undefined}
+      data-flash={canFlash && shouldFlash ? true : undefined}
       data-travelled={isTravelled ? true : undefined}
       data-placeholder={isPlaceholder ? true : undefined}
       className="flex shrink mr-auto min-w-0 items-center gap-0.75 font-semibold py-px group relative"
