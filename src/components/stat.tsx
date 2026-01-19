@@ -303,31 +303,26 @@ function MainStat({
   isPlaceholder?: boolean;
 }) {
   const [canFlash, setCanFlash] = useState(false);
+  const { isTravelled, travelledRecently } = useTimeMachine();
+
   const shouldFlash = useFlashOnChange(value, {
-    enabled: !isPlaceholder && canFlash,
+    enabled: !isPlaceholder && canFlash && !travelledRecently,
     duration: 5000,
   });
   const canFlashTimeoutRef = useRef<number | null>(null);
-  const { isTravelled } = useTimeMachine();
 
   useEffect(() => {
     if (!isPlaceholder) {
       canFlashTimeoutRef.current = window.setTimeout(() => {
         setCanFlash(true);
-        canFlashTimeoutRef.current = null;
-      }, 500);
+      }, 1000);
     } else {
       setCanFlash(false);
-      if (canFlashTimeoutRef.current !== null) {
-        clearTimeout(canFlashTimeoutRef.current);
-        canFlashTimeoutRef.current = null;
-      }
+      if (canFlashTimeoutRef.current) clearTimeout(canFlashTimeoutRef.current);
     }
+
     return () => {
-      if (canFlashTimeoutRef.current !== null) {
-        clearTimeout(canFlashTimeoutRef.current);
-        canFlashTimeoutRef.current = null;
-      }
+      if (canFlashTimeoutRef.current) clearTimeout(canFlashTimeoutRef.current);
     };
   }, [isPlaceholder]);
 
