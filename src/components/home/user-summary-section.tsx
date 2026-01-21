@@ -11,8 +11,10 @@ import { format } from "date-fns";
 import { BoxIcon, DownloadIcon, RocketIcon, UsersIcon } from "lucide-react";
 import { useMemo } from "react";
 
-const printToPointRatio = 1.9;
 const pointToUsdRatio = 0.066;
+const pointPerBoost = 15;
+const printDownloadMultiplier = 2;
+const pointPerDownload = 0.48;
 
 const placeholderTimestamp = new Date().getTime() - 1000 * 60 * 60 * 24 * 30;
 
@@ -43,9 +45,15 @@ function Section({
   const projectedMonthlyUSDRevenue = useMemo(() => {
     if (!data) return 100;
     const lastWeekPrints = data.user.stats["delta_0-168h"].prints;
-    const avgDailyPrints = lastWeekPrints / 7;
-    const projectedMonthlyPrints = avgDailyPrints * 30;
-    const projectedMonthlyPoints = projectedMonthlyPrints * printToPointRatio;
+    const lastWeekDownloads = data.user.stats["delta_0-168h"].downloads;
+    const lastWeekAdjustedDownloads =
+      lastWeekPrints * printDownloadMultiplier + lastWeekDownloads;
+    const lastLastWeekBoosts = data.user.stats["delta_0-168h"].boosts;
+    const lastWeekPoints =
+      lastLastWeekBoosts * pointPerBoost +
+      lastWeekAdjustedDownloads * pointPerDownload;
+    const averageDailyPoints = lastWeekPoints / 7;
+    const projectedMonthlyPoints = averageDailyPoints * 30;
     const projectedMonthlyUsd = projectedMonthlyPoints * pointToUsdRatio;
     return projectedMonthlyUsd;
   }, [data]);
