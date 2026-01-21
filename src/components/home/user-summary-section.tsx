@@ -12,9 +12,9 @@ import { BoxIcon, DownloadIcon, RocketIcon, UsersIcon } from "lucide-react";
 import { useMemo } from "react";
 
 const pointToUsdRatio = 0.066;
-const pointPerBoost = 15;
+const pointsPerBoost = 15;
+const pointsPerDownload = 0.48;
 const printDownloadMultiplier = 2;
-const pointPerDownload = 0.48;
 
 const placeholderTimestamp = new Date().getTime() - 1000 * 60 * 60 * 24 * 30;
 
@@ -50,8 +50,8 @@ function Section({
       lastWeekPrints * printDownloadMultiplier + lastWeekDownloads;
     const lastLastWeekBoosts = data.user.stats["delta_0-168h"].boosts;
     const lastWeekPoints =
-      lastLastWeekBoosts * pointPerBoost +
-      lastWeekAdjustedDownloads * pointPerDownload;
+      lastLastWeekBoosts * pointsPerBoost +
+      lastWeekAdjustedDownloads * pointsPerDownload;
     const averageDailyPoints = lastWeekPoints / 7;
     const projectedMonthlyPoints = averageDailyPoints * 30;
     const projectedMonthlyUsd = projectedMonthlyPoints * pointToUsdRatio;
