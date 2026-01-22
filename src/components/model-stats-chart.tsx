@@ -100,7 +100,7 @@ export default function ModelStatsChart({
       }))
       .reverse();
     return data;
-  }, [model, isPlaceholder, dayOfWeek]);
+  }, [model, metadata, isPlaceholder, dayOfWeek]);
 
   const [modelStatVisibilityPreferences] = useModelStatVisibilityPreferences();
 
