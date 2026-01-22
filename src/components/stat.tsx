@@ -6,7 +6,6 @@ import { cn } from "@/lib/utils";
 import { AppRouterOutputs } from "@/server/trpc/api/root";
 import { TrophyIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { useDebounceValue } from "usehooks-ts";
 
 type TUserOrModelStat =
   | {
