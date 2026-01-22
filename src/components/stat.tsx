@@ -63,7 +63,7 @@ export default function Stat({
       <MainStat
         value={
           isPlaceholder
-            ? 100
+            ? 10000
             : statType === "model"
               ? stats.current[statKey]
               : stats.current[statKey]
