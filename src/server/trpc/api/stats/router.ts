@@ -26,13 +26,13 @@ export const statsRouter = createTRPCRouter({
         weekStart: TWeekDayEnum.default(DEFAULT_WEEK_START).nullable(),
         monthStart: z.number().default(DEFAULT_MONTH_START).nullable(),
         headCutoffTimestamp: z.number().nullable(),
-      })
+      }),
     )
     .query(
       async ({
         input: { dayStart, weekStart, monthStart, headCutoffTimestamp },
       }) => {
-        const url = new URL(env.API_URL + "/v1/stats");
+        const url = new URL(env.API_URL + "/v1/my-stats");
         if (dayStart !== null) {
           url.searchParams.append("day_start", dayStart);
         }
@@ -45,7 +45,7 @@ export const statsRouter = createTRPCRouter({
         if (headCutoffTimestamp !== undefined && headCutoffTimestamp !== null) {
           url.searchParams.append(
             "head_cutoff_timestamp",
-            headCutoffTimestamp.toString()
+            headCutoffTimestamp.toString(),
           );
         }
         const res = await fetch(url.toString());
@@ -59,6 +59,6 @@ export const statsRouter = createTRPCRouter({
           });
         }
         return result.data;
-      }
+      },
     ),
 });
