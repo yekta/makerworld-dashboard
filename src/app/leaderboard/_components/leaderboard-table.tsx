@@ -203,7 +203,7 @@ export default function LeaderboardTable() {
           const val = parseInt(row.getValue("model_count"));
           return (
             <CellSpan>
-              {val === 0 ? "∅" : val.toLocaleString(appLocale)}
+              {val === 0 ? "----" : val.toLocaleString(appLocale)}
             </CellSpan>
           );
         },
@@ -218,7 +218,7 @@ export default function LeaderboardTable() {
           return (
             <CellSpan>
               {val === 0
-                ? "∅"
+                ? "----"
                 : Duration.fromMillis(now - val)
                     .shiftTo("year", "months")
                     .toHuman({
