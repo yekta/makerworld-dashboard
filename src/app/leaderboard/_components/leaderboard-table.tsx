@@ -139,7 +139,7 @@ export default function LeaderboardTable() {
           return (
             <Link
               target="_blank"
-              className="w-full group-data-username-sticky/container:border-border border-r border-transparent group/link hover:bg-border active:bg-border min-w-0 px-3 gap-2.5 h-full flex items-center justify-start"
+              className="w-full group-data-username-sticky/container:border-border border-r border-transparent group/link hover:bg-border active:bg-border min-w-0 px-3 gap-2 h-full flex items-center justify-start"
               href={`https://makerworld.com/@${username}`}
             >
               <div className="size-5 shrink-0 relative transition-transform">
@@ -154,7 +154,7 @@ export default function LeaderboardTable() {
               </div>
               <div className="w-full flex flex-col group-data-username-sticky/container:-translate-y-px translate-y-1.75 transition-transform overflow-hidden">
                 <CellSpan className="px-0">{username}</CellSpan>
-                <p className="text-xxs text-left opacity-0 w-full overflow-hidden overflow-ellipsis whitespace-nowrap transition-transform group-data-username-sticky/container:opacity-100 text-muted-foreground font-medium">
+                <p className="text-xxs -mt-px text-left opacity-0 w-full overflow-hidden overflow-ellipsis whitespace-nowrap transition-transform group-data-username-sticky/container:opacity-100 text-muted-foreground">
                   #{row.original.rank}
                 </p>
               </div>
