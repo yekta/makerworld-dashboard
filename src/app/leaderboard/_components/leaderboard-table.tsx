@@ -7,8 +7,6 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { useWindowVirtualizer } from "@tanstack/react-virtual";
-import { useRef } from "react";
 
 import { useLeaderboard } from "@/components/providers/leaderboard-provider";
 import { appLocale } from "@/lib/constants";
@@ -68,8 +66,8 @@ const columns: ColumnDef<TRow>[] = [
     size: 60,
     minSize: 60,
     cell: ({ row }) => (
-      <CellSpan className="text-muted-foreground">
-        {parseInt(row.getValue("rank")).toLocaleString(appLocale)}
+      <CellSpan className="text-muted-foreground sm:pl-4">
+        #{parseInt(row.getValue("rank")).toLocaleString(appLocale)}
       </CellSpan>
     ),
   },
@@ -144,63 +142,55 @@ const columns: ColumnDef<TRow>[] = [
   },
 ];
 
+import { useVirtualizer } from "@tanstack/react-virtual";
+import { useMemo, useRef } from "react";
+
 export default function LeaderboardTable() {
   const { data } = useLeaderboard();
   const tableContainerRef = useRef<HTMLDivElement>(null);
 
+  const tableData = useMemo(() => {
+    if (!data) return placeholderData;
+    return data.data.map((entry, index) => ({ ...entry, rank: index + 1 }));
+  }, [data]);
+
   const table = useReactTable({
-    data: !data
-      ? placeholderData
-      : data.data.map((entry, index) => ({
-          ...entry,
-          rank: index + 1,
-        })),
+    data: tableData,
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
 
   const { rows } = table.getRowModel();
 
-  const rowVirtualizer = useWindowVirtualizer({
+  const rowVirtualizer = useVirtualizer({
     count: rows.length,
-    estimateSize: () => 40,
-    overscan: 40,
-    scrollMargin: tableContainerRef.current?.offsetTop ?? 0,
+    getScrollElement: () => tableContainerRef.current,
+    estimateSize: () => 44, // start closer to reality
+    overscan: 30, // much saner on mobile
+    // If row heights can vary, enable measuring:
+    measureElement: (el) => el.getBoundingClientRect().height,
   });
+
+  const virtualItems = rowVirtualizer.getVirtualItems();
+  const totalSize = rowVirtualizer.getTotalSize();
 
   return (
     <div
       ref={tableContainerRef}
-      className="w-full border rounded-xl overflow-hidden"
+      className="w-full border rounded-xl overflow-auto flex-1 min-h-0"
     >
-      <table
-        className="w-full relative overflow-x-auto text-sm"
-        style={{ display: "grid" }}
-      >
-        <thead
-          style={{
-            display: "grid",
-            position: "sticky",
-            top: 0,
-            zIndex: 1,
-          }}
-          className="bg-background rounded-t-xl border-b"
-        >
+      <table className="w-full text-sm">
+        <thead className="sticky top-0 z-10 bg-background">
           {table.getHeaderGroups().map((headerGroup) => (
-            <tr
-              className="w-full"
-              key={headerGroup.id}
-              style={{ display: "flex", width: "100%" }}
-            >
+            <tr key={headerGroup.id} className="flex w-full border-b">
               {headerGroup.headers.map((header) => (
                 <th
                   key={header.id}
+                  className="font-mono font-semibold text-muted-foreground px-3 py-2 first:sm:pl-4 text-left"
                   style={{
-                    display: "flex",
                     width: header.getSize(),
                     flex: `1 0 ${header.getSize()}px`,
                   }}
-                  className="font-mono font-semibold text-muted-foreground px-3 py-2 text-left"
                 >
                   {header.isPlaceholder
                     ? null
@@ -213,38 +203,30 @@ export default function LeaderboardTable() {
             </tr>
           ))}
         </thead>
-        <tbody
-          style={{
-            display: "grid",
-            height: `${rowVirtualizer.getTotalSize()}px`,
-            position: "relative",
-          }}
-        >
-          {rowVirtualizer.getVirtualItems().map((virtualRow) => {
+
+        <tbody style={{ position: "relative", height: totalSize }}>
+          {virtualItems.map((virtualRow) => {
             const row = rows[virtualRow.index];
             return (
               <tr
                 key={row.id}
-                data-state={row.getIsSelected() && "selected"}
+                ref={rowVirtualizer.measureElement} // important if measuring
                 data-odd={virtualRow.index % 2 === 1 ? true : undefined}
+                className="flex h-11 w-full border-b last:border-b-0 border-border data-odd:bg-border/50"
                 style={{
-                  display: "flex",
                   position: "absolute",
-                  transform: `translateY(${virtualRow.start - rowVirtualizer.options.scrollMargin}px)`,
-                  width: "100%",
-                  height: `${virtualRow.size}px`,
+                  top: 0,
+                  transform: `translateY(${virtualRow.start}px)`,
                 }}
-                className="border-b last:border-b-0 border-border data-odd:bg-border/40"
               >
                 {row.getVisibleCells().map((cell) => (
                   <td
                     key={cell.id}
+                    className="font-mono items-center flex"
                     style={{
-                      display: "flex",
                       width: cell.column.getSize(),
                       flex: `1 0 ${cell.column.getSize()}px`,
                     }}
-                    className="font-mono items-center"
                   >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>
