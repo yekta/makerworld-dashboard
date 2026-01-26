@@ -28,6 +28,7 @@ import { Button } from "@/components/ui/button";
 import { useCopyToClipboard } from "@/lib/hooks/use-copy-to-clipboard";
 import { TLeaderboardEntry } from "@/server/trpc/api/leaderboard/types";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
+import { Duration } from "luxon";
 
 type TRow = TLeaderboardEntry & { rank: number };
 
@@ -99,6 +100,10 @@ export default function LeaderboardTable() {
   useEffect(() => {
     setNow(Date.now());
   }, [data]);
+
+  const relativeFormatter = new Intl.RelativeTimeFormat(appLocale, {
+    style: "short",
+  });
 
   const columns: ColumnDef<TRow>[] = useMemo(
     () => [
@@ -194,11 +199,36 @@ export default function LeaderboardTable() {
         header: "Models",
         size: defaultCellSize,
         minSize: defaultCellSizeMin,
-        cell: ({ row }) => (
-          <CellSpan>
-            {parseInt(row.getValue("model_count")).toLocaleString(appLocale)}
-          </CellSpan>
-        ),
+        cell: ({ row }) => {
+          const val = parseInt(row.getValue("model_count"));
+          return (
+            <CellSpan>
+              {val === 0 ? "∅" : val.toLocaleString(appLocale)}
+            </CellSpan>
+          );
+        },
+      },
+      {
+        accessorKey: "first_model_created_at",
+        header: "First Model",
+        size: defaultCellSize,
+        minSize: defaultCellSizeMin,
+        cell: ({ row }) => {
+          const val = parseInt(row.getValue("first_model_created_at"));
+          return (
+            <CellSpan>
+              {val === 0
+                ? "∅"
+                : Duration.fromMillis(now - val)
+                    .shiftTo("year", "months")
+                    .toHuman({
+                      showZeros: false,
+                      unitDisplay: "narrow",
+                      maximumFractionDigits: 0,
+                    })}
+            </CellSpan>
+          );
+        },
       },
 
       {
@@ -208,9 +238,7 @@ export default function LeaderboardTable() {
         minSize: 140,
         cell: ({ row }) => (
           <CellSpan Icon={ClockIcon} className="text-muted-foreground">
-            {new Intl.RelativeTimeFormat(appLocale, {
-              style: "short",
-            }).format(
+            {relativeFormatter.format(
               Math.round(
                 (parseInt(row.getValue("snapshotted_at")) - now) / 1000 / 60,
               ),
