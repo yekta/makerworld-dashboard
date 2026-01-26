@@ -113,7 +113,7 @@ const columns: ColumnDef<TRow>[] = [
         >
           <div className="size-5 shrink-0 relative">
             <Image
-              className="size-full rounded-full border border-foreground group-hover:opacity-0 group-active:opacity-0 group-focus-visible:opacity-0 transition-transform group-hover:rotate-45 group-active:rotate-45 group-focus-visible:rotate-45"
+              className="size-full bg-border rounded-full border border-foreground group-hover:opacity-0 group-active:opacity-0 group-focus-visible:opacity-0 transition-transform group-hover:rotate-45 group-active:rotate-45 group-focus-visible:rotate-45"
               width={20}
               height={20}
               src={src}
