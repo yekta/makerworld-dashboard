@@ -4,7 +4,7 @@ import {
   useModelOrder,
   useModelSort,
   useModelStatVisibilityPreferences,
-} from "@/components/home/filters-section/hooks";
+} from "@/app/(home)/_components/filters-section/hooks";
 import PrintIcon from "@/components/icons/print-icon";
 import ModelStatsChart from "@/components/model-stats-chart";
 import { useNow } from "@/components/providers/now-provider";

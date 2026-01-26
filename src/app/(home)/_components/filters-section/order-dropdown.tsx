@@ -1,8 +1,8 @@
 "use client";
 
-import { showResetDebounceMs } from "@/components/home/filters-section/constants";
-import { useModelOrder } from "@/components/home/filters-section/hooks";
-import OptionDropdown from "@/components/home/filters-section/option-dropdown";
+import { showResetDebounceMs } from "@/app/(home)/_components/filters-section/constants";
+import { useModelOrder } from "@/app/(home)/_components/filters-section/hooks";
+import OptionDropdown from "@/app/(home)/_components/filters-section/option-dropdown";
 import {
   getModelOrderEnumLabel,
   MODEL_ORDER_DEFAULT,

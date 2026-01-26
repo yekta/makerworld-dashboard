@@ -1,8 +1,8 @@
 "use client";
 
-import { showResetDebounceMs } from "@/components/home/filters-section/constants";
-import { useModelSort } from "@/components/home/filters-section/hooks";
-import OptionDropdown from "@/components/home/filters-section/option-dropdown";
+import { showResetDebounceMs } from "@/app/(home)/_components/filters-section/constants";
+import { useModelSort } from "@/app/(home)/_components/filters-section/hooks";
+import OptionDropdown from "@/app/(home)/_components/filters-section/option-dropdown";
 import PrintIcon from "@/components/icons/print-icon";
 import {
   getModelSortEnumLabel,

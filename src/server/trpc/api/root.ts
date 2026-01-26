@@ -1,3 +1,4 @@
+import { leaderboardRouter } from "@/server/trpc/api/leaderboard/router";
 import { statsRouter } from "@/server/trpc/api/stats/router";
 import { createTRPCRouter } from "@/server/trpc/setup/trpc";
 import { TRPCClient, TRPCClientErrorLike } from "@trpc/client";
@@ -15,6 +16,7 @@ import { inferRouterInputs, inferRouterOutputs } from "@trpc/server";
  */
 export const appRouter = createTRPCRouter({
   stats: statsRouter,
+  leaderboard: leaderboardRouter,
 });
 
 // export type definition of API

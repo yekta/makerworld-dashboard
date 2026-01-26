@@ -3,7 +3,7 @@
 import {
   useModelOrder,
   useModelSort,
-} from "@/components/home/filters-section/hooks";
+} from "@/app/(home)/_components/filters-section/hooks";
 import ModelCard from "@/components/model-card";
 import { useStats } from "@/components/providers/stats-provider";
 import { MODEL_ORDER_DEFAULT, MODEL_SORT_DEFAULT } from "@/lib/constants";
@@ -82,8 +82,8 @@ function Models({
       modelSort === "prints_1h" || modelSort === "boosts_1h"
         ? "delta_0-1h"
         : modelSort === "prints_24h" || modelSort === "boosts_24h"
-        ? "delta_0-24h"
-        : "current";
+          ? "delta_0-24h"
+          : "current";
 
     const stat: keyof (typeof models)[number]["stats"][keyof (typeof models)[number]["stats"]] =
       modelSort === "boosts_current" ||

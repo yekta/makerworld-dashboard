@@ -1,9 +1,9 @@
-import FiltersSection from "@/components/home/filters-section/filters-section";
-import MetadataSection from "@/components/home/metadata-section";
-import ModelsSection from "@/components/home/models-section";
-import RefetchIndicator from "@/components/home/refetch-indicator";
-import UserStatsSection from "@/components/home/user-stats-section";
-import UserSummarySection from "@/components/home/user-summary-section";
+import FiltersSection from "@/app/(home)/_components/filters-section/filters-section";
+import MetadataSection from "@/app/(home)/_components/metadata-section";
+import ModelsSection from "@/app/(home)/_components/models-section";
+import RefetchIndicator from "@/app/(home)/_components/refetch-indicator";
+import UserStatsSection from "@/app/(home)/_components/user-stats-section";
+import UserSummarySection from "@/app/(home)/_components/user-summary-section";
 import StatsProvider from "@/components/providers/stats-provider";
 import TimeMachineProvider from "@/components/providers/time-machine-provider";
 import { cachedHomePageSearchParams } from "@/lib/constants";
@@ -16,9 +16,8 @@ type Props = {
 };
 
 export default async function Home({ searchParams }: Props) {
-  const { head_cutoff_timestamp } = await cachedHomePageSearchParams.parse(
-    searchParams
-  );
+  const { head_cutoff_timestamp } =
+    await cachedHomePageSearchParams.parse(searchParams);
   await apiServer.stats.get.prefetch({
     headCutoffTimestamp: head_cutoff_timestamp,
   });

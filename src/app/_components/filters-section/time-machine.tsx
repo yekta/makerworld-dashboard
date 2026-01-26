@@ -1,7 +1,7 @@
 import {
   useModelOrder,
   useModelSort,
-} from "@/components/home/filters-section/hooks";
+} from "@/app/(home)/_components/filters-section/hooks";
 import { useTimeMachine } from "@/components/providers/time-machine-provider";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
