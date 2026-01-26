@@ -133,6 +133,7 @@ export default function LeaderboardTable() {
       {
         accessorKey: "username",
         header: "Username",
+        sortDescFirst: false,
         size: 150,
         minSize: 150,
         cell: ({ row }) => {
@@ -227,6 +228,7 @@ export default function LeaderboardTable() {
         header: "Start",
         size: defaultCellSize,
         minSize: defaultCellSize,
+        invertSorting: true,
         cell: ({ row }) => {
           const val = parseInt(row.getValue("first_model_created_at"));
           return (
@@ -249,6 +251,7 @@ export default function LeaderboardTable() {
         header: "Snapshot",
         size: defaultCellSize,
         minSize: defaultCellSize,
+        invertSorting: true,
         cell: ({ row }) => (
           <CellSpan className="text-muted-foreground">
             {Duration.fromMillis(now - parseInt(row.getValue("snapshotted_at")))
