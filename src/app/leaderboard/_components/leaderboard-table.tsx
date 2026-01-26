@@ -470,7 +470,7 @@ function CopyButton({
       data-recently-copied={isRecentlyCopied ? true : undefined}
       onClick={() => copyToClipboard(textToCopy)}
       className={cn(
-        "h-full text-muted-foreground data-recently-copied:bg-border group/button rounded-none data-recently-copied:opacity-100 hover:bg-border active:bg-border group-hover/cell:opacity-100 opacity-0",
+        "h-full text-muted-foreground data-recently-copied:bg-border group/button rounded-none data-recently-copied:opacity-100 hover:bg-border active:bg-border hover:opacity-100 active:opacity-100 opacity-0",
         className,
       )}
     >
