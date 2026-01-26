@@ -229,6 +229,7 @@ export default function LeaderboardTable() {
         size: defaultCellSize,
         minSize: defaultCellSize,
         invertSorting: true,
+        sortDescFirst: false,
         cell: ({ row }) => {
           const val = parseInt(row.getValue("first_model_created_at"));
           return (
@@ -252,6 +253,7 @@ export default function LeaderboardTable() {
         size: defaultCellSize,
         minSize: defaultCellSize,
         invertSorting: true,
+        sortDescFirst: false,
         cell: ({ row }) => (
           <CellSpan className="text-muted-foreground">
             {Duration.fromMillis(now - parseInt(row.getValue("snapshotted_at")))
