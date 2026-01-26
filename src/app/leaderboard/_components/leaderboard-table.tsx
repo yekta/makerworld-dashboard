@@ -5,7 +5,6 @@ import { appLocale } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import {
   CheckIcon,
-  ClockIcon,
   CopyIcon,
   DownloadIcon,
   ExternalLinkIcon,
@@ -248,7 +247,7 @@ export default function LeaderboardTable() {
         size: defaultCellSize,
         minSize: defaultCellSize,
         cell: ({ row }) => (
-          <CellSpan Icon={ClockIcon} className="text-muted-foreground">
+          <CellSpan className="text-muted-foreground">
             {Duration.fromMillis(now - parseInt(row.getValue("snapshotted_at")))
               .shiftTo("minutes")
               .toHuman({
