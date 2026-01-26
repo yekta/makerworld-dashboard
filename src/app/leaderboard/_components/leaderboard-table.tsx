@@ -54,7 +54,8 @@ const placeholderData: TRow[] = Array.from({ length: 10 }).map((_, index) => ({
 
 const defaultCellSize = 110;
 const rankCellSize = 70;
-const ROW_HEIGHT = 44; // keep fixed to avoid iOS measure jitter
+const ROW_HEIGHT = 50;
+const isUsernameStickyNegativeMargin = 20;
 
 function CellSpan({
   children,
@@ -138,18 +139,23 @@ export default function LeaderboardTable() {
           return (
             <Link
               target="_blank"
-              className="w-full group-data-scrolled-passed-rank/container:border-border border-r border-transparent group/link hover:bg-border active:bg-border min-w-0 px-3 gap-2.5 h-full flex items-center justify-start"
+              className="w-full group-data-username-sticky/container:border-border border-r border-transparent group/link hover:bg-border active:bg-border min-w-0 px-3 gap-0.5 h-full flex items-center justify-start"
               href={`https://makerworld.com/@${username}`}
             >
-              <div className="size-5 shrink-0 relative">
-                <Image
-                  className="size-full bg-border rounded-full border border-foreground group-hover/link:opacity-0 group-active/link:opacity-0 group-focus-visible/link:opacity-0 transition-transform group-hover/link:rotate-45 group-active/link:rotate-45 group-focus-visible/link:rotate-45"
-                  width={20}
-                  height={20}
-                  src={src}
-                  alt={`${username}'s avatar`}
-                />
-                <ExternalLinkIcon className="size-full scale-90 absolute left-0 top-0 -rotate-45 group-hover/link:rotate-0 group-active/link:rotate-0 group-focus-visible/link:rotate-0 opacity-0 group-hover/link:opacity-100 group-active/link:opacity-100 group-focus-visible/link:opacity-100 transition-transform" />
+              <div className="w-8 shrink-0 overflow-hidden h-full flex flex-col items-center justify-center gap-0.5 relative group-data-username-sticky/container:translate-y-0.5 translate-y-2 transition-transform">
+                <div className="size-5 shrink-0 relative transition-transform">
+                  <Image
+                    className="size-full bg-border rounded-full border border-foreground group-hover/link:opacity-0 group-active/link:opacity-0 group-focus-visible/link:opacity-0 transition-transform group-hover/link:rotate-45 group-active/link:rotate-45 group-focus-visible/link:rotate-45"
+                    width={20}
+                    height={20}
+                    src={src}
+                    alt={`${username}'s avatar`}
+                  />
+                  <ExternalLinkIcon className="size-full scale-90 absolute left-0 top-0 -rotate-45 group-hover/link:rotate-0 group-active/link:rotate-0 group-focus-visible/link:rotate-0 opacity-0 group-hover/link:opacity-100 group-active/link:opacity-100 group-focus-visible/link:opacity-100 transition-transform" />
+                </div>
+                <p className="text-xxs text-center opacity-0 w-full overflow-hidden overflow-ellipsis whitespace-nowrap transition-transform group-data-username-sticky/container:opacity-100 text-muted-foreground font-medium">
+                  #{row.original.rank}
+                </p>
               </div>
               <CellSpan className="px-0">{username}</CellSpan>
             </Link>
@@ -284,11 +290,11 @@ export default function LeaderboardTable() {
   const virtualItems = rowVirtualizer.getVirtualItems();
   const totalSize = rowVirtualizer.getTotalSize();
   const scrollMargin = rowVirtualizer.options.scrollMargin ?? 0;
-  const [scrolledPassedRank, setScrolledPassedRank] = useState(false);
+  const [isUsernameSticky, setIsUsernameSticky] = useState(false);
 
   return (
     <div
-      data-scrolled-passed-rank={scrolledPassedRank ? true : undefined}
+      data-username-sticky={isUsernameSticky ? true : undefined}
       className="w-full text-sm font-mono group/container"
     >
       <div className="sticky pt-1 sm:pt-2 top-0 bg-background z-20 group">
@@ -303,7 +309,7 @@ export default function LeaderboardTable() {
                       data-username={
                         header.column.id === "username" ? true : undefined
                       }
-                      className="font-semibold data-username:group-data-scrolled-passed-rank/container:border-border border-r border-transparent text-muted-foreground px-3 py-2 first:sm:pl-4 text-left shrink-0 data-username:sticky data-username:bg-background data-username:left-0"
+                      className="font-semibold data-username:group-data-username-sticky/container:border-border border-r border-transparent text-muted-foreground px-3 py-2 first:sm:pl-4 text-left shrink-0 data-username:sticky data-username:bg-background data-username:left-0"
                       style={{
                         width: header.getSize(),
                         flex:
@@ -330,10 +336,13 @@ export default function LeaderboardTable() {
         <div
           onScroll={(e) => {
             stickyHeaderRef.current?.scrollTo(e.currentTarget.scrollLeft, 0);
-            if (e.currentTarget.scrollLeft > rankCellSize - 10) {
-              setScrolledPassedRank(true);
+            if (
+              e.currentTarget.scrollLeft >
+              rankCellSize - isUsernameStickyNegativeMargin
+            ) {
+              setIsUsernameSticky(true);
             } else {
-              setScrolledPassedRank(false);
+              setIsUsernameSticky(false);
             }
           }}
           className={cn("w-full overflow-x-auto overflow-y-visible")}
