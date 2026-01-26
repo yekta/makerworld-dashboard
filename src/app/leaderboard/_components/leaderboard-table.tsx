@@ -32,7 +32,7 @@ import { TLeaderboardEntry } from "@/server/trpc/api/leaderboard/types";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import { Duration } from "luxon";
 
-type TRow = TLeaderboardEntry & { rank: number };
+type TRow = TLeaderboardEntry & { rank: number; boost_rate: number };
 
 const placeholderData: TRow[] = Array.from({ length: 10 }).map((_, index) => ({
   rank: index + 1,
@@ -52,6 +52,7 @@ const placeholderData: TRow[] = Array.from({ length: 10 }).map((_, index) => ({
   likes: 0,
   first_model_created_at: 0,
   model_count: 0,
+  boost_rate: 0,
 }));
 
 const defaultCellSize = 120;
@@ -210,6 +211,23 @@ export default function LeaderboardTable() {
         ),
       },
       {
+        accessorKey: "boost_rate",
+        header: "Boost %",
+        size: defaultCellSize,
+        minSize: defaultCellSize,
+        cell: ({ row }) => (
+          <CellSpan>
+            {(parseFloat(row.getValue("boost_rate")) * 100).toLocaleString(
+              appLocale,
+              {
+                maximumSignificantDigits: 3,
+              },
+            )}
+            %
+          </CellSpan>
+        ),
+      },
+      {
         accessorKey: "model_count",
         header: "Models",
         size: defaultCellSize,
@@ -272,7 +290,12 @@ export default function LeaderboardTable() {
 
   const tableData = useMemo(() => {
     if (!data) return placeholderData;
-    return data.data.map((entry, index) => ({ ...entry, rank: index + 1 }));
+    const editedData: TRow[] = data.data.map((entry, index) => ({
+      ...entry,
+      rank: index + 1,
+      boost_rate: entry.boosts / (entry.prints || 1),
+    }));
+    return editedData;
   }, [data]);
 
   const [sorting, setSorting] = useState<SortingState>([
