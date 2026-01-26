@@ -1,9 +1,10 @@
 "use client";
 
-import { useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {
+  ClockIcon,
   DownloadIcon,
   ExternalLinkIcon,
   RocketIcon,
@@ -85,95 +86,122 @@ function CellSpan({
   );
 }
 
-const columns: ColumnDef<TRow>[] = [
-  {
-    accessorKey: "rank",
-    header: "Rank",
-    size: 65,
-    minSize: 65,
-    cell: ({ row }) => (
-      <CellSpan className="text-muted-foreground sm:pl-4">
-        #{parseInt(row.getValue("rank")).toLocaleString(appLocale)}
-      </CellSpan>
-    ),
-  },
-  {
-    accessorKey: "username",
-    header: "Username",
-    size: 150,
-    minSize: 150,
-    cell: ({ row }) => {
-      const username = String(row.getValue("username") ?? "");
-      const src = row.original.avatar_url || "/favicon.ico"; // safe fallback (empty src breaks on iOS)
-      return (
-        <Link
-          target="_blank"
-          className="group/link hover:bg-border active:bg-border w-full px-3 gap-2.5 h-full flex items-center justify-start"
-          href={`https://makerworld.com/@${username}`}
-        >
-          <div className="size-5 shrink-0 relative">
-            <Image
-              className="size-full bg-border rounded-full border border-foreground group-hover/link:opacity-0 group-active/link:opacity-0 group-focus-visible/link:opacity-0 transition-transform group-hover/link:rotate-45 group-active/link:rotate-45 group-focus-visible/link:rotate-45"
-              width={20}
-              height={20}
-              src={src}
-              alt={`${username}'s avatar`}
-            />
-            <ExternalLinkIcon className="size-full scale-90 absolute left-0 top-0 -rotate-45 group-hover/link:rotate-0 group-active/link:rotate-0 group-focus-visible/link:rotate-0 opacity-0 group-hover/link:opacity-100 group-active/link:opacity-100 group-focus-visible/link:opacity-100 transition-transform" />
-          </div>
-          <CellSpan className="px-0">{username}</CellSpan>
-        </Link>
-      );
-    },
-  },
-  {
-    accessorKey: "prints",
-    header: "Prints",
-    size: defaultCellSize,
-    minSize: defaultCellSizeMin,
-    cell: ({ row }) => (
-      <CellSpan Icon={PrintIcon}>
-        {parseInt(row.getValue("prints")).toLocaleString(appLocale)}
-      </CellSpan>
-    ),
-  },
-  {
-    accessorKey: "downloads",
-    header: "Downloads",
-    size: defaultCellSize,
-    minSize: defaultCellSizeMin,
-    cell: ({ row }) => (
-      <CellSpan Icon={DownloadIcon}>
-        {parseInt(row.getValue("downloads")).toLocaleString(appLocale)}
-      </CellSpan>
-    ),
-  },
-  {
-    accessorKey: "boosts",
-    header: "Boosts",
-    size: defaultCellSize,
-    minSize: defaultCellSizeMin,
-    cell: ({ row }) => (
-      <CellSpan Icon={RocketIcon}>
-        {parseInt(row.getValue("boosts")).toLocaleString(appLocale)}
-      </CellSpan>
-    ),
-  },
-  {
-    accessorKey: "followers",
-    header: "Followers",
-    size: defaultCellSize,
-    minSize: defaultCellSizeMin,
-    cell: ({ row }) => (
-      <CellSpan Icon={UsersIcon}>
-        {parseInt(row.getValue("followers")).toLocaleString(appLocale)}
-      </CellSpan>
-    ),
-  },
-];
-
 export default function LeaderboardTable() {
   const { data } = useLeaderboard();
+
+  const [now, setNow] = useState(Date.now());
+
+  useEffect(() => {
+    setNow(Date.now());
+  }, [data]);
+
+  const columns: ColumnDef<TRow>[] = useMemo(
+    () => [
+      {
+        accessorKey: "rank",
+        header: "Rank",
+        size: 65,
+        minSize: 65,
+        cell: ({ row }) => (
+          <CellSpan className="text-muted-foreground sm:pl-4">
+            #{parseInt(row.getValue("rank")).toLocaleString(appLocale)}
+          </CellSpan>
+        ),
+      },
+      {
+        accessorKey: "username",
+        header: "Username",
+        size: 150,
+        minSize: 150,
+        cell: ({ row }) => {
+          const username = String(row.getValue("username") ?? "");
+          const src = row.original.avatar_url || "/favicon.ico"; // safe fallback (empty src breaks on iOS)
+          return (
+            <Link
+              target="_blank"
+              className="group/link hover:bg-border active:bg-border w-full px-3 gap-2.5 h-full flex items-center justify-start"
+              href={`https://makerworld.com/@${username}`}
+            >
+              <div className="size-5 shrink-0 relative">
+                <Image
+                  className="size-full bg-border rounded-full border border-foreground group-hover/link:opacity-0 group-active/link:opacity-0 group-focus-visible/link:opacity-0 transition-transform group-hover/link:rotate-45 group-active/link:rotate-45 group-focus-visible/link:rotate-45"
+                  width={20}
+                  height={20}
+                  src={src}
+                  alt={`${username}'s avatar`}
+                />
+                <ExternalLinkIcon className="size-full scale-90 absolute left-0 top-0 -rotate-45 group-hover/link:rotate-0 group-active/link:rotate-0 group-focus-visible/link:rotate-0 opacity-0 group-hover/link:opacity-100 group-active/link:opacity-100 group-focus-visible/link:opacity-100 transition-transform" />
+              </div>
+              <CellSpan className="px-0">{username}</CellSpan>
+            </Link>
+          );
+        },
+      },
+      {
+        accessorKey: "prints",
+        header: "Prints",
+        size: defaultCellSize,
+        minSize: defaultCellSizeMin,
+        cell: ({ row }) => (
+          <CellSpan Icon={PrintIcon}>
+            {parseInt(row.getValue("prints")).toLocaleString(appLocale)}
+          </CellSpan>
+        ),
+      },
+      {
+        accessorKey: "downloads",
+        header: "Downloads",
+        size: defaultCellSize,
+        minSize: defaultCellSizeMin,
+        cell: ({ row }) => (
+          <CellSpan Icon={DownloadIcon}>
+            {parseInt(row.getValue("downloads")).toLocaleString(appLocale)}
+          </CellSpan>
+        ),
+      },
+      {
+        accessorKey: "boosts",
+        header: "Boosts",
+        size: defaultCellSize,
+        minSize: defaultCellSizeMin,
+        cell: ({ row }) => (
+          <CellSpan Icon={RocketIcon}>
+            {parseInt(row.getValue("boosts")).toLocaleString(appLocale)}
+          </CellSpan>
+        ),
+      },
+      {
+        accessorKey: "followers",
+        header: "Followers",
+        size: defaultCellSize,
+        minSize: defaultCellSizeMin,
+        cell: ({ row }) => (
+          <CellSpan Icon={UsersIcon}>
+            {parseInt(row.getValue("followers")).toLocaleString(appLocale)}
+          </CellSpan>
+        ),
+      },
+      {
+        accessorKey: "snapshotted_at",
+        header: "Snapshot",
+        size: 140,
+        minSize: 140,
+        cell: ({ row }) => (
+          <CellSpan Icon={ClockIcon} className="text-muted-foreground">
+            {new Intl.RelativeTimeFormat(appLocale, {
+              style: "short",
+            }).format(
+              Math.round(
+                (parseInt(row.getValue("snapshotted_at")) - now) / 1000 / 60,
+              ),
+              "minutes",
+            )}
+          </CellSpan>
+        ),
+      },
+    ],
+    [now],
+  );
 
   const tableData = useMemo(() => {
     if (!data) return placeholderData;
