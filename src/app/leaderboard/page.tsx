@@ -11,7 +11,7 @@ export default async function Page({}: TProps) {
     <HydrateClient>
       <LeaderboardProvider>
         <div className="w-full flex flex-col items-center relative">
-          <div className="w-full relative max-w-7xl px-1 py-1 sm:px-3 sm:py-3 md:px-5 md:py-5">
+          <div className="w-full relative max-w-7xl px-1 pb-4 sm:px-3 sm:pb-6 md:px-5 md:pb-10">
             <LeaderboardTable />
           </div>
         </div>

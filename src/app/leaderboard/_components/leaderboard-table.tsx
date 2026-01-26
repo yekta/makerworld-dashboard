@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
-import Link from "next/link";
-import Image from "next/image";
+import { useLeaderboard } from "@/components/providers/leaderboard-provider";
+import { appLocale } from "@/lib/constants";
+import { cn } from "@/lib/utils";
 import {
   ClockIcon,
   DownloadIcon,
@@ -10,9 +10,9 @@ import {
   RocketIcon,
   UsersIcon,
 } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { appLocale } from "@/lib/constants";
-import { useLeaderboard } from "@/components/providers/leaderboard-provider";
+import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import {
   ColumnDef,
@@ -21,10 +21,9 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 
-import { useWindowVirtualizer } from "@tanstack/react-virtual";
-import { TLeaderboardEntry } from "@/server/trpc/api/leaderboard/types";
 import PrintIcon from "@/components/icons/print-icon";
-import { useWindowScroll } from "@uidotdev/usehooks";
+import { TLeaderboardEntry } from "@/server/trpc/api/leaderboard/types";
+import { useWindowVirtualizer } from "@tanstack/react-virtual";
 
 type TRow = TLeaderboardEntry & { rank: number };
 
@@ -91,8 +90,6 @@ export default function LeaderboardTable() {
   const { data } = useLeaderboard();
 
   const [now, setNow] = useState(Date.now());
-
-  const [{ y }] = useWindowScroll();
 
   useEffect(() => {
     setNow(Date.now());
@@ -236,36 +233,35 @@ export default function LeaderboardTable() {
 
   return (
     <div className="w-full text-sm font-mono">
-      <div
-        data-not-at-top={y && y > 0 ? true : undefined}
-        className="sticky top-0 z-20 border rounded-t-xl bg-background w-full overflow-hidden data-not-at-top:rounded-t-none"
-      >
-        <div ref={stickyHeaderRef} className="overflow-auto scrollbar-hidden">
-          <div className="min-w-max">
-            {table.getHeaderGroups().map((hg) => (
-              <div key={hg.id} className="flex w-full">
-                {hg.headers.map((header) => (
-                  <div
-                    key={header.id}
-                    data-sticky={
-                      header.column.id === "username" ? true : undefined
-                    }
-                    className="font-semibold text-muted-foreground px-3 py-2 first:sm:pl-4 text-left shrink-0 data-sticky:sticky data-sticky:bg-background data-sticky:left-0"
-                    style={{
-                      width: header.getSize(),
-                      flex: `1 0 ${header.getSize()}px`,
-                    }}
-                  >
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
-                        )}
-                  </div>
-                ))}
-              </div>
-            ))}
+      <div className="sticky pt-1 sm:pt-2 top-0 bg-background z-20">
+        <div className="border rounded-t-xl bg-background w-full overflow-hidden">
+          <div ref={stickyHeaderRef} className="overflow-auto scrollbar-hidden">
+            <div className="min-w-max">
+              {table.getHeaderGroups().map((hg) => (
+                <div key={hg.id} className="flex w-full">
+                  {hg.headers.map((header) => (
+                    <div
+                      key={header.id}
+                      data-sticky={
+                        header.column.id === "username" ? true : undefined
+                      }
+                      className="font-semibold text-muted-foreground px-3 py-2 first:sm:pl-4 text-left shrink-0 data-sticky:sticky data-sticky:bg-background data-sticky:left-0"
+                      style={{
+                        width: header.getSize(),
+                        flex: `1 0 ${header.getSize()}px`,
+                      }}
+                    >
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext(),
+                          )}
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
@@ -289,7 +285,7 @@ export default function LeaderboardTable() {
                   <div
                     key={row.id}
                     data-odd={virtualRow.index % 2 === 1 ? true : undefined}
-                    className="flex border-b last:border-b-0 border-border data-odd:bg-background-secondary group"
+                    className="flex min-w-full border-b last:border-b-0 border-border data-odd:bg-background-secondary group"
                     style={{
                       position: "absolute",
                       top: 0,
