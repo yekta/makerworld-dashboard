@@ -4,7 +4,9 @@ import { useLeaderboard } from "@/components/providers/leaderboard-provider";
 import { appLocale } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import {
+  CheckIcon,
   ClockIcon,
+  CopyIcon,
   DownloadIcon,
   ExternalLinkIcon,
   RocketIcon,
@@ -22,6 +24,8 @@ import {
 } from "@tanstack/react-table";
 
 import PrintIcon from "@/components/icons/print-icon";
+import { Button } from "@/components/ui/button";
+import { useCopyToClipboard } from "@/lib/hooks/use-copy-to-clipboard";
 import { TLeaderboardEntry } from "@/server/trpc/api/leaderboard/types";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
 
@@ -88,7 +92,6 @@ function CellSpan({
 
 export default function LeaderboardTable() {
   const { data } = useLeaderboard();
-
   const [now, setNow] = useState(Date.now());
 
   useEffect(() => {
@@ -117,23 +120,26 @@ export default function LeaderboardTable() {
           const username = String(row.getValue("username") ?? "");
           const src = row.original.avatar_url || "/favicon.ico"; // safe fallback (empty src breaks on iOS)
           return (
-            <Link
-              target="_blank"
-              className="group/link hover:bg-border active:bg-border w-full px-3 gap-2.5 h-full flex items-center justify-start"
-              href={`https://makerworld.com/@${username}`}
-            >
-              <div className="size-5 shrink-0 relative">
-                <Image
-                  className="size-full bg-border rounded-full border border-foreground group-hover/link:opacity-0 group-active/link:opacity-0 group-focus-visible/link:opacity-0 transition-transform group-hover/link:rotate-45 group-active/link:rotate-45 group-focus-visible/link:rotate-45"
-                  width={20}
-                  height={20}
-                  src={src}
-                  alt={`${username}'s avatar`}
-                />
-                <ExternalLinkIcon className="size-full scale-90 absolute left-0 top-0 -rotate-45 group-hover/link:rotate-0 group-active/link:rotate-0 group-focus-visible/link:rotate-0 opacity-0 group-hover/link:opacity-100 group-active/link:opacity-100 group-focus-visible/link:opacity-100 transition-transform" />
-              </div>
-              <CellSpan className="px-0">{username}</CellSpan>
-            </Link>
+            <div className="w-full h-full flex group/cell">
+              <Link
+                target="_blank"
+                className="group/link hover:bg-border active:bg-border flex-1 min-w-0 px-3 gap-2.5 h-full flex items-center justify-start"
+                href={`https://makerworld.com/@${username}`}
+              >
+                <div className="size-5 shrink-0 relative">
+                  <Image
+                    className="size-full bg-border rounded-full border border-foreground group-hover/link:opacity-0 group-active/link:opacity-0 group-focus-visible/link:opacity-0 transition-transform group-hover/link:rotate-45 group-active/link:rotate-45 group-focus-visible/link:rotate-45"
+                    width={20}
+                    height={20}
+                    src={src}
+                    alt={`${username}'s avatar`}
+                  />
+                  <ExternalLinkIcon className="size-full scale-90 absolute left-0 top-0 -rotate-45 group-hover/link:rotate-0 group-active/link:rotate-0 group-focus-visible/link:rotate-0 opacity-0 group-hover/link:opacity-100 group-active/link:opacity-100 group-focus-visible/link:opacity-100 transition-transform" />
+                </div>
+                <CellSpan className="px-0">{username}</CellSpan>
+              </Link>
+              <CopyButton textToCopy={row.original.user_id.toString()} />
+            </div>
           );
         },
       },
@@ -322,5 +328,20 @@ export default function LeaderboardTable() {
         </div>
       </div>
     </div>
+  );
+}
+
+function CopyButton({ textToCopy }: { textToCopy: string }) {
+  const { copyToClipboard, isRecentlyCopied } = useCopyToClipboard();
+  return (
+    <Button
+      variant="ghost"
+      data-recently-copied={isRecentlyCopied ? true : undefined}
+      onClick={() => copyToClipboard(textToCopy)}
+      className="h-full text-muted-foreground group/button rounded-none opacity-0 data-recently-copied:opacity-100 hover:bg-border active:bg-border group-hover/cell:opacity-100 group-active/cell:opacity-100 relative"
+    >
+      <CopyIcon className="size-3 group-data-recently-copied/button:opacity-0 group-data-recently-copied/button:rotate-45 transition-transform" />
+      <CheckIcon className="size-4 text-success absolute left-1/2 top-1/2 -translate-1/2 opacity-0 group-data-recently-copied/button:opacity-100 -rotate-45 group-data-recently-copied/button:rotate-0 transition-transform" />
+    </Button>
   );
 }
