@@ -180,13 +180,8 @@ export default function LeaderboardTable() {
 
   return (
     <div className="w-full border rounded-xl overflow-hidden text-sm">
-      {/* Horizontal scroll wrapper (iOS-friendly). Vertical scroll is the window. */}
       <div
-        className={cn(
-          "w-full overflow-x-auto",
-          // iOS momentum + fewer scroll glitches
-          "[webkit-overflow-scrolling:touch]",
-        )}
+        className={cn("w-full overflow-x-auto")}
         style={{ WebkitOverflowScrolling: "touch" as any }}
       >
         <div className="min-w-max">
