@@ -24,6 +24,7 @@ import {
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import { TLeaderboardEntry } from "@/server/trpc/api/leaderboard/types";
 import PrintIcon from "@/components/icons/print-icon";
+import { useWindowScroll } from "@uidotdev/usehooks";
 
 type TRow = TLeaderboardEntry & { rank: number };
 
@@ -90,6 +91,8 @@ export default function LeaderboardTable() {
   const { data } = useLeaderboard();
 
   const [now, setNow] = useState(Date.now());
+
+  const [{ y }] = useWindowScroll();
 
   useEffect(() => {
     setNow(Date.now());
@@ -218,6 +221,7 @@ export default function LeaderboardTable() {
 
   // Used to compute correct offsets when virtualizing against the window
   const listRef = useRef<HTMLDivElement>(null);
+  const stickyHeaderRef = useRef<HTMLDivElement>(null);
 
   const rowVirtualizer = useWindowVirtualizer({
     count: rows.length,
@@ -231,10 +235,13 @@ export default function LeaderboardTable() {
   const scrollMargin = rowVirtualizer.options.scrollMargin ?? 0;
 
   return (
-    <div className="w-full border rounded-xl text-sm overflow-hidden">
-      <div className={cn("w-full overflow-x-auto overflow-y-visible")}>
-        <div className="min-w-max">
-          <div className="sticky top-0 z-20 bg-background border-b">
+    <div className="w-full text-sm font-mono">
+      <div
+        data-not-at-top={y && y > 0 ? true : undefined}
+        className="sticky top-0 z-20 border rounded-t-xl bg-background w-full overflow-hidden data-not-at-top:rounded-t-none"
+      >
+        <div ref={stickyHeaderRef} className="overflow-auto scrollbar-hidden">
+          <div className="min-w-max">
             {table.getHeaderGroups().map((hg) => (
               <div key={hg.id} className="flex w-full">
                 {hg.headers.map((header) => (
@@ -243,7 +250,7 @@ export default function LeaderboardTable() {
                     data-sticky={
                       header.column.id === "username" ? true : undefined
                     }
-                    className="font-mono font-semibold text-muted-foreground px-3 py-2 first:sm:pl-4 text-left shrink-0 data-sticky:sticky data-sticky:bg-background data-sticky:left-0"
+                    className="font-semibold text-muted-foreground px-3 py-2 first:sm:pl-4 text-left shrink-0 data-sticky:sticky data-sticky:bg-background data-sticky:left-0"
                     style={{
                       width: header.getSize(),
                       flex: `1 0 ${header.getSize()}px`,
@@ -260,47 +267,61 @@ export default function LeaderboardTable() {
               </div>
             ))}
           </div>
-
-          {/* The virtualized "body" */}
-          <div ref={listRef} className="relative" style={{ height: totalSize }}>
-            {virtualItems.map((virtualRow) => {
-              const row = rows[virtualRow.index];
-              return (
-                <div
-                  key={row.id}
-                  data-odd={virtualRow.index % 2 === 1 ? true : undefined}
-                  className="flex w-full border-b last:border-b-0 border-border data-odd:bg-background-secondary group"
-                  style={{
-                    position: "absolute",
-                    top: 0,
-                    left: 0,
-                    transform: `translateY(${virtualRow.start - scrollMargin}px)`,
-                    height: ROW_HEIGHT,
-                    // reduces iOS paint jank during fast scroll
-                    willChange: "transform",
-                  }}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <div
-                      key={cell.id}
-                      data-sticky={
-                        cell.column.id === "username" ? true : undefined
-                      }
-                      className="font-mono items-center flex shrink-0 data-sticky:sticky data-sticky:bg-background data-sticky:left-0 group-data-odd:data-sticky:bg-background-secondary"
-                      style={{
-                        width: cell.column.getSize(),
-                        flex: `1 0 ${cell.column.getSize()}px`,
-                      }}
-                    >
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext(),
-                      )}
-                    </div>
-                  ))}
-                </div>
-              );
-            })}
+        </div>
+      </div>
+      <div className="w-full border border-t-0 rounded-b-xl overflow-hidden">
+        <div
+          onScroll={(e) => {
+            stickyHeaderRef.current?.scrollTo(e.currentTarget.scrollLeft, 0);
+          }}
+          className={cn("w-full overflow-x-auto overflow-y-visible")}
+        >
+          <div className="min-w-max">
+            {/* The virtualized "body" */}
+            <div
+              ref={listRef}
+              className="relative"
+              style={{ height: totalSize }}
+            >
+              {virtualItems.map((virtualRow) => {
+                const row = rows[virtualRow.index];
+                return (
+                  <div
+                    key={row.id}
+                    data-odd={virtualRow.index % 2 === 1 ? true : undefined}
+                    className="flex border-b last:border-b-0 border-border data-odd:bg-background-secondary group"
+                    style={{
+                      position: "absolute",
+                      top: 0,
+                      left: 0,
+                      transform: `translateY(${virtualRow.start - scrollMargin}px)`,
+                      height: ROW_HEIGHT,
+                      // reduces iOS paint jank during fast scroll
+                      willChange: "transform",
+                    }}
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <div
+                        key={cell.id}
+                        data-sticky={
+                          cell.column.id === "username" ? true : undefined
+                        }
+                        className="items-center flex shrink-0 data-sticky:sticky data-sticky:bg-background data-sticky:left-0 group-data-odd:data-sticky:bg-background-secondary"
+                        style={{
+                          width: cell.column.getSize(),
+                          flex: `1 0 ${cell.column.getSize()}px`,
+                        }}
+                      >
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext(),
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>
