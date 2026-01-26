@@ -52,8 +52,8 @@ const placeholderData: TRow[] = Array.from({ length: 10 }).map((_, index) => ({
   model_count: 0,
 }));
 
-const defaultCellSize = 110;
-const defaultCellSizeMin = 110;
+const defaultCellSize = 100;
+const defaultCellSizeMin = 100;
 const ROW_HEIGHT = 44; // keep fixed to avoid iOS measure jitter
 
 function CellSpan({
@@ -101,8 +101,10 @@ export default function LeaderboardTable() {
     setNow(Date.now());
   }, [data]);
 
-  const relativeFormatter = new Intl.RelativeTimeFormat(appLocale, {
-    style: "short",
+  const kmbtFormatter = new Intl.NumberFormat("en", {
+    notation: "compact",
+    compactDisplay: "short", // uses K, M, B…
+    maximumFractionDigits: 1, // change precision here
   });
 
   const columns: ColumnDef<TRow>[] = useMemo(
@@ -157,7 +159,7 @@ export default function LeaderboardTable() {
         minSize: defaultCellSizeMin,
         cell: ({ row }) => (
           <CellSpan Icon={PrintIcon}>
-            {parseInt(row.getValue("prints")).toLocaleString(appLocale)}
+            {kmbtFormatter.format(parseInt(row.getValue("prints")))}
           </CellSpan>
         ),
       },
@@ -168,7 +170,7 @@ export default function LeaderboardTable() {
         minSize: defaultCellSizeMin,
         cell: ({ row }) => (
           <CellSpan Icon={DownloadIcon}>
-            {parseInt(row.getValue("downloads")).toLocaleString(appLocale)}
+            {kmbtFormatter.format(parseInt(row.getValue("downloads")))}
           </CellSpan>
         ),
       },
@@ -179,7 +181,7 @@ export default function LeaderboardTable() {
         minSize: defaultCellSizeMin,
         cell: ({ row }) => (
           <CellSpan Icon={RocketIcon}>
-            {parseInt(row.getValue("boosts")).toLocaleString(appLocale)}
+            {kmbtFormatter.format(parseInt(row.getValue("boosts")))}
           </CellSpan>
         ),
       },
@@ -190,7 +192,7 @@ export default function LeaderboardTable() {
         minSize: defaultCellSizeMin,
         cell: ({ row }) => (
           <CellSpan Icon={UsersIcon}>
-            {parseInt(row.getValue("followers")).toLocaleString(appLocale)}
+            {kmbtFormatter.format(parseInt(row.getValue("followers")))}
           </CellSpan>
         ),
       },
@@ -234,16 +236,17 @@ export default function LeaderboardTable() {
       {
         accessorKey: "snapshotted_at",
         header: "Snapshot",
-        size: 140,
-        minSize: 140,
+        size: defaultCellSize,
+        minSize: defaultCellSizeMin,
         cell: ({ row }) => (
           <CellSpan Icon={ClockIcon} className="text-muted-foreground">
-            {relativeFormatter.format(
-              Math.round(
-                (parseInt(row.getValue("snapshotted_at")) - now) / 1000 / 60,
-              ),
-              "minutes",
-            )}
+            {Duration.fromMillis(now - parseInt(row.getValue("snapshotted_at")))
+              .shiftTo("minutes")
+              .toHuman({
+                showZeros: false,
+                unitDisplay: "narrow",
+                maximumFractionDigits: 0,
+              })}
           </CellSpan>
         ),
       },
