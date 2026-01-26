@@ -15,6 +15,8 @@ export const TLeaderboardEntrySchema = z.object({
   level: z.number(),
   user_row_created_at: z.number(),
   snapshotted_at: z.number(),
+  model_count: z.number(),
+  first_model_created_at: z.number(),
 });
 
 export const TLeaderboardOrderByEnum = z.enum([

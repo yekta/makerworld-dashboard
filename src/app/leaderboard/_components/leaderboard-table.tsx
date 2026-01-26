@@ -47,6 +47,8 @@ const placeholderData: TRow[] = Array.from({ length: 10 }).map((_, index) => ({
   snapshotted_at: 0,
   user_row_created_at: 0,
   likes: 0,
+  first_model_created_at: 0,
+  model_count: 0,
 }));
 
 const defaultCellSize = 110;
@@ -187,6 +189,18 @@ export default function LeaderboardTable() {
           </CellSpan>
         ),
       },
+      {
+        accessorKey: "model_count",
+        header: "Models",
+        size: defaultCellSize,
+        minSize: defaultCellSizeMin,
+        cell: ({ row }) => (
+          <CellSpan>
+            {parseInt(row.getValue("model_count")).toLocaleString(appLocale)}
+          </CellSpan>
+        ),
+      },
+
       {
         accessorKey: "snapshotted_at",
         header: "Snapshot",
