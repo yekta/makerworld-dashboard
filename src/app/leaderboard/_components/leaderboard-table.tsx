@@ -15,6 +15,7 @@ import { appLocale } from "@/lib/constants";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
+import { ExternalLinkIcon } from "lucide-react";
 
 type TRow = TLeaderboardEntry & {
   rank: number;
@@ -80,16 +81,19 @@ const columns: ColumnDef<TRow>[] = [
     cell: ({ row }) => (
       <Link
         target="_blank"
-        className="hover:underline w-full px-3 gap-2.5 active:underline h-full flex items-center justify-start"
+        className="group hover:bg-border active:bg-border w-full px-3 gap-2.5 h-full flex items-center justify-start"
         href={`https://makerworld.com/@${row.getValue("username")}`}
       >
-        <Image
-          className="size-5 shrink-0 rounded-full border border-foreground"
-          width={20}
-          height={20}
-          src={row.original.avatar_url}
-          alt={`${row.getValue("username")}'s avatar`}
-        />
+        <div className="size-5 shrink-0 relative">
+          <Image
+            className="size-full rounded-full border border-foreground group-hover:opacity-0 group-active:opacity-0 group-focus-visible:opacity-0 transition-transform group-hover:rotate-45 group-active:rotate-45 group-focus-visible:rotate-45"
+            width={20}
+            height={20}
+            src={row.original.avatar_url}
+            alt={`${row.getValue("username")}'s avatar`}
+          />
+          <ExternalLinkIcon className="size-full scale-90 absolute left-0 top-0 -rotate-45 group-hover:rotate-0 group-active:rotate-0 group-focus-visible:rotate-0 opacity-0 group-hover:opacity-100 group-active:opacity-100 group-focus-visible:opacity-100 transition-transform" />
+        </div>
         <CellSpan className="px-0">{row.getValue("username")}</CellSpan>
       </Link>
     ),
