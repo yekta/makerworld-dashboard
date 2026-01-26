@@ -120,15 +120,14 @@ export default function LeaderboardTable() {
         minSize: rankCellSize,
         enableSorting: false,
         cell: ({ row }) => (
-          <div className="w-full flex h-full items-center overflow-hidden relative group/cell">
-            <CellSpan className="text-muted-foreground sm:pl-4 relative">
+          <CopyButton
+            className="sm:pl-4 w-full"
+            textToCopy={row.original.user_id.toString()}
+          >
+            <CellSpan className="text-muted-foreground px-0 relative">
               #{parseInt(row.getValue("rank")).toLocaleString(appLocale)}
             </CellSpan>
-            <CopyButton
-              className="absolute left-0 top-0 w-full h-full z-10"
-              textToCopy={row.original.user_id.toString()}
-            />
-          </div>
+          </CopyButton>
         ),
       },
       {
@@ -459,9 +458,11 @@ export default function LeaderboardTable() {
 function CopyButton({
   textToCopy,
   className,
+  children,
 }: {
   textToCopy: string;
   className?: string;
+  children?: React.ReactNode;
 }) {
   const { copyToClipboard, isRecentlyCopied } = useCopyToClipboard();
   return (
@@ -470,12 +471,17 @@ function CopyButton({
       data-recently-copied={isRecentlyCopied ? true : undefined}
       onClick={() => copyToClipboard(textToCopy)}
       className={cn(
-        "h-full text-muted-foreground data-recently-copied:bg-border group/button rounded-none data-recently-copied:opacity-100 hover:bg-border active:bg-border hover:opacity-100 active:opacity-100 opacity-0",
+        "h-full group/button font-normal text-muted-foreground relative data-recently-copied:bg-border group/button rounded-none hover:bg-border active:bg-border",
         className,
       )}
     >
-      <CopyIcon className="size-3.5 group-data-recently-copied/button:opacity-0 group-data-recently-copied/button:rotate-45 transition-transform" />
-      <CheckIcon className="size-4.5 text-success absolute left-1/2 top-1/2 -translate-1/2 opacity-0 group-data-recently-copied/button:opacity-100 -rotate-45 group-data-recently-copied/button:rotate-0 transition-transform" />
+      <div className="w-full flex justify-start group-hover/button:opacity-0 group-active/button:opacity-0 group-data-recently-copied/button:opacity-0">
+        {children}
+      </div>
+      <div className="absolute left-0 top-0 w-full h-full flex items-center justify-center opacity-0 group-hover/button:opacity-100 group-active/button:opacity-100 group-data-recently-copied/button:opacity-100">
+        <CopyIcon className="size-3.5 group-data-recently-copied/button:opacity-0 group-data-recently-copied/button:rotate-45 transition-transform" />
+        <CheckIcon className="size-4.5 text-success absolute left-1/2 top-1/2 -translate-1/2 opacity-0 group-data-recently-copied/button:opacity-100 -rotate-45 group-data-recently-copied/button:rotate-0 transition-transform" />
+      </div>
     </Button>
   );
 }
