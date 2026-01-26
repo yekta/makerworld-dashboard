@@ -8,6 +8,7 @@ import {
   CopyIcon,
   DownloadIcon,
   ExternalLinkIcon,
+  MoveDown,
   RocketIcon,
   UsersIcon,
 } from "lucide-react";
@@ -19,6 +20,8 @@ import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
+  getSortedRowModel,
+  SortingState,
   useReactTable,
 } from "@tanstack/react-table";
 
@@ -51,7 +54,7 @@ const placeholderData: TRow[] = Array.from({ length: 10 }).map((_, index) => ({
   model_count: 0,
 }));
 
-const defaultCellSize = 110;
+const defaultCellSize = 120;
 const rankCellSize = 70;
 const ROW_HEIGHT = 48;
 const isUsernameStickyNegativeMargin = 20;
@@ -107,13 +110,14 @@ export default function LeaderboardTable() {
     maximumSignificantDigits: 3,
   });
 
-  const columns: ColumnDef<TRow>[] = useMemo(
-    () => [
+  const columns: ColumnDef<TRow>[] = useMemo(() => {
+    const cols: ColumnDef<TRow>[] = [
       {
         accessorKey: "rank",
         header: "Rank",
         size: rankCellSize,
         minSize: rankCellSize,
+        enableSorting: false,
         cell: ({ row }) => (
           <div className="w-full flex h-full items-center overflow-hidden relative group/cell">
             <CellSpan className="text-muted-foreground sm:pl-4 relative">
@@ -134,7 +138,6 @@ export default function LeaderboardTable() {
         cell: ({ row }) => {
           const username = String(row.getValue("username") ?? "");
           const src = row.original.avatar_url;
-
           return (
             <Link
               target="_blank"
@@ -258,19 +261,26 @@ export default function LeaderboardTable() {
           </CellSpan>
         ),
       },
-    ],
-    [now],
-  );
+    ];
+    return cols;
+  }, [now]);
 
   const tableData = useMemo(() => {
     if (!data) return placeholderData;
     return data.data.map((entry, index) => ({ ...entry, rank: index + 1 }));
   }, [data]);
 
+  const [sorting, setSorting] = useState<SortingState>([
+    { id: "prints", desc: true },
+  ]);
+
   const table = useReactTable({
     data: tableData,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    state: { sorting },
+    onSortingChange: setSorting,
   });
 
   const rows = table.getRowModel().rows;
@@ -303,12 +313,15 @@ export default function LeaderboardTable() {
               {table.getHeaderGroups().map((hg) => (
                 <div key={hg.id} className="flex w-full">
                   {hg.headers.map((header) => (
-                    <div
+                    <Button
                       key={header.id}
                       data-username={
                         header.column.id === "username" ? true : undefined
                       }
-                      className="font-semibold data-username:group-data-username-sticky/container:border-border border-r border-transparent text-muted-foreground px-3 py-2 first:sm:pl-4 text-left shrink-0 data-username:sticky data-username:bg-background data-username:left-0"
+                      disabled={!header.column.getCanSort()}
+                      onClick={header.column.getToggleSortingHandler()}
+                      variant="ghost"
+                      className="w-full disabled:opacity-100 bg-background rounded-none gap-1 font-semibold flex items-center justify-start data-username:group-data-username-sticky/container:border-border border-r border-transparent text-muted-foreground px-3 py-2 first:sm:pl-4 text-left shrink-0 data-username:sticky data-username:left-0"
                       style={{
                         width: header.getSize(),
                         flex:
@@ -317,13 +330,26 @@ export default function LeaderboardTable() {
                             : `1 0 ${header.getSize()}px`,
                       }}
                     >
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext(),
-                          )}
-                    </div>
+                      {header.column.getCanSort() &&
+                        header.column.getIsSorted() && (
+                          <MoveDown
+                            data-asc={
+                              header.column.getIsSorted() === "asc"
+                                ? true
+                                : undefined
+                            }
+                            className="size-4 shrink-0 -ml-1.25 data-asc:rotate-180 transition-transform"
+                          />
+                        )}
+                      <p className="shrink min-w-0 overflow-hidden overflow-ellipsis whitespace-nowrap">
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext(),
+                            )}
+                      </p>
+                    </Button>
                   ))}
                 </div>
               ))}
