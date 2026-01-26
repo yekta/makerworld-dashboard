@@ -108,18 +108,18 @@ const columns: ColumnDef<TRow>[] = [
       return (
         <Link
           target="_blank"
-          className="group hover:bg-border active:bg-border w-full px-3 gap-2.5 h-full flex items-center justify-start"
+          className="group/link hover:bg-border active:bg-border w-full px-3 gap-2.5 h-full flex items-center justify-start"
           href={`https://makerworld.com/@${username}`}
         >
           <div className="size-5 shrink-0 relative">
             <Image
-              className="size-full bg-border rounded-full border border-foreground group-hover:opacity-0 group-active:opacity-0 group-focus-visible:opacity-0 transition-transform group-hover:rotate-45 group-active:rotate-45 group-focus-visible:rotate-45"
+              className="size-full bg-border rounded-full border border-foreground group-hover/link:opacity-0 group-active/link:opacity-0 group-focus-visible/link:opacity-0 transition-transform group-hover/link:rotate-45 group-active/link:rotate-45 group-focus-visible/link:rotate-45"
               width={20}
               height={20}
               src={src}
               alt={`${username}'s avatar`}
             />
-            <ExternalLinkIcon className="size-full scale-90 absolute left-0 top-0 -rotate-45 group-hover:rotate-0 group-active:rotate-0 group-focus-visible:rotate-0 opacity-0 group-hover:opacity-100 group-active:opacity-100 group-focus-visible:opacity-100 transition-transform" />
+            <ExternalLinkIcon className="size-full scale-90 absolute left-0 top-0 -rotate-45 group-hover/link:rotate-0 group-active/link:rotate-0 group-focus-visible/link:rotate-0 opacity-0 group-hover/link:opacity-100 group-active/link:opacity-100 group-focus-visible/link:opacity-100 transition-transform" />
           </div>
           <CellSpan className="px-0">{username}</CellSpan>
         </Link>
