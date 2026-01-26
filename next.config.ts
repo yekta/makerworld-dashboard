@@ -12,6 +12,13 @@ const nextConfig: NextConfig = {
         pathname: "/**",
         search: "",
       },
+      {
+        protocol: "https",
+        hostname: "public-cdn.bblmw.com",
+        port: "",
+        pathname: "/**",
+        search: "",
+      },
     ],
     minimumCacheTTL: 60 * 60 * 24, // 24 hours
   },
