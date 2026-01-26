@@ -3,7 +3,12 @@
 import { useMemo, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ExternalLinkIcon } from "lucide-react";
+import {
+  DownloadIcon,
+  ExternalLinkIcon,
+  RocketIcon,
+  UsersIcon,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import { appLocale } from "@/lib/constants";
 import { useLeaderboard } from "@/components/providers/leaderboard-provider";
@@ -17,6 +22,7 @@ import {
 
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import { TLeaderboardEntry } from "@/server/trpc/api/leaderboard/types";
+import PrintIcon from "@/components/icons/print-icon";
 
 type TRow = TLeaderboardEntry & { rank: number };
 
@@ -45,10 +51,28 @@ const ROW_HEIGHT = 44; // keep fixed to avoid iOS measure jitter
 function CellSpan({
   children,
   className,
+  Icon,
 }: {
   children: React.ReactNode;
   className?: string;
+  Icon?: React.ComponentType<React.SVGProps<SVGSVGElement>>;
 }) {
+  if (Icon) {
+    return (
+      <div
+        className={cn(
+          "w-full flex gap-1 items-center px-3 shrink min-w-0 overflow-hidden overflow-ellipsis whitespace-nowrap",
+          className,
+        )}
+      >
+        <Icon className="size-3 shrink-0" />
+        <span className="shrink min-w-0 overflow-hidden overflow-ellipsis whitespace-nowrap">
+          {children}
+        </span>
+      </div>
+    );
+  }
+
   return (
     <span
       className={cn(
@@ -65,8 +89,8 @@ const columns: ColumnDef<TRow>[] = [
   {
     accessorKey: "rank",
     header: "Rank",
-    size: 60,
-    minSize: 60,
+    size: 65,
+    minSize: 65,
     cell: ({ row }) => (
       <CellSpan className="text-muted-foreground sm:pl-4">
         #{parseInt(row.getValue("rank")).toLocaleString(appLocale)}
@@ -76,8 +100,8 @@ const columns: ColumnDef<TRow>[] = [
   {
     accessorKey: "username",
     header: "Username",
-    size: 160,
-    minSize: 160,
+    size: 150,
+    minSize: 150,
     cell: ({ row }) => {
       const username = String(row.getValue("username") ?? "");
       const src = row.original.avatar_url || "/favicon.ico"; // safe fallback (empty src breaks on iOS)
@@ -108,7 +132,7 @@ const columns: ColumnDef<TRow>[] = [
     size: defaultCellSize,
     minSize: defaultCellSizeMin,
     cell: ({ row }) => (
-      <CellSpan>
+      <CellSpan Icon={PrintIcon}>
         {parseInt(row.getValue("prints")).toLocaleString(appLocale)}
       </CellSpan>
     ),
@@ -119,7 +143,7 @@ const columns: ColumnDef<TRow>[] = [
     size: defaultCellSize,
     minSize: defaultCellSizeMin,
     cell: ({ row }) => (
-      <CellSpan>
+      <CellSpan Icon={DownloadIcon}>
         {parseInt(row.getValue("downloads")).toLocaleString(appLocale)}
       </CellSpan>
     ),
@@ -130,7 +154,7 @@ const columns: ColumnDef<TRow>[] = [
     size: defaultCellSize,
     minSize: defaultCellSizeMin,
     cell: ({ row }) => (
-      <CellSpan>
+      <CellSpan Icon={RocketIcon}>
         {parseInt(row.getValue("boosts")).toLocaleString(appLocale)}
       </CellSpan>
     ),
@@ -141,7 +165,7 @@ const columns: ColumnDef<TRow>[] = [
     size: defaultCellSize,
     minSize: defaultCellSizeMin,
     cell: ({ row }) => (
-      <CellSpan>
+      <CellSpan Icon={UsersIcon}>
         {parseInt(row.getValue("followers")).toLocaleString(appLocale)}
       </CellSpan>
     ),
@@ -170,7 +194,7 @@ export default function LeaderboardTable() {
   const rowVirtualizer = useWindowVirtualizer({
     count: rows.length,
     estimateSize: () => ROW_HEIGHT,
-    overscan: 10, // better on iPhone
+    overscan: 20,
     scrollMargin: listRef.current?.offsetTop ?? 0,
   });
 
@@ -179,20 +203,19 @@ export default function LeaderboardTable() {
   const scrollMargin = rowVirtualizer.options.scrollMargin ?? 0;
 
   return (
-    <div className="w-full border rounded-xl overflow-hidden text-sm">
-      <div
-        className={cn("w-full overflow-x-auto")}
-        style={{ WebkitOverflowScrolling: "touch" as any }}
-      >
+    <div className="w-full border rounded-xl text-sm overflow-hidden">
+      <div className={cn("w-full overflow-x-auto overflow-y-visible")}>
         <div className="min-w-max">
-          {/* Sticky header works reliably with divs (table + flex is flaky on iOS). */}
           <div className="sticky top-0 z-20 bg-background border-b">
             {table.getHeaderGroups().map((hg) => (
               <div key={hg.id} className="flex w-full">
                 {hg.headers.map((header) => (
                   <div
                     key={header.id}
-                    className="font-mono font-semibold text-muted-foreground px-3 py-2 first:sm:pl-4 text-left shrink-0"
+                    data-sticky={
+                      header.column.id === "username" ? true : undefined
+                    }
+                    className="font-mono font-semibold text-muted-foreground px-3 py-2 first:sm:pl-4 text-left shrink-0 data-sticky:sticky data-sticky:bg-background data-sticky:left-0"
                     style={{
                       width: header.getSize(),
                       flex: `1 0 ${header.getSize()}px`,
@@ -218,7 +241,7 @@ export default function LeaderboardTable() {
                 <div
                   key={row.id}
                   data-odd={virtualRow.index % 2 === 1 ? true : undefined}
-                  className="flex w-full border-b last:border-b-0 border-border data-odd:bg-border/50"
+                  className="flex w-full border-b last:border-b-0 border-border data-odd:bg-background-secondary group"
                   style={{
                     position: "absolute",
                     top: 0,
@@ -232,7 +255,10 @@ export default function LeaderboardTable() {
                   {row.getVisibleCells().map((cell) => (
                     <div
                       key={cell.id}
-                      className="font-mono items-center flex shrink-0"
+                      data-sticky={
+                        cell.column.id === "username" ? true : undefined
+                      }
+                      className="font-mono items-center flex shrink-0 data-sticky:sticky data-sticky:bg-background data-sticky:left-0 group-data-odd:data-sticky:bg-background-secondary"
                       style={{
                         width: cell.column.getSize(),
                         flex: `1 0 ${cell.column.getSize()}px`,
