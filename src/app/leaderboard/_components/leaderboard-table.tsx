@@ -54,7 +54,7 @@ const placeholderData: TRow[] = Array.from({ length: 10 }).map((_, index) => ({
 
 const defaultCellSize = 110;
 const rankCellSize = 70;
-const ROW_HEIGHT = 50;
+const ROW_HEIGHT = 48;
 const isUsernameStickyNegativeMargin = 20;
 
 function CellSpan({
@@ -139,25 +139,25 @@ export default function LeaderboardTable() {
           return (
             <Link
               target="_blank"
-              className="w-full group-data-username-sticky/container:border-border border-r border-transparent group/link hover:bg-border active:bg-border min-w-0 px-3 gap-0.5 h-full flex items-center justify-start"
+              className="w-full group-data-username-sticky/container:border-border border-r border-transparent group/link hover:bg-border active:bg-border min-w-0 px-3 gap-2.5 h-full flex items-center justify-start"
               href={`https://makerworld.com/@${username}`}
             >
-              <div className="w-8 shrink-0 overflow-hidden h-full flex flex-col items-center justify-center gap-0.5 relative group-data-username-sticky/container:translate-y-0.5 translate-y-2 transition-transform">
-                <div className="size-5 shrink-0 relative transition-transform">
-                  <Image
-                    className="size-full bg-border rounded-full border border-foreground group-hover/link:opacity-0 group-active/link:opacity-0 group-focus-visible/link:opacity-0 transition-transform group-hover/link:rotate-45 group-active/link:rotate-45 group-focus-visible/link:rotate-45"
-                    width={20}
-                    height={20}
-                    src={src}
-                    alt={`${username}'s avatar`}
-                  />
-                  <ExternalLinkIcon className="size-full scale-90 absolute left-0 top-0 -rotate-45 group-hover/link:rotate-0 group-active/link:rotate-0 group-focus-visible/link:rotate-0 opacity-0 group-hover/link:opacity-100 group-active/link:opacity-100 group-focus-visible/link:opacity-100 transition-transform" />
-                </div>
-                <p className="text-xxs text-center opacity-0 w-full overflow-hidden overflow-ellipsis whitespace-nowrap transition-transform group-data-username-sticky/container:opacity-100 text-muted-foreground font-medium">
+              <div className="size-5 shrink-0 relative transition-transform">
+                <Image
+                  className="size-full bg-border rounded-full border border-foreground group-hover/link:opacity-0 group-active/link:opacity-0 group-focus-visible/link:opacity-0 transition-transform group-hover/link:rotate-45 group-active/link:rotate-45 group-focus-visible/link:rotate-45"
+                  width={20}
+                  height={20}
+                  src={src}
+                  alt={`${username}'s avatar`}
+                />
+                <ExternalLinkIcon className="size-full scale-90 absolute left-0 top-0 -rotate-45 group-hover/link:rotate-0 group-active/link:rotate-0 group-focus-visible/link:rotate-0 opacity-0 group-hover/link:opacity-100 group-active/link:opacity-100 group-focus-visible/link:opacity-100 transition-transform" />
+              </div>
+              <div className="w-full flex flex-col group-data-username-sticky/container:-translate-y-px translate-y-1.75 transition-transform overflow-hidden">
+                <CellSpan className="px-0">{username}</CellSpan>
+                <p className="text-xxs text-left opacity-0 w-full overflow-hidden overflow-ellipsis whitespace-nowrap transition-transform group-data-username-sticky/container:opacity-100 text-muted-foreground font-medium">
                   #{row.original.rank}
                 </p>
               </div>
-              <CellSpan className="px-0">{username}</CellSpan>
             </Link>
           );
         },
