@@ -52,8 +52,8 @@ const placeholderData: TRow[] = Array.from({ length: 10 }).map((_, index) => ({
   model_count: 0,
 }));
 
-const defaultCellSize = 100;
-const defaultCellSizeMin = 100;
+const defaultCellSize = 110;
+const rankCellSize = 70;
 const ROW_HEIGHT = 44; // keep fixed to avoid iOS measure jitter
 
 function CellSpan({
@@ -104,7 +104,7 @@ export default function LeaderboardTable() {
   const kmbtFormatter = new Intl.NumberFormat("en", {
     notation: "compact",
     compactDisplay: "short", // uses K, M, B…
-    maximumFractionDigits: 1, // change precision here
+    maximumSignificantDigits: 3,
   });
 
   const columns: ColumnDef<TRow>[] = useMemo(
@@ -112,12 +112,18 @@ export default function LeaderboardTable() {
       {
         accessorKey: "rank",
         header: "Rank",
-        size: 65,
-        minSize: 65,
+        size: rankCellSize,
+        minSize: rankCellSize,
         cell: ({ row }) => (
-          <CellSpan className="text-muted-foreground sm:pl-4">
-            #{parseInt(row.getValue("rank")).toLocaleString(appLocale)}
-          </CellSpan>
+          <div className="w-full flex h-full items-center overflow-hidden relative group/cell">
+            <CellSpan className="text-muted-foreground sm:pl-4 relative">
+              #{parseInt(row.getValue("rank")).toLocaleString(appLocale)}
+            </CellSpan>
+            <CopyButton
+              className="absolute left-0 top-0 w-full h-full z-10"
+              textToCopy={row.original.user_id.toString()}
+            />
+          </div>
         ),
       },
       {
@@ -127,28 +133,26 @@ export default function LeaderboardTable() {
         minSize: 150,
         cell: ({ row }) => {
           const username = String(row.getValue("username") ?? "");
-          const src = row.original.avatar_url || "/favicon.ico"; // safe fallback (empty src breaks on iOS)
+          const src = row.original.avatar_url;
+
           return (
-            <div className="w-full h-full flex group/cell">
-              <Link
-                target="_blank"
-                className="group/link hover:bg-border active:bg-border flex-1 min-w-0 px-3 gap-2.5 h-full flex items-center justify-start"
-                href={`https://makerworld.com/@${username}`}
-              >
-                <div className="size-5 shrink-0 relative">
-                  <Image
-                    className="size-full bg-border rounded-full border border-foreground group-hover/link:opacity-0 group-active/link:opacity-0 group-focus-visible/link:opacity-0 transition-transform group-hover/link:rotate-45 group-active/link:rotate-45 group-focus-visible/link:rotate-45"
-                    width={20}
-                    height={20}
-                    src={src}
-                    alt={`${username}'s avatar`}
-                  />
-                  <ExternalLinkIcon className="size-full scale-90 absolute left-0 top-0 -rotate-45 group-hover/link:rotate-0 group-active/link:rotate-0 group-focus-visible/link:rotate-0 opacity-0 group-hover/link:opacity-100 group-active/link:opacity-100 group-focus-visible/link:opacity-100 transition-transform" />
-                </div>
-                <CellSpan className="px-0">{username}</CellSpan>
-              </Link>
-              <CopyButton textToCopy={row.original.user_id.toString()} />
-            </div>
+            <Link
+              target="_blank"
+              className="w-full group-data-scrolled-passed-rank/container:border-border border-r border-transparent group/link hover:bg-border active:bg-border min-w-0 px-3 gap-2.5 h-full flex items-center justify-start"
+              href={`https://makerworld.com/@${username}`}
+            >
+              <div className="size-5 shrink-0 relative">
+                <Image
+                  className="size-full bg-border rounded-full border border-foreground group-hover/link:opacity-0 group-active/link:opacity-0 group-focus-visible/link:opacity-0 transition-transform group-hover/link:rotate-45 group-active/link:rotate-45 group-focus-visible/link:rotate-45"
+                  width={20}
+                  height={20}
+                  src={src}
+                  alt={`${username}'s avatar`}
+                />
+                <ExternalLinkIcon className="size-full scale-90 absolute left-0 top-0 -rotate-45 group-hover/link:rotate-0 group-active/link:rotate-0 group-focus-visible/link:rotate-0 opacity-0 group-hover/link:opacity-100 group-active/link:opacity-100 group-focus-visible/link:opacity-100 transition-transform" />
+              </div>
+              <CellSpan className="px-0">{username}</CellSpan>
+            </Link>
           );
         },
       },
@@ -156,7 +160,7 @@ export default function LeaderboardTable() {
         accessorKey: "prints",
         header: "Prints",
         size: defaultCellSize,
-        minSize: defaultCellSizeMin,
+        minSize: defaultCellSize,
         cell: ({ row }) => (
           <CellSpan Icon={PrintIcon}>
             {kmbtFormatter.format(parseInt(row.getValue("prints")))}
@@ -167,7 +171,7 @@ export default function LeaderboardTable() {
         accessorKey: "downloads",
         header: "Downloads",
         size: defaultCellSize,
-        minSize: defaultCellSizeMin,
+        minSize: defaultCellSize,
         cell: ({ row }) => (
           <CellSpan Icon={DownloadIcon}>
             {kmbtFormatter.format(parseInt(row.getValue("downloads")))}
@@ -178,7 +182,7 @@ export default function LeaderboardTable() {
         accessorKey: "boosts",
         header: "Boosts",
         size: defaultCellSize,
-        minSize: defaultCellSizeMin,
+        minSize: defaultCellSize,
         cell: ({ row }) => (
           <CellSpan Icon={RocketIcon}>
             {kmbtFormatter.format(parseInt(row.getValue("boosts")))}
@@ -189,7 +193,7 @@ export default function LeaderboardTable() {
         accessorKey: "followers",
         header: "Followers",
         size: defaultCellSize,
-        minSize: defaultCellSizeMin,
+        minSize: defaultCellSize,
         cell: ({ row }) => (
           <CellSpan Icon={UsersIcon}>
             {kmbtFormatter.format(parseInt(row.getValue("followers")))}
@@ -200,27 +204,27 @@ export default function LeaderboardTable() {
         accessorKey: "model_count",
         header: "Models",
         size: defaultCellSize,
-        minSize: defaultCellSizeMin,
+        minSize: defaultCellSize,
         cell: ({ row }) => {
           const val = parseInt(row.getValue("model_count"));
           return (
-            <CellSpan>
-              {val === 0 ? "----" : val.toLocaleString(appLocale)}
+            <CellSpan className={val === 0 ? "text-muted-more-foreground" : ""}>
+              {val === 0 ? "-----" : val.toLocaleString(appLocale)}
             </CellSpan>
           );
         },
       },
       {
         accessorKey: "first_model_created_at",
-        header: "First Model",
+        header: "Start",
         size: defaultCellSize,
-        minSize: defaultCellSizeMin,
+        minSize: defaultCellSize,
         cell: ({ row }) => {
           const val = parseInt(row.getValue("first_model_created_at"));
           return (
-            <CellSpan>
+            <CellSpan className={val === 0 ? "text-muted-more-foreground" : ""}>
               {val === 0
-                ? "----"
+                ? "-----"
                 : Duration.fromMillis(now - val)
                     .shiftTo("year", "months")
                     .toHuman({
@@ -232,12 +236,11 @@ export default function LeaderboardTable() {
           );
         },
       },
-
       {
         accessorKey: "snapshotted_at",
         header: "Snapshot",
         size: defaultCellSize,
-        minSize: defaultCellSizeMin,
+        minSize: defaultCellSize,
         cell: ({ row }) => (
           <CellSpan Icon={ClockIcon} className="text-muted-foreground">
             {Duration.fromMillis(now - parseInt(row.getValue("snapshotted_at")))
@@ -281,10 +284,14 @@ export default function LeaderboardTable() {
   const virtualItems = rowVirtualizer.getVirtualItems();
   const totalSize = rowVirtualizer.getTotalSize();
   const scrollMargin = rowVirtualizer.options.scrollMargin ?? 0;
+  const [scrolledPassedRank, setScrolledPassedRank] = useState(false);
 
   return (
-    <div className="w-full text-sm font-mono">
-      <div className="sticky pt-1 sm:pt-2 top-0 bg-background z-20">
+    <div
+      data-scrolled-passed-rank={scrolledPassedRank ? true : undefined}
+      className="w-full text-sm font-mono group/container"
+    >
+      <div className="sticky pt-1 sm:pt-2 top-0 bg-background z-20 group">
         <div className="border rounded-t-xl bg-background w-full overflow-hidden">
           <div ref={stickyHeaderRef} className="overflow-auto scrollbar-hidden">
             <div className="min-w-max">
@@ -293,13 +300,16 @@ export default function LeaderboardTable() {
                   {hg.headers.map((header) => (
                     <div
                       key={header.id}
-                      data-sticky={
+                      data-username={
                         header.column.id === "username" ? true : undefined
                       }
-                      className="font-semibold text-muted-foreground px-3 py-2 first:sm:pl-4 text-left shrink-0 data-sticky:sticky data-sticky:bg-background data-sticky:left-0"
+                      className="font-semibold data-username:group-data-scrolled-passed-rank/container:border-border border-r border-transparent text-muted-foreground px-3 py-2 first:sm:pl-4 text-left shrink-0 data-username:sticky data-username:bg-background data-username:left-0"
                       style={{
                         width: header.getSize(),
-                        flex: `1 0 ${header.getSize()}px`,
+                        flex:
+                          header.column.id === "rank"
+                            ? undefined
+                            : `1 0 ${header.getSize()}px`,
                       }}
                     >
                       {header.isPlaceholder
@@ -320,6 +330,11 @@ export default function LeaderboardTable() {
         <div
           onScroll={(e) => {
             stickyHeaderRef.current?.scrollTo(e.currentTarget.scrollLeft, 0);
+            if (e.currentTarget.scrollLeft > rankCellSize - 10) {
+              setScrolledPassedRank(true);
+            } else {
+              setScrolledPassedRank(false);
+            }
           }}
           className={cn("w-full overflow-x-auto overflow-y-visible")}
         >
@@ -356,7 +371,10 @@ export default function LeaderboardTable() {
                         className="items-center flex shrink-0 data-sticky:sticky data-sticky:bg-background data-sticky:left-0 group-data-odd:data-sticky:bg-background-secondary"
                         style={{
                           width: cell.column.getSize(),
-                          flex: `1 0 ${cell.column.getSize()}px`,
+                          flex:
+                            cell.column.id === "rank"
+                              ? undefined
+                              : `1 0 ${cell.column.getSize()}px`,
                         }}
                       >
                         {flexRender(
@@ -376,17 +394,26 @@ export default function LeaderboardTable() {
   );
 }
 
-function CopyButton({ textToCopy }: { textToCopy: string }) {
+function CopyButton({
+  textToCopy,
+  className,
+}: {
+  textToCopy: string;
+  className?: string;
+}) {
   const { copyToClipboard, isRecentlyCopied } = useCopyToClipboard();
   return (
     <Button
       variant="ghost"
       data-recently-copied={isRecentlyCopied ? true : undefined}
       onClick={() => copyToClipboard(textToCopy)}
-      className="h-full text-muted-foreground group/button rounded-none opacity-0 data-recently-copied:opacity-100 hover:bg-border active:bg-border group-hover/cell:opacity-100 group-active/cell:opacity-100 relative"
+      className={cn(
+        "h-full text-muted-foreground data-recently-copied:bg-border group/button rounded-none data-recently-copied:opacity-100 hover:bg-border active:bg-border group-hover/cell:opacity-100 opacity-0",
+        className,
+      )}
     >
-      <CopyIcon className="size-3 group-data-recently-copied/button:opacity-0 group-data-recently-copied/button:rotate-45 transition-transform" />
-      <CheckIcon className="size-4 text-success absolute left-1/2 top-1/2 -translate-1/2 opacity-0 group-data-recently-copied/button:opacity-100 -rotate-45 group-data-recently-copied/button:rotate-0 transition-transform" />
+      <CopyIcon className="size-3.5 group-data-recently-copied/button:opacity-0 group-data-recently-copied/button:rotate-45 transition-transform" />
+      <CheckIcon className="size-4.5 text-success absolute left-1/2 top-1/2 -translate-1/2 opacity-0 group-data-recently-copied/button:opacity-100 -rotate-45 group-data-recently-copied/button:rotate-0 transition-transform" />
     </Button>
   );
 }
