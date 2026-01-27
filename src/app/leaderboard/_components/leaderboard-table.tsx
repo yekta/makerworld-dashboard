@@ -31,6 +31,7 @@ import { useCopyToClipboard } from "@/lib/hooks/use-copy-to-clipboard";
 import { TLeaderboardEntry } from "@/server/trpc/api/leaderboard/types";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import { Duration } from "luxon";
+import { env } from "@/lib/env";
 
 type TRow = TLeaderboardEntry & { rank: number; boost_rate: number };
 
@@ -124,7 +125,7 @@ export default function LeaderboardTable() {
             className="sm:pl-4 w-full"
             textToCopy={row.original.user_id.toString()}
           >
-            <CellSpan className="text-muted-foreground px-0 relative">
+            <CellSpan className="text-muted-foreground px-0 relative group-data-me:text-warning/75">
               #{parseInt(row.getValue("rank")).toLocaleString(appLocale)}
             </CellSpan>
           </CopyButton>
@@ -147,7 +148,7 @@ export default function LeaderboardTable() {
             >
               <div className="size-5 shrink-0 relative transition-transform">
                 <Image
-                  className="size-full bg-border rounded-full border border-foreground group-hover/link:opacity-0 group-active/link:opacity-0 group-focus-visible/link:opacity-0 transition-transform group-hover/link:rotate-45 group-active/link:rotate-45 group-focus-visible/link:rotate-45"
+                  className="size-full group-data-me:border-warning bg-border rounded-full border border-muted-more-foreground group-hover/link:opacity-0 group-active/link:opacity-0 group-focus-visible/link:opacity-0 transition-transform group-hover/link:rotate-45 group-active/link:rotate-45 group-focus-visible/link:rotate-45"
                   width={20}
                   height={20}
                   src={src}
@@ -272,7 +273,7 @@ export default function LeaderboardTable() {
         invertSorting: true,
         sortDescFirst: false,
         cell: ({ row }) => (
-          <CellSpan className="text-muted-foreground">
+          <CellSpan className="text-muted-more-foreground group-data-me:text-warning/60">
             {Duration.fromMillis(now - parseInt(row.getValue("snapshotted_at")))
               .shiftTo("minutes")
               .toHuman({
@@ -412,7 +413,12 @@ export default function LeaderboardTable() {
                   <div
                     key={row.id}
                     data-odd={virtualRow.index % 2 === 1 ? true : undefined}
-                    className="flex min-w-full border-b last:border-b-0 border-border data-odd:bg-background-secondary group"
+                    data-me={
+                      row.original.username === env.NEXT_PUBLIC_USERNAME
+                        ? true
+                        : undefined
+                    }
+                    className="flex min-w-full data-me:text-warning border-b last:border-b-0 border-border data-odd:bg-background-secondary group"
                     style={{
                       position: "absolute",
                       top: 0,
