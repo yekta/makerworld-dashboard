@@ -19,6 +19,7 @@ export const TLeaderboardTableSortByEnum = z.enum([
   "username",
   "downloads",
   "prints",
+  "prints_last_24h",
   "boosts",
   "followers",
   "boost_rate",

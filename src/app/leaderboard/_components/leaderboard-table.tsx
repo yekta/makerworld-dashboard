@@ -53,6 +53,7 @@ const placeholderData: TRow[] = Array.from({ length: 100 }).map((_, index) => ({
   boosts: 1_000,
   downloads: 10_000,
   prints: 10_000,
+  prints_last_24h: 100,
   downloads_api: 10_000,
   followers: 10_000,
   following: 1,
@@ -68,6 +69,7 @@ const placeholderData: TRow[] = Array.from({ length: 100 }).map((_, index) => ({
 }));
 
 const defaultCellSize = 120;
+const smallerCellSize = 100;
 const rankCellSize = 70;
 const ROW_HEIGHT = 48;
 const isUsernameStickyNegativeMargin = 20;
@@ -253,6 +255,17 @@ export default function LeaderboardTable() {
         ),
       },
       {
+        accessorKey: "prints_last_24h",
+        header: "Last 24h",
+        size: defaultCellSize,
+        minSize: defaultCellSize,
+        cell: ({ row }) => (
+          <CellSpan Icon={PrintIcon} isPending={isPending}>
+            {kmbtFormatter.format(parseInt(row.getValue("prints_last_24h")))}
+          </CellSpan>
+        ),
+      },
+      {
         accessorKey: "downloads",
         header: "Downloads",
         size: defaultCellSize,
@@ -277,8 +290,8 @@ export default function LeaderboardTable() {
       {
         accessorKey: "followers",
         header: "Followers",
-        size: defaultCellSize,
-        minSize: defaultCellSize,
+        size: smallerCellSize,
+        minSize: smallerCellSize,
         cell: ({ row }) => (
           <CellSpan Icon={UsersIcon} isPending={isPending}>
             {kmbtFormatter.format(parseInt(row.getValue("followers")))}
@@ -288,8 +301,8 @@ export default function LeaderboardTable() {
       {
         accessorKey: "boost_rate",
         header: "Boost %",
-        size: defaultCellSize,
-        minSize: defaultCellSize,
+        size: smallerCellSize,
+        minSize: smallerCellSize,
         cell: ({ row }) => (
           <CellSpan isPending={isPending}>
             {(parseFloat(row.getValue("boost_rate")) * 100).toLocaleString(
@@ -305,8 +318,8 @@ export default function LeaderboardTable() {
       {
         accessorKey: "model_count",
         header: "Models",
-        size: defaultCellSize,
-        minSize: defaultCellSize,
+        size: smallerCellSize,
+        minSize: smallerCellSize,
         cell: ({ row }) => {
           const val = parseInt(row.getValue("model_count"));
           return (
@@ -346,8 +359,8 @@ export default function LeaderboardTable() {
       {
         accessorKey: "since_snapshotted_at",
         header: "Snapshot",
-        size: defaultCellSize,
-        minSize: defaultCellSize,
+        size: smallerCellSize,
+        minSize: smallerCellSize,
         sortDescFirst: false,
         cell: ({ row }) => (
           <CellSpan

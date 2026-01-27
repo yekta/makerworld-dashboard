@@ -6,6 +6,7 @@ export const TLeaderboardEntrySchema = z.object({
   display_name: z.string(),
   avatar_url: z.string(),
   prints: z.number(),
+  prints_last_24h: z.number(),
   downloads: z.number(),
   downloads_api: z.number(),
   boosts: z.number(),
