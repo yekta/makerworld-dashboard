@@ -5,6 +5,7 @@ import { appLocale } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import {
   CheckIcon,
+  ClockIcon,
   CopyIcon,
   DownloadIcon,
   ExternalLinkIcon,
@@ -25,6 +26,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 
+import { LEADERBOARD_TABLE_SORT_BY_DEFAULT } from "@/app/leaderboard/_components/constants";
 import {
   useLeaderboardSortBy,
   useLeaderboardSortOrder,
@@ -36,7 +38,6 @@ import { useCopyToClipboard } from "@/lib/hooks/use-copy-to-clipboard";
 import { TLeaderboardEntry } from "@/server/trpc/api/leaderboard/types";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import { Duration } from "luxon";
-import { LEADERBOARD_TABLE_SORT_BY_DEFAULT } from "@/app/leaderboard/_components/constants";
 
 type TRow = TLeaderboardEntry & {
   rank: number;
@@ -51,11 +52,12 @@ const placeholderData: TRow[] = Array.from({ length: 100 }).map((_, index) => ({
   username: `username_${index}`,
   display_name: `Loading...`,
   avatar_url: "",
-  boosts: 1_000,
-  downloads: 10_000,
   prints: 10_000,
-  prints_last_24h: 100,
-  prints_last_24h_forecasted_based_on_ms: 1000 * 60 * 60 * 24,
+  prints_24h: 100,
+  boosts: 1_000,
+  boosts_24h: 100,
+  metrics_24h_forecasted_based_on_ms: 1000 * 60 * 60 * 24,
+  downloads: 10_000,
   downloads_api: 10_000,
   followers: 10_000,
   following: 1,
@@ -70,8 +72,9 @@ const placeholderData: TRow[] = Array.from({ length: 100 }).map((_, index) => ({
   boost_rate: 0.1,
 }));
 
-const defaultCellSize = 120;
-const smallerCellSize = 100;
+const defaultCellSize = 110;
+const smallerCellSize = 90;
+const smallestCellSize = 70;
 const rankCellSize = 70;
 const ROW_HEIGHT = 48;
 const isUsernameStickyNegativeMargin = 20;
@@ -79,6 +82,7 @@ const isUsernameStickyNegativeMargin = 20;
 declare module "@tanstack/react-table" {
   interface ColumnMeta<TData, TValue> {
     Icon?: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+    noFlex?: boolean;
   }
 }
 
@@ -117,6 +121,9 @@ export default function LeaderboardTable() {
         size: rankCellSize,
         minSize: rankCellSize,
         enableSorting: false,
+        meta: {
+          noFlex: true,
+        },
         cell: ({ row, table }) => {
           const rowIndex =
             table.getRowModel().rows.findIndex((r) => r.id === row.id) + 1;
@@ -254,8 +261,8 @@ export default function LeaderboardTable() {
       {
         accessorKey: "prints",
         header: "Prints",
-        size: defaultCellSize,
-        minSize: defaultCellSize,
+        size: smallerCellSize,
+        minSize: smallerCellSize,
         cell: ({ row }) => (
           <CellSpan Icon={PrintIcon} isPending={isPending}>
             {kmbtFormatter.format(parseInt(row.getValue("prints")))}
@@ -263,13 +270,13 @@ export default function LeaderboardTable() {
         ),
       },
       {
-        accessorKey: "prints_last_24h",
+        accessorKey: "prints_24h",
         header: "24h",
-        size: defaultCellSize,
-        minSize: defaultCellSize,
+        size: smallerCellSize,
+        minSize: smallerCellSize,
         cell: ({ row }) => (
           <CellSpan Icon={PrintIcon} isPending={isPending}>
-            {kmbtFormatter.format(parseInt(row.getValue("prints_last_24h")))}
+            {kmbtFormatter.format(parseInt(row.getValue("prints_24h")))}
           </CellSpan>
         ),
         meta: {
@@ -299,21 +306,29 @@ export default function LeaderboardTable() {
         ),
       },
       {
-        accessorKey: "followers",
-        header: "Followers",
-        size: defaultCellSize,
-        minSize: defaultCellSize,
+        accessorKey: "boosts_24h",
+        header: "24h",
+        size: smallerCellSize,
+        minSize: smallerCellSize,
+        meta: {
+          Icon: RocketIcon,
+          noFlex: true,
+        },
         cell: ({ row }) => (
-          <CellSpan Icon={UsersIcon} isPending={isPending}>
-            {kmbtFormatter.format(parseInt(row.getValue("followers")))}
+          <CellSpan Icon={RocketIcon} isPending={isPending}>
+            {kmbtFormatter.format(parseInt(row.getValue("boosts_24h")))}
           </CellSpan>
         ),
       },
       {
         accessorKey: "boost_rate",
-        header: "Boost %",
+        header: "%",
         size: smallerCellSize,
         minSize: smallerCellSize,
+        meta: {
+          noFlex: true,
+          Icon: RocketIcon,
+        },
         cell: ({ row }) => (
           <CellSpan isPending={isPending}>
             {(parseFloat(row.getValue("boost_rate")) * 100).toLocaleString(
@@ -323,6 +338,17 @@ export default function LeaderboardTable() {
               },
             )}
             %
+          </CellSpan>
+        ),
+      },
+      {
+        accessorKey: "followers",
+        header: "Followers",
+        size: defaultCellSize,
+        minSize: defaultCellSize,
+        cell: ({ row }) => (
+          <CellSpan Icon={UsersIcon} isPending={isPending}>
+            {kmbtFormatter.format(parseInt(row.getValue("followers")))}
           </CellSpan>
         ),
       },
@@ -346,8 +372,8 @@ export default function LeaderboardTable() {
       {
         accessorKey: "since_start",
         header: "Start",
-        size: defaultCellSize,
-        minSize: defaultCellSize,
+        size: smallerCellSize,
+        minSize: smallerCellSize,
         sortDescFirst: false,
         cell: ({ row }) => {
           const val = parseInt(row.getValue("since_start"));
@@ -369,10 +395,14 @@ export default function LeaderboardTable() {
       },
       {
         accessorKey: "since_snapshotted_at",
-        header: "Snapshot",
-        size: smallerCellSize,
-        minSize: smallerCellSize,
+        header: "",
+        size: smallestCellSize,
+        minSize: smallestCellSize,
         sortDescFirst: false,
+        meta: {
+          noFlex: true,
+          Icon: ClockIcon,
+        },
         cell: ({ row }) => (
           <CellSpan
             className="group-data-me:text-warning/60"
@@ -483,7 +513,7 @@ export default function LeaderboardTable() {
                         style={{
                           width: header.getSize(),
                           flex:
-                            header.column.id === "rank"
+                            header.column.columnDef.meta?.noFlex === true
                               ? undefined
                               : `1 0 ${header.getSize()}px`,
                         }}
@@ -571,7 +601,7 @@ export default function LeaderboardTable() {
                         style={{
                           width: cell.column.getSize(),
                           flex:
-                            cell.column.id === "rank"
+                            cell.column.columnDef.meta?.noFlex === true
                               ? undefined
                               : `1 0 ${cell.column.getSize()}px`,
                         }}
