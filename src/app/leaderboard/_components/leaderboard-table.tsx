@@ -36,6 +36,7 @@ import { useCopyToClipboard } from "@/lib/hooks/use-copy-to-clipboard";
 import { TLeaderboardEntry } from "@/server/trpc/api/leaderboard/types";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import { Duration } from "luxon";
+import { LEADERBOARD_TABLE_SORT_BY_DEFAULT } from "@/app/leaderboard/_components/constants";
 
 type TRow = TLeaderboardEntry & {
   rank: number;
@@ -91,6 +92,16 @@ export default function LeaderboardTable() {
     maximumSignificantDigits: 3,
   });
 
+  const [sorting, setSorting] = useState<SortingState>([
+    { id: sortBy, desc: sortOrder !== "asc" },
+  ]);
+
+  const hideRowNumber =
+    (sorting && sorting.length === 0) ||
+    (sorting &&
+      sorting.length > 0 &&
+      sorting[0]?.id === LEADERBOARD_TABLE_SORT_BY_DEFAULT);
+
   const columns: ColumnDef<TRow>[] = useMemo(() => {
     const cols: ColumnDef<TRow>[] = [
       {
@@ -99,30 +110,56 @@ export default function LeaderboardTable() {
         size: rankCellSize,
         minSize: rankCellSize,
         enableSorting: false,
-        cell: ({ row }) => {
+        cell: ({ row, table }) => {
+          const rowIndex =
+            table.getRowModel().rows.findIndex((r) => r.id === row.id) + 1;
           if (isPending) {
             return (
-              <CellSpan
-                isPending={isPending}
-                muted={true}
-                className="sm:pl-4 w-full"
+              <div
+                data-hide-row-number={hideRowNumber ? true : undefined}
+                className="w-full flex flex-col pb-0.5 data-hide-row-number:pb-0"
               >
-                #{parseInt(row.getValue("rank")).toLocaleString(appLocale)}
-              </CellSpan>
+                <CellSpan
+                  isPending={isPending}
+                  muted={true}
+                  className="pl-4 w-full"
+                >
+                  #{parseInt(row.getValue("rank")).toLocaleString(appLocale)}
+                </CellSpan>
+                {!hideRowNumber && (
+                  <div className="pl-4 mt-px text-xs font-bold relative w-full flex">
+                    <p className="shrink min-w-0 rounded-xs text-transparent bg-muted-most-foreground animate-pulse leading-none whitespace-normal overflow-hidden overflow-ellipsis">
+                      {rowIndex.toLocaleString(appLocale)}
+                    </p>
+                  </div>
+                )}
+              </div>
             );
           }
           return (
             <CopyButton
-              className="sm:pl-4 w-full"
+              className="pl-4 w-full"
               textToCopy={row.original.user_id.toString()}
             >
-              <CellSpan
-                isPending={isPending}
-                muted={true}
-                className="px-0 relative group-data-me:text-warning/75"
+              <div
+                data-hide-row-number={hideRowNumber ? true : undefined}
+                className="w-full flex flex-col items-start pb-0.5 data-hide-row-number:pb-0"
               >
-                #{parseInt(row.getValue("rank")).toLocaleString(appLocale)}
-              </CellSpan>
+                <CellSpan
+                  isPending={isPending}
+                  muted={true}
+                  className="px-0 relative group-data-me:text-warning/75"
+                >
+                  #{parseInt(row.getValue("rank")).toLocaleString(appLocale)}
+                </CellSpan>
+                {!hideRowNumber && (
+                  <div className="mt-px text-xs font-semibold relative w-full flex">
+                    <p className="text-left shrink min-w-0 rounded-xs text-muted-most-foreground leading-none whitespace-normal overflow-hidden overflow-ellipsis">
+                      {rowIndex.toLocaleString(appLocale)}
+                    </p>
+                  </div>
+                )}
+              </div>
             </CopyButton>
           );
         },
@@ -136,6 +173,8 @@ export default function LeaderboardTable() {
         cell: ({ row }) => {
           const username = String(row.getValue("username") ?? "");
           const src = row.original.avatar_url;
+          const rowIndex =
+            table.getRowModel().rows.findIndex((r) => r.id === row.id) + 1;
 
           if (isPending) {
             return (
@@ -147,10 +186,17 @@ export default function LeaderboardTable() {
                   <CellSpan isPending={isPending} className="px-0">
                     {username}
                   </CellSpan>
-                  <div className="w-full flex min-w-0 overflow-hidden">
-                    <p className="text-xxs leading-tight mt-px text-left opacity-0 max-w-full overflow-hidden overflow-ellipsis whitespace-nowrap transition-transform group-data-username-sticky/container:opacity-100 bg-muted-most-foreground rounded-sm text-transparent">
+                  <div className="w-full flex items-center min-w-0 overflow-hidden opacity-0 group-data-username-sticky/container:opacity-100">
+                    <p className="text-xxs leading-tight mt-px text-left max-w-full overflow-hidden overflow-ellipsis whitespace-nowrap transition-transform bg-muted-most-foreground rounded-sm text-transparent">
                       #{row.original.rank}
                     </p>
+                    {!hideRowNumber && (
+                      <div className="pl-1 mt-px text-xxs font-bold relative shrink min-w-0 flex items-center">
+                        <p className="rounded-xs text-transparent bg-muted-most-foreground animate-pulse shrink min-w-0 leading-none whitespace-normal overflow-hidden overflow-ellipsis">
+                          {rowIndex.toLocaleString(appLocale)}
+                        </p>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -176,10 +222,22 @@ export default function LeaderboardTable() {
                 <CellSpan isPending={isPending} className="px-0">
                   {username}
                 </CellSpan>
-                <div className="w-full flex min-w-0 overflow-hidden">
-                  <p className="text-xxs leading-tight group-data-me:text-warning/75 mt-px text-left opacity-0 max-w-full overflow-hidden overflow-ellipsis whitespace-nowrap transition-transform group-data-username-sticky/container:opacity-100 text-muted-foreground">
+                <div className="w-full flex items-center min-w-0 overflow-hidden opacity-0 group-data-username-sticky/container:opacity-100">
+                  <p className="text-xxs leading-tight group-data-me:text-warning/75 mt-px text-left opacity-0 shrink min-w-0 overflow-hidden overflow-ellipsis whitespace-nowrap transition-transform group-data-username-sticky/container:opacity-100 text-muted-foreground">
                     #{row.original.rank}
                   </p>
+                  {!hideRowNumber && (
+                    <div className="mt-px text-xxs font-bold relative shrink min-w-0 flex items-center">
+                      {!isPending && (
+                        <span className="text-muted-most-foreground px-[0.5ch]">
+                          |
+                        </span>
+                      )}
+                      <p className="shrink min-w-0 rounded-xs leading-none text-muted-most-foreground whitespace-normal overflow-hidden overflow-ellipsis">
+                        {rowIndex.toLocaleString(appLocale)}
+                      </p>
+                    </div>
+                  )}
                 </div>
               </div>
             </Link>
@@ -323,7 +381,7 @@ export default function LeaderboardTable() {
       },
     ];
     return cols;
-  }, [now, isPending, data]);
+  }, [now, isPending, data, sorting]);
 
   const tableData = useMemo(() => {
     if (!data) return placeholderData;
@@ -336,10 +394,6 @@ export default function LeaderboardTable() {
     }));
     return editedData;
   }, [data, now]);
-
-  const [sorting, setSorting] = useState<SortingState>([
-    { id: sortBy, desc: sortOrder !== "asc" },
-  ]);
 
   useEffect(() => {
     if (sorting.length === 0) {
