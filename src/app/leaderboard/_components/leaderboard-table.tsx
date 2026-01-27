@@ -335,7 +335,7 @@ export default function LeaderboardTable() {
       since_snapshotted_at: now - entry.snapshotted_at,
     }));
     return editedData;
-  }, [data]);
+  }, [data, now]);
 
   const [sorting, setSorting] = useState<SortingState>([
     { id: sortBy, desc: sortOrder !== "asc" },
