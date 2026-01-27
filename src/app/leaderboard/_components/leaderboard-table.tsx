@@ -323,7 +323,7 @@ export default function LeaderboardTable() {
       },
     ];
     return cols;
-  }, [now, isPending]);
+  }, [now, isPending, data]);
 
   const tableData = useMemo(() => {
     if (!data) return placeholderData;
