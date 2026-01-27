@@ -279,8 +279,8 @@ export default function LeaderboardTable() {
       {
         accessorKey: "boosts",
         header: "Boosts",
-        size: defaultCellSize,
-        minSize: defaultCellSize,
+        size: smallerCellSize,
+        minSize: smallerCellSize,
         cell: ({ row }) => (
           <CellSpan Icon={RocketIcon} isPending={isPending}>
             {kmbtFormatter.format(parseInt(row.getValue("boosts")))}
@@ -290,8 +290,8 @@ export default function LeaderboardTable() {
       {
         accessorKey: "followers",
         header: "Followers",
-        size: smallerCellSize,
-        minSize: smallerCellSize,
+        size: defaultCellSize,
+        minSize: defaultCellSize,
         cell: ({ row }) => (
           <CellSpan Icon={UsersIcon} isPending={isPending}>
             {kmbtFormatter.format(parseInt(row.getValue("followers")))}
@@ -469,7 +469,7 @@ export default function LeaderboardTable() {
                       disabled={!header.column.getCanSort()}
                       onClick={header.column.getToggleSortingHandler()}
                       variant="ghost"
-                      className="w-full disabled:opacity-100 bg-background rounded-none gap-1 font-semibold flex items-center justify-start data-username:group-data-username-sticky/container:border-border border-r border-transparent text-muted-foreground px-3 py-2 first:sm:pl-4 text-left shrink-0 data-username:sticky data-username:left-0"
+                      className="w-full data-username:z-10 disabled:opacity-100 bg-background rounded-none gap-1 font-semibold flex items-center justify-start data-username:group-data-username-sticky/container:border-border border-r border-transparent text-muted-foreground px-3 py-2 first:sm:pl-4 text-left shrink-0 data-username:sticky data-username:left-0"
                       style={{
                         width: header.getSize(),
                         flex:
