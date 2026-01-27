@@ -76,6 +76,12 @@ const rankCellSize = 70;
 const ROW_HEIGHT = 48;
 const isUsernameStickyNegativeMargin = 20;
 
+declare module "@tanstack/react-table" {
+  interface ColumnMeta<TData, TValue> {
+    Icon?: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+  }
+}
+
 export default function LeaderboardTable() {
   const { data, isPending, error } = useLeaderboard();
   const [now, setNow] = useState(Date.now());
@@ -258,7 +264,7 @@ export default function LeaderboardTable() {
       },
       {
         accessorKey: "prints_last_24h",
-        header: "Last 24h",
+        header: "24h",
         size: defaultCellSize,
         minSize: defaultCellSize,
         cell: ({ row }) => (
@@ -266,6 +272,9 @@ export default function LeaderboardTable() {
             {kmbtFormatter.format(parseInt(row.getValue("prints_last_24h")))}
           </CellSpan>
         ),
+        meta: {
+          Icon: PrintIcon,
+        },
       },
       {
         accessorKey: "downloads",
@@ -458,45 +467,50 @@ export default function LeaderboardTable() {
             <div className="min-w-max">
               {table.getHeaderGroups().map((hg) => (
                 <div key={hg.id} className="flex w-full">
-                  {hg.headers.map((header) => (
-                    <Button
-                      key={header.id}
-                      data-username={
-                        header.column.id === "username" ? true : undefined
-                      }
-                      disabled={!header.column.getCanSort()}
-                      onClick={header.column.getToggleSortingHandler()}
-                      variant="ghost"
-                      className="w-full data-username:z-10 disabled:opacity-100 bg-background rounded-none gap-1 font-semibold flex items-center justify-start data-username:group-data-username-sticky/container:border-border border-r border-transparent text-muted-foreground px-3 py-2 first:sm:pl-4 text-left shrink-0 data-username:sticky data-username:left-0"
-                      style={{
-                        width: header.getSize(),
-                        flex:
-                          header.column.id === "rank"
-                            ? undefined
-                            : `1 0 ${header.getSize()}px`,
-                      }}
-                    >
-                      {header.column.getCanSort() &&
-                        header.column.getIsSorted() && (
-                          <MoveDown
-                            data-asc={
-                              header.column.getIsSorted() === "asc"
-                                ? true
-                                : undefined
-                            }
-                            className="size-4 shrink-0 -ml-1.25 data-asc:rotate-180 transition-transform"
-                          />
-                        )}
-                      <p className="shrink min-w-0 overflow-hidden overflow-ellipsis whitespace-nowrap">
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext(),
-                            )}
-                      </p>
-                    </Button>
-                  ))}
+                  {hg.headers.map((header) => {
+                    const Icon = header.column.columnDef.meta?.Icon;
+
+                    return (
+                      <Button
+                        key={header.id}
+                        data-username={
+                          header.column.id === "username" ? true : undefined
+                        }
+                        disabled={!header.column.getCanSort()}
+                        onClick={header.column.getToggleSortingHandler()}
+                        variant="ghost"
+                        className="w-full data-username:z-10 disabled:opacity-100 bg-background rounded-none gap-0.75 font-semibold flex items-center justify-start data-username:group-data-username-sticky/container:border-border border-r border-transparent text-muted-foreground px-3 py-2 first:sm:pl-4 text-left shrink-0 data-username:sticky data-username:left-0"
+                        style={{
+                          width: header.getSize(),
+                          flex:
+                            header.column.id === "rank"
+                              ? undefined
+                              : `1 0 ${header.getSize()}px`,
+                        }}
+                      >
+                        {header.column.getCanSort() &&
+                          header.column.getIsSorted() && (
+                            <MoveDown
+                              data-asc={
+                                header.column.getIsSorted() === "asc"
+                                  ? true
+                                  : undefined
+                              }
+                              className="size-3.5 shrink-0 -ml-1.25 data-asc:rotate-180 transition-transform"
+                            />
+                          )}
+                        {Icon && <Icon className="size-3.5 shrink-0" />}
+                        <p className="shrink min-w-0 overflow-hidden overflow-ellipsis whitespace-nowrap">
+                          {header.isPlaceholder
+                            ? null
+                            : flexRender(
+                                header.column.columnDef.header,
+                                header.getContext(),
+                              )}
+                        </p>
+                      </Button>
+                    );
+                  })}
                 </div>
               ))}
             </div>
