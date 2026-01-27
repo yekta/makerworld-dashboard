@@ -158,7 +158,7 @@ export default function LeaderboardTable() {
               </div>
               <div className="w-full flex flex-col group-data-username-sticky/container:-translate-y-px translate-y-1.75 transition-transform overflow-hidden">
                 <CellSpan className="px-0">{username}</CellSpan>
-                <p className="text-xxs -mt-px text-left opacity-0 w-full overflow-hidden overflow-ellipsis whitespace-nowrap transition-transform group-data-username-sticky/container:opacity-100 text-muted-foreground">
+                <p className="text-xxs group-data-me:text-warning/75 -mt-px text-left opacity-0 w-full overflow-hidden overflow-ellipsis whitespace-nowrap transition-transform group-data-username-sticky/container:opacity-100 text-muted-foreground">
                   #{row.original.rank}
                 </p>
               </div>
