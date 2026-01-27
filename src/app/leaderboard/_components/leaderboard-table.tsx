@@ -170,7 +170,7 @@ export default function LeaderboardTable() {
                 />
                 <ExternalLinkIcon className="size-full scale-90 absolute left-0 top-0 -rotate-45 group-hover/link:rotate-0 group-active/link:rotate-0 group-focus-visible/link:rotate-0 opacity-0 group-hover/link:opacity-100 group-active/link:opacity-100 group-focus-visible/link:opacity-100 transition-transform" />
               </div>
-              <div className="w-full flex flex-col group-data-username-sticky/container:-translate-y-px translate-y-1.75 transition-transform overflow-hidden">
+              <div className="w-full flex flex-col group-data-username-sticky/container:-translate-y-px translate-y-1.5 transition-transform overflow-hidden">
                 <CellSpan className="px-0">{username}</CellSpan>
                 <p className="text-xxs group-data-me:text-warning/75 -mt-px text-left opacity-0 w-full overflow-hidden overflow-ellipsis whitespace-nowrap transition-transform group-data-username-sticky/container:opacity-100 text-muted-foreground">
                   #{row.original.rank}
