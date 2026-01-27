@@ -74,63 +74,6 @@ const rankCellSize = 70;
 const ROW_HEIGHT = 48;
 const isUsernameStickyNegativeMargin = 20;
 
-function CellSpan({
-  children,
-  className,
-  Icon,
-  isPending,
-  muted,
-}: {
-  children: React.ReactNode;
-  className?: string;
-  Icon?: React.ComponentType<React.SVGProps<SVGSVGElement>>;
-  isPending: boolean;
-  muted?: boolean;
-}) {
-  if (Icon) {
-    return (
-      <div
-        data-pending={isPending ? true : undefined}
-        data-muted={muted ? true : undefined}
-        className={cn(
-          "w-full flex group gap-1 items-center px-3 shrink min-w-0 overflow-hidden overflow-ellipsis whitespace-nowrap",
-          muted ? "text-muted-foreground" : undefined,
-          className,
-        )}
-      >
-        <Icon
-          className={
-            "size-3 shrink-0 group-data-pending:animate-pulse group-data-pending:text-transparent group-data-pending:bg-muted-more-foreground group-data-pending:group-data-muted:bg-muted-most-foreground group-data-pending:rounded-sm"
-          }
-        />
-        <span className="group-data-pending:animate-pulse group-data-pending:text-transparent group-data-pending:group-data-muted:bg-muted-most-foreground group-data-pending:bg-muted-more-foreground group-data-pending:rounded-sm shrink min-w-0 overflow-hidden overflow-ellipsis whitespace-nowrap">
-          {children}
-        </span>
-      </div>
-    );
-  }
-
-  return (
-    <div
-      data-pending={isPending ? true : undefined}
-      data-muted={muted ? true : undefined}
-      className={cn(
-        "group px-3 shrink min-w-0 overflow-hidden flex",
-        muted ? "text-muted-foreground" : undefined,
-        className,
-      )}
-    >
-      <span
-        className={
-          "group-data-pending:animate-pulse group-data-pending:text-transparent group-data-pending:bg-muted-more-foreground group-data-pending:group-data-muted:bg-muted-most-foreground group-data-pending:rounded-sm shrink min-w-0 overflow-hidden overflow-ellipsis whitespace-nowrap"
-        }
-      >
-        {children}
-      </span>
-    </div>
-  );
-}
-
 export default function LeaderboardTable() {
   const { data, isPending, error } = useLeaderboard();
   const [now, setNow] = useState(Date.now());
@@ -200,7 +143,7 @@ export default function LeaderboardTable() {
                 <div className="size-5 shrink-0 relative transition-transform">
                   <div className="animate-pulse size-full bg-muted-more-foreground rounded-full border border-muted-more-foreground transition-transform" />
                 </div>
-                <div className="w-full flex flex-col group-data-username-sticky/container:-translate-y-px translate-y-1.5 transition-transform overflow-hidden">
+                <div className="w-full flex flex-col group-data-username-sticky/container:-translate-y-0.5 translate-y-1.5 transition-transform overflow-hidden">
                   <CellSpan isPending={isPending} className="px-0">
                     {username}
                   </CellSpan>
@@ -229,7 +172,7 @@ export default function LeaderboardTable() {
                 />
                 <ExternalLinkIcon className="size-full scale-90 absolute left-0 top-0 -rotate-45 group-hover/link:rotate-0 group-active/link:rotate-0 group-focus-visible/link:rotate-0 opacity-0 group-hover/link:opacity-100 group-active/link:opacity-100 group-focus-visible/link:opacity-100 transition-transform" />
               </div>
-              <div className="w-full flex flex-col group-data-username-sticky/container:-translate-y-px translate-y-1.5 transition-transform overflow-hidden">
+              <div className="w-full flex flex-col group-data-username-sticky/container:-translate-y-0.5 translate-y-1.5 transition-transform overflow-hidden">
                 <CellSpan isPending={isPending} className="px-0">
                   {username}
                 </CellSpan>
@@ -577,6 +520,63 @@ export default function LeaderboardTable() {
           </div>
         </div>
       </div>
+    </div>
+  );
+}
+
+function CellSpan({
+  children,
+  className,
+  Icon,
+  isPending,
+  muted,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  Icon?: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+  isPending: boolean;
+  muted?: boolean;
+}) {
+  if (Icon) {
+    return (
+      <div
+        data-pending={isPending ? true : undefined}
+        data-muted={muted ? true : undefined}
+        className={cn(
+          "w-full flex group gap-1 items-center px-3 shrink min-w-0 overflow-hidden overflow-ellipsis whitespace-nowrap",
+          muted ? "text-muted-foreground" : undefined,
+          className,
+        )}
+      >
+        <Icon
+          className={
+            "size-3 shrink-0 group-data-pending:animate-pulse group-data-pending:text-transparent group-data-pending:bg-muted-more-foreground group-data-pending:group-data-muted:bg-muted-most-foreground group-data-pending:rounded-sm"
+          }
+        />
+        <span className="group-data-pending:animate-pulse group-data-pending:text-transparent group-data-pending:group-data-muted:bg-muted-most-foreground group-data-pending:bg-muted-more-foreground group-data-pending:rounded-sm shrink min-w-0 overflow-hidden overflow-ellipsis whitespace-nowrap">
+          {children}
+        </span>
+      </div>
+    );
+  }
+
+  return (
+    <div
+      data-pending={isPending ? true : undefined}
+      data-muted={muted ? true : undefined}
+      className={cn(
+        "group px-3 shrink min-w-0 overflow-hidden flex",
+        muted ? "text-muted-foreground" : undefined,
+        className,
+      )}
+    >
+      <span
+        className={
+          "group-data-pending:animate-pulse group-data-pending:text-transparent group-data-pending:bg-muted-more-foreground group-data-pending:group-data-muted:bg-muted-most-foreground group-data-pending:rounded-sm shrink min-w-0 overflow-hidden overflow-ellipsis whitespace-nowrap"
+        }
+      >
+        {children}
+      </span>
     </div>
   );
 }
