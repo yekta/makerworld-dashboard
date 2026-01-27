@@ -67,7 +67,9 @@ function NavItem({
             {route.label}
           </p>
         </div>
-        <div className="h-0.5 w-full bg-foreground rounded-full absolute left-0 top-0 -translate-y-0.5 group-data-active/link:translate-y-0 transition-transform" />
+        <div className="w-full absolute left-0 top-0 -translate-y-0.5 group-data-active/link:translate-y-0 transition-transform px-3.5 sm:px-0">
+          <div className="h-0.5 w-full bg-foreground rounded-full" />
+        </div>
       </div>
     </LinkButton>
   );
