@@ -9,8 +9,6 @@ import StatsProvider from "@/components/providers/stats-provider";
 import TimeMachineProvider from "@/components/providers/time-machine-provider";
 import { apiServer, HydrateClient } from "@/server/trpc/setup/server";
 
-export const dynamic = "force-dynamic";
-
 type Props = {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 };
@@ -18,6 +16,7 @@ type Props = {
 export default async function Home({ searchParams }: Props) {
   const { head_cutoff_timestamp } =
     await cachedHomePageSearchParams.parse(searchParams);
+
   await apiServer.stats.get.prefetch({
     headCutoffTimestamp: head_cutoff_timestamp,
   });
