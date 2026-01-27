@@ -44,27 +44,27 @@ type TRow = TLeaderboardEntry & {
   since_snapshotted_at: number;
 };
 
-const placeholderData: TRow[] = Array.from({ length: 10 }).map((_, index) => ({
+const placeholderData: TRow[] = Array.from({ length: 100 }).map((_, index) => ({
   rank: index + 1,
   user_id: index,
   username: `username_${index}`,
-  avatar_url: "",
-  boosts: 0,
   display_name: `Loading...`,
-  downloads: 0,
-  prints: 0,
-  downloads_api: 0,
-  followers: 0,
-  following: 0,
-  level: 0,
-  snapshotted_at: 0,
-  user_row_created_at: 0,
-  likes: 0,
-  first_model_created_at: 0,
-  model_count: 0,
-  boost_rate: 0,
-  since_start: 0,
-  since_snapshotted_at: 0,
+  avatar_url: "",
+  boosts: 1_000,
+  downloads: 10_000,
+  prints: 10_000,
+  downloads_api: 10_000,
+  followers: 10_000,
+  following: 1,
+  likes: 10_000,
+  level: 10,
+  user_row_created_at: Date.now() - 1_000_000,
+  snapshotted_at: Date.now() - 1000 * 60,
+  since_snapshotted_at: 1000 * 60,
+  first_model_created_at: Date.now() - 10_000_000,
+  since_start: 10_000_000,
+  model_count: 100,
+  boost_rate: 0.1,
 }));
 
 const defaultCellSize = 120;
@@ -76,21 +76,32 @@ function CellSpan({
   children,
   className,
   Icon,
+  isPending,
+  muted,
 }: {
   children: React.ReactNode;
   className?: string;
   Icon?: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+  isPending: boolean;
+  muted?: boolean;
 }) {
   if (Icon) {
     return (
       <div
+        data-pending={isPending ? true : undefined}
+        data-muted={muted ? true : undefined}
         className={cn(
-          "w-full flex gap-1 items-center px-3 shrink min-w-0 overflow-hidden overflow-ellipsis whitespace-nowrap",
+          "w-full flex group gap-1 items-center px-3 shrink min-w-0 overflow-hidden overflow-ellipsis whitespace-nowrap",
+          muted ? "text-muted-foreground" : undefined,
           className,
         )}
       >
-        <Icon className="size-3 shrink-0" />
-        <span className="shrink min-w-0 overflow-hidden overflow-ellipsis whitespace-nowrap">
+        <Icon
+          className={
+            "size-3 shrink-0 group-data-pending:animate-pulse group-data-pending:text-transparent group-data-pending:bg-muted-more-foreground group-data-pending:group-data-muted:bg-muted-most-foreground group-data-pending:rounded-sm"
+          }
+        />
+        <span className="group-data-pending:animate-pulse group-data-pending:text-transparent group-data-pending:group-data-muted:bg-muted-most-foreground group-data-pending:bg-muted-more-foreground group-data-pending:rounded-sm shrink min-w-0 overflow-hidden overflow-ellipsis whitespace-nowrap">
           {children}
         </span>
       </div>
@@ -98,19 +109,28 @@ function CellSpan({
   }
 
   return (
-    <span
+    <div
+      data-pending={isPending ? true : undefined}
+      data-muted={muted ? true : undefined}
       className={cn(
-        "px-3 shrink min-w-0 overflow-hidden overflow-ellipsis whitespace-nowrap",
+        "group px-3 shrink min-w-0 overflow-hidden flex",
+        muted ? "text-muted-foreground" : undefined,
         className,
       )}
     >
-      {children}
-    </span>
+      <span
+        className={
+          "group-data-pending:animate-pulse group-data-pending:text-transparent group-data-pending:bg-muted-more-foreground group-data-pending:group-data-muted:bg-muted-most-foreground group-data-pending:rounded-sm shrink min-w-0 overflow-hidden overflow-ellipsis whitespace-nowrap"
+        }
+      >
+        {children}
+      </span>
+    </div>
   );
 }
 
 export default function LeaderboardTable() {
-  const { data } = useLeaderboard();
+  const { data, isPending, error } = useLeaderboard();
   const [now, setNow] = useState(Date.now());
 
   const [sortBy, setSortBy] = useLeaderboardSortBy();
@@ -134,16 +154,33 @@ export default function LeaderboardTable() {
         size: rankCellSize,
         minSize: rankCellSize,
         enableSorting: false,
-        cell: ({ row }) => (
-          <CopyButton
-            className="sm:pl-4 w-full"
-            textToCopy={row.original.user_id.toString()}
-          >
-            <CellSpan className="text-muted-foreground px-0 relative group-data-me:text-warning/75">
-              #{parseInt(row.getValue("rank")).toLocaleString(appLocale)}
-            </CellSpan>
-          </CopyButton>
-        ),
+        cell: ({ row }) => {
+          if (isPending) {
+            return (
+              <CellSpan
+                isPending={isPending}
+                muted={true}
+                className="sm:pl-4 w-full"
+              >
+                #{parseInt(row.getValue("rank")).toLocaleString(appLocale)}
+              </CellSpan>
+            );
+          }
+          return (
+            <CopyButton
+              className="sm:pl-4 w-full"
+              textToCopy={row.original.user_id.toString()}
+            >
+              <CellSpan
+                isPending={isPending}
+                muted={true}
+                className="px-0 relative group-data-me:text-warning/75"
+              >
+                #{parseInt(row.getValue("rank")).toLocaleString(appLocale)}
+              </CellSpan>
+            </CopyButton>
+          );
+        },
       },
       {
         accessorKey: "username",
@@ -154,6 +191,26 @@ export default function LeaderboardTable() {
         cell: ({ row }) => {
           const username = String(row.getValue("username") ?? "");
           const src = row.original.avatar_url;
+
+          if (isPending) {
+            return (
+              <div className="w-full group-data-username-sticky/container:border-border border-r border-transparent group/link min-w-0 px-3 gap-2 h-full flex items-center justify-start">
+                <div className="size-5 shrink-0 relative transition-transform">
+                  <div className="animate-pulse size-full bg-muted-more-foreground rounded-full border border-muted-more-foreground transition-transform" />
+                </div>
+                <div className="w-full flex flex-col group-data-username-sticky/container:-translate-y-px translate-y-1.5 transition-transform overflow-hidden">
+                  <CellSpan isPending={isPending} className="px-0">
+                    {username}
+                  </CellSpan>
+                  <div className="w-full flex min-w-0 overflow-hidden">
+                    <p className="text-xxs leading-tight mt-px text-left opacity-0 max-w-full overflow-hidden overflow-ellipsis whitespace-nowrap transition-transform group-data-username-sticky/container:opacity-100 bg-muted-most-foreground rounded-sm text-transparent">
+                      #{row.original.rank}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            );
+          }
           return (
             <Link
               target="_blank"
@@ -171,10 +228,14 @@ export default function LeaderboardTable() {
                 <ExternalLinkIcon className="size-full scale-90 absolute left-0 top-0 -rotate-45 group-hover/link:rotate-0 group-active/link:rotate-0 group-focus-visible/link:rotate-0 opacity-0 group-hover/link:opacity-100 group-active/link:opacity-100 group-focus-visible/link:opacity-100 transition-transform" />
               </div>
               <div className="w-full flex flex-col group-data-username-sticky/container:-translate-y-px translate-y-1.5 transition-transform overflow-hidden">
-                <CellSpan className="px-0">{username}</CellSpan>
-                <p className="text-xxs group-data-me:text-warning/75 -mt-px text-left opacity-0 w-full overflow-hidden overflow-ellipsis whitespace-nowrap transition-transform group-data-username-sticky/container:opacity-100 text-muted-foreground">
-                  #{row.original.rank}
-                </p>
+                <CellSpan isPending={isPending} className="px-0">
+                  {username}
+                </CellSpan>
+                <div className="w-full flex min-w-0 overflow-hidden">
+                  <p className="text-xxs leading-tight group-data-me:text-warning/75 mt-px text-left opacity-0 max-w-full overflow-hidden overflow-ellipsis whitespace-nowrap transition-transform group-data-username-sticky/container:opacity-100 text-muted-foreground">
+                    #{row.original.rank}
+                  </p>
+                </div>
               </div>
             </Link>
           );
@@ -186,7 +247,7 @@ export default function LeaderboardTable() {
         size: defaultCellSize,
         minSize: defaultCellSize,
         cell: ({ row }) => (
-          <CellSpan Icon={PrintIcon}>
+          <CellSpan Icon={PrintIcon} isPending={isPending}>
             {kmbtFormatter.format(parseInt(row.getValue("prints")))}
           </CellSpan>
         ),
@@ -197,7 +258,7 @@ export default function LeaderboardTable() {
         size: defaultCellSize,
         minSize: defaultCellSize,
         cell: ({ row }) => (
-          <CellSpan Icon={DownloadIcon}>
+          <CellSpan Icon={DownloadIcon} isPending={isPending}>
             {kmbtFormatter.format(parseInt(row.getValue("downloads")))}
           </CellSpan>
         ),
@@ -208,7 +269,7 @@ export default function LeaderboardTable() {
         size: defaultCellSize,
         minSize: defaultCellSize,
         cell: ({ row }) => (
-          <CellSpan Icon={RocketIcon}>
+          <CellSpan Icon={RocketIcon} isPending={isPending}>
             {kmbtFormatter.format(parseInt(row.getValue("boosts")))}
           </CellSpan>
         ),
@@ -219,7 +280,7 @@ export default function LeaderboardTable() {
         size: defaultCellSize,
         minSize: defaultCellSize,
         cell: ({ row }) => (
-          <CellSpan Icon={UsersIcon}>
+          <CellSpan Icon={UsersIcon} isPending={isPending}>
             {kmbtFormatter.format(parseInt(row.getValue("followers")))}
           </CellSpan>
         ),
@@ -230,7 +291,7 @@ export default function LeaderboardTable() {
         size: defaultCellSize,
         minSize: defaultCellSize,
         cell: ({ row }) => (
-          <CellSpan>
+          <CellSpan isPending={isPending}>
             {(parseFloat(row.getValue("boost_rate")) * 100).toLocaleString(
               appLocale,
               {
@@ -249,7 +310,10 @@ export default function LeaderboardTable() {
         cell: ({ row }) => {
           const val = parseInt(row.getValue("model_count"));
           return (
-            <CellSpan className={val === 0 ? "text-muted-more-foreground" : ""}>
+            <CellSpan
+              className={val === 0 ? "text-muted-more-foreground" : ""}
+              isPending={isPending}
+            >
               {val === 0 ? "-----" : val.toLocaleString(appLocale)}
             </CellSpan>
           );
@@ -264,7 +328,10 @@ export default function LeaderboardTable() {
         cell: ({ row }) => {
           const val = parseInt(row.getValue("since_start"));
           return (
-            <CellSpan className={val === 0 ? "text-muted-more-foreground" : ""}>
+            <CellSpan
+              className={val === 0 ? "text-muted-more-foreground" : ""}
+              isPending={isPending}
+            >
               {val === 0
                 ? "-----"
                 : Duration.fromMillis(val).shiftTo("year", "months").toHuman({
@@ -283,7 +350,11 @@ export default function LeaderboardTable() {
         minSize: defaultCellSize,
         sortDescFirst: false,
         cell: ({ row }) => (
-          <CellSpan className="text-muted-more-foreground group-data-me:text-warning/60">
+          <CellSpan
+            className="group-data-me:text-warning/60"
+            muted={true}
+            isPending={isPending}
+          >
             {Duration.fromMillis(parseInt(row.getValue("since_snapshotted_at")))
               .shiftTo("minutes")
               .toHuman({
@@ -296,7 +367,7 @@ export default function LeaderboardTable() {
       },
     ];
     return cols;
-  }, [now]);
+  }, [now, isPending]);
 
   const tableData = useMemo(() => {
     if (!data) return placeholderData;
@@ -354,6 +425,16 @@ export default function LeaderboardTable() {
   const totalSize = rowVirtualizer.getTotalSize();
   const scrollMargin = rowVirtualizer.options.scrollMargin ?? 0;
   const [isUsernameSticky, setIsUsernameSticky] = useState(false);
+
+  if (error) {
+    return (
+      <div className="w-full text-sm font-mono pt-1 sm:pt-2">
+        <div className="w-full border rounded-xl px-4 py-3 min-h-svh">
+          <p className="w-full text-destructive">{error.message}</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
@@ -444,7 +525,7 @@ export default function LeaderboardTable() {
                         ? true
                         : undefined
                     }
-                    className="flex min-w-full data-me:text-warning border-b last:border-b-0 border-border data-odd:bg-background-secondary group"
+                    className="flex min-w-full data-me:text-warning border-b last:border-b-0 border-border bg-background data-odd:bg-background-secondary group"
                     style={{
                       position: "absolute",
                       top: 0,
@@ -461,7 +542,7 @@ export default function LeaderboardTable() {
                         data-sticky={
                           cell.column.id === "username" ? true : undefined
                         }
-                        className="items-center flex shrink-0 data-sticky:sticky data-sticky:bg-background data-sticky:left-0 group-data-odd:data-sticky:bg-background-secondary"
+                        className="items-center relative data-sticky:z-50 flex shrink-0 data-sticky:sticky bg-background group-data-odd:bg-background-secondary data-sticky:left-0"
                         style={{
                           width: cell.column.getSize(),
                           flex:
