@@ -1,7 +1,9 @@
+import Navbar, { NavbarSpacer } from "@/components/navbar";
+import Providers from "@/components/providers/providers";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Providers from "@/components/providers/providers";
+import TopLoader from "@/components/top-loader";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,7 +30,10 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} dark wrap-break-word text-foreground bg-background antialiased`}
       >
+        <TopLoader />
         <Providers>{children}</Providers>
+        <Navbar />
+        <NavbarSpacer />
       </body>
     </html>
   );

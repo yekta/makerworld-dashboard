@@ -1,3 +1,4 @@
+import AsyncPushProvider from "@/components/providers/async-push-provider";
 import NowProvider from "@/components/providers/now-provider";
 import { TRPCReactProvider } from "@/server/trpc/setup/client";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
@@ -9,7 +10,9 @@ export default async function Providers({
   return (
     <TRPCReactProvider>
       <NowProvider>
-        <NuqsAdapter>{children}</NuqsAdapter>
+        <NuqsAdapter>
+          <AsyncPushProvider>{children}</AsyncPushProvider>
+        </NuqsAdapter>
       </NowProvider>
     </TRPCReactProvider>
   );

@@ -41,6 +41,7 @@
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
   --color-success: var(--success);
+  --color-top-loader: var(--top-loader);
   --color-success-highlight: var(--success-highlight);
   --color-warning: var(--warning);
   --color-warning-highlight: var(--warning-highlight);
@@ -48,6 +49,8 @@
 }
 
 :root {
+  --safe-area-inset-bottom: env(safe-area-inset-bottom);
+
   --radius: 0.625rem;
   --background: oklch(1 0 0);
   --background-secondary: oklch(0.97 0 0);
@@ -62,6 +65,7 @@
   --secondary-foreground: oklch(0.205 0 0);
   --success: oklch(45.174% 0.14278 139.142);
   --success-highlight: oklch(65.827% 0.15508 157.614);
+  --top-loader: oklch(45.174% 0.14278 139.142);
   --warning: oklch(47.788% 0.09685 70.463);
   --warning-highlight: oklch(65.49% 0.13021 74.659);
   --pending: oklch(71.861% 0.13461 72.576);
@@ -103,6 +107,7 @@
   --secondary-foreground: oklch(0.985 0 0);
   --success: oklch(84.267% 0.15936 144.028);
   --success-highlight: oklch(90.711% 0.14532 167.051);
+  --top-loader: oklch(84.267% 0.15936 144.028);
   --warning: oklch(86.06% 0.12148 75.922);
   --warning-highlight: oklch(88.429% 0.12064 83.596);
   --pending: oklch(82.321% 0.13867 92.293);
