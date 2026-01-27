@@ -1,15 +1,16 @@
 "use client";
 
-import { showResetDebounceMs } from "@/app/(home)/_components/filters-section/constants";
-import { useModelSort } from "@/app/(home)/_components/filters-section/hooks";
-import OptionDropdown from "@/app/(home)/_components/filters-section/option-dropdown";
-import PrintIcon from "@/components/icons/print-icon";
 import {
   getModelSortEnumLabel,
   MODEL_SORT_DEFAULT,
   TModelSort,
-  TModelSortEnum,
-} from "@/lib/constants";
+  TModelSortByEnum,
+} from "@/app/(home)/_components/constants";
+import { showResetDebounceMs } from "@/app/(home)/_components/filters-section/constants";
+import { useModelSort } from "@/app/(home)/_components/filters-section/hooks";
+import OptionDropdown from "@/app/(home)/_components/filters-section/option-dropdown";
+import PrintIcon from "@/components/icons/print-icon";
+
 import { CalendarIcon, RocketIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useDebounceValue } from "usehooks-ts";
@@ -18,7 +19,7 @@ type TProps = {
   className?: string;
 };
 
-const items = TModelSortEnum.options.map((sort) => ({
+const items = TModelSortByEnum.options.map((sort) => ({
   label: getModelSortEnumLabel(sort),
   value: sort,
   Icon: getIconForSort(sort),

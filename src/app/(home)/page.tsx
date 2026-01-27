@@ -1,3 +1,4 @@
+import { cachedHomePageSearchParams } from "@/app/(home)/_components/constants";
 import FiltersSection from "@/app/(home)/_components/filters-section/filters-section";
 import MetadataSection from "@/app/(home)/_components/metadata-section";
 import ModelsSection from "@/app/(home)/_components/models-section";
@@ -6,7 +7,6 @@ import UserStatsSection from "@/app/(home)/_components/user-stats-section";
 import UserSummarySection from "@/app/(home)/_components/user-summary-section";
 import StatsProvider from "@/components/providers/stats-provider";
 import TimeMachineProvider from "@/components/providers/time-machine-provider";
-import { cachedHomePageSearchParams } from "@/lib/constants";
 import { apiServer, HydrateClient } from "@/server/trpc/setup/server";
 
 export const dynamic = "force-dynamic";

@@ -1,12 +1,15 @@
 "use client";
 
 import {
+  MODEL_ORDER_DEFAULT,
+  MODEL_SORT_DEFAULT,
+} from "@/app/(home)/_components/constants";
+import {
   useModelOrder,
   useModelSort,
 } from "@/app/(home)/_components/filters-section/hooks";
 import ModelCard from "@/components/model-card";
 import { useStats } from "@/components/providers/stats-provider";
-import { MODEL_ORDER_DEFAULT, MODEL_SORT_DEFAULT } from "@/lib/constants";
 import { useMemo } from "react";
 
 const placeholderArray = Array.from({ length: 30 });

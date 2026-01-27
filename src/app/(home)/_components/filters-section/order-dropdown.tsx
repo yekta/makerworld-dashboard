@@ -1,13 +1,13 @@
 "use client";
 
-import { showResetDebounceMs } from "@/app/(home)/_components/filters-section/constants";
-import { useModelOrder } from "@/app/(home)/_components/filters-section/hooks";
-import OptionDropdown from "@/app/(home)/_components/filters-section/option-dropdown";
 import {
   getModelOrderEnumLabel,
   MODEL_ORDER_DEFAULT,
   TModelOrderEnum,
-} from "@/lib/constants";
+} from "@/app/(home)/_components/constants";
+import { showResetDebounceMs } from "@/app/(home)/_components/filters-section/constants";
+import { useModelOrder } from "@/app/(home)/_components/filters-section/hooks";
+import OptionDropdown from "@/app/(home)/_components/filters-section/option-dropdown";
 import { MoveDownIcon, MoveUpIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useDebounceValue } from "usehooks-ts";

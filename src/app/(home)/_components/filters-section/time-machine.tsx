@@ -1,4 +1,8 @@
 import {
+  MODEL_ORDER_DEFAULT,
+  MODEL_SORT_DEFAULT,
+} from "@/app/(home)/_components/constants";
+import {
   useModelOrder,
   useModelSort,
 } from "@/app/(home)/_components/filters-section/hooks";
@@ -6,7 +10,6 @@ import { useTimeMachine } from "@/components/providers/time-machine-provider";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
-import { MODEL_ORDER_DEFAULT, MODEL_SORT_DEFAULT } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import {

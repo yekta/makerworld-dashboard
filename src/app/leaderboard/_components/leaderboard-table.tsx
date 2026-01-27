@@ -25,15 +25,24 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 
+import {
+  useLeaderboardSortBy,
+  useLeaderboardSortOrder,
+} from "@/app/leaderboard/_components/hooks";
 import PrintIcon from "@/components/icons/print-icon";
 import { Button } from "@/components/ui/button";
+import { env } from "@/lib/env";
 import { useCopyToClipboard } from "@/lib/hooks/use-copy-to-clipboard";
 import { TLeaderboardEntry } from "@/server/trpc/api/leaderboard/types";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import { Duration } from "luxon";
-import { env } from "@/lib/env";
 
-type TRow = TLeaderboardEntry & { rank: number; boost_rate: number };
+type TRow = TLeaderboardEntry & {
+  rank: number;
+  boost_rate: number;
+  since_start: number;
+  since_snapshotted_at: number;
+};
 
 const placeholderData: TRow[] = Array.from({ length: 10 }).map((_, index) => ({
   rank: index + 1,
@@ -54,6 +63,8 @@ const placeholderData: TRow[] = Array.from({ length: 10 }).map((_, index) => ({
   first_model_created_at: 0,
   model_count: 0,
   boost_rate: 0,
+  since_start: 0,
+  since_snapshotted_at: 0,
 }));
 
 const defaultCellSize = 120;
@@ -101,6 +112,9 @@ function CellSpan({
 export default function LeaderboardTable() {
   const { data } = useLeaderboard();
   const [now, setNow] = useState(Date.now());
+
+  const [sortBy, setSortBy] = useLeaderboardSortBy();
+  const [sortOrder, setSortOrder] = useLeaderboardSortOrder();
 
   useEffect(() => {
     setNow(Date.now());
@@ -242,39 +256,35 @@ export default function LeaderboardTable() {
         },
       },
       {
-        accessorKey: "first_model_created_at",
+        accessorKey: "since_start",
         header: "Start",
         size: defaultCellSize,
         minSize: defaultCellSize,
-        invertSorting: true,
         sortDescFirst: false,
         cell: ({ row }) => {
-          const val = parseInt(row.getValue("first_model_created_at"));
+          const val = parseInt(row.getValue("since_start"));
           return (
             <CellSpan className={val === 0 ? "text-muted-more-foreground" : ""}>
               {val === 0
                 ? "-----"
-                : Duration.fromMillis(now - val)
-                    .shiftTo("year", "months")
-                    .toHuman({
-                      showZeros: false,
-                      unitDisplay: "narrow",
-                      maximumFractionDigits: 0,
-                    })}
+                : Duration.fromMillis(val).shiftTo("year", "months").toHuman({
+                    showZeros: false,
+                    unitDisplay: "narrow",
+                    maximumFractionDigits: 0,
+                  })}
             </CellSpan>
           );
         },
       },
       {
-        accessorKey: "snapshotted_at",
+        accessorKey: "since_snapshotted_at",
         header: "Snapshot",
         size: defaultCellSize,
         minSize: defaultCellSize,
-        invertSorting: true,
         sortDescFirst: false,
         cell: ({ row }) => (
           <CellSpan className="text-muted-more-foreground group-data-me:text-warning/60">
-            {Duration.fromMillis(now - parseInt(row.getValue("snapshotted_at")))
+            {Duration.fromMillis(parseInt(row.getValue("since_snapshotted_at")))
               .shiftTo("minutes")
               .toHuman({
                 showZeros: false,
@@ -294,13 +304,29 @@ export default function LeaderboardTable() {
       ...entry,
       rank: index + 1,
       boost_rate: entry.boosts / (entry.prints || 1),
+      since_start: now - entry.first_model_created_at,
+      since_snapshotted_at: now - entry.snapshotted_at,
     }));
     return editedData;
   }, [data]);
 
   const [sorting, setSorting] = useState<SortingState>([
-    { id: "prints", desc: true },
+    { id: sortBy, desc: sortOrder !== "asc" },
   ]);
+
+  useEffect(() => {
+    if (sorting.length === 0) {
+      setSortBy(null);
+      setSortOrder(null);
+      return;
+    }
+    if (sorting[0]?.id) {
+      setSortBy(sorting[0].id as any);
+    }
+    if (sorting[0]?.desc !== undefined) {
+      setSortOrder(!sorting[0].desc ? "asc" : "desc");
+    }
+  }, [sorting]);
 
   const table = useReactTable({
     data: tableData,
