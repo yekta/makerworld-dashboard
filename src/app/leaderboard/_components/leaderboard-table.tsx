@@ -55,6 +55,7 @@ const placeholderData: TRow[] = Array.from({ length: 100 }).map((_, index) => ({
   downloads: 10_000,
   prints: 10_000,
   prints_last_24h: 100,
+  prints_last_24h_forecasted_based_on_ms: 1000 * 60 * 60 * 24,
   downloads_api: 10_000,
   followers: 10_000,
   following: 1,
@@ -436,7 +437,7 @@ export default function LeaderboardTable() {
   const scrollMargin = rowVirtualizer.options.scrollMargin ?? 0;
   const [isUsernameSticky, setIsUsernameSticky] = useState(false);
 
-  if (error) {
+  if (error && !isPending && !data) {
     return (
       <div className="w-full text-sm font-mono pt-1 sm:pt-2">
         <div className="w-full border rounded-xl px-4 py-3 min-h-svh">

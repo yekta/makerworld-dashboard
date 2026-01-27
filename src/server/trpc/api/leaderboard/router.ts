@@ -17,7 +17,6 @@ export const leaderboardRouter = createTRPCRouter({
       }),
     )
     .query(async ({ input: { orderBy, limit, offset } }) => {
-      await new Promise((resolve) => setTimeout(resolve, 10000));
       const url = new URL(env.API_URL + "/v1/leaderboard");
       url.searchParams.append("order_by", orderBy);
       url.searchParams.append("limit", limit.toString());

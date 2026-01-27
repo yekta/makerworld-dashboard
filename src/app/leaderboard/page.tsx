@@ -1,11 +1,11 @@
 import LeaderboardTable from "@/app/leaderboard/_components/leaderboard-table";
 import LeaderboardProvider from "@/components/providers/leaderboard-provider";
-import { apiServer, HydrateClient } from "@/server/trpc/setup/server";
+import { /* apiServer, */ HydrateClient } from "@/server/trpc/setup/server";
 
 export const dynamic = "force-dynamic";
 
 export default async function Page() {
-  /*   await apiServer.leaderboard.get.prefetch({ orderBy: "prints" }); */
+  /* await apiServer.leaderboard.get.prefetch({ orderBy: "prints" }); */
 
   return (
     <HydrateClient>
