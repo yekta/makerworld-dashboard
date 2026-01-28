@@ -8,24 +8,21 @@ import {
   useModelOrder,
   useModelSort,
 } from "@/app/(home)/_components/filters-section/hooks";
-import ModelCard from "@/components/model-card";
+import ModelCard, {
+  TModelCardProps,
+} from "@/app/(home)/_components/model-card";
 import { useStats } from "@/components/providers/stats-provider";
 import { useMemo } from "react";
-
-const placeholderArray = Array.from({ length: 30 });
 
 export default function ModelsSection() {
   const { data, isPending, isError } = useStats();
 
-  if (!data && isPending) {
-    return (
-      <Wrapper>
-        {placeholderArray.map((_, index) => (
-          <ModelCard key={index} isPlaceholder={true} />
-        ))}
-      </Wrapper>
-    );
-  }
+  const params: TModelsProps = useMemo(() => {
+    if (isPending || !data) {
+      return { isPlaceholder: true };
+    }
+    return { models: data.models, metadata: data.metadata };
+  }, [data, isPending]);
 
   if (!data && isError) {
     return (
@@ -39,7 +36,7 @@ export default function ModelsSection() {
 
   return (
     <Wrapper>
-      <Models models={data.models} metadata={data.metadata} />
+      <Models {...params} />
     </Wrapper>
   );
 }
@@ -48,17 +45,26 @@ function Wrapper({ children }: { children: React.ReactNode }) {
   return <div className="w-full flex flex-wrap justify-center">{children}</div>;
 }
 
-function Models({
-  models,
-  metadata,
-}: {
-  models: NonNullable<ReturnType<typeof useStats>["data"]>["models"];
-  metadata: NonNullable<ReturnType<typeof useStats>["data"]>["metadata"];
-}) {
+type TModelsProps =
+  | {
+      models: NonNullable<ReturnType<typeof useStats>["data"]>["models"];
+      metadata: NonNullable<ReturnType<typeof useStats>["data"]>["metadata"];
+      isPlaceholder?: never;
+    }
+  | {
+      models?: never;
+      metadata?: never;
+      isPlaceholder: true;
+    };
+
+const placeholderArray = Array.from({ length: 20 }).map((_, i) => i);
+
+function Models({ models, metadata, isPlaceholder }: TModelsProps) {
   const [modelSort] = useModelSort();
   const [modelOrder] = useModelOrder();
 
   const orderedModels = useMemo(() => {
+    if (isPlaceholder) return undefined;
     if (
       (modelSort === null || modelSort === MODEL_SORT_DEFAULT) &&
       (modelOrder === null || modelOrder === MODEL_ORDER_DEFAULT)
@@ -105,7 +111,12 @@ function Models({
     });
   }, [models, modelSort, modelOrder]);
 
-  return orderedModels.map((model) => (
-    <ModelCard key={model.model_id} model={model} metadata={metadata} />
-  ));
+  return (orderedModels || placeholderArray).map((model, index) => {
+    const params: TModelCardProps =
+      isPlaceholder || typeof model === "number"
+        ? { isPlaceholder: true }
+        : { model, metadata };
+
+    return <ModelCard key={index} {...params} />;
+  });
 }

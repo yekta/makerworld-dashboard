@@ -6,7 +6,7 @@ import {
   useModelStatVisibilityPreferences,
 } from "@/app/(home)/_components/filters-section/hooks";
 import PrintIcon from "@/components/icons/print-icon";
-import ModelStatsChart from "@/components/model-stats-chart";
+import ModelStatsChart from "@/app/(home)/_components/model-stats-chart";
 import { useNow } from "@/components/providers/now-provider";
 import { useTimeMachine } from "@/components/providers/time-machine-provider";
 import Stat from "@/components/stat";
@@ -24,7 +24,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useMemo } from "react";
 
-type TProps =
+export type TModelCardProps =
   | {
       model: AppRouterOutputs["stats"]["get"]["models"][number];
       metadata: AppRouterOutputs["stats"]["get"]["metadata"];
@@ -36,7 +36,7 @@ type TProps =
       isPlaceholder: true;
     };
 
-export default function ModelCard(props: TProps) {
+export default function ModelCard(props: TModelCardProps) {
   if (props.isPlaceholder) {
     return (
       <div
@@ -55,7 +55,7 @@ export default function ModelCard(props: TProps) {
   );
 }
 
-function ModelCardContent(props: TProps) {
+function ModelCardContent(props: TModelCardProps) {
   const { model, isPlaceholder } = props;
   const [statVisibilityPreferences] = useModelStatVisibilityPreferences();
   const isChartActive = statVisibilityPreferences.includes("chart");
@@ -185,7 +185,7 @@ function getModelUrl(
 
 const placeholderTimestamp = new Date("2025-01-01T00:00:00Z").getTime();
 
-function Footer({ model, metadata, isPlaceholder }: TProps) {
+function Footer({ model, metadata, isPlaceholder }: TModelCardProps) {
   const { headCutoffTimestamp } = useTimeMachine();
   const now = useNow();
   const adjustedNow = headCutoffTimestamp
@@ -319,7 +319,7 @@ function DateTime({
   );
 }
 
-function ImageSection({ model, isPlaceholder }: TProps) {
+function ImageSection({ model, isPlaceholder }: TModelCardProps) {
   if (isPlaceholder) {
     return (
       <div className="w-14 group/link aspect-4/3 border border-border rounded-br-[0.9rem] -mr-2 relative outline-0 transition duration-150 active:ring-[1.5px] hover:ring-[1.5px] ring-0 focus-visible:ring-[1.5px] ring-foreground/50 -mb-2 bg-border rounded-tl-lg overflow-hidden group-data-placeholder:animate-pulse" />

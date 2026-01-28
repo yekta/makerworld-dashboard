@@ -27,10 +27,17 @@ type TProps =
       className?: string;
     };
 
-const placeholderData = Array.from({ length: 32 }).map((_, index) => ({
-  prints: Math.floor(Math.random() * 75) + 25,
-  timestamp: new Date().getTime() - (31 - index) * 24 * 60 * 60 * 1000,
-}));
+type TChartData = {
+  prints: number;
+  timestamp: number;
+}[];
+
+const placeholderData: TChartData = Array.from({ length: 32 }).map(
+  (_, index) => ({
+    prints: Math.floor(Math.random() * 75) + 25,
+    timestamp: new Date().getTime() - (31 - index) * 24 * 60 * 60 * 1000,
+  }),
+);
 
 export default function ModelStatsChart({
   model,
@@ -50,10 +57,17 @@ export default function ModelStatsChart({
     [isTravelled],
   ) satisfies ChartConfig;
 
+  const randomNum = useMemo(() => Math.random(), []);
+
   const now = useNow();
   const dayOfWeek = new Date(now).getDay();
 
-  const chartData = useMemo(() => {
+  const prevData = useRef<TChartData | null>(null);
+
+  const chartData: TChartData = useMemo(() => {
+    if (isPlaceholder && prevData.current) {
+      return prevData.current;
+    }
     if (isPlaceholder || !model) {
       return placeholderData;
     }
@@ -94,7 +108,7 @@ export default function ModelStatsChart({
     const timeframeTimestamps: (keyof typeof metadata)[] = timeframes.map(
       (timeframe) => (timeframe + "_timestamp") as keyof typeof metadata,
     );
-    const data: { prints: number; timestamp: number }[] = timeframes
+    const data: TChartData = timeframes
       .map((timeframe, index) => ({
         prints: model.stats[timeframe].prints,
         timestamp: metadata[timeframeTimestamps[index]] + 24 * 60 * 60 * 1000,
@@ -107,6 +121,11 @@ export default function ModelStatsChart({
 
   const [isAnimationActive, setIsAnimationActive] = useState(false);
   const isAnimationActiveTimeout = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    if (isPlaceholder) return;
+    prevData.current = chartData;
+  }, [isPlaceholder, chartData]);
 
   useEffect(() => {
     if (isPlaceholder) {
