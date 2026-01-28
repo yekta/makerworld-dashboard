@@ -196,16 +196,19 @@ export default function LeaderboardTable() {
                 <div className="size-5 shrink-0 relative transition-transform">
                   <div className="animate-pulse size-full bg-muted-more-foreground rounded-full border border-muted-more-foreground transition-transform" />
                 </div>
-                <div className="w-full flex flex-col group-data-username-sticky/container:-translate-y-0.5 translate-y-1.5 transition-transform overflow-hidden">
-                  <CellSpan isPending={isPending} className="px-0">
+                <div className="w-full flex flex-col group-data-username-sticky/container:-translate-y-px translate-y-1.5 transition-transform overflow-hidden">
+                  <CellSpan
+                    isPending={isPending}
+                    className="px-0 leading-tight"
+                  >
                     {username}
                   </CellSpan>
-                  <div className="w-full flex items-center min-w-0 overflow-hidden opacity-0 group-data-username-sticky/container:opacity-100">
-                    <p className="text-xxs leading-tight mt-px text-left max-w-full overflow-hidden overflow-ellipsis whitespace-nowrap transition-transform bg-muted-most-foreground rounded-sm text-transparent">
+                  <div className="w-full mt-[1.5px] text-xxs leading-tight flex items-center min-w-0 overflow-hidden opacity-0 group-data-username-sticky/container:opacity-100">
+                    <p className="text-left max-w-full overflow-hidden overflow-ellipsis whitespace-nowrap transition-transform bg-muted-most-foreground rounded-sm text-transparent">
                       #{row.original.rank}
                     </p>
                     {!hideRowNumber && (
-                      <div className="pl-1 mt-px text-xxs relative shrink min-w-0 flex items-center">
+                      <div className="pl-1 relative shrink min-w-0 flex items-center">
                         <p className="rounded-xs text-transparent bg-muted-most-foreground animate-pulse shrink min-w-0 leading-none whitespace-normal overflow-hidden overflow-ellipsis">
                           {rowIndex.toLocaleString(appLocale)}
                         </p>
@@ -232,22 +235,22 @@ export default function LeaderboardTable() {
                 />
                 <ExternalLinkIcon className="size-full scale-90 absolute left-0 top-0 -rotate-45 group-hover/link:rotate-0 group-active/link:rotate-0 group-focus-visible/link:rotate-0 opacity-0 group-hover/link:opacity-100 group-active/link:opacity-100 group-focus-visible/link:opacity-100 transition-transform" />
               </div>
-              <div className="w-full flex flex-col group-data-username-sticky/container:-translate-y-0.5 translate-y-1.5 transition-transform overflow-hidden">
-                <CellSpan isPending={isPending} className="px-0">
+              <div className="w-full flex flex-col group-data-username-sticky/container:-translate-y-px translate-y-1.5 transition-transform overflow-hidden">
+                <CellSpan isPending={isPending} className="px-0 leading-tight">
                   {username}
                 </CellSpan>
-                <div className="w-full flex items-center min-w-0 overflow-hidden opacity-0 group-data-username-sticky/container:opacity-100">
-                  <p className="text-xxs leading-tight group-data-me:text-warning/75 mt-px text-left opacity-0 shrink min-w-0 overflow-hidden overflow-ellipsis whitespace-nowrap transition-transform group-data-username-sticky/container:opacity-100 text-muted-foreground">
+                <div className="w-full text-xxs leading-tight mt-[1.5px] flex items-center min-w-0 overflow-hidden opacity-0 group-data-username-sticky/container:opacity-100">
+                  <p className="group-data-me:text-warning/75 text-left opacity-0 shrink min-w-0 overflow-hidden overflow-ellipsis whitespace-nowrap transition-transform group-data-username-sticky/container:opacity-100 text-muted-foreground">
                     #{row.original.rank}
                   </p>
                   {!hideRowNumber && (
-                    <div className="mt-px text-xxs relative shrink min-w-0 flex items-center">
+                    <div className="relative shrink min-w-0 flex items-center">
                       {!isPending && (
-                        <span className="text-muted-most-foreground px-[0.5ch]">
+                        <p className="text-muted-most-foreground px-[0.5ch]">
                           |
-                        </span>
+                        </p>
                       )}
-                      <p className="shrink min-w-0 rounded-xs leading-none text-muted-most-foreground whitespace-normal overflow-hidden overflow-ellipsis">
+                      <p className="shrink min-w-0 text-muted-most-foreground whitespace-normal overflow-hidden overflow-ellipsis">
                         {rowIndex.toLocaleString(appLocale)}
                       </p>
                     </div>
