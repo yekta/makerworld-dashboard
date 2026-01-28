@@ -113,6 +113,9 @@ export default function ModelStatsChart({
       return;
     }
 
+    if (isAnimationActiveTimeout.current) {
+      clearTimeout(isAnimationActiveTimeout.current);
+    }
     isAnimationActiveTimeout.current = setTimeout(() => {
       setIsAnimationActive(true);
     }, 500);
