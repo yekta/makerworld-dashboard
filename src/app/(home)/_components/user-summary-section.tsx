@@ -43,7 +43,7 @@ function Section({
   data: AppRouterQueryResult<AppRouterOutputs["stats"]["get"]>["data"];
 }) {
   const projectedMonthlyUSDRevenue = useMemo(() => {
-    if (!data) return 100;
+    if (!data) return 1000;
     const lastWeekPrints = data.user.stats["delta_0-168h"].prints;
     const lastWeekDownloads = data.user.stats["delta_0-168h"].downloads;
     const lastWeekAdjustedDownloads =
@@ -67,14 +67,14 @@ function Section({
   }, [data]);
 
   const printsPerDayBasedOnLastWeek = useMemo(() => {
-    if (!data) return 100;
+    if (!data) return 1000;
     const lastWeekPrints = data.user.stats["delta_0-168h"].prints;
     const avgDailyPrints = lastWeekPrints / 7;
     return avgDailyPrints;
   }, [data]);
 
   const boostsPerDayBasedOnLastWeek = useMemo(() => {
-    if (!data) return 0;
+    if (!data) return 10;
     const lastWeekBoosts = data.user.stats["delta_0-168h"].boosts;
     const avgDailyBoosts = lastWeekBoosts / 7;
     return avgDailyBoosts;
@@ -218,7 +218,7 @@ function DatesSpan({
   );
 
   return (
-    <span>
+    <span suppressHydrationWarning>
       {timeAgoString}
       <span className="text-muted-more-foreground px-[0.75ch]">{"|"}</span>
       {releaseDate}
