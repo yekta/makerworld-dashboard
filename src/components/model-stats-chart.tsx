@@ -52,6 +52,7 @@ export default function ModelStatsChart({
 
   const now = useNow();
   const dayOfWeek = new Date(now).getDay();
+
   const chartData = useMemo(() => {
     if (isPlaceholder || !model) {
       return placeholderData;
@@ -132,7 +133,10 @@ export default function ModelStatsChart({
   }
 
   return (
-    <div className={cn("w-full h-24 pt-1 relative z-10", className)}>
+    <div
+      data-placeholder={isPlaceholder ? true : undefined}
+      className={cn("w-full h-24 pt-1 relative z-10 group", className)}
+    >
       <ChartContainer config={chartConfig} className="w-full h-full">
         <AreaChart
           accessibilityLayer

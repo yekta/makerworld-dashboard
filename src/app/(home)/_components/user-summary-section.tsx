@@ -92,7 +92,7 @@ function Section({
         <div className="w-full flex items-center justify-center md:justify-end px-3">
           <p
             suppressHydrationWarning
-            className="shrink font-light whitespace-nowrap leading-normal text-center md:text-right text-muted-foreground min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent"
+            className="shrink font-light whitespace-nowrap leading-normal text-center md:text-right text-muted-foreground min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-most-foreground group-data-placeholder:text-transparent"
           >
             <span className="text-foreground font-medium group-data-placeholder:text-transparent">
               $
@@ -106,7 +106,7 @@ function Section({
         <div className="w-full flex items-center justify-center md:justify-end px-3">
           <p
             suppressHydrationWarning
-            className="shrink font-light whitespace-nowrap leading-normal text-center md:text-right text-muted-foreground min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent"
+            className="shrink font-light whitespace-nowrap leading-normal text-center md:text-right text-muted-foreground min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-most-foreground group-data-placeholder:text-transparent"
           >
             <RecentEventsText data={data} />
           </p>
@@ -121,7 +121,7 @@ function Section({
         <div className="w-full flex items-center justify-center md:justify-start px-3">
           <p
             suppressHydrationWarning
-            className="shrink font-light whitespace-nowrap leading-normal text-center md:text-left text-muted-foreground min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent"
+            className="shrink font-light whitespace-nowrap leading-normal text-center md:text-left text-muted-foreground min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-most-foreground group-data-placeholder:text-transparent"
           >
             <span className="font-medium">
               <PrintIcon className="inline-block size-2.75 mb-px mr-[0.2ch]" />
@@ -130,7 +130,7 @@ function Section({
               })}
             </span>
             {" daily"}
-            <span className="text-muted-more-foreground px-[0.75ch] group-data-placeholder:text-transparent">
+            <span className="text-muted-most-foreground px-[0.75ch] group-data-placeholder:text-transparent">
               {"|"}
             </span>
             <span className="font-medium">
@@ -140,7 +140,7 @@ function Section({
               })}
             </span>
             {" daily"}
-            <span className="text-muted-more-foreground px-[0.75ch] group-data-placeholder:text-transparent">
+            <span className="text-muted-most-foreground px-[0.75ch] group-data-placeholder:text-transparent">
               {"|"}
             </span>
             <span className="font-medium">
@@ -153,12 +153,12 @@ function Section({
           </p>
         </div>
         <div className="w-full flex items-center justify-center md:justify-start px-3">
-          <p className="shrink font-light whitespace-nowrap leading-normal text-center md:text-left text-muted-foreground min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent">
+          <p className="shrink font-light whitespace-nowrap leading-normal text-center md:text-left text-muted-foreground min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-most-foreground group-data-placeholder:text-transparent">
             <DatesSpan
               isPlaceholder={!data}
               timestamp={veryFirstModelCreationTimestamp}
             />
-            <span className="text-muted-more-foreground px-[0.75ch] group-data-placeholder:text-transparent">
+            <span className="text-muted-most-foreground px-[0.75ch] group-data-placeholder:text-transparent">
               {"|"}
             </span>
             <span>
@@ -220,7 +220,9 @@ function DatesSpan({
   return (
     <span suppressHydrationWarning>
       {timeAgoString}
-      <span className="text-muted-more-foreground px-[0.75ch]">{"|"}</span>
+      <span className="text-muted-most-foreground group-data-placeholder:text-transparent px-[0.75ch]">
+        {"|"}
+      </span>
       {releaseDate}
     </span>
   );

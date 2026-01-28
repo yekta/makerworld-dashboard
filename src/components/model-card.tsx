@@ -228,7 +228,7 @@ function Footer({ model, metadata, isPlaceholder }: TProps) {
     <div className="w-full flex justify-center items-end gap-2">
       <div className="flex-1 min-w-0 flex flex-col items-start pb-px">
         <div className="w-full flex justify-start flex-wrap">
-          <p className="px-1 shrink min-w-0 font-light overflow-hidden overflow-ellipsis text-xs text-muted-foreground group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent">
+          <p className="px-1 shrink min-w-0 font-light overflow-hidden overflow-ellipsis text-xs text-muted-foreground group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-most-foreground group-data-placeholder:text-transparent">
             <span className="font-medium">
               <PrintIcon className="inline-block size-2.75 mb-px mr-[0.2ch]" />
               {printsPerDay.toLocaleString(appLocale, {
@@ -236,7 +236,7 @@ function Footer({ model, metadata, isPlaceholder }: TProps) {
               })}
             </span>
             {" daily"}
-            <span className="text-muted-more-foreground px-[0.75ch]">
+            <span className="text-muted-most-foreground group-data-placeholder:text-transparent px-[0.75ch]">
               {"|"}
             </span>
             <span className="font-medium">
@@ -246,7 +246,7 @@ function Footer({ model, metadata, isPlaceholder }: TProps) {
               })}
             </span>
             {" daily"}
-            <span className="text-muted-more-foreground px-[0.75ch]">
+            <span className="text-muted-most-foreground group-data-placeholder:text-transparent px-[0.75ch]">
               {"|"}
             </span>
             <span className="font-medium">
@@ -297,10 +297,10 @@ function DateTime({
           setModelOrder("desc");
           document.documentElement.scrollTo({ top: 0, behavior: "smooth" });
         }}
-        className="shrink px-1 ring ring-foreground/15 hover:ring-warning/25 active:ring-warning/25 text-left group-data-placeholder:hover:text-transparent group-data-placeholder:ring-0 group-data-placeholder:hover:ring-0 group-data-placeholder:active:ring-0 group-data-placeholder:active:text-transparent hover:text-warning hover:bg-warning/15 active:text-warning active:bg-warning/15 rounded bg-border mt-0.5 min-w-0 font-light overflow-hidden overflow-ellipsis text-xs text-muted-foreground group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:active:bg-muted-more-foreground group-data-placeholder:hover:bg-muted-more-foreground group-data-placeholder:text-transparent"
+        className="shrink px-1 ring ring-foreground/15 hover:ring-warning/25 active:ring-warning/25 text-left group-data-placeholder:hover:text-transparent group-data-placeholder:ring-0 group-data-placeholder:hover:ring-0 group-data-placeholder:active:ring-0 group-data-placeholder:active:text-transparent hover:text-warning hover:bg-warning/15 active:text-warning active:bg-warning/15 rounded bg-border mt-0.5 min-w-0 font-light overflow-hidden overflow-ellipsis text-xs text-muted-foreground group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-most-foreground group-data-placeholder:active:bg-muted-most-foreground group-data-placeholder:hover:bg-muted-most-foreground group-data-placeholder:text-transparent"
       >
         {timeAgoString}
-        <span className="text-muted-more-foreground px-[0.75ch] font-light text-xs">
+        <span className="text-muted-most-foreground group-data-placeholder:text-transparent px-[0.75ch] font-light text-xs">
           {"|"}
         </span>
         {releaseDate}
@@ -309,9 +309,9 @@ function DateTime({
   }
 
   return (
-    <p className="shrink px-1 mt-0.5 min-w-0 font-light overflow-hidden overflow-ellipsis text-xs text-muted-foreground group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent">
+    <p className="shrink px-1 mt-0.5 min-w-0 font-light overflow-hidden overflow-ellipsis text-xs text-muted-foreground group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-most-foreground group-data-placeholder:text-transparent">
       {timeAgoString}
-      <span className="text-muted-more-foreground px-[0.75ch] font-light text-xs">
+      <span className="text-muted-most-foreground group-data-placeholder:text-transparent px-[0.75ch] font-light text-xs">
         {"|"}
       </span>
       {releaseDate}
