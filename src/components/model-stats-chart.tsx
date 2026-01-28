@@ -10,7 +10,7 @@ import {
 import { cn } from "@/lib/utils";
 import { AppRouterOutputs } from "@/server/trpc/api/root";
 import { format } from "date-fns";
-import { useMemo } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
 
 type TProps =
@@ -104,6 +104,26 @@ export default function ModelStatsChart({
 
   const [modelStatVisibilityPreferences] = useModelStatVisibilityPreferences();
 
+  const [isAnimationActive, setIsAnimationActive] = useState(false);
+  const isAnimationActiveTimeout = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    if (isPlaceholder) {
+      setIsAnimationActive(false);
+      return;
+    }
+
+    isAnimationActiveTimeout.current = setTimeout(() => {
+      setIsAnimationActive(true);
+    }, 500);
+
+    return () => {
+      if (isAnimationActiveTimeout.current) {
+        clearTimeout(isAnimationActiveTimeout.current);
+      }
+    };
+  }, [isPlaceholder]);
+
   if (!modelStatVisibilityPreferences.includes("chart")) {
     return null;
   }
@@ -181,6 +201,7 @@ export default function ModelStatsChart({
           </defs>
           <Area
             animationDuration={isPlaceholder ? 0 : 500}
+            isAnimationActive={isAnimationActive}
             type="bump"
             dataKey="prints"
             fill="url(#fillPrints)"
