@@ -141,7 +141,7 @@ export default function LeaderboardTable() {
                   #{parseInt(row.getValue("rank")).toLocaleString(appLocale)}
                 </CellSpan>
                 {!hideRowNumber && (
-                  <div className="pl-4 mt-px text-xs font-bold relative w-full flex">
+                  <div className="pl-4 mt-px text-xs relative w-full flex">
                     <p className="shrink min-w-0 rounded-xs text-transparent bg-muted-most-foreground animate-pulse leading-none whitespace-normal overflow-hidden overflow-ellipsis">
                       {rowIndex.toLocaleString(appLocale)}
                     </p>
@@ -167,7 +167,7 @@ export default function LeaderboardTable() {
                   #{parseInt(row.getValue("rank")).toLocaleString(appLocale)}
                 </CellSpan>
                 {!hideRowNumber && (
-                  <div className="mt-px text-xs font-semibold relative w-full flex">
+                  <div className="mt-px text-xs relative w-full flex">
                     <p className="text-left shrink min-w-0 rounded-xs text-muted-most-foreground leading-none whitespace-normal overflow-hidden overflow-ellipsis">
                       {rowIndex.toLocaleString(appLocale)}
                     </p>
@@ -205,7 +205,7 @@ export default function LeaderboardTable() {
                       #{row.original.rank}
                     </p>
                     {!hideRowNumber && (
-                      <div className="pl-1 mt-px text-xxs font-bold relative shrink min-w-0 flex items-center">
+                      <div className="pl-1 mt-px text-xxs relative shrink min-w-0 flex items-center">
                         <p className="rounded-xs text-transparent bg-muted-most-foreground animate-pulse shrink min-w-0 leading-none whitespace-normal overflow-hidden overflow-ellipsis">
                           {rowIndex.toLocaleString(appLocale)}
                         </p>
@@ -241,7 +241,7 @@ export default function LeaderboardTable() {
                     #{row.original.rank}
                   </p>
                   {!hideRowNumber && (
-                    <div className="mt-px text-xxs font-bold relative shrink min-w-0 flex items-center">
+                    <div className="mt-px text-xxs relative shrink min-w-0 flex items-center">
                       {!isPending && (
                         <span className="text-muted-most-foreground px-[0.5ch]">
                           |
