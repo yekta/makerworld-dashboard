@@ -60,7 +60,7 @@ function NavItem({
       href={route.href}
       onClick={onClick}
     >
-      <div className="w-full md:w-auto shrink min-w-0 flex flex-col gap-0.5 sm:gap-2 sm:flex-row items-center justify-center relative px-4 sm:px-10 sm:pt-3.5 sm:pb-3.5 pt-2.5 pb-[calc(0.625rem+var(--safe-area-inset-bottom))]">
+      <div className="w-full md:w-auto shrink min-w-0 flex flex-col gap-0.5 sm:gap-2 sm:flex-row items-center justify-center relative px-4 sm:px-10 sm:pt-3.5 sm:pb-3.5 pt-2 pb-[calc(0.5rem+var(--safe-area-inset-bottom))]">
         <route.Icon className="size-4.5 shrink min-0" />
         <div className="w-full sm:w-auto min-w-0 flex items-center justify-center">
           <p className="shrink text-xxs sm:text-sm min-w-0 overflow-hidden overflow-ellipsis">
