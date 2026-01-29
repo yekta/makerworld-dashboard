@@ -48,7 +48,6 @@ export default function OptionDropdown<T>({
     <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
       <DropdownMenuTrigger asChild>
         <Button
-          suppressHydrationWarning
           data-open={isOpen ? true : undefined}
           className={cn(
             "bg-background select-none group px-3 font-medium hover:bg-border active:bg-border text-foreground border justify-start text-left",

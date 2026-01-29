@@ -90,8 +90,8 @@ export default function LeaderboardTable() {
   const { data, isPending, error } = useLeaderboard();
   const [now, setNow] = useState(Date.now());
 
-  const [sortBy, setSortBy, isRealRealSortBy] = useLeaderboardSortBy();
-  const [sortOrder, setSortOrder, isRealOrder] = useLeaderboardSortOrder();
+  const [sortBy, setSortBy] = useLeaderboardSortBy();
+  const [sortOrder, setSortOrder] = useLeaderboardSortOrder();
 
   useEffect(() => {
     setNow(Date.now());
@@ -106,11 +106,6 @@ export default function LeaderboardTable() {
   const [sorting, setSorting] = useState<SortingState>([
     { id: sortBy, desc: sortOrder !== "asc" },
   ]);
-
-  useEffect(() => {
-    if (!isRealRealSortBy || !isRealOrder) return;
-    setSorting([{ id: sortBy, desc: sortOrder !== "asc" }]);
-  }, [isRealRealSortBy, isRealOrder]);
 
   const hideRowNumber =
     (sorting && sorting.length === 0) ||
@@ -512,6 +507,7 @@ export default function LeaderboardTable() {
                 <div key={hg.id} className="flex w-full">
                   {hg.headers.map((header) => {
                     const Icon = header.column.columnDef.meta?.Icon;
+
                     return (
                       <Button
                         key={header.id}
@@ -530,11 +526,12 @@ export default function LeaderboardTable() {
                               : `1 0 ${header.getSize()}px`,
                         }}
                       >
-                        {header.column.getCanSort() &&
+                        {mounted &&
+                          header.column.getCanSort() &&
                           header.column.getIsSorted() && (
                             <MoveDown
                               data-asc={
-                                mounted && header.column.getIsSorted() === "asc"
+                                header.column.getIsSorted() === "asc"
                                   ? true
                                   : undefined
                               }
