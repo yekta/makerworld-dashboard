@@ -1,6 +1,7 @@
 "use client";
 
-import { parseAsBoolean, parseAsInteger, useQueryState } from "nuqs";
+import { useQueryStateClientOnly } from "@/lib/hooks/use-query-state-client-only";
+import { parseAsBoolean, parseAsInteger } from "nuqs";
 import {
   createContext,
   ReactNode,
@@ -14,6 +15,7 @@ import {
 type TTimeMachineContext = {
   setHeadCutoffTimestamp: (timestamp: number | null) => void;
   headCutoffTimestamp: number | null;
+  isRealHeadCutoffTimestamp: boolean;
   isOpen: boolean;
   setIsOpen: (open: boolean | ((prevOpen: boolean) => boolean)) => void;
   isTravelled: boolean;
@@ -26,14 +28,17 @@ const TimeMachineContext = createContext<TTimeMachineContext | null>(null);
 export const TimeMachineProvider: React.FC<{
   children: ReactNode;
 }> = ({ children }) => {
-  const [isOpen, setIsOpen] = useQueryState(
+  const [isOpen, setIsOpen] = useQueryStateClientOnly(
     "time_machine",
     parseAsBoolean.withDefault(false),
   );
-  const [headCutoffTimestamp, setHeadCutoffTimestamp] = useQueryState(
-    "head_cutoff_timestamp",
-    parseAsInteger,
-  );
+
+  const [
+    headCutoffTimestamp,
+    setHeadCutoffTimestamp,
+    isRealHeadCutoffTimestamp,
+  ] = useQueryStateClientOnly("head_cutoff_timestamp", parseAsInteger);
+
   const isTravelled = headCutoffTimestamp !== null;
   const isTravelledAndClosed = isTravelled && !isOpen;
   const [travelledRecently, setTravelledRecently] = useState(false);
@@ -52,10 +57,11 @@ export const TimeMachineProvider: React.FC<{
     };
   }, [headCutoffTimestamp]);
 
-  const value = useMemo(
+  const value: TTimeMachineContext = useMemo(
     () => ({
       headCutoffTimestamp,
       setHeadCutoffTimestamp,
+      isRealHeadCutoffTimestamp,
       isOpen,
       setIsOpen,
       isTravelled,
@@ -65,6 +71,7 @@ export const TimeMachineProvider: React.FC<{
     [
       headCutoffTimestamp,
       setHeadCutoffTimestamp,
+      isRealHeadCutoffTimestamp,
       isOpen,
       setIsOpen,
       isTravelled,

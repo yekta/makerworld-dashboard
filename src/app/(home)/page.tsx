@@ -1,4 +1,3 @@
-import { cachedHomePageSearchParams } from "@/app/(home)/_components/constants";
 import FiltersSection from "@/app/(home)/_components/filters-section/filters-section";
 import MetadataSection from "@/app/(home)/_components/metadata-section";
 import ModelsSection from "@/app/(home)/_components/models-section";
@@ -8,13 +7,7 @@ import UserSummarySection from "@/app/(home)/_components/user-summary-section";
 import StatsProvider from "@/components/providers/stats-provider";
 import TimeMachineProvider from "@/components/providers/time-machine-provider";
 
-type Props = {
-  searchParams: Promise<Record<string, string | string[] | undefined>>;
-};
-
-export default async function Home({ searchParams }: Props) {
-  await cachedHomePageSearchParams.parse(searchParams);
-
+export default function Home() {
   return (
     <TimeMachineProvider>
       <StatsProvider>

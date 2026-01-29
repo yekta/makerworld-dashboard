@@ -46,8 +46,8 @@ export function TimeMachineButton({ className }: TProps) {
         <HistoryIcon className="size-full group-data-travelled:text-warning" />
       </div>
       <p className="flex-1 select-none min-w-0 overflow-hidden overflow-ellipsis group-data-travelled:text-warning">
-        {isTravelledAndClosed
-          ? format(new Date(headCutoffTimestamp!), "yyyy-MM-dd")
+        {isTravelledAndClosed && headCutoffTimestamp
+          ? format(new Date(headCutoffTimestamp), "yyyy-MM-dd")
           : "Time Machine"}
       </p>
       <ChevronDown className="shrink-0 text-muted-more-foreground -mr-1 group-data-open:rotate-180 transition-transform group-data-travelled:text-warning/50" />
@@ -81,10 +81,12 @@ export function TimeMachineSlider({ className }: TProps) {
       ? Math.max(Math.min(getCalendarDaysAgo(headCutoffTimestamp), max), min)
       : min,
   ]);
+
   const debouncedSetHeadCutoffTimestamp = useDebounceCallback(
     setHeadCutoffTimestamp,
     500,
   );
+
   const numberOfDaysAgo = value[0];
   const timeMachineDate = new Date(Date.now() - value[0] * dayMs);
   const isTravelled = headCutoffTimestamp !== null;
@@ -120,7 +122,7 @@ export function TimeMachineSlider({ className }: TProps) {
         setTime(format(new Date(), "HH:mm"));
       }
     },
-    [time, min],
+    [time, min, debouncedSetHeadCutoffTimestamp, setValue, setTime],
   );
 
   const goToPrevDay = useCallback(() => {
@@ -133,6 +135,13 @@ export function TimeMachineSlider({ className }: TProps) {
     setValueAndTimestamp(newValue);
   }, [value]);
 
+  const [, setModelOrder] = useModelOrder();
+  const [, setModelSort] = useModelSort();
+
+  const disableResetButton =
+    (value[0] === min && time === format(new Date(), "HH:mm")) ||
+    headCutoffTimestamp === null;
+
   const onReset = useCallback(() => {
     setValue([min]);
     setTime(format(new Date(), "HH:mm"));
@@ -140,7 +149,14 @@ export function TimeMachineSlider({ className }: TProps) {
     setModelOrder(MODEL_ORDER_DEFAULT);
     setModelSort(MODEL_SORT_DEFAULT);
     setMax(maxDefault);
-  }, []);
+  }, [
+    setValue,
+    setTime,
+    debouncedSetHeadCutoffTimestamp,
+    setModelOrder,
+    setModelSort,
+    setMax,
+  ]);
 
   const onChangeTimeInput = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -165,13 +181,6 @@ export function TimeMachineSlider({ className }: TProps) {
     },
     [headCutoffTimestamp],
   );
-
-  const [, setModelOrder] = useModelOrder();
-  const [, setModelSort] = useModelSort();
-
-  const disableResetButton =
-    (value[0] === min && time === format(new Date(), "HH:mm")) ||
-    headCutoffTimestamp === null;
 
   if (!isOpen) return null;
 

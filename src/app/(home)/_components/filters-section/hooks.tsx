@@ -9,10 +9,11 @@ import {
   TModelSortByEnum,
   TModelStatVisibilityPreferencesEnum,
 } from "@/app/(home)/_components/constants";
-import { parseAsArrayOf, parseAsStringEnum, useQueryState } from "nuqs";
+import { useQueryStateClientOnly } from "@/lib/hooks/use-query-state-client-only";
+import { parseAsArrayOf, parseAsStringEnum } from "nuqs";
 
 export function useModelStatVisibilityPreferences() {
-  const res = useQueryState(
+  const res = useQueryStateClientOnly(
     MODEL_STAT_VISIBLITY_PREFERENCES_KEY,
     parseAsArrayOf(
       parseAsStringEnum(TModelStatVisibilityPreferencesEnum.options),
@@ -22,7 +23,7 @@ export function useModelStatVisibilityPreferences() {
 }
 
 export function useModelOrder() {
-  const res = useQueryState(
+  const res = useQueryStateClientOnly(
     MODEL_ORDER_KEY,
     parseAsStringEnum(TModelOrderEnum.options).withDefault(MODEL_ORDER_DEFAULT),
   );
@@ -30,7 +31,7 @@ export function useModelOrder() {
 }
 
 export function useModelSort() {
-  const res = useQueryState(
+  const res = useQueryStateClientOnly(
     MODEL_SORT_KEY,
     parseAsStringEnum(TModelSortByEnum.options).withDefault(MODEL_SORT_DEFAULT),
   );
