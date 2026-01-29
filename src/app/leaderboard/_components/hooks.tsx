@@ -6,10 +6,11 @@ import {
   TLeaderboardTableSortByEnum,
   TLeaderboardTableSortOrderEnum,
 } from "@/app/leaderboard/_components/constants";
-import { parseAsStringEnum, useQueryState } from "nuqs";
+import { useQueryStateClientOnly } from "@/lib/hooks/use-query-state-client-only";
+import { parseAsStringEnum } from "nuqs";
 
 export function useLeaderboardSortBy() {
-  const res = useQueryState(
+  const res = useQueryStateClientOnly(
     LEADERBOARD_TABLE_SORT_BY_KEY,
     parseAsStringEnum(TLeaderboardTableSortByEnum.options).withDefault(
       LEADERBOARD_TABLE_SORT_BY_DEFAULT,
@@ -19,7 +20,7 @@ export function useLeaderboardSortBy() {
 }
 
 export function useLeaderboardSortOrder() {
-  const res = useQueryState(
+  const res = useQueryStateClientOnly(
     LEADERBOARD_TABLE_SORT_ORDER_KEY,
     parseAsStringEnum(TLeaderboardTableSortOrderEnum.options).withDefault(
       LEADERBOARD_TABLE_SORT_ORDER_DEFAULT,

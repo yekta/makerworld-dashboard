@@ -1,3 +1,4 @@
+import { isServer } from "@/lib/constants";
 import { parseAsInteger as parseAsIntegerClient } from "nuqs";
 import { parseAsInteger as parseAsIntegerServer } from "nuqs/server";
 import { createSearchParamsCache } from "nuqs/server";
@@ -100,8 +101,6 @@ export const MODEL_STAT_VISIBLITY_PREFERENCES_DEFAULT: z.infer<
   "delta_0-168h",
   "delta_0-720h",
 ];
-
-const isServer = typeof window === "undefined";
 
 export const parseAsInteger = isServer
   ? parseAsIntegerServer

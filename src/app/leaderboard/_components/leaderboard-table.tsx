@@ -478,6 +478,11 @@ export default function LeaderboardTable() {
   const totalSize = rowVirtualizer.getTotalSize();
   const scrollMargin = rowVirtualizer.options.scrollMargin ?? 0;
   const [isUsernameSticky, setIsUsernameSticky] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   if (error && !isPending && !data) {
     return (
@@ -521,7 +526,8 @@ export default function LeaderboardTable() {
                               : `1 0 ${header.getSize()}px`,
                         }}
                       >
-                        {header.column.getCanSort() &&
+                        {mounted &&
+                          header.column.getCanSort() &&
                           header.column.getIsSorted() && (
                             <MoveDown
                               data-asc={

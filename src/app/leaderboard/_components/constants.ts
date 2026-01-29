@@ -1,3 +1,4 @@
+import { isServer } from "@/lib/constants";
 import { parseAsStringEnum as parseAsStringEnumClient } from "nuqs";
 import { parseAsStringEnum as parseAsStringEnumServer } from "nuqs/server";
 import { createSearchParamsCache } from "nuqs/server";
@@ -30,8 +31,6 @@ export const TLeaderboardTableSortByEnum = z.enum([
   "since_start",
   "since_snapshotted_at",
 ]);
-
-const isServer = typeof window === "undefined";
 
 export const parseAsStringEnum = isServer
   ? parseAsStringEnumServer
