@@ -10,7 +10,7 @@ import {
 import { cn } from "@/lib/utils";
 import { AppRouterOutputs } from "@/server/trpc/api/root";
 import { format } from "date-fns";
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useId, useMemo, useRef } from "react";
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
 
 type TProps =
@@ -46,18 +46,21 @@ export default function ModelStatsChart({
   className,
 }: TProps) {
   const { isTravelled } = useTimeMachine();
+  const gradientId = useId();
 
   const chartConfig = useMemo(
     () => ({
       prints: {
         label: "Prints",
-        color: isTravelled ? "var(--warning)" : "var(--success)",
+        color: isPlaceholder
+          ? "var(--muted-foreground)"
+          : isTravelled
+            ? "var(--warning)"
+            : "var(--success)",
       },
     }),
-    [isTravelled],
+    [isPlaceholder, isTravelled],
   ) satisfies ChartConfig;
-
-  const randomNum = useMemo(() => Math.random(), []);
 
   const now = useNow();
   const dayOfWeek = new Date(now).getDay();
@@ -181,23 +184,15 @@ export default function ModelStatsChart({
             />
           )}
           <defs>
-            <linearGradient id="fillPrints" x1="0" y1="0" x2="0" y2="1">
+            <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
               <stop
                 offset="5%"
-                stopColor={
-                  isPlaceholder
-                    ? "var(--muted-foreground)"
-                    : "var(--color-prints)"
-                }
+                stopColor="var(--color-prints)"
                 stopOpacity={0.08}
               />
               <stop
                 offset="95%"
-                stopColor={
-                  isPlaceholder
-                    ? "var(--muted-foreground)"
-                    : "var(--color-prints)"
-                }
+                stopColor="var(--color-prints)"
                 stopOpacity={0.08}
               />
             </linearGradient>
@@ -206,11 +201,9 @@ export default function ModelStatsChart({
             animationDuration={400}
             type="bump"
             dataKey="prints"
-            fill="url(#fillPrints)"
+            fill={`url(#${gradientId})`}
             fillOpacity={1}
-            stroke={
-              isPlaceholder ? "var(--muted-foreground)" : "var(--color-prints)"
-            }
+            stroke="var(--color-prints)"
             strokeOpacity={0.32}
             stackId="a"
           />
