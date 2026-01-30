@@ -204,7 +204,7 @@ export default function LeaderboardTable() {
                     </p>
                     {!hideRowNumber && (
                       <div className="pl-1 relative shrink min-w-0 flex items-center">
-                        <p className="rounded-xs text-transparent bg-muted-most-foreground animate-pulse shrink min-w-0 leading-none whitespace-normal overflow-hidden overflow-ellipsis">
+                        <p className="rounded-xs text-transparent bg-muted-most-foreground animate-pulse shrink min-w-0 leading-none whitespace-nowrap overflow-hidden overflow-ellipsis">
                           {rowIndex.toLocaleString(appLocale)}
                         </p>
                       </div>
@@ -245,7 +245,7 @@ export default function LeaderboardTable() {
                           |
                         </p>
                       )}
-                      <p className="shrink min-w-0 text-muted-most-foreground whitespace-normal overflow-hidden overflow-ellipsis">
+                      <p className="shrink min-w-0 text-muted-most-foreground whitespace-nowrap overflow-hidden overflow-ellipsis">
                         {rowIndex.toLocaleString(appLocale)}
                       </p>
                     </div>
