@@ -72,10 +72,9 @@ const placeholderData: TRow[] = Array.from({ length: 100 }).map((_, index) => ({
   boost_rate: 0.155,
 }));
 
-const defaultCellSize = 110;
-const smallerCellSize = 90;
-const smallestCellSize = 70;
-const rankCellSize = 70;
+const defaultCellSize = 90;
+const smallerCellSize = 70;
+const rankCellSize = 60;
 const ROW_HEIGHT = 48;
 const isUsernameStickyNegativeMargin = 20;
 
@@ -131,17 +130,13 @@ export default function LeaderboardTable() {
             return (
               <div
                 data-hide-row-number={hideRowNumber ? true : undefined}
-                className="w-full flex flex-col pb-0.5 data-hide-row-number:pb-0"
+                className="w-full px-3 flex flex-col pb-0.5 data-hide-row-number:pb-0"
               >
-                <CellSpan
-                  isPending={isPending}
-                  muted={true}
-                  className="pl-4 w-full"
-                >
+                <CellSpan isPending={isPending} muted={true} className="px-0">
                   #{parseInt(row.getValue("rank")).toLocaleString(appLocale)}
                 </CellSpan>
                 {!hideRowNumber && (
-                  <div className="pl-4 mt-px text-xs relative w-full flex">
+                  <div className="mt-px text-xs relative w-full flex">
                     <p className="shrink min-w-0 rounded-xs text-transparent bg-muted-most-foreground animate-pulse leading-none whitespace-normal overflow-hidden overflow-ellipsis">
                       {rowIndex.toLocaleString(appLocale)}
                     </p>
@@ -152,12 +147,12 @@ export default function LeaderboardTable() {
           }
           return (
             <CopyButton
-              className="pl-4 w-full"
+              className="px-0 w-full"
               textToCopy={row.original.user_id.toString()}
             >
               <div
                 data-hide-row-number={hideRowNumber ? true : undefined}
-                className="w-full flex flex-col items-start pb-0.5 data-hide-row-number:pb-0"
+                className="w-full px-3 flex flex-col items-start pb-0.5 data-hide-row-number:pb-0"
               >
                 <CellSpan
                   isPending={isPending}
@@ -264,8 +259,8 @@ export default function LeaderboardTable() {
       {
         accessorKey: "prints",
         header: "Prints",
-        size: smallerCellSize,
-        minSize: smallerCellSize,
+        size: defaultCellSize,
+        minSize: defaultCellSize,
         cell: ({ row }) => (
           <CellSpan Icon={PrintIcon} isPending={isPending}>
             {kmbtFormatter.format(parseInt(row.getValue("prints")))}
@@ -275,16 +270,16 @@ export default function LeaderboardTable() {
       {
         accessorKey: "prints_24h",
         header: "24h",
-        size: smallerCellSize,
-        minSize: smallerCellSize,
+        size: defaultCellSize,
+        minSize: defaultCellSize,
+        meta: {
+          Icon: PrintIcon,
+        },
         cell: ({ row }) => (
           <CellSpan Icon={PrintIcon} isPending={isPending}>
             {kmbtFormatter.format(parseInt(row.getValue("prints_24h")))}
           </CellSpan>
         ),
-        meta: {
-          Icon: PrintIcon,
-        },
       },
       {
         accessorKey: "downloads",
@@ -300,8 +295,8 @@ export default function LeaderboardTable() {
       {
         accessorKey: "boosts",
         header: "Boosts",
-        size: smallerCellSize,
-        minSize: smallerCellSize,
+        size: defaultCellSize,
+        minSize: defaultCellSize,
         cell: ({ row }) => (
           <CellSpan Icon={RocketIcon} isPending={isPending}>
             {kmbtFormatter.format(parseInt(row.getValue("boosts")))}
@@ -311,8 +306,8 @@ export default function LeaderboardTable() {
       {
         accessorKey: "boosts_24h",
         header: "24h",
-        size: smallerCellSize,
-        minSize: smallerCellSize,
+        size: defaultCellSize,
+        minSize: defaultCellSize,
         meta: {
           Icon: RocketIcon,
           noFlex: true,
@@ -326,8 +321,8 @@ export default function LeaderboardTable() {
       {
         accessorKey: "boost_rate",
         header: "%",
-        size: smallerCellSize,
-        minSize: smallerCellSize,
+        size: defaultCellSize,
+        minSize: defaultCellSize,
         meta: {
           noFlex: true,
           Icon: RocketIcon,
@@ -375,8 +370,8 @@ export default function LeaderboardTable() {
       {
         accessorKey: "since_start",
         header: "Start",
-        size: smallerCellSize,
-        minSize: smallerCellSize,
+        size: defaultCellSize,
+        minSize: defaultCellSize,
         sortDescFirst: false,
         cell: ({ row }) => {
           const val = parseInt(row.getValue("since_start"));
@@ -399,8 +394,8 @@ export default function LeaderboardTable() {
       {
         accessorKey: "since_snapshotted_at",
         header: "",
-        size: smallestCellSize,
-        minSize: smallestCellSize,
+        size: smallerCellSize,
+        minSize: smallerCellSize,
         sortDescFirst: false,
         meta: {
           noFlex: true,
@@ -512,7 +507,7 @@ export default function LeaderboardTable() {
                         disabled={!header.column.getCanSort()}
                         onClick={header.column.getToggleSortingHandler()}
                         variant="ghost"
-                        className="w-full data-username:z-10 disabled:opacity-100 bg-background rounded-none gap-0.75 font-semibold flex items-center justify-start data-username:group-data-username-sticky/container:border-border border-r border-transparent text-muted-foreground px-3 py-2 first:sm:pl-4 text-left shrink-0 data-username:sticky data-username:left-0"
+                        className="w-full text-xs data-username:z-10 disabled:opacity-100 bg-background rounded-none gap-0.75 font-semibold flex items-center justify-start data-username:group-data-username-sticky/container:border-border border-r border-transparent text-muted-foreground px-3 py-2 text-left shrink-0 data-username:sticky data-username:left-0"
                         style={{
                           width: header.getSize(),
                           flex:
@@ -667,7 +662,7 @@ function CellSpan({
       data-pending={isPending ? true : undefined}
       data-muted={muted ? true : undefined}
       className={cn(
-        "group px-3 shrink min-w-0 overflow-hidden flex",
+        "w-full group px-3 shrink min-w-0 overflow-hidden flex",
         muted ? "text-muted-foreground" : undefined,
         className,
       )}
