@@ -507,7 +507,7 @@ export default function LeaderboardTable() {
                         disabled={!header.column.getCanSort()}
                         onClick={header.column.getToggleSortingHandler()}
                         variant="ghost"
-                        className="w-full text-xs data-username:z-10 disabled:opacity-100 bg-background rounded-none gap-0.75 font-semibold flex items-center justify-start data-username:group-data-username-sticky/container:border-border border-r border-transparent text-muted-foreground px-3 py-2 text-left shrink-0 data-username:sticky data-username:left-0"
+                        className="w-full text-xs data-username:z-10 disabled:opacity-100 bg-background rounded-none gap-0.75 font-semibold flex items-center justify-start data-username:group-data-username-sticky/container:border-border border-r border-transparent text-muted-foreground px-3 py-2.5 text-left shrink-0 data-username:sticky data-username:left-0"
                         style={{
                           width: header.getSize(),
                           flex:
