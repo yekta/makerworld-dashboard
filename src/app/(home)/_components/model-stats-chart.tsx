@@ -198,6 +198,8 @@ export default function ModelStatsChart({
             </linearGradient>
           </defs>
           <Area
+            aria-disabled={isPlaceholder ? "true" : undefined}
+            activeDot={isPlaceholder ? false : undefined}
             animationDuration={400}
             type="bump"
             dataKey="prints"
