@@ -13,9 +13,14 @@ const LeaderboardContext = createContext<TLeaderboardContext | null>(null);
 export const LeaderboardProvider: React.FC<{
   children: ReactNode;
 }> = ({ children }) => {
-  const query = api.leaderboard.get.useQuery({
-    orderBy: "prints",
-  });
+  const query = api.leaderboard.get.useQuery(
+    {
+      orderBy: "prints",
+    },
+    {
+      refetchInterval: 10 * 1000,
+    },
+  );
   return (
     <LeaderboardContext.Provider value={query}>
       {children}

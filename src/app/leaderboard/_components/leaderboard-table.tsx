@@ -38,6 +38,7 @@ import { useCopyToClipboard } from "@/lib/hooks/use-copy-to-clipboard";
 import { TLeaderboardEntry } from "@/server/trpc/api/leaderboard/types";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import { Duration } from "luxon";
+import LeaderboardTableRefetchIndicator from "@/app/leaderboard/_components/leaderboard-table-refetch-indicator";
 
 type TRow = TLeaderboardEntry & {
   rank: number;
@@ -490,7 +491,8 @@ export default function LeaderboardTable() {
       className="w-full text-sm font-mono group/container"
     >
       <div className="sticky pt-1 sm:pt-2 top-0 bg-background z-20 group">
-        <div className="border rounded-t-xl bg-background w-full overflow-hidden">
+        <div className="border rounded-t-xl bg-background w-full overflow-hidden relative">
+          <LeaderboardTableRefetchIndicator />
           <div ref={stickyHeaderRef} className="overflow-auto scrollbar-hidden">
             <div className="min-w-max">
               {table.getHeaderGroups().map((hg) => (

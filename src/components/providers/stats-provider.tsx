@@ -17,7 +17,7 @@ export const StatsProvider: React.FC<{
     {
       headCutoffTimestamp: headCutoffTimestamp ?? null,
     },
-    { refetchInterval: 6000 }
+    { refetchInterval: 10 * 1000 },
   );
   return (
     <StatsContext.Provider value={query}>{children}</StatsContext.Provider>
