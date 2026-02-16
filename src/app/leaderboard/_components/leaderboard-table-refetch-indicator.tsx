@@ -8,7 +8,7 @@ export default function LeaderboardTableRefetchIndicator() {
 
   return (
     <RefetchIndicator
-      className="absolute left-1.5 top-1.5"
+      className="absolute left-1.5 top-1.5 z-20"
       isPending={isPending}
       isRefetching={isRefetching}
       isError={isError}
