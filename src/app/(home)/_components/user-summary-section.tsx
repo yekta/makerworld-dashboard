@@ -6,6 +6,7 @@ import { useStats } from "@/components/providers/stats-provider";
 import { useTimeMachine } from "@/components/providers/time-machine-provider";
 import { appLocale } from "@/lib/constants";
 import { timeAgo } from "@/lib/helpers";
+import { cn } from "@/lib/utils";
 import { AppRouterOutputs, AppRouterQueryResult } from "@/server/trpc/api/root";
 import { format } from "date-fns";
 import { BoxIcon, DownloadIcon, RocketIcon, UsersIcon } from "lucide-react";
@@ -15,6 +16,7 @@ const placeholderTimestamp = new Date().getTime() - 1000 * 60 * 60 * 24 * 30;
 
 export default function UserSummarySection() {
   const { data, isPending, isError } = useStats();
+
   if (!data && isError) {
     return (
       <Wrapper>
@@ -81,100 +83,106 @@ function Section({
       100;
 
   return (
-    <div className="w-full flex flex-col md:flex-row">
-      {/* Left Column / Top Row */}
-      <div className="w-full flex flex-col items-center gap-0.5 md:w-1/2 md:items-end">
-        <div className="w-full flex items-center justify-center md:justify-end px-3">
-          <p
-            suppressHydrationWarning
-            className="shrink font-light whitespace-nowrap leading-normal text-center md:text-right text-muted-foreground min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-most-foreground group-data-placeholder:text-transparent"
-          >
-            <span className="text-foreground font-medium group-data-placeholder:text-transparent">
-              $
-              {projectedMonthlyUSDRevenue === null
-                ? "N/A"
-                : projectedMonthlyUSDRevenue.toLocaleString(appLocale, {
-                    maximumFractionDigits: 0,
-                  })}
-            </span>
-            {"/mo forecast"}
-            <span className="text-muted-most-foreground px-[0.75ch] group-data-placeholder:text-transparent">
-              {"|"}
-            </span>
-            <span className="text-foreground font-medium group-data-placeholder:text-transparent">
-              $
-              {realMonthlyUSDRevenue === null
-                ? "N/A"
-                : realMonthlyUSDRevenue.toLocaleString(appLocale, {
-                    maximumFractionDigits: 0,
-                  })}
-            </span>
-            {"/mo earned"}
-          </p>
-        </div>
-        <div className="w-full flex items-center justify-center md:justify-end px-3">
-          <p
-            suppressHydrationWarning
-            className="shrink font-light whitespace-nowrap leading-normal text-center md:text-right text-muted-foreground min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-most-foreground group-data-placeholder:text-transparent"
-          >
-            <RecentEventsText data={data} />
-          </p>
-        </div>
+    <div className="w-full flex flex-col">
+      <PointsSection />
+      <div className="w-full py-2 md:py-1.5 flex items-center justify-center md:self-stretch">
+        <div className="w-1/2 bg-border h-px rounded-full md:hidden" />
       </div>
-      {/* Divider */}
-      <div className="w-full md:w-px py-2 md:py-px flex items-center justify-center md:self-stretch">
-        <div className="w-1/2 md:w-full bg-border h-px md:h-full rounded-full" />
-      </div>
-      {/* Right Column / Bottom Row */}
-      <div className="w-full flex flex-col items-center gap-0.5 md:w-1/2 md:items-start">
-        <div className="w-full flex items-center justify-center md:justify-start px-3">
-          <p
-            suppressHydrationWarning
-            className="shrink font-light whitespace-nowrap leading-normal text-center md:text-left text-muted-foreground min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-most-foreground group-data-placeholder:text-transparent"
-          >
-            <span className="font-medium">
-              <PrintIcon className="inline-block size-2.75 mb-px mr-[0.2ch]" />
-              {printsPerDayBasedOnLastWeek.toLocaleString(appLocale, {
-                maximumFractionDigits: 1,
-              })}
-            </span>
-            {" daily"}
-            <span className="text-muted-most-foreground px-[0.75ch] group-data-placeholder:text-transparent">
-              {"|"}
-            </span>
-            <span className="font-medium">
-              <RocketIcon className="inline-block size-2.75 mb-px mr-[0.2ch]" />
-              {boostsPerDayBasedOnLastWeek.toLocaleString(appLocale, {
-                maximumFractionDigits: 1,
-              })}
-            </span>
-            {" daily"}
-            <span className="text-muted-most-foreground px-[0.75ch] group-data-placeholder:text-transparent">
-              {"|"}
-            </span>
-            <span className="font-medium">
-              <RocketIcon className="inline-block size-2.75 mb-px mr-[0.2ch]" />
-              {boostRatePercentage.toLocaleString(appLocale, {
-                maximumFractionDigits: 1,
-              })}
-              {"%"}
-            </span>
-          </p>
+      <div className="w-full flex flex-col md:flex-row">
+        {/* Left Column / Top Row */}
+        <div className="w-full flex flex-col items-center gap-0.5 md:w-1/2 md:items-end">
+          <div className="w-full flex items-center justify-center md:justify-end px-3">
+            <p
+              suppressHydrationWarning
+              className="shrink font-light whitespace-nowrap leading-normal text-center md:text-right text-muted-foreground min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-most-foreground group-data-placeholder:text-transparent"
+            >
+              <span className="text-foreground font-medium group-data-placeholder:text-transparent">
+                $
+                {projectedMonthlyUSDRevenue === null
+                  ? "N/A"
+                  : projectedMonthlyUSDRevenue.toLocaleString(appLocale, {
+                      maximumFractionDigits: 0,
+                    })}
+              </span>
+              {"/mo forecast"}
+              <span className="text-muted-most-foreground px-[0.75ch] group-data-placeholder:text-transparent">
+                {"|"}
+              </span>
+              <span className="text-foreground font-medium group-data-placeholder:text-transparent">
+                $
+                {realMonthlyUSDRevenue === null
+                  ? "N/A"
+                  : realMonthlyUSDRevenue.toLocaleString(appLocale, {
+                      maximumFractionDigits: 0,
+                    })}
+              </span>
+              {"/mo earned"}
+            </p>
+          </div>
+          <div className="w-full flex items-center justify-center md:justify-end px-3">
+            <p
+              suppressHydrationWarning
+              className="shrink font-light whitespace-nowrap leading-normal text-center md:text-right text-muted-foreground min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-most-foreground group-data-placeholder:text-transparent"
+            >
+              <RecentEventsText data={data} />
+            </p>
+          </div>
         </div>
-        <div className="w-full flex items-center justify-center md:justify-start px-3">
-          <p className="shrink font-light whitespace-nowrap leading-normal text-center md:text-left text-muted-foreground min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-most-foreground group-data-placeholder:text-transparent">
-            <DatesSpan
-              isPlaceholder={!data}
-              timestamp={veryFirstModelCreationTimestamp}
-            />
-            <span className="text-muted-most-foreground px-[0.75ch] group-data-placeholder:text-transparent">
-              {"|"}
-            </span>
-            <span>
-              <BoxIcon className="inline-block size-2.75 mb-px mr-[0.2ch]" />
-              {data?.models.length ?? 0}
-            </span>
-          </p>
+        {/* Divider */}
+        <div className="w-full md:w-px py-2 md:py-px flex items-center justify-center md:self-stretch">
+          <div className="w-1/2 md:w-full bg-border h-px md:h-full rounded-full" />
+        </div>
+        {/* Right Column / Bottom Row */}
+        <div className="w-full flex flex-col items-center gap-0.5 md:w-1/2 md:items-start">
+          <div className="w-full flex items-center justify-center md:justify-start px-3">
+            <p
+              suppressHydrationWarning
+              className="shrink font-light whitespace-nowrap leading-normal text-center md:text-left text-muted-foreground min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-most-foreground group-data-placeholder:text-transparent"
+            >
+              <span className="font-medium">
+                <PrintIcon className="inline-block size-2.75 mb-px mr-[0.2ch]" />
+                {printsPerDayBasedOnLastWeek.toLocaleString(appLocale, {
+                  maximumFractionDigits: 1,
+                })}
+              </span>
+              {" daily"}
+              <span className="text-muted-most-foreground px-[0.75ch] group-data-placeholder:text-transparent">
+                {"|"}
+              </span>
+              <span className="font-medium">
+                <RocketIcon className="inline-block size-2.75 mb-px mr-[0.2ch]" />
+                {boostsPerDayBasedOnLastWeek.toLocaleString(appLocale, {
+                  maximumFractionDigits: 1,
+                })}
+              </span>
+              {" daily"}
+              <span className="text-muted-most-foreground px-[0.75ch] group-data-placeholder:text-transparent">
+                {"|"}
+              </span>
+              <span className="font-medium">
+                <RocketIcon className="inline-block size-2.75 mb-px mr-[0.2ch]" />
+                {boostRatePercentage.toLocaleString(appLocale, {
+                  maximumFractionDigits: 1,
+                })}
+                {"%"}
+              </span>
+            </p>
+          </div>
+          <div className="w-full flex items-center justify-center md:justify-start px-3">
+            <p className="shrink font-light whitespace-nowrap leading-normal text-center md:text-left text-muted-foreground min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-most-foreground group-data-placeholder:text-transparent">
+              <DatesSpan
+                isPlaceholder={!data}
+                timestamp={veryFirstModelCreationTimestamp}
+              />
+              <span className="text-muted-most-foreground px-[0.75ch] group-data-placeholder:text-transparent">
+                {"|"}
+              </span>
+              <span>
+                <BoxIcon className="inline-block size-2.75 mb-px mr-[0.2ch]" />
+                {data?.models.length ?? 0}
+              </span>
+            </p>
+          </div>
         </div>
       </div>
     </div>
@@ -310,6 +318,85 @@ function RecentEventsText({
   }
 
   return noEventsText;
+}
+
+function PointsSection() {
+  const { data, isPending, isError } = useStats();
+  return (
+    <div
+      data-pending={isPending ? true : undefined}
+      data-error={!data && !isPending && isError ? true : undefined}
+      className="w-full flex items-center justify-center overflow-hidden group"
+    >
+      <PointsColumn
+        label="Exclusive"
+        value={
+          !data && !isPending && isError
+            ? "Error"
+            : isPending
+              ? "1,000"
+              : data.points.exclusive_points.toLocaleString(appLocale)
+        }
+        className="items-end"
+        classNameText="text-right"
+      />
+      <div className="w-px py-px flex items-center justify-center self-stretch">
+        <div className="w-full bg-border h-full rounded-full" />
+      </div>
+      <PointsColumn
+        label="Regular"
+        value={
+          !data && !isPending && isError
+            ? "Error"
+            : isPending
+              ? "1,000"
+              : data.points.regular_points.toLocaleString(appLocale)
+        }
+        className="items-start"
+        classNameText="text-left"
+      />
+    </div>
+  );
+}
+
+function PointsColumn({
+  label,
+  value,
+  className,
+  classNameText,
+}: {
+  label: string;
+  value: string;
+  className?: string;
+  classNameText?: string;
+}) {
+  return (
+    <div
+      className={cn(
+        "w-1/2 flex flex-col items-center px-3 gap-0.75",
+        className,
+      )}
+    >
+      <p
+        className={cn(
+          "max-w-full group-data-pending:text-transparent group-data-pending:bg-muted-more-foreground group-data-pending:animate-pulse group-data-pending:rounded whitespace-nowrap min-w-0 overflow-ellipsis overflow-hidden text-xs text-muted-foreground",
+          classNameText,
+          "leading-tight",
+        )}
+      >
+        {label}
+      </p>
+      <p
+        className={cn(
+          "max-w-full group-data-pending:text-transparent group-data-pending:bg-muted-foreground group-data-pending:animate-pulse group-data-pending:rounded-md group-data-error:text-destructive whitespace-nowrap min-w-0 font-semibold overflow-hidden overflow-ellipsis font-mono text-sm",
+          classNameText,
+          "leading-tight",
+        )}
+      >
+        {value}
+      </p>
+    </div>
+  );
 }
 
 const currency = "USD";
