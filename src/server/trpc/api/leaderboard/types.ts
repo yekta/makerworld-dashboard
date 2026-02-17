@@ -8,6 +8,7 @@ export const TLeaderboardEntrySchema = z.object({
   prints: z.number(),
   prints_24h: z.number(),
   boosts_24h: z.number(),
+  downloads_24h: z.number(),
   metrics_24h_forecasted_based_on_ms: z.number(),
   downloads: z.number(),
   downloads_api: z.number(),

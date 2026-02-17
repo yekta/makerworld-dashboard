@@ -31,18 +31,24 @@ import {
   useLeaderboardSortBy,
   useLeaderboardSortOrder,
 } from "@/app/leaderboard/_components/hooks";
+import LeaderboardTableRefetchIndicator from "@/app/leaderboard/_components/leaderboard-table-refetch-indicator";
+import PointIcon from "@/components/icons/point-icon";
 import PrintIcon from "@/components/icons/print-icon";
 import { Button } from "@/components/ui/button";
+import {
+  calculatePoints,
+  calculateUsdFromPoints,
+} from "@/lib/calculate-points";
 import { env } from "@/lib/env";
 import { useCopyToClipboard } from "@/lib/hooks/use-copy-to-clipboard";
 import { TLeaderboardEntry } from "@/server/trpc/api/leaderboard/types";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import { Duration } from "luxon";
-import LeaderboardTableRefetchIndicator from "@/app/leaderboard/_components/leaderboard-table-refetch-indicator";
 
 type TRow = TLeaderboardEntry & {
   rank: number;
   boost_rate: number;
+  points_24h: number;
   since_start: number;
   since_snapshotted_at: number;
 };
@@ -55,10 +61,12 @@ const placeholderData: TRow[] = Array.from({ length: 100 }).map((_, index) => ({
   avatar_url: "",
   prints: 500_000,
   prints_24h: 999,
+  points_24h: 1_111,
   boosts: 35_500,
   boosts_24h: 50,
   metrics_24h_forecasted_based_on_ms: 1000 * 60 * 60 * 24,
   downloads: 500_000,
+  downloads_24h: 999,
   downloads_api: 500_000,
   followers: 50_500,
   following: 1,
@@ -131,14 +139,18 @@ export default function LeaderboardTable() {
             return (
               <div
                 data-hide-row-number={hideRowNumber ? true : undefined}
-                className="w-full px-3 flex flex-col pb-0.5 data-hide-row-number:pb-0"
+                className="w-full px-3 flex flex-col data-hide-row-number:pb-0 gap-0.75"
               >
-                <CellSpan isPending={isPending} muted={true} className="px-0">
+                <CellSpan
+                  isPending={isPending}
+                  muted={true}
+                  className="px-0 leading-none"
+                >
                   #{parseInt(row.getValue("rank")).toLocaleString(appLocale)}
                 </CellSpan>
                 {!hideRowNumber && (
-                  <div className="mt-px text-xs relative w-full flex">
-                    <p className="shrink min-w-0 rounded-xs text-transparent bg-muted-most-foreground animate-pulse leading-none whitespace-normal overflow-hidden overflow-ellipsis">
+                  <div className="mt-px text-xxs relative w-full flex">
+                    <p className="shrink min-w-0 rounded-xs text-transparent bg-muted-most-foreground animate-pulse leading-none whitespace-nowrap overflow-hidden overflow-ellipsis">
                       {rowIndex.toLocaleString(appLocale)}
                     </p>
                   </div>
@@ -153,18 +165,18 @@ export default function LeaderboardTable() {
             >
               <div
                 data-hide-row-number={hideRowNumber ? true : undefined}
-                className="w-full px-3 flex flex-col items-start pb-0.5 data-hide-row-number:pb-0"
+                className="w-full px-3 flex flex-col items-start data-hide-row-number:pb-0 gap-0.75"
               >
                 <CellSpan
                   isPending={isPending}
                   muted={true}
-                  className="px-0 relative group-data-me:text-warning/75"
+                  className="px-0 relative group-data-me:text-warning/75 leading-none"
                 >
                   #{parseInt(row.getValue("rank")).toLocaleString(appLocale)}
                 </CellSpan>
                 {!hideRowNumber && (
-                  <div className="mt-px text-xs relative w-full flex">
-                    <p className="text-left shrink min-w-0 rounded-xs text-muted-most-foreground leading-none whitespace-normal overflow-hidden overflow-ellipsis">
+                  <div className="mt-px text-xxs relative w-full flex">
+                    <p className="text-left shrink min-w-0 rounded-xs text-muted-most-foreground leading-none whitespace-nowrap overflow-hidden overflow-ellipsis">
                       {rowIndex.toLocaleString(appLocale)}
                     </p>
                   </div>
@@ -280,6 +292,37 @@ export default function LeaderboardTable() {
           <CellSpan Icon={PrintIcon} isPending={isPending}>
             {kmbtFormatter.format(parseInt(row.getValue("prints_24h")))}
           </CellSpan>
+        ),
+      },
+      {
+        accessorKey: "points_24h",
+        header: "24h",
+        size: defaultCellSize,
+        minSize: defaultCellSize,
+        meta: {
+          Icon: PointIcon,
+        },
+        cell: ({ row }) => (
+          <div
+            data-pending={isPending ? true : undefined}
+            className="w-full px-3 flex flex-col group gap-0.75"
+          >
+            <CellSpan
+              Icon={PointIcon}
+              isPending={isPending}
+              className="px-0 leading-none"
+            >
+              {kmbtFormatter.format(parseInt(row.getValue("points_24h")))}
+            </CellSpan>
+            <div className="mt-px text-xxs relative w-full flex">
+              <p className="text-left shrink group-data-pending:text-transparent group-data-pending:bg-muted-most-foreground group-data-pending:rounded-xs group-data-pending:animate-pulse min-w-0 rounded-xs text-muted-more-foreground leading-none whitespace-nowrap overflow-hidden overflow-ellipsis">
+                $
+                {kmbtFormatter.format(
+                  calculateUsdFromPoints(parseInt(row.getValue("points_24h"))),
+                )}
+              </p>
+            </div>
+          </div>
         ),
       },
       {
@@ -427,6 +470,11 @@ export default function LeaderboardTable() {
     const editedData: TRow[] = data.data.map((entry, index) => ({
       ...entry,
       rank: index + 1,
+      points_24h: calculatePoints({
+        prints: entry.prints_24h,
+        downloads: entry.downloads_24h,
+        boosts: entry.boosts_24h,
+      }),
       boost_rate: entry.boosts / (entry.prints || 1),
       since_start: now - entry.first_model_created_at,
       since_snapshotted_at: now - entry.snapshotted_at,
@@ -488,6 +536,7 @@ export default function LeaderboardTable() {
   return (
     <div
       data-username-sticky={isUsernameSticky ? true : undefined}
+      data-pending={isPending ? true : undefined}
       className="w-full text-sm font-mono group/container"
     >
       <div className="sticky pt-1 sm:pt-2 top-0 bg-background z-20 group">

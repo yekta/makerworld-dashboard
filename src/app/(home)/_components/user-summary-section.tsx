@@ -4,17 +4,16 @@ import PrintIcon from "@/components/icons/print-icon";
 import { useNow } from "@/components/providers/now-provider";
 import { useStats } from "@/components/providers/stats-provider";
 import { useTimeMachine } from "@/components/providers/time-machine-provider";
+import {
+  calculatePoints,
+  calculateUsdFromPoints,
+} from "@/lib/calculate-points";
 import { appLocale } from "@/lib/constants";
 import { timeAgo } from "@/lib/helpers";
 import { AppRouterOutputs, AppRouterQueryResult } from "@/server/trpc/api/root";
 import { format } from "date-fns";
 import { BoxIcon, DownloadIcon, RocketIcon, UsersIcon } from "lucide-react";
 import { useMemo } from "react";
-
-const pointToUsdRatio = 0.066;
-const pointsPerBoost = 15;
-const pointsPerDownload = 0.48;
-const printDownloadMultiplier = 2;
 
 const placeholderTimestamp = new Date().getTime() - 1000 * 60 * 60 * 24 * 30;
 
@@ -44,17 +43,14 @@ function Section({
 }) {
   const projectedMonthlyUSDRevenue = useMemo(() => {
     if (!data) return 1000;
-    const lastWeekPrints = data.user.stats["delta_0-168h"].prints;
-    const lastWeekDownloads = data.user.stats["delta_0-168h"].downloads;
-    const lastWeekAdjustedDownloads =
-      lastWeekPrints * printDownloadMultiplier + lastWeekDownloads;
-    const lastLastWeekBoosts = data.user.stats["delta_0-168h"].boosts;
-    const lastWeekPoints =
-      lastLastWeekBoosts * pointsPerBoost +
-      lastWeekAdjustedDownloads * pointsPerDownload;
+    const lastWeekPoints = calculatePoints({
+      prints: data.user.stats["delta_0-168h"].prints,
+      boosts: data.user.stats["delta_0-168h"].boosts,
+      downloads: data.user.stats["delta_0-168h"].downloads,
+    });
     const averageDailyPoints = lastWeekPoints / 7;
     const projectedMonthlyPoints = averageDailyPoints * 30;
-    const projectedMonthlyUsd = projectedMonthlyPoints * pointToUsdRatio;
+    const projectedMonthlyUsd = calculateUsdFromPoints(projectedMonthlyPoints);
     return projectedMonthlyUsd;
   }, [data]);
 
