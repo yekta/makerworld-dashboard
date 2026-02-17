@@ -35,10 +35,7 @@ import LeaderboardTableRefetchIndicator from "@/app/leaderboard/_components/lead
 import PointIcon from "@/components/icons/point-icon";
 import PrintIcon from "@/components/icons/print-icon";
 import { Button } from "@/components/ui/button";
-import {
-  calculatePoints,
-  calculateUsdFromPoints,
-} from "@/lib/calculate-points";
+import { calculatePoints, exclusivePointsToUsd } from "@/lib/calculate-points";
 import { env } from "@/lib/env";
 import { useCopyToClipboard } from "@/lib/hooks/use-copy-to-clipboard";
 import { TLeaderboardEntry } from "@/server/trpc/api/leaderboard/types";
@@ -318,7 +315,7 @@ export default function LeaderboardTable() {
               <p className="text-left shrink group-data-pending:text-transparent group-data-pending:bg-muted-most-foreground group-data-pending:rounded-xs group-data-pending:animate-pulse min-w-0 rounded-xs text-muted-more-foreground leading-none whitespace-nowrap overflow-hidden overflow-ellipsis">
                 $
                 {kmbtFormatter.format(
-                  calculateUsdFromPoints(parseInt(row.getValue("points_24h"))),
+                  exclusivePointsToUsd(parseInt(row.getValue("points_24h"))),
                 )}
               </p>
             </div>

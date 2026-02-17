@@ -3,6 +3,9 @@ const pointsPerBoost = 15;
 const pointsPerDownload = 0.48;
 const printDownloadMultiplier = 2;
 
+const giftCardPointCost = 490;
+const giftCardUsdValue = 40;
+
 export function calculatePoints({
   prints,
   downloads,
@@ -18,6 +21,10 @@ export function calculatePoints({
   return points;
 }
 
-export function calculateUsdFromPoints(points: number) {
+export function exclusivePointsToUsd(points: number) {
   return points * pointToUsdRatio;
+}
+
+export function regularPointsToUsd(points: number) {
+  return (points / giftCardPointCost) * giftCardUsdValue;
 }

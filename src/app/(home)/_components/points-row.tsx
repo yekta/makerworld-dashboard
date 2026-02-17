@@ -1,4 +1,8 @@
 import { useStats } from "@/components/providers/stats-provider";
+import {
+  exclusivePointsToUsd,
+  regularPointsToUsd,
+} from "@/lib/calculate-points";
 import { appLocale } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
@@ -16,8 +20,20 @@ export default function PointsRow() {
           !data && !isPending && isError
             ? "Error"
             : isPending
-              ? "1,000"
+              ? "1,001"
               : data.points.exclusive_points.toLocaleString(appLocale)
+        }
+        subtitle={
+          !data && !isPending && isError
+            ? "Error"
+            : isPending
+              ? "$101.1"
+              : "$" +
+                exclusivePointsToUsd(
+                  data.points.exclusive_points,
+                ).toLocaleString(appLocale, {
+                  maximumFractionDigits: 2,
+                })
         }
         className="items-end"
         classNameText="text-right"
@@ -31,8 +47,21 @@ export default function PointsRow() {
           !data && !isPending && isError
             ? "Error"
             : isPending
-              ? "1,000"
+              ? "1,001"
               : data.points.regular_points.toLocaleString(appLocale)
+        }
+        subtitle={
+          !data && !isPending && isError
+            ? "Error"
+            : isPending
+              ? "$101.1"
+              : "$" +
+                regularPointsToUsd(data.points.regular_points).toLocaleString(
+                  appLocale,
+                  {
+                    maximumFractionDigits: 2,
+                  },
+                )
         }
         className="items-start"
         classNameText="text-left"
@@ -44,11 +73,13 @@ export default function PointsRow() {
 function PointsColumn({
   label,
   value,
+  subtitle,
   className,
   classNameText,
 }: {
   label: string;
   value: string;
+  subtitle: string;
   className?: string;
   classNameText?: string;
 }) {
@@ -76,6 +107,15 @@ function PointsColumn({
         )}
       >
         {value}
+      </p>
+      <p
+        className={cn(
+          "max-w-full group-data-pending:text-transparent group-data-pending:bg-muted-more-foreground group-data-pending:animate-pulse group-data-pending:rounded whitespace-nowrap min-w-0 overflow-ellipsis overflow-hidden text-xs text-muted-foreground",
+          classNameText,
+          "leading-tight",
+        )}
+      >
+        {subtitle}
       </p>
     </div>
   );
