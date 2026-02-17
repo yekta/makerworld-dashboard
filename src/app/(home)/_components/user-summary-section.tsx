@@ -1,6 +1,6 @@
 "use client";
 
-import PointsRow from "@/app/(home)/_components/points-row";
+import PointsCard from "@/app/(home)/_components/points-card";
 import PrintIcon from "@/components/icons/print-icon";
 import { useNow } from "@/components/providers/now-provider";
 import { useStats } from "@/components/providers/stats-provider";
@@ -84,7 +84,7 @@ function Section({
 
   return (
     <div className="w-full flex flex-col">
-      <PointsRow />
+      <PointsCard />
       <div className="w-full py-2 md:py-1.5 flex items-center justify-center md:self-stretch">
         <div className="w-1/2 bg-border h-px rounded-full md:hidden" />
       </div>
