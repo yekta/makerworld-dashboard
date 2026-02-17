@@ -9,7 +9,7 @@ export default function PointsSection() {
   return (
     <div
       data-pending={isPending ? true : undefined}
-      data-error={!isPending && isError ? true : undefined}
+      data-error={!data && !isPending && isError ? true : undefined}
       className="w-full flex items-center justify-center pt-2.5 overflow-hidden group"
     >
       <PointsColumn
