@@ -20,55 +20,53 @@ export default function PointsCard() {
       data-error={!data && !isPending && isError ? true : undefined}
       className="w-full flex items-center justify-center overflow-hidden group"
     >
-      <div className="border w-39 rounded-lg flex items-center justify-center max-w-full overflow-hidden">
-        <PointsColumn
-          label="Exclusive"
-          value={
-            !data && !isPending && isError
-              ? "Error"
-              : isPending
-                ? "1,001"
-                : kmbtFormatter.format(data.points.exclusive_points)
-          }
-          subtitle={
-            !data && !isPending && isError
-              ? "Error"
-              : isPending
-                ? "$101.1"
-                : "$" +
-                  kmbtFormatter.format(
-                    exclusivePointsToUsd(data.points.exclusive_points),
-                  )
-          }
-          className="items-end"
-          classNameText="text-right"
-        />
-        <div className="w-px shrink-0 flex items-center justify-center self-stretch">
-          <div className="w-full bg-border h-full" />
-        </div>
-        <PointsColumn
-          label="Regular"
-          value={
-            !data && !isPending && isError
-              ? "Error"
-              : isPending
-                ? "1,001"
-                : kmbtFormatter.format(data.points.regular_points)
-          }
-          subtitle={
-            !data && !isPending && isError
-              ? "Error"
-              : isPending
-                ? "$101.1"
-                : "$" +
-                  kmbtFormatter.format(
-                    regularPointsToUsd(data.points.regular_points),
-                  )
-          }
-          className="items-start"
-          classNameText="text-left"
-        />
+      <PointsColumn
+        label="Exclusive"
+        value={
+          !data && !isPending && isError
+            ? "Error"
+            : isPending
+              ? "1,001"
+              : kmbtFormatter.format(data.points.exclusive_points)
+        }
+        subtitle={
+          !data && !isPending && isError
+            ? "Error"
+            : isPending
+              ? "$101.1"
+              : "$" +
+                kmbtFormatter.format(
+                  exclusivePointsToUsd(data.points.exclusive_points),
+                )
+        }
+        className="items-end"
+        classNameText="text-right"
+      />
+      <div className="w-px py-px shrink-0 flex items-center justify-center self-stretch">
+        <div className="w-full bg-border h-full rounded-full" />
       </div>
+      <PointsColumn
+        label="Regular"
+        value={
+          !data && !isPending && isError
+            ? "Error"
+            : isPending
+              ? "1,001"
+              : kmbtFormatter.format(data.points.regular_points)
+        }
+        subtitle={
+          !data && !isPending && isError
+            ? "Error"
+            : isPending
+              ? "$101.1"
+              : "$" +
+                kmbtFormatter.format(
+                  regularPointsToUsd(data.points.regular_points),
+                )
+        }
+        className="items-start"
+        classNameText="text-left"
+      />
     </div>
   );
 }
@@ -89,7 +87,7 @@ function PointsColumn({
   return (
     <div
       className={cn(
-        "w-1/2 flex flex-col items-center px-3 pt-1.75 pb-2 gap-0.75",
+        "w-1/2 flex flex-col items-center px-3 gap-0.75",
         className,
       )}
     >
