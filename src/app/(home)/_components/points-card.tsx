@@ -89,7 +89,7 @@ function PointsColumn({
   return (
     <div
       className={cn(
-        "w-1/2 flex flex-col items-center px-3 py-2 gap-0.75",
+        "w-1/2 flex flex-col items-center px-3 pt-1.75 pb-2 gap-0.75",
         className,
       )}
     >
