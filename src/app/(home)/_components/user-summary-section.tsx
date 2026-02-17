@@ -4,10 +4,6 @@ import PrintIcon from "@/components/icons/print-icon";
 import { useNow } from "@/components/providers/now-provider";
 import { useStats } from "@/components/providers/stats-provider";
 import { useTimeMachine } from "@/components/providers/time-machine-provider";
-import {
-  calculatePoints,
-  calculateUsdFromPoints,
-} from "@/lib/calculate-points";
 import { appLocale } from "@/lib/constants";
 import { timeAgo } from "@/lib/helpers";
 import { AppRouterOutputs, AppRouterQueryResult } from "@/server/trpc/api/root";
@@ -41,17 +37,20 @@ function Section({
 }: {
   data: AppRouterQueryResult<AppRouterOutputs["stats"]["get"]>["data"];
 }) {
-  const projectedMonthlyUSDRevenue = useMemo(() => {
-    if (!data) return 1000;
-    const lastWeekPoints = calculatePoints({
-      prints: data.user.stats["delta_0-168h"].prints,
-      boosts: data.user.stats["delta_0-168h"].boosts,
-      downloads: data.user.stats["delta_0-168h"].downloads,
-    });
-    const averageDailyPoints = lastWeekPoints / 7;
-    const projectedMonthlyPoints = averageDailyPoints * 30;
-    const projectedMonthlyUsd = calculateUsdFromPoints(projectedMonthlyPoints);
-    return projectedMonthlyUsd;
+  const { projectedMonthlyUSDRevenue, realMonthlyUSDRevenue } = useMemo(() => {
+    if (!data)
+      return {
+        projectedMonthlyUSDRevenue: 1000,
+        realMonthlyUSDRevenue: 1000,
+      };
+    const lastWeekUsd = getEarnings(1000 * 60 * 60 * 24 * 7, data);
+    const lastMonthUsd = getEarnings(1000 * 60 * 60 * 24 * 30, data);
+
+    return {
+      projectedMonthlyUSDRevenue:
+        lastWeekUsd === null ? null : (lastWeekUsd / 7) * 30,
+      realMonthlyUSDRevenue: lastMonthUsd,
+    };
   }, [data]);
 
   const veryFirstModelCreationTimestamp = useMemo(() => {
@@ -92,11 +91,25 @@ function Section({
           >
             <span className="text-foreground font-medium group-data-placeholder:text-transparent">
               $
-              {projectedMonthlyUSDRevenue.toLocaleString(appLocale, {
-                maximumFractionDigits: 0,
-              })}
+              {projectedMonthlyUSDRevenue === null
+                ? "N/A"
+                : projectedMonthlyUSDRevenue.toLocaleString(appLocale, {
+                    maximumFractionDigits: 0,
+                  })}
             </span>
-            {"/mo forecast based on last week"}
+            {"/mo forecast"}
+            <span className="text-muted-most-foreground px-[0.75ch] group-data-placeholder:text-transparent">
+              {"|"}
+            </span>
+            <span className="text-foreground font-medium group-data-placeholder:text-transparent">
+              $
+              {realMonthlyUSDRevenue === null
+                ? "N/A"
+                : realMonthlyUSDRevenue.toLocaleString(appLocale, {
+                    maximumFractionDigits: 0,
+                  })}
+            </span>
+            {"/mo earned"}
           </p>
         </div>
         <div className="w-full flex items-center justify-center md:justify-end px-3">
@@ -297,4 +310,47 @@ function RecentEventsText({
   }
 
   return noEventsText;
+}
+
+const currency = "USD";
+
+function getEarnings(
+  timeframeMs: number,
+  data: NonNullable<
+    AppRouterQueryResult<AppRouterOutputs["stats"]["get"]>["data"]
+  >,
+) {
+  const buffer = 12 * 60 * 60 * 1000;
+  let total = 0;
+  const now = new Date().getTime();
+
+  const filteredRedemptions = data.redemptions.filter(
+    (redemption) =>
+      redemption.redeemed_at >= now - timeframeMs + buffer &&
+      redemption.redeem_cash_amount > 0 &&
+      redemption.redeem_cash_currency === currency,
+  );
+
+  if (filteredRedemptions.length === 0) {
+    return null;
+  }
+
+  const latestRedemptionTime = filteredRedemptions[0];
+  const lastIndex = filteredRedemptions.length - 1;
+  const startingRedemption = data.redemptions[lastIndex + 1];
+
+  if (!startingRedemption) {
+    return null;
+  }
+
+  for (const redemption of filteredRedemptions) {
+    total += redemption.redeem_cash_amount;
+  }
+
+  const timeDiff =
+    latestRedemptionTime.redeemed_at - startingRedemption.redeemed_at;
+
+  const perTimeframe = (total / timeDiff) * timeframeMs;
+
+  return perTimeframe;
 }

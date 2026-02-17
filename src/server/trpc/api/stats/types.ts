@@ -134,6 +134,19 @@ export const TUserSchema = z.object({
 export const TStatResponseSchema = z.object({
   user: TUserSchema,
   models: z.array(TModelSchema),
+  points: z.object({
+    exclusive_points: z.number(),
+    regular_points: z.number(),
+    snapshotted_at: z.number(),
+  }),
+  redemptions: z.array(
+    z.object({
+      redeem_id: z.number(),
+      redeem_cash_amount: z.number(),
+      redeem_cash_currency: z.string(),
+      redeemed_at: z.number(),
+    }),
+  ),
   latest_batch: z.number(),
   metadata: z.object({
     delta_0h_timestamp: z.number(),
