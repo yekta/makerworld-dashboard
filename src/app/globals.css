@@ -47,12 +47,12 @@
   --color-warning: var(--warning);
   --color-warning-highlight: var(--warning-highlight);
   --text-xxs: 0.625rem;
+  --radius-xs: 3px;
 }
 
 :root {
   --safe-area-inset-bottom: env(safe-area-inset-bottom);
 
-  --radius: 0.625rem;
   --background: oklch(1 0 0);
   --background-secondary: oklch(0.97 0 0);
   --foreground: oklch(0.145 0 0);

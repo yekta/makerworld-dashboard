@@ -136,7 +136,7 @@ export default function LeaderboardTable() {
             return (
               <div
                 data-hide-row-number={hideRowNumber ? true : undefined}
-                className="w-full px-3 flex flex-col data-hide-row-number:pb-0 gap-0.75"
+                className="w-full px-3 flex flex-col data-hide-row-number:pb-0 gap-1 pt-px"
               >
                 <CellSpan
                   isPending={isPending}
@@ -146,7 +146,7 @@ export default function LeaderboardTable() {
                   #{parseInt(row.getValue("rank")).toLocaleString(appLocale)}
                 </CellSpan>
                 {!hideRowNumber && (
-                  <div className="mt-px text-xxs relative w-full flex">
+                  <div className="text-xxs relative w-full flex">
                     <p className="shrink min-w-0 rounded-xs text-transparent bg-muted-most-foreground animate-pulse leading-none whitespace-nowrap overflow-hidden overflow-ellipsis">
                       {rowIndex.toLocaleString(appLocale)}
                     </p>
@@ -162,7 +162,7 @@ export default function LeaderboardTable() {
             >
               <div
                 data-hide-row-number={hideRowNumber ? true : undefined}
-                className="w-full px-3 flex flex-col items-start data-hide-row-number:pb-0 gap-0.75"
+                className="w-full px-3 flex flex-col items-start data-hide-row-number:pb-0 gap-1 pt-px"
               >
                 <CellSpan
                   isPending={isPending}
@@ -172,8 +172,8 @@ export default function LeaderboardTable() {
                   #{parseInt(row.getValue("rank")).toLocaleString(appLocale)}
                 </CellSpan>
                 {!hideRowNumber && (
-                  <div className="mt-px text-xxs relative w-full flex">
-                    <p className="text-left shrink min-w-0 rounded-xs text-muted-most-foreground leading-none whitespace-nowrap overflow-hidden overflow-ellipsis">
+                  <div className="text-xxs relative w-full flex">
+                    <p className="text-left shrink min-w-0 text-muted-most-foreground leading-none whitespace-nowrap overflow-hidden overflow-ellipsis">
                       {rowIndex.toLocaleString(appLocale)}
                     </p>
                   </div>
@@ -201,14 +201,14 @@ export default function LeaderboardTable() {
                 <div className="size-5 shrink-0 relative transition-transform">
                   <div className="animate-pulse size-full bg-muted-more-foreground rounded-full border border-muted-more-foreground transition-transform" />
                 </div>
-                <div className="w-full flex flex-col group-data-username-sticky/container:-translate-y-px translate-y-1.5 transition-transform overflow-hidden">
+                <div className="w-full gap-1 pt-px flex flex-col group-data-username-sticky/container:-translate-y-px translate-y-1.5 transition-transform overflow-hidden">
                   <CellSpan
                     isPending={isPending}
                     className="px-0 leading-tight"
                   >
                     {username}
                   </CellSpan>
-                  <div className="w-full mt-[1.5px] text-xxs leading-tight flex items-center min-w-0 overflow-hidden opacity-0 group-data-username-sticky/container:opacity-100">
+                  <div className="w-full text-xxs leading-tight flex items-center min-w-0 overflow-hidden opacity-0 group-data-username-sticky/container:opacity-100">
                     <p className="text-left max-w-full overflow-hidden overflow-ellipsis whitespace-nowrap transition-transform bg-muted-most-foreground rounded-sm text-transparent">
                       #{row.original.rank}
                     </p>
@@ -240,11 +240,11 @@ export default function LeaderboardTable() {
                 />
                 <ExternalLinkIcon className="size-full scale-90 absolute left-0 top-0 -rotate-45 group-hover/link:rotate-0 group-active/link:rotate-0 group-focus-visible/link:rotate-0 opacity-0 group-hover/link:opacity-100 group-active/link:opacity-100 group-focus-visible/link:opacity-100 transition-transform" />
               </div>
-              <div className="w-full flex flex-col group-data-username-sticky/container:-translate-y-px translate-y-1.5 transition-transform overflow-hidden">
+              <div className="w-full gap-1 pt-px flex flex-col group-data-username-sticky/container:-translate-y-px translate-y-1.5 transition-transform overflow-hidden">
                 <CellSpan isPending={isPending} className="px-0 leading-tight">
                   {username}
                 </CellSpan>
-                <div className="w-full text-xxs leading-tight mt-[1.5px] flex items-center min-w-0 overflow-hidden opacity-0 group-data-username-sticky/container:opacity-100">
+                <div className="w-full text-xxs leading-tight flex items-center min-w-0 overflow-hidden opacity-0 group-data-username-sticky/container:opacity-100">
                   <p className="group-data-me:text-warning/75 text-left opacity-0 shrink min-w-0 overflow-hidden overflow-ellipsis whitespace-nowrap transition-transform group-data-username-sticky/container:opacity-100 text-muted-foreground">
                     #{row.original.rank}
                   </p>
@@ -312,7 +312,7 @@ export default function LeaderboardTable() {
               {kmbtFormatter.format(parseInt(row.getValue("points_24h")))}
             </CellSpan>
             <div className="mt-px text-xxs relative w-full flex">
-              <p className="text-left shrink group-data-pending:text-transparent group-data-pending:bg-muted-most-foreground group-data-pending:rounded-xs group-data-pending:animate-pulse min-w-0 rounded-xs text-muted-more-foreground leading-none whitespace-nowrap overflow-hidden overflow-ellipsis">
+              <p className="text-left shrink group-data-pending:text-transparent group-data-pending:bg-muted-most-foreground group-data-pending:rounded-xs group-data-pending:animate-pulse min-w-0 text-muted-more-foreground leading-none whitespace-nowrap overflow-hidden overflow-ellipsis">
                 $
                 {kmbtFormatter.format(
                   exclusivePointsToUsd(parseInt(row.getValue("points_24h"))),
@@ -698,7 +698,7 @@ function CellSpan({
             "size-3 shrink-0 group-data-pending:animate-pulse group-data-pending:text-transparent group-data-pending:bg-muted-more-foreground group-data-pending:group-data-muted:bg-muted-most-foreground group-data-pending:rounded-sm"
           }
         />
-        <span className="group-data-pending:animate-pulse group-data-pending:text-transparent group-data-pending:group-data-muted:bg-muted-most-foreground group-data-pending:bg-muted-more-foreground group-data-pending:rounded-sm shrink min-w-0 overflow-hidden overflow-ellipsis whitespace-nowrap">
+        <span className="leading-none group-data-pending:animate-pulse group-data-pending:text-transparent group-data-pending:group-data-muted:bg-muted-most-foreground group-data-pending:bg-muted-more-foreground group-data-pending:rounded-sm shrink min-w-0 overflow-hidden overflow-ellipsis whitespace-nowrap">
           {children}
         </span>
       </div>
@@ -715,11 +715,7 @@ function CellSpan({
         className,
       )}
     >
-      <span
-        className={
-          "group-data-pending:animate-pulse group-data-pending:text-transparent group-data-pending:bg-muted-more-foreground group-data-pending:group-data-muted:bg-muted-most-foreground group-data-pending:rounded-sm shrink min-w-0 overflow-hidden overflow-ellipsis whitespace-nowrap"
-        }
-      >
+      <span className="leading-none group-data-pending:animate-pulse group-data-pending:text-transparent group-data-pending:bg-muted-more-foreground group-data-pending:group-data-muted:bg-muted-most-foreground group-data-pending:rounded-sm shrink min-w-0 overflow-hidden overflow-ellipsis whitespace-nowrap">
         {children}
       </span>
     </div>
