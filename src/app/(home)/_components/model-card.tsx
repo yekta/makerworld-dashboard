@@ -23,6 +23,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { useMemo } from "react";
+import LinkOrDiv from "@/components/link-or-div";
 
 export type TModelCardProps =
   | {
@@ -92,15 +93,16 @@ function ModelCardContent(props: TModelCardProps) {
       </div> */}
       {/* Flare effect end */}
       <div className="w-full flex items-center overflow-hidden gap-4 relative px-1">
-        <Link
-          href={isPlaceholder ? "" : getModelUrl(model)}
+        <LinkOrDiv
+          data-link={!isPlaceholder ? true : undefined}
+          href={isPlaceholder ? undefined : getModelUrl(model)}
           target="_blank"
-          className="active:underline hover:underline group/link decoration-foreground flex min-w-0 overflow-hidden"
+          className="data-link:active:underline data-link:hover:underline group/link decoration-foreground flex min-w-0 overflow-hidden"
         >
           <h2 className="text-xs font-light shrink min-w-0 text-muted-foreground group-active/link:text-foreground group-hover/link:text-foreground whitespace-nowrap overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent">
             {!isPlaceholder ? model.title : "Loading This Model's Title"}
           </h2>
-        </Link>
+        </LinkOrDiv>
         {!isPlaceholder &&
           (model.stats["delta_0-0.25h"].boosts > 0 ||
             model.stats["delta_0-0.25h"].prints > 0 ||
