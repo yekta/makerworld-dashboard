@@ -48,9 +48,21 @@ export const statsRouter = createTRPCRouter({
             headCutoffTimestamp.toString(),
           );
         }
+        const start = performance.now();
         const res = await fetch(url.toString());
+        const end = performance.now();
+        console.log(`💻 [api.stats.get fetch]: ${end - start} ms`);
+
+        const start2 = performance.now();
         const data = await res.json();
+        const end2 = performance.now();
+        console.log(`💻 [api.stats.get json parsing]: ${end2 - start2} ms`);
+
+        const start3 = performance.now();
         const result = TStatResponseSchema.safeParse(data);
+        const end3 = performance.now();
+        console.log(`💻 [api.stats.get validation]: ${end3 - start3} ms`);
+
         if (!result.success) {
           console.log("Stats response validation error:", result.error);
           throw new TRPCError({
