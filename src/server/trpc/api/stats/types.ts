@@ -123,12 +123,12 @@ export const TUserSchema = z.object({
     "delta_168-336h": TUserStatSchema,
     "delta_720-1440h": TUserStatSchema,
   }),
-  records: z.object({
+  /* records: z.object({
     hour: TUserStatSchema,
     day: TUserStatSchema,
     week: TUserStatSchema,
     month: TUserStatSchema,
-  }),
+  }), */
 });
 
 export const TStatResponseSchema = z.object({
