@@ -19,7 +19,7 @@ type TUserOrModelStat =
       stats: AppRouterOutputs["stats"]["get"]["user"]["stats"];
       statKey: keyof AppRouterOutputs["stats"]["get"]["user"]["stats"]["current"];
       statType: "user";
-      /* records: AppRouterOutputs["stats"]["get"]["user"]["records"]; */
+      records: AppRouterOutputs["stats"]["get"]["user"]["records"];
       isPlaceholder?: never;
     }
   | {
@@ -28,7 +28,7 @@ type TUserOrModelStat =
         | keyof AppRouterOutputs["stats"]["get"]["models"][number]["stats"]["current"]
         | keyof AppRouterOutputs["stats"]["get"]["user"]["stats"]["current"];
       statType: "model" | "user";
-      /* records?: never; */
+      records?: never;
       isPlaceholder: true;
     };
 
@@ -36,7 +36,7 @@ export default function Stat({
   stats,
   statKey,
   statType,
-  /* records, */
+  records,
   isPlaceholder,
   showPrevDayStats = false,
   showTimeRange = false,
@@ -204,7 +204,7 @@ export default function Stat({
             isPlaceholder={isPlaceholder}
           />
         )}
-        {/* {statType === "user" && (
+        {statType === "user" && (
           <StatDelta
             value={isPlaceholder ? 100 : records["hour"][statKey]}
             showPrevDayStats={false}
@@ -231,7 +231,7 @@ export default function Stat({
             isRecord={true}
             isPlaceholder={isPlaceholder}
           />
-        )} */}
+        )}
       </div>
     </div>
   );

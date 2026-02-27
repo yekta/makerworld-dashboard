@@ -24,7 +24,7 @@ export default function UserStatsSection() {
         statKey="prints"
         {...(isPending
           ? { isPlaceholder: true }
-          : { stats: data.user.stats /* records: data.user.records */ })}
+          : { stats: data.user.stats, records: data.user.records })}
         Icon={PrintIcon}
         showPrevDayStats={true}
         showTimeRange={true}
@@ -35,7 +35,7 @@ export default function UserStatsSection() {
         statKey="downloads"
         {...(isPending
           ? { isPlaceholder: true }
-          : { stats: data.user.stats /* records: data.user.records */ })}
+          : { stats: data.user.stats, records: data.user.records })}
         Icon={DownloadIcon}
         showPrevDayStats={true}
         isUnaffectedByFilters={true}
@@ -45,7 +45,7 @@ export default function UserStatsSection() {
         statKey="boosts"
         {...(isPending
           ? { isPlaceholder: true }
-          : { stats: data.user.stats /* records: data.user.records */ })}
+          : { stats: data.user.stats, records: data.user.records })}
         Icon={RocketIcon}
         showPrevDayStats={true}
         isUnaffectedByFilters={true}
@@ -55,7 +55,7 @@ export default function UserStatsSection() {
         statKey="followers"
         {...(isPending
           ? { isPlaceholder: true }
-          : { stats: data.user.stats /* records: data.user.records */ })}
+          : { stats: data.user.stats, records: data.user.records })}
         Icon={UsersIcon}
         showPrevDayStats={true}
         isUnaffectedByFilters={true}
