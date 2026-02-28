@@ -188,10 +188,10 @@ function getModelUrl(
 const placeholderTimestamp = new Date("2025-01-01T00:00:00Z").getTime();
 
 function Footer({ model, metadata, isPlaceholder }: TModelCardProps) {
-  const { headCutoffTimestamp } = useTimeMachine();
+  const { timeMachineTimestamp } = useTimeMachine();
   const now = useNow();
-  const adjustedNow = headCutoffTimestamp
-    ? Math.min(now, headCutoffTimestamp)
+  const adjustedNow = timeMachineTimestamp
+    ? Math.min(now, timeMachineTimestamp)
     : now;
   const sinceCreation = !isPlaceholder
     ? adjustedNow - model.model_created_at

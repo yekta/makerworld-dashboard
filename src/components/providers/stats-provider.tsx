@@ -12,10 +12,10 @@ const StatsContext = createContext<TStatsContext | null>(null);
 export const StatsProvider: React.FC<{
   children: ReactNode;
 }> = ({ children }) => {
-  const { headCutoffTimestamp } = useTimeMachine();
+  const { timeMachineTimestamp } = useTimeMachine();
   const query = api.stats.get.useQuery(
     {
-      headCutoffTimestamp: headCutoffTimestamp ?? null,
+      timeMachineTimestamp: timeMachineTimestamp ?? null,
     },
     { refetchInterval: 10 * 1000 },
   );

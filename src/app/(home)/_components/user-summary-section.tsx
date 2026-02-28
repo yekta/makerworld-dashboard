@@ -39,14 +39,24 @@ function Section({
 }: {
   data: AppRouterQueryResult<AppRouterOutputs["stats"]["get"]>["data"];
 }) {
+  const { timeMachineTimestamp } = useTimeMachine();
   const { projectedMonthlyUSDRevenue, realMonthlyUSDRevenue } = useMemo(() => {
     if (!data)
       return {
         projectedMonthlyUSDRevenue: 1000,
         realMonthlyUSDRevenue: 1000,
       };
-    const lastWeekUsd = getEarnings(1000 * 60 * 60 * 24 * 7, data);
-    const lastMonthUsd = getEarnings(1000 * 60 * 60 * 24 * 30, data);
+
+    const lastWeekUsd = getEarnings({
+      timeframeMs: 1000 * 60 * 60 * 24 * 7,
+      data,
+      timeMachineTimestamp,
+    });
+    const lastMonthUsd = getEarnings({
+      timeframeMs: 1000 * 60 * 60 * 24 * 30,
+      data,
+      timeMachineTimestamp,
+    });
 
     return {
       projectedMonthlyUSDRevenue:
@@ -213,10 +223,10 @@ function DatesSpan({
   timestamp: number;
   isPlaceholder?: boolean;
 }) {
-  const { headCutoffTimestamp } = useTimeMachine();
+  const { timeMachineTimestamp } = useTimeMachine();
   const now = useNow();
-  const adjustedNow = headCutoffTimestamp
-    ? Math.min(now, headCutoffTimestamp)
+  const adjustedNow = timeMachineTimestamp
+    ? Math.min(now, timeMachineTimestamp)
     : now;
   const { timeAgoString, releaseDate } = useMemo(
     () => ({
@@ -322,19 +332,26 @@ function RecentEventsText({
 
 const currency = "USD";
 
-function getEarnings(
-  timeframeMs: number,
+function getEarnings({
+  timeMachineTimestamp,
+  timeframeMs,
+  data,
+}: {
+  timeMachineTimestamp: number | null;
+  timeframeMs: number;
   data: NonNullable<
     AppRouterQueryResult<AppRouterOutputs["stats"]["get"]>["data"]
-  >,
-) {
+  >;
+}) {
   const buffer = 12 * 60 * 60 * 1000;
   let total = 0;
-  const now = new Date().getTime();
+  const adjustedNow = timeMachineTimestamp
+    ? Math.min(new Date().getTime(), timeMachineTimestamp)
+    : new Date().getTime();
 
   const filteredRedemptions = data.redemptions.filter(
     (redemption) =>
-      redemption.redeemed_at >= now - timeframeMs + buffer &&
+      redemption.redeemed_at >= adjustedNow - timeframeMs + buffer &&
       redemption.redeem_cash_amount > 0 &&
       redemption.redeem_cash_currency === currency,
   );

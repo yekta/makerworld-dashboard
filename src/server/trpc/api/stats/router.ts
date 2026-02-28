@@ -25,12 +25,12 @@ export const statsRouter = createTRPCRouter({
         dayStart: z.string().default(DEFAULT_DAY_START).nullable(),
         weekStart: TWeekDayEnum.default(DEFAULT_WEEK_START).nullable(),
         monthStart: z.number().default(DEFAULT_MONTH_START).nullable(),
-        headCutoffTimestamp: z.number().nullable(),
+        timeMachineTimestamp: z.number().nullable(),
       }),
     )
     .query(
       async ({
-        input: { dayStart, weekStart, monthStart, headCutoffTimestamp },
+        input: { dayStart, weekStart, monthStart, timeMachineTimestamp },
       }) => {
         const url = new URL(env.API_URL + "/v1/my-stats");
         if (dayStart !== null) {
@@ -42,10 +42,13 @@ export const statsRouter = createTRPCRouter({
         if (monthStart !== null) {
           url.searchParams.append("month_start", monthStart.toString());
         }
-        if (headCutoffTimestamp !== undefined && headCutoffTimestamp !== null) {
+        if (
+          timeMachineTimestamp !== undefined &&
+          timeMachineTimestamp !== null
+        ) {
           url.searchParams.append(
-            "head_cutoff_timestamp",
-            headCutoffTimestamp.toString(),
+            "time_machine_timestamp",
+            timeMachineTimestamp.toString(),
           );
         }
 

@@ -27,17 +27,20 @@ export default function PointsCard() {
             ? "Error"
             : isPending
               ? "1,001"
-              : kmbtFormatter.format(data.points.exclusive_points)
+              : data.points.exclusive_points !== null
+                ? kmbtFormatter.format(data.points.exclusive_points)
+                : "N/A"
         }
         subtitle={
           !data && !isPending && isError
             ? "Error"
             : isPending
               ? "$101.1"
-              : "$" +
-                kmbtFormatter.format(
-                  exclusivePointsToUsd(data.points.exclusive_points),
-                )
+              : data.points.exclusive_points !== null
+                ? `$${kmbtFormatter.format(
+                    exclusivePointsToUsd(data.points.exclusive_points),
+                  )}`
+                : "N/A"
         }
         className="items-end"
         classNameText="text-right"
@@ -52,17 +55,20 @@ export default function PointsCard() {
             ? "Error"
             : isPending
               ? "1,001"
-              : kmbtFormatter.format(data.points.regular_points)
+              : data.points.regular_points !== null
+                ? kmbtFormatter.format(data.points.regular_points)
+                : "N/A"
         }
         subtitle={
           !data && !isPending && isError
             ? "Error"
             : isPending
               ? "$101.1"
-              : "$" +
-                kmbtFormatter.format(
-                  regularPointsToUsd(data.points.regular_points),
-                )
+              : data.points.regular_points !== null
+                ? `$${kmbtFormatter.format(
+                    regularPointsToUsd(data.points.regular_points),
+                  )}`
+                : "N/A"
         }
         className="items-start"
         classNameText="text-left"

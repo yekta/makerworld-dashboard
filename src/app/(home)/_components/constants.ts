@@ -107,7 +107,7 @@ export const parseAsInteger = isServer
   : parseAsIntegerClient;
 
 export const homePageParamParsers = {
-  head_cutoff_timestamp: parseAsInteger,
+  now_timestamp: parseAsInteger,
 } as const;
 
 export const cachedHomePageSearchParams =

@@ -50,9 +50,9 @@ function Metadata({
   data: AppRouterQueryResult<AppRouterOutputs["stats"]["get"]>["data"];
 }) {
   const now = useNow();
-  const { headCutoffTimestamp } = useTimeMachine();
-  const adjustedNow = headCutoffTimestamp
-    ? Math.min(now, headCutoffTimestamp)
+  const { timeMachineTimestamp } = useTimeMachine();
+  const adjustedNow = timeMachineTimestamp
+    ? Math.min(now, timeMachineTimestamp)
     : now;
 
   const columns = 2;

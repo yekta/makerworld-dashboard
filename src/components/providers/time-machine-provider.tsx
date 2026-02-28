@@ -13,7 +13,7 @@ import {
 
 type TTimeMachineContext = {
   setHeadCutoffTimestamp: (timestamp: number | null) => void;
-  headCutoffTimestamp: number | null;
+  timeMachineTimestamp: number | null;
   isOpen: boolean;
   setIsOpen: (open: boolean | ((prevOpen: boolean) => boolean)) => void;
   isTravelled: boolean;
@@ -30,11 +30,11 @@ export const TimeMachineProvider: React.FC<{
     "time_machine",
     parseAsBoolean.withDefault(false),
   );
-  const [headCutoffTimestamp, setHeadCutoffTimestamp] = useQueryState(
-    "head_cutoff_timestamp",
+  const [timeMachineTimestamp, setHeadCutoffTimestamp] = useQueryState(
+    "now_timestamp",
     parseAsInteger,
   );
-  const isTravelled = headCutoffTimestamp !== null;
+  const isTravelled = timeMachineTimestamp !== null;
   const isTravelledAndClosed = isTravelled && !isOpen;
   const [travelledRecently, setTravelledRecently] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -50,11 +50,11 @@ export const TimeMachineProvider: React.FC<{
     return () => {
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
     };
-  }, [headCutoffTimestamp]);
+  }, [timeMachineTimestamp]);
 
   const value = useMemo(
     () => ({
-      headCutoffTimestamp,
+      timeMachineTimestamp,
       setHeadCutoffTimestamp,
       isOpen,
       setIsOpen,
@@ -63,7 +63,7 @@ export const TimeMachineProvider: React.FC<{
       travelledRecently,
     }),
     [
-      headCutoffTimestamp,
+      timeMachineTimestamp,
       setHeadCutoffTimestamp,
       isOpen,
       setIsOpen,

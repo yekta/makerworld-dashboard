@@ -28,9 +28,9 @@ type TProps = {
 };
 
 export function TimeMachineButton({ className }: TProps) {
-  const { isOpen, setIsOpen, headCutoffTimestamp, isTravelledAndClosed } =
+  const { isOpen, setIsOpen, timeMachineTimestamp, isTravelledAndClosed } =
     useTimeMachine();
-  const isTravelled = headCutoffTimestamp !== null;
+  const isTravelled = timeMachineTimestamp !== null;
 
   return (
     <Button
@@ -47,7 +47,7 @@ export function TimeMachineButton({ className }: TProps) {
       </div>
       <p className="flex-1 select-none min-w-0 overflow-hidden overflow-ellipsis group-data-travelled:text-warning">
         {isTravelledAndClosed
-          ? format(new Date(headCutoffTimestamp!), "yyyy-MM-dd")
+          ? format(new Date(timeMachineTimestamp!), "yyyy-MM-dd")
           : "Time Machine"}
       </p>
       <ChevronDown className="shrink-0 text-muted-more-foreground -mr-1 group-data-open:rotate-180 transition-transform group-data-travelled:text-warning/50" />
@@ -69,7 +69,7 @@ function getCalendarDaysAgo(timestamp: number): number {
 const maxDefault = 30;
 
 export function TimeMachineSlider({ className }: TProps) {
-  const { isOpen, headCutoffTimestamp, setHeadCutoffTimestamp } =
+  const { isOpen, timeMachineTimestamp, setHeadCutoffTimestamp } =
     useTimeMachine();
   const [time, setTime] = useState(format(new Date(), "HH:mm"));
 
@@ -77,8 +77,8 @@ export function TimeMachineSlider({ className }: TProps) {
   const [max, setMax] = useState(maxDefault);
 
   const [value, setValue] = useState([
-    headCutoffTimestamp
-      ? Math.max(Math.min(getCalendarDaysAgo(headCutoffTimestamp), max), min)
+    timeMachineTimestamp
+      ? Math.max(Math.min(getCalendarDaysAgo(timeMachineTimestamp), max), min)
       : min,
   ]);
   const debouncedSetHeadCutoffTimestamp = useDebounceCallback(
@@ -87,7 +87,7 @@ export function TimeMachineSlider({ className }: TProps) {
   );
   const numberOfDaysAgo = value[0];
   const timeMachineDate = new Date(Date.now() - value[0] * dayMs);
-  const isTravelled = headCutoffTimestamp !== null;
+  const isTravelled = timeMachineTimestamp !== null;
 
   useEffect(() => {
     if (numberOfDaysAgo > max) {
@@ -96,15 +96,15 @@ export function TimeMachineSlider({ className }: TProps) {
   }, [numberOfDaysAgo]);
 
   useEffect(() => {
-    if (headCutoffTimestamp === null) {
+    if (timeMachineTimestamp === null) {
       setValue([min]);
       setTime(format(new Date(), "HH:mm"));
     } else {
-      setValue([getCalendarDaysAgo(headCutoffTimestamp)]);
-      const date = new Date(headCutoffTimestamp);
+      setValue([getCalendarDaysAgo(timeMachineTimestamp)]);
+      const date = new Date(timeMachineTimestamp);
       setTime(format(date, "HH:mm"));
     }
-  }, [headCutoffTimestamp]);
+  }, [timeMachineTimestamp]);
 
   const setValueAndTimestamp = useCallback(
     (value: number | number[]) => {
@@ -148,9 +148,9 @@ export function TimeMachineSlider({ className }: TProps) {
       const [hours, minutes] = e.target.value
         .split(":")
         .map((v) => parseInt(v, 10));
-      // Use actual headCutoffTimestamp to preserve the original date
-      const baseDate = headCutoffTimestamp
-        ? new Date(headCutoffTimestamp)
+      // Use actual timeMachineTimestamp to preserve the original date
+      const baseDate = timeMachineTimestamp
+        ? new Date(timeMachineTimestamp)
         : new Date();
       const updatedDate = new Date(baseDate);
       updatedDate.setHours(hours, minutes, 0, 0);
@@ -163,7 +163,7 @@ export function TimeMachineSlider({ className }: TProps) {
         setTime(format(new Date(), "HH:mm"));
       }
     },
-    [headCutoffTimestamp],
+    [timeMachineTimestamp],
   );
 
   const [, setModelOrder] = useModelOrder();
@@ -171,7 +171,7 @@ export function TimeMachineSlider({ className }: TProps) {
 
   const disableResetButton =
     (value[0] === min && time === format(new Date(), "HH:mm")) ||
-    headCutoffTimestamp === null;
+    timeMachineTimestamp === null;
 
   if (!isOpen) return null;
 

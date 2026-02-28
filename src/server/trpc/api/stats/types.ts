@@ -135,9 +135,9 @@ export const TStatResponseSchema = z.object({
   user: TUserSchema,
   models: z.array(TModelSchema),
   points: z.object({
-    exclusive_points: z.number(),
-    regular_points: z.number(),
-    snapshotted_at: z.number(),
+    exclusive_points: z.number().or(z.null()),
+    regular_points: z.number().or(z.null()),
+    snapshotted_at: z.number().or(z.null()),
   }),
   redemptions: z.array(
     z.object({
