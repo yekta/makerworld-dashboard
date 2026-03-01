@@ -4,8 +4,9 @@ import {
   regularPointsToUsd,
 } from "@/lib/calculate-points";
 import { cn } from "@/lib/utils";
+import { useMemo } from "react";
 
-export default function PointsCard() {
+export default function PointsAndWalletCard() {
   const { data, isPending, isError } = useStats();
 
   const kmbtFormatter = new Intl.NumberFormat("en", {
@@ -14,21 +15,48 @@ export default function PointsCard() {
     maximumSignificantDigits: 4,
   });
 
+  const balanceValue = useMemo(() => {
+    if (!data && !isPending && isError) return "Error";
+    if (isPending) return "1,001";
+    if (data.pointsAndWallet.wallet_balance !== null && data.redemptions) {
+      return "$" + kmbtFormatter.format(data.pointsAndWallet.wallet_balance);
+    }
+    return "N/A";
+  }, [data, isPending, isError]);
+
+  const pendingBalanceValue = useMemo(() => {
+    if (!data && !isPending && isError) return "Error";
+    if (isPending) return "$101.1";
+    if (data.redemptions) {
+      const pendingCurrencyRedemptions = data.redemptions.filter(
+        (redemption) =>
+          redemption.audit_status === 1 && redemption.redeem_cash_amount > 0,
+      );
+      const pendingCurrencyRedemptionsAmount =
+        pendingCurrencyRedemptions.reduce(
+          (sum, redemption) => sum + redemption.redeem_cash_amount,
+          0,
+        );
+      return `$${kmbtFormatter.format(pendingCurrencyRedemptionsAmount)}`;
+    }
+    return "N/A";
+  }, [data, isPending, isError]);
+
   return (
     <div
       data-pending={isPending ? true : undefined}
       data-error={!data && !isPending && isError ? true : undefined}
       className="w-full flex items-center justify-center overflow-hidden group"
     >
-      <PointsColumn
+      <Column
         label="Exclusive"
         value={
           !data && !isPending && isError
             ? "Error"
             : isPending
               ? "1,001"
-              : data.points.exclusive_points !== null
-                ? kmbtFormatter.format(data.points.exclusive_points)
+              : data.pointsAndWallet.exclusive_points !== null
+                ? kmbtFormatter.format(data.pointsAndWallet.exclusive_points)
                 : "N/A"
         }
         subtitle={
@@ -36,9 +64,9 @@ export default function PointsCard() {
             ? "Error"
             : isPending
               ? "$101.1"
-              : data.points.exclusive_points !== null
+              : data.pointsAndWallet.exclusive_points !== null
                 ? `$${kmbtFormatter.format(
-                    exclusivePointsToUsd(data.points.exclusive_points),
+                    exclusivePointsToUsd(data.pointsAndWallet.exclusive_points),
                   )}`
                 : "N/A"
         }
@@ -48,15 +76,15 @@ export default function PointsCard() {
       <div className="w-px py-px shrink-0 flex items-center justify-center self-stretch">
         <div className="w-full bg-border h-full rounded-full" />
       </div>
-      <PointsColumn
+      <Column
         label="Regular"
         value={
           !data && !isPending && isError
             ? "Error"
             : isPending
               ? "1,001"
-              : data.points.regular_points !== null
-                ? kmbtFormatter.format(data.points.regular_points)
+              : data.pointsAndWallet.regular_points !== null
+                ? kmbtFormatter.format(data.pointsAndWallet.regular_points)
                 : "N/A"
         }
         subtitle={
@@ -64,12 +92,22 @@ export default function PointsCard() {
             ? "Error"
             : isPending
               ? "$101.1"
-              : data.points.regular_points !== null
+              : data.pointsAndWallet.regular_points !== null
                 ? `$${kmbtFormatter.format(
-                    regularPointsToUsd(data.points.regular_points),
+                    regularPointsToUsd(data.pointsAndWallet.regular_points),
                   )}`
                 : "N/A"
         }
+        className="items-center"
+        classNameText="text-center"
+      />
+      <div className="w-px py-px shrink-0 flex items-center justify-center self-stretch">
+        <div className="w-full bg-border h-full rounded-full" />
+      </div>
+      <Column
+        label="Balance"
+        value={balanceValue}
+        subtitle={pendingBalanceValue}
         className="items-start"
         classNameText="text-left"
       />
@@ -77,7 +115,7 @@ export default function PointsCard() {
   );
 }
 
-function PointsColumn({
+function Column({
   label,
   value,
   subtitle,
@@ -93,7 +131,7 @@ function PointsColumn({
   return (
     <div
       className={cn(
-        "w-1/2 flex flex-col items-center px-3 gap-0.75",
+        "shrink min-w-0 max-w-32 flex flex-col items-center px-3 gap-0.75",
         className,
       )}
     >

@@ -1,6 +1,6 @@
 "use client";
 
-import PointsCard from "@/app/(home)/_components/points-card";
+import PointsAndWalletCard from "@/app/(home)/_components/points-and-wallet-card";
 import PrintIcon from "@/components/icons/print-icon";
 import { useNow } from "@/components/providers/now-provider";
 import { useStats } from "@/components/providers/stats-provider";
@@ -12,7 +12,7 @@ import { format } from "date-fns";
 import { BoxIcon, DownloadIcon, RocketIcon, UsersIcon } from "lucide-react";
 import { useMemo } from "react";
 
-const placeholderTimestamp = new Date().getTime() - 1000 * 60 * 60 * 24 * 30;
+const placeholderTimestamp = Date.now() - 1000 * 60 * 60 * 24 * 30;
 
 export default function UserSummarySection() {
   const { data, isPending, isError } = useStats();
@@ -94,7 +94,7 @@ function Section({
 
   return (
     <div className="w-full flex flex-col">
-      <PointsCard />
+      <PointsAndWalletCard />
       <div className="w-full py-2 md:py-1.5 flex items-center justify-center md:self-stretch">
         <div className="w-1/2 bg-border h-px rounded-full md:hidden" />
       </div>
@@ -344,8 +344,8 @@ function getEarnings({
   const buffer = 12 * 60 * 60 * 1000;
   let total = 0;
   const adjustedNow = timeMachineTimestamp
-    ? Math.min(new Date().getTime(), timeMachineTimestamp)
-    : new Date().getTime();
+    ? Math.min(Date.now(), timeMachineTimestamp)
+    : Date.now();
 
   const filteredRedemptions = data.redemptions.filter(
     (redemption) =>
