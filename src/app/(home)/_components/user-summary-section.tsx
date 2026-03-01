@@ -107,24 +107,22 @@ function Section({
               className="shrink font-light whitespace-nowrap leading-normal text-center md:text-right text-muted-foreground min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-most-foreground group-data-placeholder:text-transparent"
             >
               <span className="text-foreground font-medium group-data-placeholder:text-transparent">
-                $
                 {projectedMonthlyUSDRevenue === null
                   ? "N/A"
-                  : projectedMonthlyUSDRevenue.toLocaleString(appLocale, {
+                  : `$${projectedMonthlyUSDRevenue.toLocaleString(appLocale, {
                       maximumFractionDigits: 0,
-                    })}
+                    })}`}
               </span>
               {"/mo forecast"}
               <span className="text-muted-most-foreground px-[0.75ch] group-data-placeholder:text-transparent">
                 {"|"}
               </span>
               <span className="text-foreground font-medium group-data-placeholder:text-transparent">
-                $
                 {realMonthlyUSDRevenue === null
                   ? "N/A"
-                  : realMonthlyUSDRevenue.toLocaleString(appLocale, {
+                  : `$${realMonthlyUSDRevenue.toLocaleString(appLocale, {
                       maximumFractionDigits: 0,
-                    })}
+                    })}`}
               </span>
               {"/mo earned"}
             </p>
