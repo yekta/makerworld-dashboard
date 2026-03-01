@@ -17,7 +17,7 @@ export default function PointsAndWalletCard() {
 
   const balanceValue = useMemo(() => {
     if (!data && !isPending && isError) return "Error";
-    if (isPending) return "1,001";
+    if (isPending) return "$111.1";
     if (data.pointsAndWallet.wallet_balance !== null && data.redemptions) {
       return "$" + kmbtFormatter.format(data.pointsAndWallet.wallet_balance);
     }
@@ -26,7 +26,7 @@ export default function PointsAndWalletCard() {
 
   const pendingBalanceValue = useMemo(() => {
     if (!data && !isPending && isError) return "Error";
-    if (isPending) return "$101.1";
+    if (isPending) return "$111.1";
     if (data.redemptions) {
       const pendingCurrencyRedemptions = data.redemptions.filter(
         (redemption) =>
@@ -54,7 +54,7 @@ export default function PointsAndWalletCard() {
           !data && !isPending && isError
             ? "Error"
             : isPending
-              ? "1,001"
+              ? "111.1"
               : data.pointsAndWallet.exclusive_points !== null
                 ? kmbtFormatter.format(data.pointsAndWallet.exclusive_points)
                 : "N/A"
@@ -82,7 +82,7 @@ export default function PointsAndWalletCard() {
           !data && !isPending && isError
             ? "Error"
             : isPending
-              ? "1,001"
+              ? "1.111K"
               : data.pointsAndWallet.regular_points !== null
                 ? kmbtFormatter.format(data.pointsAndWallet.regular_points)
                 : "N/A"
