@@ -15,10 +15,12 @@ export default function PointsAndWalletCard() {
     maximumSignificantDigits: 4,
   });
 
+  console.log(data?.pointsAndWallet);
+
   const balanceValue = useMemo(() => {
     if (!data && !isPending && isError) return "Error";
     if (isPending) return "$111.1";
-    if (data.pointsAndWallet.wallet_balance !== null && data.redemptions) {
+    if (data.pointsAndWallet.wallet_balance !== null) {
       return "$" + kmbtFormatter.format(data.pointsAndWallet.wallet_balance);
     }
     return "N/A";
@@ -27,17 +29,8 @@ export default function PointsAndWalletCard() {
   const pendingBalanceValue = useMemo(() => {
     if (!data && !isPending && isError) return "Error";
     if (isPending) return "$111.1";
-    if (data.redemptions) {
-      const pendingCurrencyRedemptions = data.redemptions.filter(
-        (redemption) =>
-          redemption.audit_status === 1 && redemption.redeem_cash_amount > 0,
-      );
-      const pendingCurrencyRedemptionsAmount =
-        pendingCurrencyRedemptions.reduce(
-          (sum, redemption) => sum + redemption.redeem_cash_amount,
-          0,
-        );
-      return `$${kmbtFormatter.format(pendingCurrencyRedemptionsAmount)}`;
+    if (data.pointsAndWallet.wallet_balance_pending !== null) {
+      return `$${kmbtFormatter.format(data.pointsAndWallet.wallet_balance_pending)}`;
     }
     return "N/A";
   }, [data, isPending, isError]);
