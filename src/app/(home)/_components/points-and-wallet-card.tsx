@@ -21,7 +21,7 @@ export default function PointsAndWalletCard() {
     if (!data && !isPending && isError) return "Error";
     if (isPending) return "$111.1";
     if (data.pointsAndWallet.wallet_balance !== null) {
-      return "$" + kmbtFormatter.format(data.pointsAndWallet.wallet_balance);
+      return `$${kmbtFormatter.format(data.pointsAndWallet.wallet_balance)}`;
     }
     return "N/A";
   }, [data, isPending, isError]);
