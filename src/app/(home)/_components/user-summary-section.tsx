@@ -341,7 +341,7 @@ function getEarnings({
     AppRouterQueryResult<AppRouterOutputs["stats"]["get"]>["data"]
   >;
 }) {
-  const buffer = 12 * 60 * 60 * 1000;
+  const buffer = 100 * 60 * 60 * 12;
   let total = 0;
   const adjustedNow = timeMachineTimestamp
     ? Math.min(Date.now(), timeMachineTimestamp)
