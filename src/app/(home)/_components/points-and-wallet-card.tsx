@@ -15,8 +15,6 @@ export default function PointsAndWalletCard() {
     maximumSignificantDigits: 4,
   });
 
-  console.log(data?.pointsAndWallet);
-
   const balanceValue = useMemo(() => {
     if (!data && !isPending && isError) return "Error";
     if (isPending) return "$111.1";

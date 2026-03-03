@@ -349,7 +349,7 @@ function getEarnings({
 
   const filteredRedemptions = data.redemptions.filter(
     (redemption) =>
-      redemption.redeemed_at >= adjustedNow - timeframeMs + buffer &&
+      redemption.redeemed_at >= adjustedNow - timeframeMs - buffer &&
       redemption.redeem_cash_amount > 0 &&
       redemption.redeem_cash_currency === currency,
   );
