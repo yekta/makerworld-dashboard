@@ -10,11 +10,13 @@ type TStatsContext = AppRouterQueryResult<AppRouterOutputs["stats"]["get"]>;
 const StatsContext = createContext<TStatsContext | null>(null);
 
 export const StatsProvider: React.FC<{
+  username: string;
   children: ReactNode;
-}> = ({ children }) => {
+}> = ({ username, children }) => {
   const { timeMachineTimestamp } = useTimeMachine();
   const query = api.stats.get.useQuery(
     {
+      username,
       timeMachineTimestamp: timeMachineTimestamp ?? null,
     },
     { refetchInterval: 10 * 1000 },

@@ -41,6 +41,7 @@ import { useCopyToClipboard } from "@/lib/hooks/use-copy-to-clipboard";
 import { TLeaderboardEntry } from "@/server/trpc/api/leaderboard/types";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import { Duration } from "luxon";
+import { usernames } from "@/server/trpc/api/stats/constants";
 
 type TRow = TLeaderboardEntry & {
   rank: number;
@@ -622,7 +623,7 @@ export default function LeaderboardTable() {
                     key={row.id}
                     data-odd={virtualRow.index % 2 === 1 ? true : undefined}
                     data-me={
-                      row.original.username === env.NEXT_PUBLIC_USERNAME
+                      usernames.includes(row.original.username)
                         ? true
                         : undefined
                     }

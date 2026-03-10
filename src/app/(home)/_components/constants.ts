@@ -1,6 +1,12 @@
 import { isServer } from "@/lib/constants";
-import { parseAsInteger as parseAsIntegerClient } from "nuqs";
-import { parseAsInteger as parseAsIntegerServer } from "nuqs/server";
+import {
+  parseAsInteger as parseAsIntegerClient,
+  parseAsString as parseAsStringClient,
+} from "nuqs";
+import {
+  parseAsInteger as parseAsIntegerServer,
+  parseAsString as parseAsStringServer,
+} from "nuqs/server";
 import { createSearchParamsCache } from "nuqs/server";
 import z from "zod";
 
@@ -106,8 +112,13 @@ export const parseAsInteger = isServer
   ? parseAsIntegerServer
   : parseAsIntegerClient;
 
+export const parseAsString = isServer
+  ? parseAsStringServer
+  : parseAsStringClient;
+
 export const homePageParamParsers = {
   now_timestamp: parseAsInteger,
+  username: parseAsString,
 } as const;
 
 export const cachedHomePageSearchParams =
