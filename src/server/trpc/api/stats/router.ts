@@ -1,4 +1,5 @@
 import { env } from "@/lib/env";
+import { usernames } from "@/server/trpc/api/stats/constants";
 import { TStatResponseSchema } from "@/server/trpc/api/stats/types";
 import { createTRPCRouter, publicProcedure } from "@/server/trpc/setup/trpc";
 import { TRPCError } from "@trpc/server";
@@ -22,6 +23,7 @@ export const statsRouter = createTRPCRouter({
   get: publicProcedure
     .input(
       z.object({
+        username: z.string().default(usernames[0]),
         dayStart: z.string().default(DEFAULT_DAY_START).nullable(),
         weekStart: TWeekDayEnum.default(DEFAULT_WEEK_START).nullable(),
         monthStart: z.number().default(DEFAULT_MONTH_START).nullable(),
@@ -30,9 +32,15 @@ export const statsRouter = createTRPCRouter({
     )
     .query(
       async ({
-        input: { dayStart, weekStart, monthStart, timeMachineTimestamp },
+        input: {
+          username,
+          dayStart,
+          weekStart,
+          monthStart,
+          timeMachineTimestamp,
+        },
       }) => {
-        const url = new URL(env.API_URL + "/v1/my-stats");
+        const url = new URL(env.API_URL + "/v1/my-stats/" + username);
         if (dayStart !== null) {
           url.searchParams.append("day_start", dayStart);
         }
