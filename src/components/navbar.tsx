@@ -33,7 +33,10 @@ export default function Navbar({
           <Image
             alt="Avatar"
             src={avatarUrl}
-            className={cn(className, "rounded-full border border-foreground")}
+            className={cn(
+              className,
+              "rounded-full opacity-75 border border-muted-more-foreground group-hover/link:opacity-100 group-hover/link:border-foreground group-data-active/link:opacity-100 group-data-active/link:border-foreground",
+            )}
             width={512}
             height={512}
             sizes="64px"
