@@ -1,5 +1,8 @@
 import { env } from "@/lib/env";
-import { TStatResponseSchema } from "@/server/trpc/api/stats/types";
+import {
+  TMyUsersListResponseSchema,
+  TStatResponseSchema,
+} from "@/server/trpc/api/my-users/types";
 import { createTRPCRouter, publicProcedure } from "@/server/trpc/setup/trpc";
 import { TRPCError } from "@trpc/server";
 
@@ -18,8 +21,23 @@ const DEFAULT_DAY_START = "22:25";
 const DEFAULT_WEEK_START: z.infer<typeof TWeekDayEnum> = "sunday";
 const DEFAULT_MONTH_START = 1;
 
-export const statsRouter = createTRPCRouter({
-  get: publicProcedure
+export const myUsersRouter = createTRPCRouter({
+  list: publicProcedure.query(async () => {
+    const url = new URL(env.API_URL + "/v1/my-users/list");
+    const res = await fetch(url.toString());
+    const data = await res.json();
+    const result = TMyUsersListResponseSchema.safeParse(data);
+
+    if (!result.success) {
+      console.log("My users list response validation error:", result.error);
+      throw new TRPCError({
+        code: "NOT_FOUND",
+        message: "Failed to type check my users list response",
+      });
+    }
+    return result.data;
+  }),
+  getStats: publicProcedure
     .input(
       z.object({
         username: z.string(),
@@ -39,7 +57,7 @@ export const statsRouter = createTRPCRouter({
           timeMachineTimestamp,
         },
       }) => {
-        const url = new URL(env.API_URL + "/v1/my-stats/" + username);
+        const url = new URL(env.API_URL + "/v1/my-users/stats/" + username);
         if (dayStart !== null) {
           url.searchParams.append("day_start", dayStart);
         }

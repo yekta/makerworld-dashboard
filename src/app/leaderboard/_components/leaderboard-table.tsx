@@ -36,12 +36,11 @@ import PointIcon from "@/components/icons/point-icon";
 import PrintIcon from "@/components/icons/print-icon";
 import { Button } from "@/components/ui/button";
 import { calculatePoints, exclusivePointsToUsd } from "@/lib/calculate-points";
-import { env } from "@/lib/env";
 import { useCopyToClipboard } from "@/lib/hooks/use-copy-to-clipboard";
 import { TLeaderboardEntry } from "@/server/trpc/api/leaderboard/types";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import { Duration } from "luxon";
-import { usernames } from "@/server/trpc/api/stats/constants";
+import { AppRouterOutputs } from "@/server/trpc/api/root";
 
 type TRow = TLeaderboardEntry & {
   rank: number;
@@ -92,7 +91,11 @@ declare module "@tanstack/react-table" {
   }
 }
 
-export default function LeaderboardTable() {
+export default function LeaderboardTable({
+  users,
+}: {
+  users: AppRouterOutputs["myUsers"]["list"]["users"];
+}) {
   const { data, isPending, error } = useLeaderboard();
   const [now, setNow] = useState(Date.now());
 
@@ -623,7 +626,9 @@ export default function LeaderboardTable() {
                     key={row.id}
                     data-odd={virtualRow.index % 2 === 1 ? true : undefined}
                     data-me={
-                      usernames.includes(row.original.username)
+                      users
+                        .map((u) => u.username)
+                        .includes(row.original.username)
                         ? true
                         : undefined
                     }

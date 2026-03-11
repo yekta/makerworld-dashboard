@@ -2,33 +2,57 @@
 
 import { LinkButton } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { usernames } from "@/server/trpc/api/stats/constants";
+import { AppRouterOutputs } from "@/server/trpc/api/root";
 import { TableIcon, UserRoundIcon } from "lucide-react";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-
-const routes: TRoute[] = [
-  ...usernames.map((username) => ({
-    label: `${username}`,
-    href: `/${username}`,
-    Icon: UserRoundIcon,
-  })),
-  {
-    label: "Leaderboard",
-    href: "/leaderboard",
-    Icon: TableIcon,
-  },
-];
 
 type TRoute = {
   label: string;
   href: string;
-  Icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+  Icon: React.ComponentType<{ className?: string }>;
 };
 
-export default function Navbar() {
+export default function Navbar({
+  users,
+}: {
+  users: AppRouterOutputs["myUsers"]["list"]["users"];
+}) {
   const pathname = usePathname();
   const [selectedPathname, setSelectedPathname] = useState(pathname);
+
+  const routes: TRoute[] = [
+    ...users.map((user) => {
+      let Icon: React.ComponentType<{ className?: string }> = UserRoundIcon;
+
+      const avatarUrl = user.avatar_url;
+
+      if (avatarUrl) {
+        Icon = ({ className }: { className?: string }) => (
+          <Image
+            alt="Avatar"
+            src={avatarUrl}
+            className={cn(className, "rounded-full border border-foreground")}
+            width={512}
+            height={512}
+            sizes="64px"
+          />
+        );
+      }
+
+      return {
+        label: `${user.username}`,
+        href: `/${user.username}`,
+        Icon,
+      };
+    }),
+    {
+      label: "Leaderboard",
+      href: "/leaderboard",
+      Icon: TableIcon,
+    },
+  ];
 
   return (
     <nav className="w-full flex fixed bottom-0 bg-background border-t rounded-t-xl overflow-hidden z-50">

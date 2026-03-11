@@ -27,8 +27,8 @@ import LinkOrDiv from "@/components/link-or-div";
 
 export type TModelCardProps =
   | {
-      model: AppRouterOutputs["stats"]["get"]["models"][number];
-      metadata: AppRouterOutputs["stats"]["get"]["metadata"];
+      model: AppRouterOutputs["myUsers"]["getStats"]["models"][number];
+      metadata: AppRouterOutputs["myUsers"]["getStats"]["metadata"];
       isPlaceholder?: never;
     }
   | {
@@ -180,7 +180,7 @@ function ModelCardContent(props: TModelCardProps) {
 }
 
 function getModelUrl(
-  model: AppRouterOutputs["stats"]["get"]["models"][number],
+  model: AppRouterOutputs["myUsers"]["getStats"]["models"][number],
 ) {
   return `https://makerworld.com/en/models/${model.model_id}-${model.slug}`;
 }

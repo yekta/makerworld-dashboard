@@ -1,5 +1,5 @@
 import { leaderboardRouter } from "@/server/trpc/api/leaderboard/router";
-import { statsRouter } from "@/server/trpc/api/stats/router";
+import { myUsersRouter } from "@/server/trpc/api/my-users/router";
 import { createTRPCRouter } from "@/server/trpc/setup/trpc";
 import { TRPCClient, TRPCClientErrorLike } from "@trpc/client";
 import { inferReactQueryProcedureOptions } from "@trpc/react-query";
@@ -15,7 +15,7 @@ import { inferRouterInputs, inferRouterOutputs } from "@trpc/server";
  * All routers added in /api/routers should be manually added here.
  */
 export const appRouter = createTRPCRouter({
-  stats: statsRouter,
+  myUsers: myUsersRouter,
   leaderboard: leaderboardRouter,
 });
 

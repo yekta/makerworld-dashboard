@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import TopLoader from "@/components/top-loader";
+import { apiServer } from "@/server/trpc/setup/server";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,11 +21,12 @@ export const metadata: Metadata = {
   description: "Statistics dashboard for @yekta on MakerWorld.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const { users } = await apiServer.myUsers.list();
   return (
     <html lang="en">
       <body
@@ -32,7 +34,7 @@ export default function RootLayout({
       >
         <TopLoader />
         <Providers>{children}</Providers>
-        <Navbar />
+        <Navbar users={users} />
         <NavbarSpacer />
       </body>
     </html>

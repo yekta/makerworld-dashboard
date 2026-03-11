@@ -64,6 +64,15 @@ export const TModelSchema = z.object({
   }),
 });
 
+export const TMyUsersListResponseSchema = z.object({
+  users: z.array(
+    z.object({
+      username: z.string(),
+      avatar_url: z.string().or(z.null()),
+    }),
+  ),
+});
+
 export const TUserStatSchema = z.object({
   prints: z.number(),
   downloads: z.number(),
@@ -75,6 +84,7 @@ export const TUserStatSchema = z.object({
 });
 
 export const TUserSchema = z.object({
+  avatar_url: z.string().or(z.null()),
   stats: z.object({
     current: TUserStatSchema,
     "delta_0-0.25h": TUserStatSchema,

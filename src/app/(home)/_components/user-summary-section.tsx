@@ -37,7 +37,7 @@ export default function UserSummarySection() {
 function Section({
   data,
 }: {
-  data: AppRouterQueryResult<AppRouterOutputs["stats"]["get"]>["data"];
+  data: AppRouterQueryResult<AppRouterOutputs["myUsers"]["getStats"]>["data"];
 }) {
   const { timeMachineTimestamp } = useTimeMachine();
   const { projectedMonthlyUSDRevenue, realMonthlyUSDRevenue } = useMemo(() => {
@@ -256,7 +256,7 @@ function DatesSpan({
 function RecentEventsText({
   data,
 }: {
-  data: AppRouterQueryResult<AppRouterOutputs["stats"]["get"]>["data"];
+  data: AppRouterQueryResult<AppRouterOutputs["myUsers"]["getStats"]>["data"];
 }) {
   const noEventsText = "No events in the last 15 min";
   if (!data) return noEventsText;
@@ -338,7 +338,7 @@ function getEarnings({
   timeMachineTimestamp: number | null;
   timeframeMs: number;
   data: NonNullable<
-    AppRouterQueryResult<AppRouterOutputs["stats"]["get"]>["data"]
+    AppRouterQueryResult<AppRouterOutputs["myUsers"]["getStats"]>["data"]
   >;
 }) {
   const buffer = 100 * 60 * 60 * 12;

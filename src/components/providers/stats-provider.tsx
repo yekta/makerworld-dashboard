@@ -5,7 +5,9 @@ import { AppRouterOutputs, AppRouterQueryResult } from "@/server/trpc/api/root";
 import { api } from "@/server/trpc/setup/client";
 import { createContext, ReactNode, useContext } from "react";
 
-type TStatsContext = AppRouterQueryResult<AppRouterOutputs["stats"]["get"]>;
+type TStatsContext = AppRouterQueryResult<
+  AppRouterOutputs["myUsers"]["getStats"]
+>;
 
 const StatsContext = createContext<TStatsContext | null>(null);
 
@@ -14,7 +16,7 @@ export const StatsProvider: React.FC<{
   children: ReactNode;
 }> = ({ username, children }) => {
   const { timeMachineTimestamp } = useTimeMachine();
-  const query = api.stats.get.useQuery(
+  const query = api.myUsers.getStats.useQuery(
     {
       username,
       timeMachineTimestamp: timeMachineTimestamp ?? null,
