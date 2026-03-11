@@ -15,8 +15,8 @@ import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
 
 type TProps =
   | {
-      model: AppRouterOutputs["stats"]["get"]["models"][number];
-      metadata: AppRouterOutputs["stats"]["get"]["metadata"];
+      model: AppRouterOutputs["myUsers"]["getStats"]["models"][number];
+      metadata: AppRouterOutputs["myUsers"]["getStats"]["metadata"];
       isPlaceholder?: never;
       className?: string;
     }

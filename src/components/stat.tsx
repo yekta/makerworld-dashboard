@@ -9,24 +9,24 @@ import { useEffect, useRef, useState } from "react";
 
 type TUserOrModelStat =
   | {
-      stats: AppRouterOutputs["stats"]["get"]["models"][number]["stats"];
-      statKey: keyof AppRouterOutputs["stats"]["get"]["models"][number]["stats"]["current"];
+      stats: AppRouterOutputs["myUsers"]["getStats"]["models"][number]["stats"];
+      statKey: keyof AppRouterOutputs["myUsers"]["getStats"]["models"][number]["stats"]["current"];
       statType: "model";
       records?: never;
       isPlaceholder?: never;
     }
   | {
-      stats: AppRouterOutputs["stats"]["get"]["user"]["stats"];
-      statKey: keyof AppRouterOutputs["stats"]["get"]["user"]["stats"]["current"];
+      stats: AppRouterOutputs["myUsers"]["getStats"]["user"]["stats"];
+      statKey: keyof AppRouterOutputs["myUsers"]["getStats"]["user"]["stats"]["current"];
       statType: "user";
-      records: AppRouterOutputs["stats"]["get"]["user"]["records"];
+      records: AppRouterOutputs["myUsers"]["getStats"]["user"]["records"];
       isPlaceholder?: never;
     }
   | {
       stats?: never;
       statKey:
-        | keyof AppRouterOutputs["stats"]["get"]["models"][number]["stats"]["current"]
-        | keyof AppRouterOutputs["stats"]["get"]["user"]["stats"]["current"];
+        | keyof AppRouterOutputs["myUsers"]["getStats"]["models"][number]["stats"]["current"]
+        | keyof AppRouterOutputs["myUsers"]["getStats"]["user"]["stats"]["current"];
       statType: "model" | "user";
       records?: never;
       isPlaceholder: true;

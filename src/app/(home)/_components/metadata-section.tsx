@@ -28,7 +28,9 @@ export default function MetadataSection() {
   );
 }
 
-const keysToShow: Array<keyof AppRouterOutputs["stats"]["get"]["metadata"]> = [
+const keysToShow: Array<
+  keyof AppRouterOutputs["myUsers"]["getStats"]["metadata"]
+> = [
   "delta_0h_timestamp",
   "delta_0-1h_timestamp",
   "delta_0-4h_timestamp",
@@ -47,7 +49,7 @@ const keysToShow: Array<keyof AppRouterOutputs["stats"]["get"]["metadata"]> = [
 function Metadata({
   data,
 }: {
-  data: AppRouterQueryResult<AppRouterOutputs["stats"]["get"]>["data"];
+  data: AppRouterQueryResult<AppRouterOutputs["myUsers"]["getStats"]>["data"];
 }) {
   const now = useNow();
   const { timeMachineTimestamp } = useTimeMachine();
