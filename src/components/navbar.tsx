@@ -35,7 +35,7 @@ export default function Navbar({
             src={avatarUrl}
             className={cn(
               className,
-              "rounded-full opacity-75 border border-muted-more-foreground group-hover/link:opacity-100 group-hover/link:border-foreground group-data-active/link:opacity-100 group-data-active/link:border-foreground",
+              "rounded-full opacity-75 saturate-0 border border-muted-more-foreground group-hover/link:saturate-100 group-hover/link:opacity-100 group-hover/link:border-foreground group-data-active/link:opacity-100 group-data-active/link:saturate-100 group-data-active/link:border-foreground",
             )}
             width={512}
             height={512}
