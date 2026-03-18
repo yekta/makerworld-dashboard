@@ -347,7 +347,11 @@ function getEarnings({
     ? Math.min(Date.now(), timeMachineTimestamp)
     : Date.now();
 
-  const filteredRedemptions = data.redemptions.filter(
+  const pureEarningRedemptions = data.redemptions.filter(
+    (redemption) => redemption.redeem_cash_currency === currency,
+  );
+
+  const filteredRedemptions = pureEarningRedemptions.filter(
     (redemption) =>
       redemption.redeemed_at >= adjustedNow - timeframeMs - buffer &&
       redemption.redeem_cash_amount > 0 &&
@@ -360,7 +364,7 @@ function getEarnings({
 
   const latestRedemptionTime = filteredRedemptions[0];
   const lastIndex = filteredRedemptions.length - 1;
-  const startingRedemption = data.redemptions[lastIndex + 1];
+  const startingRedemption = pureEarningRedemptions[lastIndex + 1];
 
   if (!startingRedemption) {
     return null;

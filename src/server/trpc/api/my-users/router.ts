@@ -88,6 +88,7 @@ export const myUsersRouter = createTRPCRouter({
             message: "Failed to type check stats response",
           });
         }
+
         return result.data;
       },
     ),
