@@ -342,40 +342,58 @@ function getEarnings({
   >;
 }) {
   const buffer = 100 * 60 * 60 * 12;
-  let total = 0;
   const adjustedNow = timeMachineTimestamp
     ? Math.min(Date.now(), timeMachineTimestamp)
     : Date.now();
 
-  const pureEarningRedemptions = data.redemptions.filter(
-    (redemption) => redemption.redeem_cash_currency === currency,
-  );
+  const pureEarningRedemptions = data.redemptions
+    .filter(
+      (redemption) =>
+        redemption.redeem_cash_currency === currency &&
+        redemption.redeem_cash_amount > 0,
+    )
+    .sort((a, b) => b.redeemed_at - a.redeemed_at);
 
-  const filteredRedemptions = pureEarningRedemptions.filter(
+  const pureEarningRedemptionsInsideTimeframe = pureEarningRedemptions.filter(
     (redemption) =>
-      redemption.redeemed_at >= adjustedNow - timeframeMs - buffer &&
-      redemption.redeem_cash_amount > 0 &&
-      redemption.redeem_cash_currency === currency,
+      redemption.redeemed_at >= adjustedNow - timeframeMs - buffer,
   );
 
-  if (filteredRedemptions.length === 0) {
+  if (pureEarningRedemptionsInsideTimeframe.length === 0) {
     return null;
   }
 
-  const latestRedemptionTime = filteredRedemptions[0];
-  const lastIndex = filteredRedemptions.length - 1;
-  const startingRedemption = pureEarningRedemptions[lastIndex + 1];
+  const latestRedemptionInsideTimeframe =
+    pureEarningRedemptionsInsideTimeframe[0];
+  const oldestRedemptionInsideTimeframe =
+    pureEarningRedemptionsInsideTimeframe[
+      pureEarningRedemptionsInsideTimeframe.length - 1
+    ];
 
-  if (!startingRedemption) {
-    return null;
+  let startingRedemptionTimestamp: null | number = null;
+  let currentRedemptionTimestampDiff = Infinity;
+
+  for (const redemption of pureEarningRedemptions) {
+    const redemptionTimestampDiff =
+      oldestRedemptionInsideTimeframe.redeemed_at - redemption.redeemed_at;
+
+    if (redemptionTimestampDiff <= 0) continue;
+
+    if (redemptionTimestampDiff < currentRedemptionTimestampDiff) {
+      currentRedemptionTimestampDiff = redemptionTimestampDiff;
+      startingRedemptionTimestamp = redemption.redeemed_at;
+    }
   }
 
-  for (const redemption of filteredRedemptions) {
-    total += redemption.redeem_cash_amount;
-  }
+  if (!startingRedemptionTimestamp) return null;
+
+  const total = pureEarningRedemptionsInsideTimeframe.reduce(
+    (sum, redemption) => sum + redemption.redeem_cash_amount,
+    0,
+  );
 
   const timeDiff =
-    latestRedemptionTime.redeemed_at - startingRedemption.redeemed_at;
+    latestRedemptionInsideTimeframe.redeemed_at - startingRedemptionTimestamp;
 
   const perTimeframe = (total / timeDiff) * timeframeMs;
 
