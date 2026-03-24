@@ -148,6 +148,9 @@ export function TimeMachineSlider({ className }: TProps) {
       const [hours, minutes] = e.target.value
         .split(":")
         .map((v) => parseInt(v, 10));
+
+      if (isNaN(hours) || isNaN(minutes)) return;
+
       // Use actual timeMachineTimestamp to preserve the original date
       const baseDate = timeMachineTimestamp
         ? new Date(timeMachineTimestamp)
