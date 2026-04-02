@@ -265,7 +265,7 @@ function Footer({ model, metadata, isPlaceholder }: TModelCardProps) {
             <span className="font-medium">
               $
               {isPlaceholder
-                ? "250"
+                ? "300"
                 : model.stats.current.points_exclusive_default !== null &&
                     model.stats.current.points_exclusive_cn !== null
                   ? exclusivePointsToUsd(
