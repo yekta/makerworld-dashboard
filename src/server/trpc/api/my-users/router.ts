@@ -79,6 +79,8 @@ export const myUsersRouter = createTRPCRouter({
 
         const res = await fetch(url.toString());
         const data = await res.json();
+
+        console.log(data.models[0].stats);
         const result = TStatResponseSchema.safeParse(data);
 
         if (!result.success) {

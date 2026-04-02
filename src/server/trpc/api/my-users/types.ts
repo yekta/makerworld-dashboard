@@ -6,6 +6,8 @@ export const TModelStatSchema = z.object({
   boosts: z.number(),
   likes: z.number(),
   comments: z.number(),
+  points_exclusive_default: z.number().or(z.null()),
+  points_exclusive_cn: z.number().or(z.null()),
 });
 
 export const TModelSchema = z.object({
