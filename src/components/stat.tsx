@@ -246,8 +246,8 @@ function StatDelta({
   isRecord = false,
   isPlaceholder,
 }: {
-  value: number;
-  prevDayValue?: number;
+  value: number | null;
+  prevDayValue?: number | null;
   showPrevDayStats?: boolean;
   timeRangeLabel?: string;
   highlight?: boolean;
@@ -257,7 +257,7 @@ function StatDelta({
   const { isTravelled } = useTimeMachine();
   return (
     <div
-      data-positive={value > 0 ? true : undefined}
+      data-positive={value !== null && value > 0 ? true : undefined}
       data-highlight={highlight ? true : undefined}
       data-placeholder={isPlaceholder ? true : undefined}
       data-travelled={isTravelled ? true : undefined}
@@ -279,11 +279,13 @@ function StatDelta({
               {timeRangeLabel}:
             </span>
           )}
-          {value.toLocaleString(appLocale)}
+          {value !== null ? value.toLocaleString(appLocale) : "N/A"}
           {showPrevDayStats && prevDayValue !== undefined && (
             <span className="text-muted-foreground text-xxs leading-tight group-data-placeholder:text-transparent">
               <span className="px-[0.35ch] text-muted-more-foreground">|</span>
-              {prevDayValue.toLocaleString(appLocale)}
+              {prevDayValue !== null
+                ? prevDayValue.toLocaleString(appLocale)
+                : "N/A"}
             </span>
           )}
         </p>
@@ -297,7 +299,7 @@ function MainStat({
   Icon,
   isPlaceholder,
 }: {
-  value: number;
+  value: number | null;
   Icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   isPlaceholder?: boolean;
 }) {
@@ -335,7 +337,7 @@ function MainStat({
       <div className="absolute -left-1 top-0 w-[calc(100%+0.55rem)] h-full rounded-sm bg-success-highlight/0 group-data-travelled:bg-warning-highlight/0 group-data-flash:bg-success-highlight/20 group-data-flash:group-data-travelled:bg-warning-highlight/20" />
       <Icon className="group-data-flash:text-success-highlight group-data-placeholder:rounded group-data-flash:group-data-travelled:text-warning-highlight text-foreground size-3 shrink-0 group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-foreground group-data-placeholder:text-transparent" />
       <p className="group-data-flash:text-success-highlight group-data-placeholder:rounded group-data-flash:group-data-travelled:text-warning-highlight text-foreground shrink min-w-0 overflow-hidden leading-tight overflow-ellipsis group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-foreground group-data-placeholder:text-transparent">
-        {value.toLocaleString(appLocale)}
+        {value !== null ? value.toLocaleString(appLocale) : "N/A"}
       </p>
     </div>
   );
