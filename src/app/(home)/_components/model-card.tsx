@@ -5,11 +5,13 @@ import {
   useModelSort,
   useModelStatVisibilityPreferences,
 } from "@/app/(home)/_components/filters-section/hooks";
-import PrintIcon from "@/components/icons/print-icon";
 import ModelStatsChart from "@/app/(home)/_components/model-stats-chart";
+import PrintIcon from "@/components/icons/print-icon";
+import LinkOrDiv from "@/components/link-or-div";
 import { useNow } from "@/components/providers/now-provider";
 import { useTimeMachine } from "@/components/providers/time-machine-provider";
 import Stat from "@/components/stat";
+import { exclusivePointsToUsd } from "@/lib/calculate-points";
 import { appLocale } from "@/lib/constants";
 import { timeAgo } from "@/lib/helpers";
 import { AppRouterOutputs } from "@/server/trpc/api/root";
@@ -23,7 +25,6 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { useMemo } from "react";
-import LinkOrDiv from "@/components/link-or-div";
 
 export type TModelCardProps =
   | {
@@ -257,6 +258,23 @@ function Footer({ model, metadata, isPlaceholder }: TModelCardProps) {
                 maximumFractionDigits: 1,
               })}
               {"%"}
+            </span>
+            <span className="text-muted-most-foreground group-data-placeholder:text-transparent px-[0.75ch]">
+              {"|"}
+            </span>
+            <span className="font-medium">
+              $
+              {isPlaceholder
+                ? "250"
+                : model.stats.current.points_exclusive_default !== null &&
+                    model.stats.current.points_exclusive_cn !== null
+                  ? exclusivePointsToUsd(
+                      model.stats.current.points_exclusive_default +
+                        model.stats.current.points_exclusive_cn,
+                    ).toLocaleString(appLocale, {
+                      maximumFractionDigits: 0,
+                    })
+                  : "N/A"}
             </span>
           </p>
         </div>
