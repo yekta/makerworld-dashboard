@@ -293,7 +293,7 @@ function Footer({ model, metadata, isPlaceholder }: TModelCardProps) {
   );
 }
 
-const fiveMinMs = 5 * 60 * 1000;
+const dayPlusFiveMinMs = 1000 * 60 * 60 * 24 + 1000 * 60 * 5;
 
 function DateTime({
   releaseDate,
@@ -312,7 +312,7 @@ function DateTime({
     return (
       <button
         onClick={() => {
-          setHeadCutoffTimestamp(modelReleaseTimestamp + fiveMinMs);
+          setHeadCutoffTimestamp(modelReleaseTimestamp + dayPlusFiveMinMs);
           setModelSort("created_at");
           setModelOrder("desc");
           document.documentElement.scrollTo({ top: 0, behavior: "smooth" });
