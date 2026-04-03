@@ -312,7 +312,9 @@ function DateTime({
     return (
       <button
         onClick={() => {
-          setHeadCutoffTimestamp(modelReleaseTimestamp + dayPlusFiveMinMs);
+          setHeadCutoffTimestamp(
+            Math.min(Date.now(), modelReleaseTimestamp + dayPlusFiveMinMs),
+          );
           setModelSort("created_at");
           setModelOrder("desc");
           document.documentElement.scrollTo({ top: 0, behavior: "smooth" });
