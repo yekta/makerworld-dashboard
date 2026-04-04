@@ -173,7 +173,7 @@ function ModelCardContent(props: TModelCardProps) {
         />
       </div>
       <ModelStatsChart className="h-16" {...props} />
-      <div className="w-full z-0 mt-auto flex justify-start pt-[0.09375rem] relative">
+      <div className="w-full z-0 mt-auto flex justify-start relative">
         <Footer {...props} />
       </div>
     </div>
@@ -189,6 +189,19 @@ function getModelUrl(
 const placeholderTimestamp = new Date("2025-01-01T00:00:00Z").getTime();
 
 function Footer({ model, metadata, isPlaceholder }: TModelCardProps) {
+  return (
+    <div className="w-full flex justify-start items-center gap-2.5 pl-0.5 pr-2 pb-px">
+      <ImageSection
+        {...(isPlaceholder ? { isPlaceholder: true } : { model, metadata })}
+      />
+      <BottomInfoRow
+        {...(isPlaceholder ? { isPlaceholder: true } : { model, metadata })}
+      />
+    </div>
+  );
+}
+
+function BottomInfoRow({ model, isPlaceholder }: TModelCardProps) {
   const { timeMachineTimestamp } = useTimeMachine();
   const now = useNow();
   const adjustedNow = timeMachineTimestamp
@@ -197,6 +210,7 @@ function Footer({ model, metadata, isPlaceholder }: TModelCardProps) {
   const sinceCreation = !isPlaceholder
     ? adjustedNow - model.model_created_at
     : 24 * 60 * 60 * 1000;
+
   const printsPerDay = !isPlaceholder
     ? model.stats.current.prints / (sinceCreation / (1000 * 60 * 60 * 24))
     : 10;
@@ -228,66 +242,61 @@ function Footer({ model, metadata, isPlaceholder }: TModelCardProps) {
   );
 
   return (
-    <div className="w-full flex justify-center items-end gap-2">
-      <div className="flex-1 min-w-0 flex flex-col items-start pb-px">
-        <div className="w-full flex justify-start flex-wrap">
-          <p className="px-1 shrink min-w-0 font-light overflow-hidden overflow-ellipsis text-xs text-muted-foreground group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-most-foreground group-data-placeholder:text-transparent">
-            <span className="font-medium">
-              <PrintIcon className="inline-block size-2.75 mb-px mr-[0.2ch]" />
-              {printsPerDay.toLocaleString(appLocale, {
-                maximumFractionDigits: 1,
-              })}
-            </span>
-            {" daily"}
-            <span className="text-muted-most-foreground group-data-placeholder:text-transparent px-[0.75ch]">
-              {"|"}
-            </span>
-            <span className="font-medium">
-              <RocketIcon className="inline-block size-2.75 mb-px mr-[0.2ch]" />
-              {boostsPerDay.toLocaleString(appLocale, {
-                maximumFractionDigits: 1,
-              })}
-            </span>
-            {" daily"}
-            <span className="text-muted-most-foreground group-data-placeholder:text-transparent px-[0.75ch]">
-              {"|"}
-            </span>
-            <span className="font-medium">
-              <RocketIcon className="inline-block size-2.75 mb-px mr-[0.2ch]" />
-              {boostRatePercentage.toLocaleString(appLocale, {
-                maximumFractionDigits: 1,
-              })}
-              {"%"}
-            </span>
-            <span className="text-muted-most-foreground group-data-placeholder:text-transparent px-[0.75ch]">
-              {"|"}
-            </span>
-            <span className="font-medium">
-              $
-              {isPlaceholder
-                ? "300"
-                : model.stats.current.points_exclusive_default !== null &&
-                    model.stats.current.points_exclusive_cn !== null
-                  ? exclusivePointsToUsd(
-                      model.stats.current.points_exclusive_default +
-                        model.stats.current.points_exclusive_cn,
-                    ).toLocaleString(appLocale, {
-                      maximumFractionDigits: 0,
-                    })
-                  : "N/A"}
-            </span>
-          </p>
-        </div>
-        <DateTime
-          releaseDate={releaseDate}
-          timeAgoString={timeAgoString}
-          modelReleaseTimestamp={
-            !isPlaceholder ? model.model_created_at : placeholderTimestamp
-          }
-        />
+    <div className="flex-1 min-w-0 flex flex-col items-start">
+      <div className="w-full flex justify-start flex-wrap">
+        <p className="shrink min-w-0 font-light overflow-hidden overflow-ellipsis text-xs text-muted-foreground group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-most-foreground group-data-placeholder:text-transparent">
+          <span className="font-medium">
+            <PrintIcon className="inline-block size-2.75 mb-px mr-[0.2ch]" />
+            {printsPerDay.toLocaleString(appLocale, {
+              maximumFractionDigits: 1,
+            })}
+          </span>
+          {" daily"}
+          <span className="text-muted-most-foreground group-data-placeholder:text-transparent px-[0.75ch]">
+            {"|"}
+          </span>
+          <span className="font-medium">
+            <RocketIcon className="inline-block size-2.75 mb-px mr-[0.2ch]" />
+            {boostsPerDay.toLocaleString(appLocale, {
+              maximumFractionDigits: 1,
+            })}
+          </span>
+          {" daily"}
+          <span className="text-muted-most-foreground group-data-placeholder:text-transparent px-[0.75ch]">
+            {"|"}
+          </span>
+          <span className="font-medium">
+            <RocketIcon className="inline-block size-2.75 mb-px mr-[0.2ch]" />
+            {boostRatePercentage.toLocaleString(appLocale, {
+              maximumFractionDigits: 1,
+            })}
+            {"%"}
+          </span>
+          <span className="text-muted-most-foreground group-data-placeholder:text-transparent px-[0.75ch]">
+            {"|"}
+          </span>
+          <span className="font-medium">
+            $
+            {isPlaceholder
+              ? "300"
+              : model.stats.current.points_exclusive_default !== null &&
+                  model.stats.current.points_exclusive_cn !== null
+                ? exclusivePointsToUsd(
+                    model.stats.current.points_exclusive_default +
+                      model.stats.current.points_exclusive_cn,
+                  ).toLocaleString(appLocale, {
+                    maximumFractionDigits: 0,
+                  })
+                : "N/A"}
+          </span>
+        </p>
       </div>
-      <ImageSection
-        {...(isPlaceholder ? { isPlaceholder: true } : { model, metadata })}
+      <DateTime
+        releaseDate={releaseDate}
+        timeAgoString={timeAgoString}
+        modelReleaseTimestamp={
+          !isPlaceholder ? model.model_created_at : placeholderTimestamp
+        }
       />
     </div>
   );
@@ -319,7 +328,7 @@ function DateTime({
           setModelOrder("desc");
           document.documentElement.scrollTo({ top: 0, behavior: "smooth" });
         }}
-        className="shrink px-1 ring ring-foreground/15 hover:ring-warning/25 active:ring-warning/25 text-left group-data-placeholder:hover:text-transparent group-data-placeholder:ring-0 group-data-placeholder:hover:ring-0 group-data-placeholder:active:ring-0 group-data-placeholder:active:text-transparent hover:text-warning hover:bg-warning/15 active:text-warning active:bg-warning/15 rounded bg-border mt-0.5 min-w-0 font-light overflow-hidden overflow-ellipsis text-xs text-muted-foreground group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-most-foreground group-data-placeholder:active:bg-muted-most-foreground group-data-placeholder:hover:bg-muted-most-foreground group-data-placeholder:text-transparent"
+        className="shrink ring ring-foreground/15 hover:ring-warning/25 active:ring-warning/25 text-left group-data-placeholder:hover:text-transparent group-data-placeholder:ring-0 group-data-placeholder:hover:ring-0 group-data-placeholder:active:ring-0 group-data-placeholder:active:text-transparent hover:text-warning hover:bg-warning/15 active:text-warning active:bg-warning/15 rounded bg-border mt-0.5 min-w-0 font-light overflow-hidden overflow-ellipsis text-xs text-muted-foreground group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-most-foreground group-data-placeholder:active:bg-muted-most-foreground group-data-placeholder:hover:bg-muted-most-foreground group-data-placeholder:text-transparent"
       >
         {timeAgoString}
         <span className="text-muted-most-foreground group-data-placeholder:text-transparent px-[0.75ch] font-light text-xs">
@@ -331,7 +340,7 @@ function DateTime({
   }
 
   return (
-    <p className="shrink px-1 mt-0.5 min-w-0 font-light overflow-hidden overflow-ellipsis text-xs text-muted-foreground group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-most-foreground group-data-placeholder:text-transparent">
+    <p className="shrink mt-0.5 min-w-0 font-light overflow-hidden overflow-ellipsis text-xs text-muted-foreground group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-most-foreground group-data-placeholder:text-transparent">
       {timeAgoString}
       <span className="text-muted-most-foreground group-data-placeholder:text-transparent px-[0.75ch] font-light text-xs">
         {"|"}
@@ -344,7 +353,9 @@ function DateTime({
 function ImageSection({ model, isPlaceholder }: TModelCardProps) {
   if (isPlaceholder) {
     return (
-      <div className="w-14 group/link aspect-4/3 border border-border rounded-br-[0.9rem] -mr-2 relative outline-0 transition duration-150 active:ring-[1.5px] hover:ring-[1.5px] ring-0 focus-visible:ring-[1.5px] ring-foreground/50 -mb-2 bg-border rounded-tl-lg overflow-hidden group-data-placeholder:animate-pulse" />
+      <div className="border border-border group/link relative outline-0 transition duration-150 active:ring-[1.5px] hover:ring-[1.5px] ring-0 focus-visible:ring-[1.5px] ring-foreground/50 bg-border rounded-[5px] overflow-hidden group-data-placeholder:animate-pulse">
+        <div className="h-8.5 w-auto shrink-0 aspect-4/3 bg-border relative z-0" />
+      </div>
     );
   }
 
@@ -352,15 +363,14 @@ function ImageSection({ model, isPlaceholder }: TModelCardProps) {
     <Link
       href={getModelUrl(model)}
       target="_blank"
-      className="w-14 group/link aspect-4/3 border border-border rounded-br-[0.9rem] -mr-2 relative outline-0 transition duration-150 active:ring-[1.5px] hover:ring-[1.5px] ring-0 focus-visible:ring-[1.5px] ring-foreground/50 -mb-2 bg-border rounded-tl-lg overflow-hidden group-data-placeholder:animate-pulse"
+      className="border border-border group/link relative outline-0 transition duration-150 active:ring-[1.5px] hover:ring-[1.5px] ring-0 focus-visible:ring-[1.5px] ring-foreground/50 bg-border rounded-[5px] overflow-hidden group-data-placeholder:animate-pulse"
     >
       <Image
         src={model.image}
         alt={model.title}
         width={1916}
         height={1437}
-        className="w-full shrink-0 h-auto bg-border relative z-0"
-        sizes="56px"
+        className="h-8.5 w-auto shrink-0 aspect-4/3 bg-border relative z-0"
       />
       <div className="w-full group/link z-10 overflow-hidden opacity-0 group-focus-visible/link:opacity-100 group-active/link:opacity-100 group-hover/link:opacity-100 duration-150 flex items-center justify-center h-full absolute left-0 top-0 bg-background/75">
         <ExternalLink className="size-5 translate-y-3 group-active/link:opacity-100 group-active/link:translate-y-0 group-focus-visible/link:opacity-100 group-focus-visible/link:translate-y-0 group opacity-0 group-hover/link:opacity-100 duration-150 group-hover/link:translate-y-0 transition" />
