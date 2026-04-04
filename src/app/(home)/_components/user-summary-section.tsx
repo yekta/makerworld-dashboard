@@ -195,7 +195,7 @@ function Section({
                 {data?.pointsAndWallet.wallet_total_income === null
                   ? "N/A"
                   : kmbtFormatter.format(
-                      data?.pointsAndWallet.wallet_total_income || 0,
+                      data?.pointsAndWallet.wallet_total_income || 10101,
                     )}
               </span>
               <span className="text-muted-most-foreground px-[0.75ch] group-data-placeholder:text-transparent">
@@ -248,7 +248,7 @@ function DatesSpan({
         timestamp: !isPlaceholder ? timestamp : placeholderTimestamp,
         now: adjustedNow,
         dontPad: true,
-        fullUnitText: true,
+        fullUnitText: false,
       }),
       releaseDate: format(
         new Date(!isPlaceholder ? timestamp : placeholderTimestamp),

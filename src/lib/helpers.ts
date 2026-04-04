@@ -19,7 +19,7 @@ export function timeAgo({
 
   if (secondsAgo < minute) {
     return `${fullUnitText ? "" : dontPad ? "0m " : "00m "}${Math.floor(
-      secondsAgo
+      secondsAgo,
     )
       .toString()
       .padStart(dontPad ? 0 : 2, "0")}${getUnitText({
@@ -68,7 +68,7 @@ export function timeAgo({
     const remainingHours = Math.floor((secondsAgo % day) / hour);
     return `${days.toString().padStart(dontPad ? 0 : 2, "0")}${getUnitText({
       value: days,
-      unit: "d",
+      unit: "D",
       fullUnitText,
       addComma: true,
     })} ${remainingHours
@@ -91,9 +91,9 @@ export function timeAgo({
     })} ${remainingDays.toString().padStart(dontPad ? 0 : 2, "0")}${getUnitText(
       {
         value: remainingDays,
-        unit: "d",
+        unit: "D",
         fullUnitText,
-      }
+      },
     )}`;
   }
 
@@ -109,7 +109,7 @@ export function timeAgo({
       value: remainingMonths,
       unit: "M",
       fullUnitText,
-    }
+    },
   )}`;
 }
 
@@ -153,5 +153,5 @@ function getUnitText({
     return newUnit + (addComma ? "," : "");
   }
 
-  return unit;
+  return unit + (addComma ? "," : "");
 }
