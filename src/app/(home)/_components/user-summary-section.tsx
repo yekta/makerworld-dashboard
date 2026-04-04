@@ -39,6 +39,11 @@ function Section({
 }: {
   data: AppRouterQueryResult<AppRouterOutputs["myUsers"]["getStats"]>["data"];
 }) {
+  const kmbtFormatter = new Intl.NumberFormat("en", {
+    notation: "compact",
+    compactDisplay: "short", // uses K, M, B…
+    maximumSignificantDigits: 3,
+  });
   const { timeMachineTimestamp } = useTimeMachine();
   const { projectedMonthlyUSDRevenue, realMonthlyUSDRevenue } = useMemo(() => {
     if (!data)
@@ -182,6 +187,17 @@ function Section({
                 isPlaceholder={!data}
                 timestamp={veryFirstModelCreationTimestamp}
               />
+              <span className="text-muted-most-foreground px-[0.75ch] group-data-placeholder:text-transparent">
+                {"|"}
+              </span>
+              <span>
+                $
+                {data?.pointsAndWallet.wallet_total_income === null
+                  ? "N/A"
+                  : kmbtFormatter.format(
+                      data?.pointsAndWallet.wallet_total_income || 0,
+                    )}
+              </span>
               <span className="text-muted-most-foreground px-[0.75ch] group-data-placeholder:text-transparent">
                 {"|"}
               </span>

@@ -156,6 +156,8 @@ export const TStatResponseSchema = z.object({
     wallet_currency: z.string().or(z.null()),
     wallet_balance: z.number().or(z.null()),
     wallet_balance_pending: z.number().or(z.null()),
+    wallet_total_income: z.number().or(z.null()),
+    wallet_total_transferred_income: z.number().or(z.null()),
     snapshotted_at: z.number().or(z.null()),
   }),
   redemptions: z.array(
