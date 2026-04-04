@@ -6,10 +6,10 @@ import { useNow } from "@/components/providers/now-provider";
 import { useStats } from "@/components/providers/stats-provider";
 import { useTimeMachine } from "@/components/providers/time-machine-provider";
 import { appLocale } from "@/lib/constants";
-import { timeAgo } from "@/lib/helpers";
 import { AppRouterOutputs, AppRouterQueryResult } from "@/server/trpc/api/root";
 import { format } from "date-fns";
 import { BoxIcon, DownloadIcon, RocketIcon, UsersIcon } from "lucide-react";
+import { Duration } from "luxon";
 import { useMemo } from "react";
 
 const placeholderTimestamp = Date.now() - 1000 * 60 * 60 * 24 * 30;
@@ -244,12 +244,15 @@ function DatesSpan({
     : now;
   const { timeAgoString, releaseDate } = useMemo(
     () => ({
-      timeAgoString: timeAgo({
-        timestamp: !isPlaceholder ? timestamp : placeholderTimestamp,
-        now: adjustedNow,
-        dontPad: true,
-        fullUnitText: false,
-      }),
+      timeAgoString: Duration.fromMillis(
+        adjustedNow - (!isPlaceholder ? timestamp : placeholderTimestamp),
+      )
+        .shiftTo("year", "months", "days")
+        .toHuman({
+          showZeros: false,
+          unitDisplay: "narrow",
+          maximumFractionDigits: 0,
+        }),
       releaseDate: format(
         new Date(!isPlaceholder ? timestamp : placeholderTimestamp),
         "yyyy-MM-dd",
