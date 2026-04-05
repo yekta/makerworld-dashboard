@@ -256,8 +256,10 @@ function BottomInfoRow({ model, metadata, isPlaceholder }: TModelCardProps) {
     if (
       model.stats.current.points_exclusive_default === null ||
       model.stats.current.points_exclusive_cn === null
-    )
+    ) {
       return "N/A";
+    }
+
     const modelPoints =
       model.stats.current.points_exclusive_default +
       model.stats.current.points_exclusive_cn;
@@ -265,9 +267,22 @@ function BottomInfoRow({ model, metadata, isPlaceholder }: TModelCardProps) {
       ? Math.min(now, timeMachineTimestamp)
       : now;
     const sinceCreationMs = adjustedNow - model.model_created_at;
-    const incomePerMs = modelPoints / sinceCreationMs;
-    const incomePerMonth = incomePerMs * 1000 * 60 * 60 * 24 * 30;
-    return kmbtFormatter.format(exclusivePointsToUsd(incomePerMonth));
+    const modelAdjustedPoints =
+      (modelPoints / sinceCreationMs) * (sinceCreationMs + 1000 * 60 * 60 * 24);
+
+    let printsLastWeek = model.stats["delta_0-168h"].prints;
+    const isModelWeekOld = sinceCreationMs >= 7 * 24 * 60 * 60 * 1000;
+    if (!isModelWeekOld) {
+      printsLastWeek = model.stats.current.prints;
+    }
+
+    const printRatioOfLastWeek = printsLastWeek / model.stats.current.prints;
+    const pointIncomeForecastPerMonth =
+      printRatioOfLastWeek * modelAdjustedPoints * (30 / 7);
+
+    return kmbtFormatter.format(
+      exclusivePointsToUsd(pointIncomeForecastPerMonth),
+    );
   }, [model]);
 
   return (
