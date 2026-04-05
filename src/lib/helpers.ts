@@ -137,7 +137,7 @@ function getUnitText({
       case "h":
         newUnit = value === 1 ? " hour" : " hours";
         break;
-      case "d":
+      case "D":
         newUnit = value === 1 ? " day" : " days";
         break;
       case "M":
