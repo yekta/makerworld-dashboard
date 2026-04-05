@@ -1,3 +1,29 @@
+import { Duration } from "luxon";
+
+export function trimDuration({
+  duration,
+  precision,
+}: {
+  duration: Duration;
+  precision: number;
+}) {
+  const units = [
+    "years",
+    "months",
+    "days",
+    "hours",
+    "minutes",
+    "seconds",
+  ] as const;
+  const nonZero = units.filter((u) => duration.get(u) > 0);
+  const keep = new Set(nonZero.slice(0, precision));
+  return duration.set(
+    Object.fromEntries(
+      units.map((u) => [u, keep.has(u) ? duration.get(u) : 0]),
+    ),
+  );
+}
+
 export function timeAgo({
   timestamp,
   now = Date.now(),

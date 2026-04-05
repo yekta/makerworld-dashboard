@@ -6,6 +6,7 @@ import { useNow } from "@/components/providers/now-provider";
 import { useStats } from "@/components/providers/stats-provider";
 import { useTimeMachine } from "@/components/providers/time-machine-provider";
 import { appLocale } from "@/lib/constants";
+import { trimDuration } from "@/lib/helpers";
 import { AppRouterOutputs, AppRouterQueryResult } from "@/server/trpc/api/root";
 import { format } from "date-fns";
 import { BoxIcon, DownloadIcon, RocketIcon, UsersIcon } from "lucide-react";
@@ -39,6 +40,7 @@ function Section({
 }: {
   data: AppRouterQueryResult<AppRouterOutputs["myUsers"]["getStats"]>["data"];
 }) {
+  const now = useNow();
   const kmbtFormatter = new Intl.NumberFormat("en", {
     notation: "compact",
     compactDisplay: "short", // uses K, M, B…
@@ -96,6 +98,20 @@ function Section({
     ? 5
     : (data.user.stats.current.boosts / (data.user.stats.current.prints || 1)) *
       100;
+
+  const incomePerMonth = useMemo(() => {
+    if (!data) return kmbtFormatter.format(1011);
+    if (data.pointsAndWallet.wallet_total_income === null) return "N/A";
+    const firstModelCreationTimestamp = veryFirstModelCreationTimestamp;
+    const adjustedNow = timeMachineTimestamp
+      ? Math.min(now, timeMachineTimestamp)
+      : now;
+    const sinceFirstModelCreationMs = adjustedNow - firstModelCreationTimestamp;
+    const incomePerMs =
+      data.pointsAndWallet.wallet_total_income / sinceFirstModelCreationMs;
+    const incomePerMonth = incomePerMs * 1000 * 60 * 60 * 24 * 30;
+    return kmbtFormatter.format(incomePerMonth);
+  }, [data]);
 
   return (
     <div className="w-full flex flex-col">
@@ -191,6 +207,15 @@ function Section({
                 {"|"}
               </span>
               <span>
+                <span className="text-foreground font-medium group-data-placeholder:text-transparent">
+                  ${incomePerMonth}
+                </span>
+                /mo
+              </span>
+              <span className="text-muted-most-foreground px-[0.75ch] group-data-placeholder:text-transparent">
+                {"|"}
+              </span>
+              <span className="text-foreground font-medium group-data-placeholder:text-transparent">
                 $
                 {data?.pointsAndWallet.wallet_total_income === null
                   ? "N/A"
@@ -244,15 +269,16 @@ function DatesSpan({
     : now;
   const { timeAgoString, releaseDate } = useMemo(
     () => ({
-      timeAgoString: Duration.fromMillis(
-        adjustedNow - (!isPlaceholder ? timestamp : placeholderTimestamp),
-      )
-        .shiftTo("year", "months", "days")
-        .toHuman({
-          showZeros: false,
-          unitDisplay: "narrow",
-          maximumFractionDigits: 0,
-        }),
+      timeAgoString: trimDuration({
+        duration: Duration.fromMillis(
+          adjustedNow - (!isPlaceholder ? timestamp : placeholderTimestamp),
+        ).shiftTo("years", "months", "days", "hours", "minutes", "seconds"),
+        precision: 2,
+      }).toHuman({
+        showZeros: false,
+        unitDisplay: "narrow",
+        maximumFractionDigits: 0,
+      }),
       releaseDate: format(
         new Date(!isPlaceholder ? timestamp : placeholderTimestamp),
         "yyyy-MM-dd",

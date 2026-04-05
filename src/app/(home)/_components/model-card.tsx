@@ -13,7 +13,7 @@ import { useTimeMachine } from "@/components/providers/time-machine-provider";
 import Stat from "@/components/stat";
 import { exclusivePointsToUsd } from "@/lib/calculate-points";
 import { appLocale } from "@/lib/constants";
-import { timeAgo } from "@/lib/helpers";
+import { timeAgo, trimDuration } from "@/lib/helpers";
 import { AppRouterOutputs } from "@/server/trpc/api/root";
 import { format } from "date-fns";
 import {
@@ -22,6 +22,7 @@ import {
   RocketIcon,
   ThumbsUpIcon,
 } from "lucide-react";
+import { Duration } from "luxon";
 import Image from "next/image";
 import Link from "next/link";
 import { useMemo } from "react";
@@ -201,7 +202,7 @@ function Footer({ model, metadata, isPlaceholder }: TModelCardProps) {
   );
 }
 
-function BottomInfoRow({ model, isPlaceholder }: TModelCardProps) {
+function BottomInfoRow({ model, metadata, isPlaceholder }: TModelCardProps) {
   const { timeMachineTimestamp } = useTimeMachine();
   const now = useNow();
   const adjustedNow = timeMachineTimestamp
@@ -221,15 +222,24 @@ function BottomInfoRow({ model, isPlaceholder }: TModelCardProps) {
     ? (model.stats.current.boosts / (model.stats.current.prints || 1)) * 100
     : 5;
 
+  const kmbtFormatter = new Intl.NumberFormat("en", {
+    notation: "compact",
+    compactDisplay: "short", // uses K, M, B…
+    maximumSignificantDigits: 3,
+  });
+
   const { timeAgoString, releaseDate } = useMemo(
     () => ({
-      timeAgoString: timeAgo({
-        timestamp: !isPlaceholder
-          ? model.model_created_at
-          : placeholderTimestamp,
-        now: adjustedNow,
-        dontPad: true,
-        fullUnitText: true,
+      timeAgoString: trimDuration({
+        duration: Duration.fromMillis(
+          adjustedNow -
+            (!isPlaceholder ? model.model_created_at : placeholderTimestamp),
+        ).shiftTo("years", "months", "days", "hours", "minutes", "seconds"),
+        precision: 2,
+      }).toHuman({
+        showZeros: false,
+        unitDisplay: "narrow",
+        maximumFractionDigits: 0,
       }),
       releaseDate: format(
         new Date(
@@ -241,10 +251,29 @@ function BottomInfoRow({ model, isPlaceholder }: TModelCardProps) {
     [isPlaceholder, model, adjustedNow],
   );
 
+  const modelIncomePerMonth = useMemo(() => {
+    if (isPlaceholder) return "300";
+    if (
+      model.stats.current.points_exclusive_default === null ||
+      model.stats.current.points_exclusive_cn === null
+    )
+      return "N/A";
+    const modelPoints =
+      model.stats.current.points_exclusive_default +
+      model.stats.current.points_exclusive_cn;
+    const adjustedNow = timeMachineTimestamp
+      ? Math.min(now, timeMachineTimestamp)
+      : now;
+    const sinceCreationMs = adjustedNow - model.model_created_at;
+    const incomePerMs = modelPoints / sinceCreationMs;
+    const incomePerMonth = incomePerMs * 1000 * 60 * 60 * 24 * 30;
+    return kmbtFormatter.format(exclusivePointsToUsd(incomePerMonth));
+  }, [model]);
+
   return (
     <div className="flex-1 min-w-0 flex flex-col items-start">
       <div className="w-full flex justify-start flex-wrap">
-        <p className="shrink min-w-0 font-light overflow-hidden overflow-ellipsis text-xs text-muted-foreground group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-most-foreground group-data-placeholder:text-transparent">
+        <p className="shrink px-0.5 -ml-0.5 min-w-0 font-light overflow-hidden overflow-ellipsis text-xs text-muted-foreground group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-most-foreground group-data-placeholder:text-transparent">
           <span className="font-medium">
             <PrintIcon className="inline-block size-2.75 mb-px mr-[0.2ch]" />
             {printsPerDay.toLocaleString(appLocale, {
@@ -275,23 +304,14 @@ function BottomInfoRow({ model, isPlaceholder }: TModelCardProps) {
           <span className="text-muted-most-foreground group-data-placeholder:text-transparent px-[0.75ch]">
             {"|"}
           </span>
-          <span className="font-medium">
-            $
-            {isPlaceholder
-              ? "300"
-              : model.stats.current.points_exclusive_default !== null &&
-                  model.stats.current.points_exclusive_cn !== null
-                ? exclusivePointsToUsd(
-                    model.stats.current.points_exclusive_default +
-                      model.stats.current.points_exclusive_cn,
-                  ).toLocaleString(appLocale, {
-                    maximumFractionDigits: 0,
-                  })
-                : "N/A"}
+          <span>
+            <span className="font-medium">${modelIncomePerMonth}</span>
+            /mo
           </span>
         </p>
       </div>
       <DateTime
+        {...(isPlaceholder ? { isPlaceholder: true } : { model, metadata })}
         releaseDate={releaseDate}
         timeAgoString={timeAgoString}
         modelReleaseTimestamp={
@@ -305,6 +325,8 @@ function BottomInfoRow({ model, isPlaceholder }: TModelCardProps) {
 const dayPlusFiveMinMs = 1000 * 60 * 60 * 24 + 1000 * 60 * 5;
 
 function DateTime({
+  isPlaceholder,
+  model,
   releaseDate,
   modelReleaseTimestamp,
   timeAgoString,
@@ -312,41 +334,57 @@ function DateTime({
   releaseDate: string;
   modelReleaseTimestamp: number;
   timeAgoString: string;
-}) {
+} & TModelCardProps) {
   const { isOpen, setHeadCutoffTimestamp } = useTimeMachine();
   const [, setModelSort] = useModelSort();
   const [, setModelOrder] = useModelOrder();
 
-  if (isOpen) {
-    return (
-      <button
-        onClick={() => {
+  const kmbtFormatter = new Intl.NumberFormat("en", {
+    notation: "compact",
+    compactDisplay: "short", // uses K, M, B…
+    maximumSignificantDigits: 3,
+  });
+
+  const El = isOpen ? "button" : "p";
+
+  return (
+    <El
+      {...(isOpen && {
+        onClick: () => {
           setHeadCutoffTimestamp(
             Math.min(Date.now(), modelReleaseTimestamp + dayPlusFiveMinMs),
           );
           setModelSort("created_at");
           setModelOrder("desc");
           document.documentElement.scrollTo({ top: 0, behavior: "smooth" });
-        }}
-        className="shrink ring ring-foreground/15 hover:ring-warning/25 active:ring-warning/25 text-left group-data-placeholder:hover:text-transparent group-data-placeholder:ring-0 group-data-placeholder:hover:ring-0 group-data-placeholder:active:ring-0 group-data-placeholder:active:text-transparent hover:text-warning hover:bg-warning/15 active:text-warning active:bg-warning/15 rounded bg-border mt-0.5 min-w-0 font-light overflow-hidden overflow-ellipsis text-xs text-muted-foreground group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-most-foreground group-data-placeholder:active:bg-muted-most-foreground group-data-placeholder:hover:bg-muted-most-foreground group-data-placeholder:text-transparent"
-      >
-        {timeAgoString}
-        <span className="text-muted-most-foreground group-data-placeholder:text-transparent px-[0.75ch] font-light text-xs">
-          {"|"}
-        </span>
-        {releaseDate}
-      </button>
-    );
-  }
-
-  return (
-    <p className="shrink mt-0.5 min-w-0 font-light overflow-hidden overflow-ellipsis text-xs text-muted-foreground group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-most-foreground group-data-placeholder:text-transparent">
+        },
+      })}
+      data-open={isOpen ? true : undefined}
+      className="shrink px-0.5 -ml-0.5 data-open:ring data-open:ring-foreground/15 data-open:hover:ring-warning/25 data-open:active:ring-warning/25 text-left group-data-placeholder:hover:text-transparent data-open:group-data-placeholder:hover:text-transparent group-data-placeholder:ring-0 data-open:group-data-placeholder:ring-0 group-data-placeholder:hover:ring-0 data-open:group-data-placeholder:hover:ring-0 group-data-placeholder:active:ring-0 data-open:group-data-placeholder:active:ring-0 group-data-placeholder:active:text-transparent data-open:group-data-placeholder:active:text-transparent data-open:hover:text-warning data-open:hover:bg-warning/15 data-open:active:text-warning data-open:active:bg-warning/15 rounded data-open:bg-border mt-0.5 min-w-0 font-light overflow-hidden overflow-ellipsis text-xs text-muted-foreground group-data-placeholder:rounded data-open:group-data-placeholder:rounded group-data-placeholder:animate-pulse data-open:group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-most-foreground data-open:group-data-placeholder:bg-muted-most-foreground group-data-placeholder:active:bg-muted-most-foreground data-open:group-data-placeholder:active:bg-muted-most-foreground data-open:group-data-placeholder:hover:bg-muted-most-foreground group-data-placeholder:hover:bg-muted-most-foreground data-open:group-data-placeholder:text-transparent group-data-placeholder:text-transparent"
+    >
       {timeAgoString}
       <span className="text-muted-most-foreground group-data-placeholder:text-transparent px-[0.75ch] font-light text-xs">
         {"|"}
       </span>
       {releaseDate}
-    </p>
+      <span className="text-muted-most-foreground group-data-placeholder:text-transparent px-[0.75ch]">
+        {"|"}
+      </span>
+      <span>
+        $
+        {isPlaceholder
+          ? "300"
+          : model.stats.current.points_exclusive_default !== null &&
+              model.stats.current.points_exclusive_cn !== null
+            ? kmbtFormatter.format(
+                exclusivePointsToUsd(
+                  model.stats.current.points_exclusive_default +
+                    model.stats.current.points_exclusive_cn,
+                ),
+              )
+            : "N/A"}
+      </span>
+    </El>
   );
 }
 

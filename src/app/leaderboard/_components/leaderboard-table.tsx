@@ -41,6 +41,7 @@ import { TLeaderboardEntry } from "@/server/trpc/api/leaderboard/types";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import { Duration } from "luxon";
 import { AppRouterOutputs } from "@/server/trpc/api/root";
+import { trimDuration } from "@/lib/helpers";
 
 type TRow = TLeaderboardEntry & {
   rank: number;
@@ -427,7 +428,17 @@ export default function LeaderboardTable({
             >
               {val === 0
                 ? "-----"
-                : Duration.fromMillis(val).shiftTo("year", "months").toHuman({
+                : trimDuration({
+                    duration: Duration.fromMillis(val).shiftTo(
+                      "years",
+                      "months",
+                      "days",
+                      "hours",
+                      "minutes",
+                      "seconds",
+                    ),
+                    precision: 2,
+                  }).toHuman({
                     showZeros: false,
                     unitDisplay: "narrow",
                     maximumFractionDigits: 0,
