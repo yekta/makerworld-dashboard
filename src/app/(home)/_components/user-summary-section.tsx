@@ -41,12 +41,15 @@ function Section({
   data: AppRouterQueryResult<AppRouterOutputs["myUsers"]["getStats"]>["data"];
 }) {
   const now = useNow();
+  const { timeMachineTimestamp } = useTimeMachine();
+  const adjustedNow = timeMachineTimestamp
+    ? Math.min(now, timeMachineTimestamp)
+    : now;
   const kmbtFormatter = new Intl.NumberFormat("en", {
     notation: "compact",
     compactDisplay: "short", // uses K, M, B…
     maximumSignificantDigits: 3,
   });
-  const { timeMachineTimestamp } = useTimeMachine();
   const { projectedMonthlyUSDRevenue, realMonthlyUSDRevenue } = useMemo(() => {
     if (!data)
       return {
@@ -102,16 +105,13 @@ function Section({
   const incomePerMonth = useMemo(() => {
     if (!data) return kmbtFormatter.format(1011);
     if (data.pointsAndWallet.wallet_total_income === null) return "N/A";
-    const firstModelCreationTimestamp = veryFirstModelCreationTimestamp;
-    const adjustedNow = timeMachineTimestamp
-      ? Math.min(now, timeMachineTimestamp)
-      : now;
-    const sinceFirstModelCreationMs = adjustedNow - firstModelCreationTimestamp;
+    const sinceFirstModelCreationMs =
+      adjustedNow - veryFirstModelCreationTimestamp;
     const incomePerMs =
       data.pointsAndWallet.wallet_total_income / sinceFirstModelCreationMs;
     const incomePerMonth = incomePerMs * 1000 * 60 * 60 * 24 * 30;
     return kmbtFormatter.format(incomePerMonth);
-  }, [data]);
+  }, [data, adjustedNow, veryFirstModelCreationTimestamp]);
 
   return (
     <div className="w-full flex flex-col">
@@ -220,7 +220,7 @@ function Section({
                 {data?.pointsAndWallet.wallet_total_income === null
                   ? "N/A"
                   : kmbtFormatter.format(
-                      data?.pointsAndWallet.wallet_total_income || 10101,
+                      data ? data.pointsAndWallet.wallet_total_income : 10101,
                     )}
               </span>
               <span className="text-muted-most-foreground px-[0.75ch] group-data-placeholder:text-transparent">
