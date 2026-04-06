@@ -267,8 +267,6 @@ function BottomInfoRow({ model, metadata, isPlaceholder }: TModelCardProps) {
       ? Math.min(now, timeMachineTimestamp)
       : now;
     const sinceCreationMs = adjustedNow - model.model_created_at;
-    const modelAdjustedPoints =
-      (modelPoints / sinceCreationMs) * (sinceCreationMs + 1000 * 60 * 60 * 24);
 
     let printsLastWeek = model.stats["delta_0-168h"].prints;
     const isModelWeekOld = sinceCreationMs >= 7 * 24 * 60 * 60 * 1000;
@@ -278,7 +276,7 @@ function BottomInfoRow({ model, metadata, isPlaceholder }: TModelCardProps) {
 
     const printRatioOfLastWeek = printsLastWeek / model.stats.current.prints;
     const pointIncomeForecastPerMonth =
-      printRatioOfLastWeek * modelAdjustedPoints * (30 / 7);
+      printRatioOfLastWeek * modelPoints * (30 / 7);
 
     return kmbtFormatter.format(
       exclusivePointsToUsd(pointIncomeForecastPerMonth),
