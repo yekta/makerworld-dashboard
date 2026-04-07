@@ -13,7 +13,7 @@ import { useTimeMachine } from "@/components/providers/time-machine-provider";
 import Stat from "@/components/stat";
 import { exclusivePointsToUsd } from "@/lib/calculate-points";
 import { appLocale } from "@/lib/constants";
-import { timeAgo, trimDuration } from "@/lib/helpers";
+import { trimDuration } from "@/lib/helpers";
 import { AppRouterOutputs } from "@/server/trpc/api/root";
 import { format } from "date-fns";
 import {
