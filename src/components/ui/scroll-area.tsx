@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area";
-import { cn } from "@/lib/utils";
+import { cn } from "@/src/lib/utils";
 
 function ScrollArea({
   className,
@@ -24,7 +24,7 @@ function ScrollArea({
     <ScrollAreaPrimitive.Root
       className={cn(
         "group/root relative flex w-full flex-1 flex-col overflow-hidden *:data-radix-scroll-area-viewport:flex! data-[orientation=vertical]:*:data-radix-scroll-area-viewport:flex-col!",
-        className
+        className,
       )}
       data-orientation={orientation}
       tabIndex={noFocusOnViewport ? -1 : undefined}
@@ -34,7 +34,7 @@ function ScrollArea({
         ref={viewportRef}
         className={cn(
           "focus:outline-primary/50 w-full flex-1 rounded-[inherit] focus:outline-1 [&>div]:group-data-[orientation=horizontal]/root:flex! [&>div]:group-data-[orientation=vertical]/root:flex! [&>div]:group-data-[orientation=vertical]/root:flex-col!",
-          classNameViewport
+          classNameViewport,
         )}
         tabIndex={noFocusOnViewport ? -1 : undefined}
       >
@@ -60,7 +60,7 @@ function ScrollBar({
           "h-full w-4 border-l border-l-transparent p-px pl-[calc(1rem-2px-5px)] before:absolute before:top-0 before:right-0 before:h-full before:w-[11px] active:pl-[calc(1rem-2px-9px)] has-hover:hover:pl-[calc(1rem-2px-9px)]",
         orientation === "horizontal" &&
           "h-4 flex-col border-t border-t-transparent p-px pt-[calc(1rem-2px-5px)] before:absolute before:bottom-0 before:left-0 before:h-[11px] before:w-full active:pt-[calc(1rem-2px-9px)] has-hover:hover:pt-[calc(1rem-2px-9px)]",
-        className
+        className,
       )}
       {...props}
     >

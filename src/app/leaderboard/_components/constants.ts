@@ -1,4 +1,4 @@
-import { isServer } from "@/lib/constants";
+import { isServer } from "@/src/lib/constants";
 import { parseAsStringEnum as parseAsStringEnumClient } from "nuqs";
 import { parseAsStringEnum as parseAsStringEnumServer } from "nuqs/server";
 import { createSearchParamsCache } from "nuqs/server";

@@ -1,9 +1,12 @@
-import { env } from "@/lib/env";
+import { env } from "@/src/lib/env";
 import {
   TLeaderboardOrderByEnum,
   TLeaderboardResultSchema,
-} from "@/server/trpc/api/leaderboard/types";
-import { createTRPCRouter, publicProcedure } from "@/server/trpc/setup/trpc";
+} from "@/src/server/trpc/api/leaderboard/types";
+import {
+  createTRPCRouter,
+  publicProcedure,
+} from "@/src/server/trpc/setup/trpc";
 import { TRPCError } from "@trpc/server";
 import z from "zod";
 

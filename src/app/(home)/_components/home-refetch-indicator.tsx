@@ -1,7 +1,7 @@
 "use client";
 
-import { useStats } from "@/components/providers/stats-provider";
-import RefetchIndicator from "@/components/refetch-indicator";
+import { useStats } from "@/src/components/providers/stats-provider";
+import RefetchIndicator from "@/src/components/refetch-indicator";
 
 export default function HomeRefetchIndicator() {
   const { isPending, isRefetching, isError } = useStats();

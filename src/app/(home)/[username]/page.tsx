@@ -1,12 +1,12 @@
-import { cachedHomePageSearchParams } from "@/app/(home)/_components/constants";
-import FiltersSection from "@/app/(home)/_components/filters-section/filters-section";
-import HomeRefetchIndicator from "@/app/(home)/_components/home-refetch-indicator";
-import MetadataSection from "@/app/(home)/_components/metadata-section";
-import ModelsSection from "@/app/(home)/_components/models-section";
-import UserStatsSection from "@/app/(home)/_components/user-stats-section";
-import UserSummarySection from "@/app/(home)/_components/user-summary-section";
-import StatsProvider from "@/components/providers/stats-provider";
-import TimeMachineProvider from "@/components/providers/time-machine-provider";
+import { cachedHomePageSearchParams } from "@/src/app/(home)/_components/constants";
+import FiltersSection from "@/src/app/(home)/_components/filters-section/filters-section";
+import HomeRefetchIndicator from "@/src/app/(home)/_components/home-refetch-indicator";
+import MetadataSection from "@/src/app/(home)/_components/metadata-section";
+import ModelsSection from "@/src/app/(home)/_components/models-section";
+import UserStatsSection from "@/src/app/(home)/_components/user-stats-section";
+import UserSummarySection from "@/src/app/(home)/_components/user-summary-section";
+import StatsProvider from "@/src/components/providers/stats-provider";
+import TimeMachineProvider from "@/src/components/providers/time-machine-provider";
 
 type Props = {
   params: Promise<{ username: string }>;

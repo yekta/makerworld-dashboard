@@ -1,6 +1,6 @@
 "use client";
 
-import { useAsyncRouterPush } from "@/lib/hooks/use-async-router-push";
+import { useAsyncRouterPush } from "@/src/lib/hooks/use-async-router-push";
 import { createContext, ReactNode, useContext, useMemo } from "react";
 
 type TAsyncPushContext = {

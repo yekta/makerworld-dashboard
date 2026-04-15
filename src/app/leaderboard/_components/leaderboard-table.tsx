@@ -1,8 +1,8 @@
 "use client";
 
-import { useLeaderboard } from "@/components/providers/leaderboard-provider";
-import { appLocale } from "@/lib/constants";
-import { cn } from "@/lib/utils";
+import { useLeaderboard } from "@/src/components/providers/leaderboard-provider";
+import { appLocale } from "@/src/lib/constants";
+import { cn } from "@/src/lib/utils";
 import {
   CheckIcon,
   ClockIcon,
@@ -26,22 +26,25 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 
-import { LEADERBOARD_TABLE_SORT_BY_DEFAULT } from "@/app/leaderboard/_components/constants";
+import { LEADERBOARD_TABLE_SORT_BY_DEFAULT } from "@/src/app/leaderboard/_components/constants";
 import {
   useLeaderboardSortBy,
   useLeaderboardSortOrder,
-} from "@/app/leaderboard/_components/hooks";
-import LeaderboardTableRefetchIndicator from "@/app/leaderboard/_components/leaderboard-table-refetch-indicator";
-import PointIcon from "@/components/icons/point-icon";
-import PrintIcon from "@/components/icons/print-icon";
-import { Button } from "@/components/ui/button";
-import { calculatePoints, exclusivePointsToUsd } from "@/lib/calculate-points";
-import { useCopyToClipboard } from "@/lib/hooks/use-copy-to-clipboard";
-import { TLeaderboardEntry } from "@/server/trpc/api/leaderboard/types";
+} from "@/src/app/leaderboard/_components/hooks";
+import LeaderboardTableRefetchIndicator from "@/src/app/leaderboard/_components/leaderboard-table-refetch-indicator";
+import PointIcon from "@/src/components/icons/point-icon";
+import PrintIcon from "@/src/components/icons/print-icon";
+import { Button } from "@/src/components/ui/button";
+import {
+  calculatePoints,
+  exclusivePointsToUsd,
+} from "@/src/lib/calculate-points";
+import { useCopyToClipboard } from "@/src/lib/hooks/use-copy-to-clipboard";
+import { TLeaderboardEntry } from "@/src/server/trpc/api/leaderboard/types";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import { Duration } from "luxon";
-import { AppRouterOutputs } from "@/server/trpc/api/root";
-import { trimDuration } from "@/lib/helpers";
+import { AppRouterOutputs } from "@/src/server/trpc/api/root";
+import { trimDuration } from "@/src/lib/helpers";
 
 type TRow = TLeaderboardEntry & {
   rank: number;

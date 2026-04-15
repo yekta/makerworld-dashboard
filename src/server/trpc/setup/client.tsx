@@ -11,8 +11,8 @@ import { createTRPCReact } from "@trpc/react-query";
 import { useState } from "react";
 import SuperJSON from "superjson";
 
-import { trpcPath } from "@/lib/constants";
-import { type AppRouter } from "@/server/trpc/api/root";
+import { trpcPath } from "@/src/lib/constants";
+import { type AppRouter } from "@/src/server/trpc/api/root";
 import { env } from "process";
 import { createQueryClient } from "./query-client";
 
@@ -66,7 +66,7 @@ export function TRPCReactProvider(props: { children: React.ReactNode }) {
           }),
         }),
       ],
-    })
+    }),
   );
 
   return (

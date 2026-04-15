@@ -1,8 +1,8 @@
 "use client";
 
-import PrintIcon from "@/components/icons/print-icon";
-import { useStats } from "@/components/providers/stats-provider";
-import Stat from "@/components/stat";
+import PrintIcon from "@/src/components/icons/print-icon";
+import { useStats } from "@/src/components/providers/stats-provider";
+import Stat from "@/src/components/stat";
 import { DownloadIcon, RocketIcon, UsersIcon } from "lucide-react";
 
 export default function UserStatsSection() {

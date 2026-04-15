@@ -1,13 +1,13 @@
 "use client";
 
-import OrderDropdown from "@/app/(home)/_components/filters-section/order-dropdown";
-import SortDropdown from "@/app/(home)/_components/filters-section/sort-dropdown";
-import StatVisiblityPreferencesDropdown from "@/app/(home)/_components/filters-section/stat-visibility-preferences-dropdown";
+import OrderDropdown from "@/src/app/(home)/_components/filters-section/order-dropdown";
+import SortDropdown from "@/src/app/(home)/_components/filters-section/sort-dropdown";
+import StatVisiblityPreferencesDropdown from "@/src/app/(home)/_components/filters-section/stat-visibility-preferences-dropdown";
 import {
   TimeMachineButton,
   TimeMachineSlider,
-} from "@/app/(home)/_components/filters-section/time-machine";
-import { cn } from "@/lib/utils";
+} from "@/src/app/(home)/_components/filters-section/time-machine";
+import { cn } from "@/src/lib/utils";
 
 type TProps = {
   className?: string;

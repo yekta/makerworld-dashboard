@@ -4,9 +4,9 @@ import {
   getModelStatVisibilityPreferencesEnumLabel,
   MODEL_STAT_VISIBLITY_PREFERENCES_DEFAULT,
   TModelStatVisibilityPreferencesEnum,
-} from "@/app/(home)/_components/constants";
-import { useModelStatVisibilityPreferences } from "@/app/(home)/_components/filters-section/hooks";
-import OptionDropdown from "@/app/(home)/_components/filters-section/option-dropdown";
+} from "@/src/app/(home)/_components/constants";
+import { useModelStatVisibilityPreferences } from "@/src/app/(home)/_components/filters-section/hooks";
+import OptionDropdown from "@/src/app/(home)/_components/filters-section/option-dropdown";
 import { Rows3Icon } from "lucide-react";
 import { useState } from "react";
 import z from "zod";

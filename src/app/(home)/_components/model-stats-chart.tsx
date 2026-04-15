@@ -1,14 +1,14 @@
-import { useModelStatVisibilityPreferences } from "@/app/(home)/_components/filters-section/hooks";
-import { useNow } from "@/components/providers/now-provider";
-import { useTimeMachine } from "@/components/providers/time-machine-provider";
+import { useModelStatVisibilityPreferences } from "@/src/app/(home)/_components/filters-section/hooks";
+import { useNow } from "@/src/components/providers/now-provider";
+import { useTimeMachine } from "@/src/components/providers/time-machine-provider";
 import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
   type ChartConfig,
-} from "@/components/ui/chart";
-import { cn } from "@/lib/utils";
-import { AppRouterOutputs } from "@/server/trpc/api/root";
+} from "@/src/components/ui/chart";
+import { cn } from "@/src/lib/utils";
+import { AppRouterOutputs } from "@/src/server/trpc/api/root";
 import { format } from "date-fns";
 import { useEffect, useId, useMemo, useRef } from "react";
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";

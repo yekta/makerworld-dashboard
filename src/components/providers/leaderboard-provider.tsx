@@ -1,7 +1,10 @@
 "use client";
 
-import { AppRouterOutputs, AppRouterQueryResult } from "@/server/trpc/api/root";
-import { api } from "@/server/trpc/setup/client";
+import {
+  AppRouterOutputs,
+  AppRouterQueryResult,
+} from "@/src/server/trpc/api/root";
+import { api } from "@/src/server/trpc/setup/client";
 import { createContext, ReactNode, useContext } from "react";
 
 type TLeaderboardContext = AppRouterQueryResult<

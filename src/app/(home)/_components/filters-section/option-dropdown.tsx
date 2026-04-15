@@ -1,13 +1,13 @@
-import { Button } from "@/components/ui/button";
+import { Button } from "@/src/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { cn } from "@/lib/utils";
+} from "@/src/components/ui/dropdown-menu";
+import { ScrollArea } from "@/src/components/ui/scroll-area";
+import { cn } from "@/src/lib/utils";
 import { CheckIcon, ChevronDown, RotateCcwIcon } from "lucide-react";
 import { MouseEventHandler } from "react";
 

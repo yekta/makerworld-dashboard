@@ -8,7 +8,7 @@ import {
   TModelOrderEnum,
   TModelSortByEnum,
   TModelStatVisibilityPreferencesEnum,
-} from "@/app/(home)/_components/constants";
+} from "@/src/app/(home)/_components/constants";
 import { parseAsArrayOf, parseAsStringEnum, useQueryState } from "nuqs";
 
 export function useModelStatVisibilityPreferences() {

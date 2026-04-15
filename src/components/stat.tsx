@@ -1,9 +1,9 @@
-import { useModelStatVisibilityPreferences } from "@/app/(home)/_components/filters-section/hooks";
-import { useTimeMachine } from "@/components/providers/time-machine-provider";
-import { appLocale } from "@/lib/constants";
-import useFlashOnChange from "@/lib/hooks/use-flash-on-change";
-import { cn } from "@/lib/utils";
-import { AppRouterOutputs } from "@/server/trpc/api/root";
+import { useModelStatVisibilityPreferences } from "@/src/app/(home)/_components/filters-section/hooks";
+import { useTimeMachine } from "@/src/components/providers/time-machine-provider";
+import { appLocale } from "@/src/lib/constants";
+import useFlashOnChange from "@/src/lib/hooks/use-flash-on-change";
+import { cn } from "@/src/lib/utils";
+import { AppRouterOutputs } from "@/src/server/trpc/api/root";
 import { TrophyIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 

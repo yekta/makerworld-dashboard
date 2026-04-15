@@ -1,7 +1,7 @@
 "use client";
 
-import { useLeaderboard } from "@/components/providers/leaderboard-provider";
-import RefetchIndicator from "@/components/refetch-indicator";
+import { useLeaderboard } from "@/src/components/providers/leaderboard-provider";
+import RefetchIndicator from "@/src/components/refetch-indicator";
 
 export default function LeaderboardTableRefetchIndicator() {
   const { isPending, isRefetching, isError } = useLeaderboard();

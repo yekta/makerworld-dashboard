@@ -5,7 +5,7 @@ import {
   LEADERBOARD_TABLE_SORT_ORDER_KEY,
   TLeaderboardTableSortByEnum,
   TLeaderboardTableSortOrderEnum,
-} from "@/app/leaderboard/_components/constants";
+} from "@/src/app/leaderboard/_components/constants";
 import { parseAsStringEnum, useQueryState } from "nuqs";
 
 export function useLeaderboardSortBy() {

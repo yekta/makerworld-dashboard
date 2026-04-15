@@ -1,10 +1,10 @@
-import Navbar, { NavbarSpacer } from "@/components/navbar";
-import Providers from "@/components/providers/providers";
+import Navbar, { NavbarSpacer } from "@/src/components/navbar";
+import Providers from "@/src/components/providers/providers";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import TopLoader from "@/components/top-loader";
-import { apiServer } from "@/server/trpc/setup/server";
+import TopLoader from "@/src/components/top-loader";
+import { apiServer } from "@/src/server/trpc/setup/server";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

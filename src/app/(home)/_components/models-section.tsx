@@ -3,15 +3,15 @@
 import {
   MODEL_ORDER_DEFAULT,
   MODEL_SORT_DEFAULT,
-} from "@/app/(home)/_components/constants";
+} from "@/src/app/(home)/_components/constants";
 import {
   useModelOrder,
   useModelSort,
-} from "@/app/(home)/_components/filters-section/hooks";
+} from "@/src/app/(home)/_components/filters-section/hooks";
 import ModelCard, {
   TModelCardProps,
-} from "@/app/(home)/_components/model-card";
-import { useStats } from "@/components/providers/stats-provider";
+} from "@/src/app/(home)/_components/model-card";
+import { useStats } from "@/src/components/providers/stats-provider";
 import { useMemo } from "react";
 
 export default function ModelsSection() {

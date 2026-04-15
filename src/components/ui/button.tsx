@@ -5,7 +5,7 @@ import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import { useRouter } from "next/navigation";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/src/lib/utils";
 import Link from "next/link";
 
 export const minButtonSizeEnforcerClassName =

@@ -1,8 +1,8 @@
 "use client";
 
-import { LinkButton } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import { AppRouterOutputs } from "@/server/trpc/api/root";
+import { LinkButton } from "@/src/components/ui/button";
+import { cn } from "@/src/lib/utils";
+import { AppRouterOutputs } from "@/src/server/trpc/api/root";
 import { TableIcon, UserRoundIcon } from "lucide-react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";

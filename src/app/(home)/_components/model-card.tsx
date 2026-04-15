@@ -4,17 +4,17 @@ import {
   useModelOrder,
   useModelSort,
   useModelStatVisibilityPreferences,
-} from "@/app/(home)/_components/filters-section/hooks";
-import ModelStatsChart from "@/app/(home)/_components/model-stats-chart";
-import PrintIcon from "@/components/icons/print-icon";
-import LinkOrDiv from "@/components/link-or-div";
-import { useNow } from "@/components/providers/now-provider";
-import { useTimeMachine } from "@/components/providers/time-machine-provider";
-import Stat from "@/components/stat";
-import { exclusivePointsToUsd } from "@/lib/calculate-points";
-import { appLocale } from "@/lib/constants";
-import { trimDuration } from "@/lib/helpers";
-import { AppRouterOutputs } from "@/server/trpc/api/root";
+} from "@/src/app/(home)/_components/filters-section/hooks";
+import ModelStatsChart from "@/src/app/(home)/_components/model-stats-chart";
+import PrintIcon from "@/src/components/icons/print-icon";
+import LinkOrDiv from "@/src/components/link-or-div";
+import { useNow } from "@/src/components/providers/now-provider";
+import { useTimeMachine } from "@/src/components/providers/time-machine-provider";
+import Stat from "@/src/components/stat";
+import { exclusivePointsToUsd } from "@/src/lib/calculate-points";
+import { appLocale } from "@/src/lib/constants";
+import { trimDuration } from "@/src/lib/helpers";
+import { AppRouterOutputs } from "@/src/server/trpc/api/root";
 import { format } from "date-fns";
 import {
   DownloadIcon,
@@ -255,7 +255,8 @@ function BottomInfoRow({ model, metadata, isPlaceholder }: TModelCardProps) {
     if (isPlaceholder) return "300";
     if (
       model.stats.current.points_exclusive_default === null ||
-      model.stats.current.points_exclusive_cn === null
+      model.stats.current.points_exclusive_cn === null ||
+      model.stats.current.prints === 0
     ) {
       return "N/A";
     }

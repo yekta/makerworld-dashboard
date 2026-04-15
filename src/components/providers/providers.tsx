@@ -1,6 +1,6 @@
-import AsyncPushProvider from "@/components/providers/async-push-provider";
-import NowProvider from "@/components/providers/now-provider";
-import { TRPCReactProvider } from "@/server/trpc/setup/client";
+import AsyncPushProvider from "@/src/components/providers/async-push-provider";
+import NowProvider from "@/src/components/providers/now-provider";
+import { TRPCReactProvider } from "@/src/server/trpc/setup/client";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import React from "react";
 

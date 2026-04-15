@@ -1,13 +1,16 @@
 "use client";
 
-import PointsAndWalletCard from "@/app/(home)/_components/points-and-wallet-card";
-import PrintIcon from "@/components/icons/print-icon";
-import { useNow } from "@/components/providers/now-provider";
-import { useStats } from "@/components/providers/stats-provider";
-import { useTimeMachine } from "@/components/providers/time-machine-provider";
-import { appLocale } from "@/lib/constants";
-import { trimDuration } from "@/lib/helpers";
-import { AppRouterOutputs, AppRouterQueryResult } from "@/server/trpc/api/root";
+import PointsAndWalletCard from "@/src/app/(home)/_components/points-and-wallet-card";
+import PrintIcon from "@/src/components/icons/print-icon";
+import { useNow } from "@/src/components/providers/now-provider";
+import { useStats } from "@/src/components/providers/stats-provider";
+import { useTimeMachine } from "@/src/components/providers/time-machine-provider";
+import { appLocale } from "@/src/lib/constants";
+import { trimDuration } from "@/src/lib/helpers";
+import {
+  AppRouterOutputs,
+  AppRouterQueryResult,
+} from "@/src/server/trpc/api/root";
 import { format } from "date-fns";
 import { BoxIcon, DownloadIcon, RocketIcon, UsersIcon } from "lucide-react";
 import { Duration } from "luxon";

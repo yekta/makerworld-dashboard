@@ -1,10 +1,13 @@
 "use client";
 
-import { useNow } from "@/components/providers/now-provider";
-import { useStats } from "@/components/providers/stats-provider";
-import { useTimeMachine } from "@/components/providers/time-machine-provider";
-import { timeAgo } from "@/lib/helpers";
-import { AppRouterOutputs, AppRouterQueryResult } from "@/server/trpc/api/root";
+import { useNow } from "@/src/components/providers/now-provider";
+import { useStats } from "@/src/components/providers/stats-provider";
+import { useTimeMachine } from "@/src/components/providers/time-machine-provider";
+import { timeAgo } from "@/src/lib/helpers";
+import {
+  AppRouterOutputs,
+  AppRouterQueryResult,
+} from "@/src/server/trpc/api/root";
 import { Fragment, useMemo } from "react";
 
 const placeholderTimestamp = new Date("2025-01-01T00:00:00Z").getTime();

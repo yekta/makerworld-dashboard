@@ -1,6 +1,6 @@
-import { leaderboardRouter } from "@/server/trpc/api/leaderboard/router";
-import { myUsersRouter } from "@/server/trpc/api/my-users/router";
-import { createTRPCRouter } from "@/server/trpc/setup/trpc";
+import { leaderboardRouter } from "@/src/server/trpc/api/leaderboard/router";
+import { myUsersRouter } from "@/src/server/trpc/api/my-users/router";
+import { createTRPCRouter } from "@/src/server/trpc/setup/trpc";
 import { TRPCClient, TRPCClientErrorLike } from "@trpc/client";
 import { inferReactQueryProcedureOptions } from "@trpc/react-query";
 import {

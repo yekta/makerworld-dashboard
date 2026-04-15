@@ -1,8 +1,11 @@
 "use client";
 
-import { useTimeMachine } from "@/components/providers/time-machine-provider";
-import { AppRouterOutputs, AppRouterQueryResult } from "@/server/trpc/api/root";
-import { api } from "@/server/trpc/setup/client";
+import { useTimeMachine } from "@/src/components/providers/time-machine-provider";
+import {
+  AppRouterOutputs,
+  AppRouterQueryResult,
+} from "@/src/server/trpc/api/root";
+import { api } from "@/src/server/trpc/setup/client";
 import { createContext, ReactNode, useContext } from "react";
 
 type TStatsContext = AppRouterQueryResult<

@@ -1,9 +1,9 @@
-import { useStats } from "@/components/providers/stats-provider";
+import { useStats } from "@/src/components/providers/stats-provider";
 import {
   exclusivePointsToUsd,
   regularPointsToUsd,
-} from "@/lib/calculate-points";
-import { cn } from "@/lib/utils";
+} from "@/src/lib/calculate-points";
+import { cn } from "@/src/lib/utils";
 import { useMemo } from "react";
 
 export default function PointsAndWalletCard() {

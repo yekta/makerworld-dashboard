@@ -1,7 +1,7 @@
-import { cachedLeaderboardPageSearchParams } from "@/app/leaderboard/_components/constants";
-import LeaderboardTable from "@/app/leaderboard/_components/leaderboard-table";
-import LeaderboardProvider from "@/components/providers/leaderboard-provider";
-import { apiServer } from "@/server/trpc/setup/server";
+import { cachedLeaderboardPageSearchParams } from "@/src/app/leaderboard/_components/constants";
+import LeaderboardTable from "@/src/app/leaderboard/_components/leaderboard-table";
+import LeaderboardProvider from "@/src/components/providers/leaderboard-provider";
+import { apiServer } from "@/src/server/trpc/setup/server";
 
 type Props = {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
