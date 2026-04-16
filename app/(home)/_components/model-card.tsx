@@ -64,6 +64,7 @@ function ModelCardContent(props: TModelCardProps) {
   const [statVisibilityPreferences] = useModelStatVisibilityPreferences();
   const isChartActive = statVisibilityPreferences.includes("chart");
   const { isTravelled } = useTimeMachine();
+  const [isCn] = useIsCN();
   return (
     <div
       data-highlighted={
@@ -98,7 +99,7 @@ function ModelCardContent(props: TModelCardProps) {
       <div className="w-full flex items-center overflow-hidden gap-4 relative px-1">
         <LinkOrDiv
           data-link={!isPlaceholder ? true : undefined}
-          href={isPlaceholder ? undefined : getModelUrl(model)}
+          href={isPlaceholder ? undefined : getModelUrl(model, isCn)}
           target="_blank"
           className="data-link:active:underline data-link:hover:underline group/link decoration-foreground flex min-w-0 overflow-hidden"
         >
@@ -184,8 +185,8 @@ function ModelCardContent(props: TModelCardProps) {
 
 function getModelUrl(
   model: AppRouterOutputs["myUsers"]["getStats"]["models"][number],
+  isCn: boolean,
 ) {
-  const [isCn] = useIsCN();
   if (isCn) {
     return `https://makerworld.com.cn/zh/models/${model.model_id}-${model.slug}`;
   }
@@ -415,6 +416,7 @@ function DateTime({
 }
 
 function ImageSection({ model, isPlaceholder }: TModelCardProps) {
+  const [isCn] = useIsCN();
   if (isPlaceholder) {
     return (
       <div className="border border-border group/link relative outline-0 transition duration-150 active:ring-[1.5px] hover:ring-[1.5px] ring-0 focus-visible:ring-[1.5px] ring-foreground/50 bg-border rounded-[5px] overflow-hidden group-data-placeholder:animate-pulse">
@@ -425,7 +427,7 @@ function ImageSection({ model, isPlaceholder }: TModelCardProps) {
 
   return (
     <Link
-      href={getModelUrl(model)}
+      href={getModelUrl(model, isCn)}
       target="_blank"
       className="border border-border group/link relative outline-0 transition duration-150 active:ring-[1.5px] hover:ring-[1.5px] ring-0 focus-visible:ring-[1.5px] ring-foreground/50 bg-border rounded-[5px] overflow-hidden group-data-placeholder:animate-pulse"
     >
