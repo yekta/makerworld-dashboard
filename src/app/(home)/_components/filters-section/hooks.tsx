@@ -1,4 +1,6 @@
 import {
+  IS_CN_DEFAULT,
+  IS_CN_KEY,
   MODEL_ORDER_DEFAULT,
   MODEL_ORDER_KEY,
   MODEL_SORT_DEFAULT,
@@ -9,7 +11,12 @@ import {
   TModelSortByEnum,
   TModelStatVisibilityPreferencesEnum,
 } from "@/src/app/(home)/_components/constants";
-import { parseAsArrayOf, parseAsStringEnum, useQueryState } from "nuqs";
+import {
+  parseAsArrayOf,
+  parseAsStringEnum,
+  useQueryState,
+  parseAsBoolean,
+} from "nuqs";
 
 export function useModelStatVisibilityPreferences() {
   const res = useQueryState(
@@ -33,6 +40,14 @@ export function useModelSort() {
   const res = useQueryState(
     MODEL_SORT_KEY,
     parseAsStringEnum(TModelSortByEnum.options).withDefault(MODEL_SORT_DEFAULT),
+  );
+  return res;
+}
+
+export function useIsCN() {
+  const res = useQueryState(
+    IS_CN_KEY,
+    parseAsBoolean.withDefault(IS_CN_DEFAULT),
   );
   return res;
 }

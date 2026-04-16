@@ -13,6 +13,7 @@ import z from "zod";
 export const MODEL_SORT_KEY = "sort_by";
 export const MODEL_ORDER_KEY = "order";
 export const MODEL_STAT_VISIBLITY_PREFERENCES_KEY = "stats";
+export const IS_CN_KEY = "cn";
 
 export const TModelOrderEnum = z.enum(["desc", "asc"]);
 export const TModelSortByEnum = z.enum([
@@ -96,6 +97,7 @@ export const MODEL_SORT_DEFAULT: z.infer<typeof TModelSortByEnum> =
   "prints_current";
 export const MODEL_ORDER_DEFAULT: z.infer<typeof TModelOrderEnum> = "desc";
 export const CHART_VISIBILITY_DEFAULT = true;
+export const IS_CN_DEFAULT = false;
 export const MODEL_STAT_VISIBLITY_PREFERENCES_DEFAULT: z.infer<
   typeof TModelStatVisibilityPreferencesEnum
 >[] = [

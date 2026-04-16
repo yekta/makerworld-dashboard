@@ -1,5 +1,6 @@
 "use client";
 
+import { useIsCN } from "@/src/app/(home)/_components/filters-section/hooks";
 import { useNow } from "@/src/components/providers/now-provider";
 import { useStats } from "@/src/components/providers/stats-provider";
 import { useTimeMachine } from "@/src/components/providers/time-machine-provider";
@@ -56,6 +57,7 @@ function Metadata({
 }) {
   const now = useNow();
   const { timeMachineTimestamp } = useTimeMachine();
+  const [isCN] = useIsCN();
   const adjustedNow = timeMachineTimestamp
     ? Math.min(now, timeMachineTimestamp)
     : now;
@@ -78,12 +80,14 @@ function Metadata({
       const keyNumber = Number(cleanedKey);
       const unit = keyNumber >= 168 ? "d" : "h";
       const keyValue = Math.round(unit === "d" ? keyNumber / 24 : keyNumber);
+      const selectedMetadata = isCN ? data?.metadata_cn : data?.metadata;
       const extraSeconds =
-        data && adjustedNow - data.metadata[key] > 24 * 60 * 60 * 1000
+        selectedMetadata &&
+        adjustedNow - selectedMetadata[key] > 24 * 60 * 60 * 1000
           ? 75 * 1000
           : 0;
-      const timestamp = data
-        ? data.metadata[key] - extraSeconds
+      const timestamp = selectedMetadata
+        ? selectedMetadata[key] - extraSeconds
         : placeholderTimestamp;
       return { keyValue, unit, timestamp };
     });

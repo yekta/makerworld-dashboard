@@ -1,5 +1,6 @@
 "use client";
 
+import { useIsCN } from "@/src/app/(home)/_components/filters-section/hooks";
 import PrintIcon from "@/src/components/icons/print-icon";
 import { useStats } from "@/src/components/providers/stats-provider";
 import Stat from "@/src/components/stat";
@@ -7,6 +8,8 @@ import { DownloadIcon, RocketIcon, UsersIcon } from "lucide-react";
 
 export default function UserStatsSection() {
   const { data, isPending, isError } = useStats();
+  const [isCN] = useIsCN();
+
   if (!data && isError) {
     return (
       <Wrapper>
@@ -17,14 +20,17 @@ export default function UserStatsSection() {
     );
   }
 
+  const selectedData = isCN ? data?.user.stats_cn : data?.user.stats;
+  const selectedRecords = isCN ? data?.user.records_cn : data?.user.records;
+
   return (
     <Wrapper>
       <Stat
         statType="user"
         statKey="prints"
-        {...(isPending
+        {...(isPending || !selectedData || !selectedRecords
           ? { isPlaceholder: true }
-          : { stats: data.user.stats, records: data.user.records })}
+          : { stats: selectedData, records: selectedRecords })}
         Icon={PrintIcon}
         showPrevDayStats={true}
         showTimeRange={true}
@@ -33,9 +39,9 @@ export default function UserStatsSection() {
       <Stat
         statType="user"
         statKey="downloads"
-        {...(isPending
+        {...(isPending || !selectedData || !selectedRecords
           ? { isPlaceholder: true }
-          : { stats: data.user.stats, records: data.user.records })}
+          : { stats: selectedData, records: selectedRecords })}
         Icon={DownloadIcon}
         showPrevDayStats={true}
         isUnaffectedByFilters={true}
@@ -43,9 +49,9 @@ export default function UserStatsSection() {
       <Stat
         statType="user"
         statKey="boosts"
-        {...(isPending
+        {...(isPending || !selectedData || !selectedRecords
           ? { isPlaceholder: true }
-          : { stats: data.user.stats, records: data.user.records })}
+          : { stats: selectedData, records: selectedRecords })}
         Icon={RocketIcon}
         showPrevDayStats={true}
         isUnaffectedByFilters={true}
@@ -53,9 +59,9 @@ export default function UserStatsSection() {
       <Stat
         statType="user"
         statKey="followers"
-        {...(isPending
+        {...(isPending || !selectedData || !selectedRecords
           ? { isPlaceholder: true }
-          : { stats: data.user.stats, records: data.user.records })}
+          : { stats: selectedData, records: selectedRecords })}
         Icon={UsersIcon}
         showPrevDayStats={true}
         isUnaffectedByFilters={true}

@@ -5,6 +5,7 @@ import {
   MODEL_SORT_DEFAULT,
 } from "@/src/app/(home)/_components/constants";
 import {
+  useIsCN,
   useModelOrder,
   useModelSort,
 } from "@/src/app/(home)/_components/filters-section/hooks";
@@ -21,7 +22,12 @@ export default function ModelsSection() {
     if (isPending || !data) {
       return { isPlaceholder: true };
     }
-    return { models: data.models, metadata: data.metadata };
+    return {
+      models: data.models,
+      metadata: data.metadata,
+      models_cn: data.models_cn,
+      metadata_cn: data.metadata_cn,
+    };
   }, [data, isPending]);
 
   if (!data && isError) {
@@ -48,32 +54,53 @@ function Wrapper({ children }: { children: React.ReactNode }) {
 type TModelsProps =
   | {
       models: NonNullable<ReturnType<typeof useStats>["data"]>["models"];
+      models_cn: NonNullable<ReturnType<typeof useStats>["data"]>["models_cn"];
       metadata: NonNullable<ReturnType<typeof useStats>["data"]>["metadata"];
+      metadata_cn: NonNullable<
+        ReturnType<typeof useStats>["data"]
+      >["metadata_cn"];
       isPlaceholder?: never;
     }
   | {
       models?: never;
       metadata?: never;
+      models_cn?: never;
+      metadata_cn?: never;
       isPlaceholder: true;
     };
 
 const placeholderArray = Array.from({ length: 20 }).map((_, i) => i);
 
-function Models({ models, metadata, isPlaceholder }: TModelsProps) {
+function Models({
+  models,
+  metadata,
+  models_cn,
+  metadata_cn,
+  isPlaceholder,
+}: TModelsProps) {
   const [modelSort] = useModelSort();
   const [modelOrder] = useModelOrder();
+  const [isCN] = useIsCN();
+
+  const selectedModels = isPlaceholder ? undefined : isCN ? models_cn : models;
+  const selectedMetadata = isPlaceholder
+    ? undefined
+    : isCN
+      ? metadata_cn
+      : metadata;
 
   const orderedModels = useMemo(() => {
     if (isPlaceholder) return undefined;
+    if (!selectedModels) return undefined;
     if (
       (modelSort === null || modelSort === MODEL_SORT_DEFAULT) &&
       (modelOrder === null || modelOrder === MODEL_ORDER_DEFAULT)
     ) {
-      return models;
+      return selectedModels;
     }
 
     if (modelSort === "created_at") {
-      return [...models].sort((a, b) => {
+      return [...selectedModels].sort((a, b) => {
         if (modelOrder === "asc") {
           return (
             new Date(a.model_created_at).getTime() -
@@ -87,21 +114,21 @@ function Models({ models, metadata, isPlaceholder }: TModelsProps) {
       });
     }
 
-    const timeframe: keyof (typeof models)[number]["stats"] =
+    const timeframe: keyof (typeof selectedModels)[number]["stats"] =
       modelSort === "prints_1h" || modelSort === "boosts_1h"
         ? "delta_0-1h"
         : modelSort === "prints_24h" || modelSort === "boosts_24h"
           ? "delta_0-24h"
           : "current";
 
-    const stat: keyof (typeof models)[number]["stats"][keyof (typeof models)[number]["stats"]] =
+    const stat: keyof (typeof selectedModels)[number]["stats"][keyof (typeof selectedModels)[number]["stats"]] =
       modelSort === "boosts_current" ||
       modelSort === "boosts_1h" ||
       modelSort === "boosts_24h"
         ? "boosts"
         : "prints";
 
-    return [...models].sort((a, b) => {
+    return [...selectedModels].sort((a, b) => {
       const aPrints = a.stats[timeframe][stat] ?? 0;
       const bPrints = b.stats[timeframe][stat] ?? 0;
       if (modelOrder === "asc") {
@@ -109,13 +136,13 @@ function Models({ models, metadata, isPlaceholder }: TModelsProps) {
       }
       return bPrints - aPrints;
     });
-  }, [models, modelSort, modelOrder]);
+  }, [selectedModels, modelSort, modelOrder]);
 
   return (orderedModels || placeholderArray).map((model, index) => {
     const params: TModelCardProps =
-      isPlaceholder || typeof model === "number"
+      isPlaceholder || typeof model === "number" || !selectedMetadata
         ? { isPlaceholder: true }
-        : { model, metadata };
+        : { model, metadata: selectedMetadata };
 
     return <ModelCard key={index} {...params} />;
   });
