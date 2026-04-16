@@ -1,0 +1,461 @@
+"use client";
+
+import { useIsCN } from "@/app/(home)/_components/filters-section/hooks";
+import PointsAndWalletCard from "@/app/(home)/_components/points-and-wallet-card";
+import PrintIcon from "@/components/icons/print-icon";
+import { useNow } from "@/components/providers/now-provider";
+import { useStats } from "@/components/providers/stats-provider";
+import { useTimeMachine } from "@/components/providers/time-machine-provider";
+import { appLocale } from "@/lib/constants";
+import { trimDuration } from "@/lib/helpers";
+import { AppRouterOutputs, AppRouterQueryResult } from "@/server/trpc/api/root";
+import { format } from "date-fns";
+import { BoxIcon, DownloadIcon, RocketIcon, UsersIcon } from "lucide-react";
+import { Duration } from "luxon";
+import { useMemo } from "react";
+
+const placeholderTimestamp = Date.now() - 1000 * 60 * 60 * 24 * 30;
+
+export default function UserSummarySection() {
+  const { data, isPending, isError } = useStats();
+
+  if (!data && isError) {
+    return (
+      <Wrapper>
+        <p className="w-full text-center py-2 text-destructive font-semibold">
+          {`Couldn't load metadata :(`}
+        </p>
+      </Wrapper>
+    );
+  }
+
+  return (
+    <Wrapper isPending={isPending}>
+      <Section data={data} />
+    </Wrapper>
+  );
+}
+
+function Section({
+  data,
+}: {
+  data: AppRouterQueryResult<AppRouterOutputs["myUsers"]["getStats"]>["data"];
+}) {
+  const now = useNow();
+  const { timeMachineTimestamp } = useTimeMachine();
+  const adjustedNow = timeMachineTimestamp
+    ? Math.min(now, timeMachineTimestamp)
+    : now;
+  const kmbtFormatter = new Intl.NumberFormat("en", {
+    notation: "compact",
+    compactDisplay: "short", // uses K, M, B…
+    maximumSignificantDigits: 3,
+  });
+  const [isCN] = useIsCN();
+
+  const { projectedMonthlyUSDRevenue, realMonthlyUSDRevenue } = useMemo(() => {
+    if (!data)
+      return {
+        projectedMonthlyUSDRevenue: 1000,
+        realMonthlyUSDRevenue: 1000,
+      };
+
+    const lastWeekUsd = getEarnings({
+      timeframeMs: 1000 * 60 * 60 * 24 * 7,
+      data,
+      timeMachineTimestamp,
+    });
+    const lastMonthUsd = getEarnings({
+      timeframeMs: 1000 * 60 * 60 * 24 * 30,
+      data,
+      timeMachineTimestamp,
+    });
+
+    return {
+      projectedMonthlyUSDRevenue:
+        lastWeekUsd === null ? null : (lastWeekUsd / 7) * 30,
+      realMonthlyUSDRevenue: lastMonthUsd,
+    };
+  }, [data]);
+
+  const veryFirstModelCreationTimestamp = useMemo(() => {
+    if (!data) return placeholderTimestamp;
+    const selectedModels = isCN ? data.models_cn : data.models;
+    const modelCreationTimestamps = selectedModels.map(
+      (model) => model.model_created_at,
+    );
+    return Math.min(...modelCreationTimestamps);
+  }, [data, isCN]);
+
+  const printsPerDayBasedOnLastWeek = useMemo(() => {
+    if (!data) return 1000;
+    const selectedStats = isCN ? data.user.stats_cn : data.user.stats;
+    const selectedMetadata = isCN ? data.metadata_cn : data.metadata;
+    const lastWeekPrints = selectedStats["delta_0-168h"].prints;
+    const lastWeekStartTimestamp = selectedMetadata["delta_0-168h_timestamp"];
+    const printsPerMs = lastWeekPrints / (adjustedNow - lastWeekStartTimestamp);
+    const printsPerDay = printsPerMs * 1000 * 60 * 60 * 24;
+    return printsPerDay;
+  }, [data, isCN]);
+
+  const boostsPerDayBasedOnLastWeek = useMemo(() => {
+    if (!data) return 10;
+    const selectedStats = isCN ? data.user.stats_cn : data.user.stats;
+    const selectedMetadata = isCN ? data.metadata_cn : data.metadata;
+    const lastWeekBoosts = selectedStats["delta_0-168h"].boosts;
+    const lastWeekStartTimestamp = selectedMetadata["delta_0-168h_timestamp"];
+    const boostsPerMs = lastWeekBoosts / (adjustedNow - lastWeekStartTimestamp);
+    const boostsPerDay = boostsPerMs * 1000 * 60 * 60 * 24;
+    return boostsPerDay;
+  }, [data, isCN]);
+
+  const boostRatePercentage = useMemo(() => {
+    if (!data) return 5;
+    const selectedStats = isCN ? data.user.stats_cn : data.user.stats;
+    return (
+      (selectedStats.current.boosts / (selectedStats.current.prints || 1)) * 100
+    );
+  }, [data, isCN]);
+
+  const incomePerMonth = useMemo(() => {
+    if (!data) return kmbtFormatter.format(1011);
+    if (data.pointsAndWallet.wallet_total_income === null) return "N/A";
+    const sinceFirstModelCreationMs =
+      adjustedNow - veryFirstModelCreationTimestamp;
+    const incomePerMs =
+      data.pointsAndWallet.wallet_total_income / sinceFirstModelCreationMs;
+    const incomePerMonth = incomePerMs * 1000 * 60 * 60 * 24 * 30;
+    return kmbtFormatter.format(incomePerMonth);
+  }, [data, adjustedNow, veryFirstModelCreationTimestamp]);
+
+  return (
+    <div className="w-full flex flex-col">
+      <PointsAndWalletCard />
+      <div className="w-full py-2 md:py-1.5 flex items-center justify-center md:self-stretch">
+        <div className="w-1/2 bg-border h-px rounded-full md:hidden" />
+      </div>
+      <div className="w-full flex flex-col md:flex-row">
+        {/* Left Column / Top Row */}
+        <div className="w-full flex flex-col items-center gap-0.5 md:w-1/2 md:items-end">
+          <div className="w-full flex items-center justify-center md:justify-end px-3">
+            <p
+              suppressHydrationWarning
+              className="shrink font-light whitespace-nowrap leading-normal text-center md:text-right text-muted-foreground min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-most-foreground group-data-placeholder:text-transparent"
+            >
+              <span className="text-foreground font-medium group-data-placeholder:text-transparent">
+                {projectedMonthlyUSDRevenue === null
+                  ? "N/A"
+                  : `$${projectedMonthlyUSDRevenue.toLocaleString(appLocale, {
+                      maximumFractionDigits: 0,
+                    })}`}
+              </span>
+              {"/mo forecast"}
+              <span className="text-muted-most-foreground px-[0.75ch] group-data-placeholder:text-transparent">
+                {"|"}
+              </span>
+              <span className="text-foreground font-medium group-data-placeholder:text-transparent">
+                {realMonthlyUSDRevenue === null
+                  ? "N/A"
+                  : `$${realMonthlyUSDRevenue.toLocaleString(appLocale, {
+                      maximumFractionDigits: 0,
+                    })}`}
+              </span>
+              {"/mo earned"}
+            </p>
+          </div>
+          <div className="w-full flex items-center justify-center md:justify-end px-3">
+            <p
+              suppressHydrationWarning
+              className="shrink font-light whitespace-nowrap leading-normal text-center md:text-right text-muted-foreground min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-most-foreground group-data-placeholder:text-transparent"
+            >
+              <RecentEventsText data={data} />
+            </p>
+          </div>
+        </div>
+        {/* Divider */}
+        <div className="w-full md:w-px py-2 md:py-px flex items-center justify-center md:self-stretch">
+          <div className="w-1/2 md:w-full bg-border h-px md:h-full rounded-full" />
+        </div>
+        {/* Right Column / Bottom Row */}
+        <div className="w-full flex flex-col items-center gap-0.5 md:w-1/2 md:items-start">
+          <div className="w-full flex items-center justify-center md:justify-start px-3">
+            <p
+              suppressHydrationWarning
+              className="shrink font-light whitespace-nowrap leading-normal text-center md:text-left text-muted-foreground min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-most-foreground group-data-placeholder:text-transparent"
+            >
+              <span className="font-medium">
+                <PrintIcon className="inline-block size-2.75 mb-px mr-[0.2ch]" />
+                {printsPerDayBasedOnLastWeek.toLocaleString(appLocale, {
+                  maximumFractionDigits: 1,
+                })}
+              </span>
+              {" daily"}
+              <span className="text-muted-most-foreground px-[0.75ch] group-data-placeholder:text-transparent">
+                {"|"}
+              </span>
+              <span className="font-medium">
+                <RocketIcon className="inline-block size-2.75 mb-px mr-[0.2ch]" />
+                {boostsPerDayBasedOnLastWeek.toLocaleString(appLocale, {
+                  maximumFractionDigits: 1,
+                })}
+              </span>
+              {" daily"}
+              <span className="text-muted-most-foreground px-[0.75ch] group-data-placeholder:text-transparent">
+                {"|"}
+              </span>
+              <span className="font-medium">
+                <RocketIcon className="inline-block size-2.75 mb-px mr-[0.2ch]" />
+                {boostRatePercentage.toLocaleString(appLocale, {
+                  maximumFractionDigits: 1,
+                })}
+                {"%"}
+              </span>
+            </p>
+          </div>
+          <div className="w-full flex items-center justify-center md:justify-start px-3">
+            <p className="shrink font-light whitespace-nowrap leading-normal text-center md:text-left text-muted-foreground min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-most-foreground group-data-placeholder:text-transparent">
+              <DatesSpan
+                isPlaceholder={!data}
+                timestamp={veryFirstModelCreationTimestamp}
+              />
+              <span className="text-muted-most-foreground px-[0.75ch] group-data-placeholder:text-transparent">
+                {"|"}
+              </span>
+              <span>
+                <span className="text-foreground font-medium group-data-placeholder:text-transparent">
+                  ${incomePerMonth}
+                </span>
+                /mo
+              </span>
+              <span className="text-muted-most-foreground px-[0.75ch] group-data-placeholder:text-transparent">
+                {"|"}
+              </span>
+              <span className="text-foreground font-medium group-data-placeholder:text-transparent">
+                $
+                {data?.pointsAndWallet.wallet_total_income === null
+                  ? "N/A"
+                  : kmbtFormatter.format(
+                      data ? data.pointsAndWallet.wallet_total_income : 10101,
+                    )}
+              </span>
+              <span className="text-muted-most-foreground px-[0.75ch] group-data-placeholder:text-transparent">
+                {"|"}
+              </span>
+              <span>
+                <BoxIcon className="inline-block size-2.75 mb-px mr-[0.2ch]" />
+                {data?.models.length ?? 0}
+              </span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Wrapper({
+  children,
+  isPending,
+}: {
+  children: React.ReactNode;
+  isPending?: boolean;
+}) {
+  return (
+    <div
+      data-placeholder={isPending ? true : undefined}
+      className="w-full py-3 flex items-center justify-center text-xs group"
+    >
+      {children}
+    </div>
+  );
+}
+
+function DatesSpan({
+  timestamp,
+  isPlaceholder,
+}: {
+  timestamp: number;
+  isPlaceholder?: boolean;
+}) {
+  const { timeMachineTimestamp } = useTimeMachine();
+  const now = useNow();
+  const adjustedNow = timeMachineTimestamp
+    ? Math.min(now, timeMachineTimestamp)
+    : now;
+  const { timeAgoString, releaseDate } = useMemo(
+    () => ({
+      timeAgoString: trimDuration({
+        duration: Duration.fromMillis(
+          adjustedNow - (!isPlaceholder ? timestamp : placeholderTimestamp),
+        ).shiftTo("years", "months", "days", "hours", "minutes", "seconds"),
+        precision: 2,
+      }).toHuman({
+        showZeros: false,
+        unitDisplay: "narrow",
+        maximumFractionDigits: 0,
+      }),
+      releaseDate: format(
+        new Date(!isPlaceholder ? timestamp : placeholderTimestamp),
+        "yyyy-MM-dd",
+      ),
+    }),
+    [isPlaceholder, timestamp, adjustedNow],
+  );
+
+  return (
+    <span suppressHydrationWarning>
+      {timeAgoString}
+      <span className="text-muted-most-foreground group-data-placeholder:text-transparent px-[0.75ch]">
+        {"|"}
+      </span>
+      {releaseDate}
+    </span>
+  );
+}
+
+function RecentEventsText({
+  data,
+}: {
+  data: AppRouterQueryResult<AppRouterOutputs["myUsers"]["getStats"]>["data"];
+}) {
+  const noEventsText = "No events in the last 15 min";
+  if (!data) return noEventsText;
+
+  const boostsInLast15Min = data.user.stats["delta_0-0.25h"].boosts;
+  const printsInLast15Min = data.user.stats["delta_0-0.25h"].prints;
+  const downloadsInLast15Min = data.user.stats["delta_0-0.25h"].downloads;
+  const followersInLast15Min = data.user.stats["delta_0-0.25h"].followers;
+
+  const stats: { value: number; Icon: React.ElementType; label: string }[] = [];
+
+  if (boostsInLast15Min > 0) {
+    stats.push({
+      value: boostsInLast15Min,
+      Icon: RocketIcon,
+      label: "boost",
+    });
+  }
+
+  if (printsInLast15Min > 0) {
+    stats.push({
+      value: printsInLast15Min,
+      Icon: PrintIcon,
+      label: "print",
+    });
+  }
+
+  if (downloadsInLast15Min > 0) {
+    stats.push({
+      value: downloadsInLast15Min,
+      Icon: DownloadIcon,
+      label: "download",
+    });
+  }
+
+  if (followersInLast15Min > 0) {
+    stats.push({
+      value: followersInLast15Min,
+      Icon: UsersIcon,
+      label: "follower",
+    });
+  }
+
+  if (stats.length > 0) {
+    const spans = stats.map((item, index) => (
+      <span key={index}>
+        {index > 0 && stats.length === 2
+          ? " and "
+          : index > 0 && index === stats.length - 1
+            ? ", and "
+            : index > 0
+              ? ", "
+              : ""}
+        <span className="text-foreground font-medium">
+          <item.Icon className="inline-block size-2.75 mb-px mr-[0.2ch]" />
+          {item.value}
+        </span>
+      </span>
+    ));
+
+    return (
+      <span>
+        {...spans}
+        <span>{" in the last 15 min"}</span>
+      </span>
+    );
+  }
+
+  return noEventsText;
+}
+
+const currency = "USD";
+
+function getEarnings({
+  timeMachineTimestamp,
+  timeframeMs,
+  data,
+}: {
+  timeMachineTimestamp: number | null;
+  timeframeMs: number;
+  data: NonNullable<
+    AppRouterQueryResult<AppRouterOutputs["myUsers"]["getStats"]>["data"]
+  >;
+}) {
+  const buffer = 100 * 60 * 60 * 12;
+  const adjustedNow = timeMachineTimestamp
+    ? Math.min(Date.now(), timeMachineTimestamp)
+    : Date.now();
+
+  const pureEarningRedemptions = data.redemptions
+    .filter(
+      (redemption) =>
+        redemption.redeem_cash_currency === currency &&
+        redemption.redeem_cash_amount > 0,
+    )
+    .sort((a, b) => b.redeemed_at - a.redeemed_at);
+
+  const pureEarningRedemptionsInsideTimeframe = pureEarningRedemptions.filter(
+    (redemption) =>
+      redemption.redeemed_at >= adjustedNow - timeframeMs - buffer,
+  );
+
+  if (pureEarningRedemptionsInsideTimeframe.length === 0) {
+    return null;
+  }
+
+  const latestRedemptionInsideTimeframe =
+    pureEarningRedemptionsInsideTimeframe[0];
+  const oldestRedemptionInsideTimeframe =
+    pureEarningRedemptionsInsideTimeframe[
+      pureEarningRedemptionsInsideTimeframe.length - 1
+    ];
+
+  let startingRedemptionTimestamp: null | number = null;
+  let currentRedemptionTimestampDiff = Infinity;
+
+  for (const redemption of pureEarningRedemptions) {
+    const redemptionTimestampDiff =
+      oldestRedemptionInsideTimeframe.redeemed_at - redemption.redeemed_at;
+
+    if (redemptionTimestampDiff <= 0) continue;
+
+    if (redemptionTimestampDiff < currentRedemptionTimestampDiff) {
+      currentRedemptionTimestampDiff = redemptionTimestampDiff;
+      startingRedemptionTimestamp = redemption.redeemed_at;
+    }
+  }
+
+  if (!startingRedemptionTimestamp) return null;
+
+  const total = pureEarningRedemptionsInsideTimeframe.reduce(
+    (sum, redemption) => sum + redemption.redeem_cash_amount,
+    0,
+  );
+
+  const timeDiff =
+    latestRedemptionInsideTimeframe.redeemed_at - startingRedemptionTimestamp;
+
+  const perTimeframe = (total / timeDiff) * timeframeMs;
+
+  return perTimeframe;
+}

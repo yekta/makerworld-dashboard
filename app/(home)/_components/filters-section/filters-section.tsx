@@ -1,0 +1,37 @@
+"use client";
+
+import CnSwitch from "@/app/(home)/_components/filters-section/cn-switch";
+import OrderDropdown from "@/app/(home)/_components/filters-section/order-dropdown";
+import SortDropdown from "@/app/(home)/_components/filters-section/sort-dropdown";
+import StatVisiblityPreferencesDropdown from "@/app/(home)/_components/filters-section/stat-visibility-preferences-dropdown";
+import {
+  TimeMachineButton,
+  TimeMachineSlider,
+} from "@/app/(home)/_components/filters-section/time-machine";
+import { cn } from "@/lib/utils";
+
+type TProps = {
+  className?: string;
+};
+
+export default function FiltersSection({ className }: TProps) {
+  return (
+    <div
+      className={cn(
+        "w-full flex flex-wrap justify-end items-center px-1 pt-1.5 gap-2 md:pt-1 pb-1",
+        className,
+      )}
+    >
+      <TimeMachineButton className="w-full sm:w-40" />
+      <TimeMachineSlider className="sm:order-last" />
+      <div className="w-full sm:w-auto flex shrink justify-end items-center">
+        <SortDropdown className="flex-1 sm:flex-none sm:w-48 rounded-r-none" />
+        <OrderDropdown className="w-28 rounded-l-none -ml-px" />
+      </div>
+      <div className="w-full sm:w-auto flex shrink justify-end items-center">
+        <StatVisiblityPreferencesDropdown className="flex-1 sm:w-28 sm:flex-none rounded-r-none" />
+        <CnSwitch className="w-28 rounded-l-none -ml-px" />
+      </div>
+    </div>
+  );
+}
