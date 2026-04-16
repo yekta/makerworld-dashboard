@@ -26,7 +26,12 @@ export default function CnSwitch({ className }: TProps) {
           CN
         </p>
       </div>
-      <Switch id="is_cn" checked={isCN} onCheckedChange={setIsCN} />
+      <Switch
+        className="-mr-0.5"
+        id="is_cn"
+        checked={isCN}
+        onCheckedChange={setIsCN}
+      />
     </Label>
   );
 }
