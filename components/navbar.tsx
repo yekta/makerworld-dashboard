@@ -15,6 +15,8 @@ type TRoute = {
   Icon: React.ComponentType<{ className?: string }>;
 };
 
+const cnString = "?cn=true";
+
 export default function Navbar({
   users,
 }: {
@@ -49,7 +51,7 @@ export default function Navbar({
 
         return {
           label: `${user.username}`,
-          href: `/${user.username}${isCN ? "?cn=true" : ""}`,
+          href: `/${user.username}${isCN ? cnString : ""}`,
           Icon,
         };
       }),
@@ -67,7 +69,10 @@ export default function Navbar({
         <NavItem
           key={route.href}
           route={route}
-          isActive={selectedPathname === route.href}
+          isActive={
+            selectedPathname === route.href ||
+            selectedPathname + cnString === route.href
+          }
           onClick={() => setSelectedPathname(route.href)}
         />
       ))}
