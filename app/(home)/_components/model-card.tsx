@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  useIsCN,
   useModelOrder,
   useModelSort,
   useModelStatVisibilityPreferences,
@@ -184,6 +185,10 @@ function ModelCardContent(props: TModelCardProps) {
 function getModelUrl(
   model: AppRouterOutputs["myUsers"]["getStats"]["models"][number],
 ) {
+  const [isCn] = useIsCN();
+  if (isCn) {
+    return `https://makerworld.com.cn/zh/models/${model.model_id}-${model.slug}`;
+  }
   return `https://makerworld.com/en/models/${model.model_id}-${model.slug}`;
 }
 
