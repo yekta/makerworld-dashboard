@@ -19,6 +19,20 @@ const nextConfig: NextConfig = {
         pathname: "/**",
         search: "",
       },
+      {
+        protocol: "https",
+        hostname: "makerworld.bblmw.cn",
+        port: "",
+        pathname: "/**",
+        search: "",
+      },
+      {
+        protocol: "https",
+        hostname: "public-cdn.bblmw.cn",
+        port: "",
+        pathname: "/**",
+        search: "",
+      },
     ],
     minimumCacheTTL: 60 * 60 * 24, // 24 hours
   },
