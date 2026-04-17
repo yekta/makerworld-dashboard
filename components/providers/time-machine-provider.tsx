@@ -1,24 +1,16 @@
 "use client";
 
+import { useFlash } from "@/components/providers/flash-provider";
 import { parseAsBoolean, parseAsInteger, useQueryState } from "nuqs";
-import {
-  createContext,
-  ReactNode,
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { createContext, ReactNode, useContext, useMemo } from "react";
 
 type TTimeMachineContext = {
-  setHeadCutoffTimestamp: (timestamp: number | null) => void;
+  setTimeMachineTimestamp: (timestamp: number | null) => void;
   timeMachineTimestamp: number | null;
   isOpen: boolean;
   setIsOpen: (open: boolean | ((prevOpen: boolean) => boolean)) => void;
   isTravelled: boolean;
   isTravelledAndClosed: boolean;
-  travelledRecently: boolean;
 };
 
 const TimeMachineContext = createContext<TTimeMachineContext | null>(null);
@@ -26,50 +18,43 @@ const TimeMachineContext = createContext<TTimeMachineContext | null>(null);
 export const TimeMachineProvider: React.FC<{
   children: ReactNode;
 }> = ({ children }) => {
+  const { disableFlash, enableFlashWithDelay } = useFlash();
   const [isOpen, setIsOpen] = useQueryState(
     "time_machine",
     parseAsBoolean.withDefault(false),
   );
-  const [timeMachineTimestamp, setHeadCutoffTimestamp] = useQueryState(
+  const [timeMachineTimestamp, _setTimeMachineTimestamp] = useQueryState(
     "now_timestamp",
     parseAsInteger,
   );
   const isTravelled = timeMachineTimestamp !== null;
   const isTravelledAndClosed = isTravelled && !isOpen;
-  const [travelledRecently, setTravelledRecently] = useState(false);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-
-  useEffect(() => {
-    setTravelledRecently(true);
-
-    if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    timeoutRef.current = setTimeout(() => {
-      setTravelledRecently(false);
-    }, 1000);
-
-    return () => {
-      if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    };
-  }, [timeMachineTimestamp]);
+  const setTimeMachineTimestamp: typeof _setTimeMachineTimestamp = (
+    value,
+    options,
+  ) => {
+    disableFlash();
+    const result = _setTimeMachineTimestamp(value, options);
+    enableFlashWithDelay();
+    return result;
+  };
 
   const value = useMemo(
     () => ({
       timeMachineTimestamp,
-      setHeadCutoffTimestamp,
+      setTimeMachineTimestamp,
       isOpen,
       setIsOpen,
       isTravelled,
       isTravelledAndClosed,
-      travelledRecently,
     }),
     [
       timeMachineTimestamp,
-      setHeadCutoffTimestamp,
+      setTimeMachineTimestamp,
       isOpen,
       setIsOpen,
       isTravelled,
       isTravelledAndClosed,
-      travelledRecently,
     ],
   );
 

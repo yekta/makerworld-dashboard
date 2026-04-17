@@ -69,7 +69,7 @@ function getCalendarDaysAgo(timestamp: number): number {
 const maxDefault = 30;
 
 export function TimeMachineSlider({ className }: TProps) {
-  const { isOpen, timeMachineTimestamp, setHeadCutoffTimestamp } =
+  const { isOpen, timeMachineTimestamp, setTimeMachineTimestamp } =
     useTimeMachine();
   const [time, setTime] = useState(format(new Date(), "HH:mm"));
 
@@ -82,7 +82,7 @@ export function TimeMachineSlider({ className }: TProps) {
       : min,
   ]);
   const debouncedSetHeadCutoffTimestamp = useDebounceCallback(
-    setHeadCutoffTimestamp,
+    setTimeMachineTimestamp,
     500,
   );
   const numberOfDaysAgo = value[0];

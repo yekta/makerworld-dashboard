@@ -1,4 +1,5 @@
 import { useModelStatVisibilityPreferences } from "@/app/(home)/_components/filters-section/hooks";
+import { useFlash } from "@/components/providers/flash-provider";
 import { useTimeMachine } from "@/components/providers/time-machine-provider";
 import { appLocale } from "@/lib/constants";
 import useFlashOnChange from "@/lib/hooks/use-flash-on-change";
@@ -304,10 +305,11 @@ function MainStat({
   isPlaceholder?: boolean;
 }) {
   const [canFlash, setCanFlash] = useState(false);
-  const { isTravelled, travelledRecently } = useTimeMachine();
+  const { isTravelled } = useTimeMachine();
+  const { isFlashEnabled } = useFlash();
 
   const shouldFlash = useFlashOnChange(value, {
-    enabled: !isPlaceholder && canFlash && !travelledRecently,
+    enabled: isFlashEnabled && !isPlaceholder && canFlash,
     duration: 5000,
   });
   const canFlashTimeoutRef = useRef<number | null>(null);

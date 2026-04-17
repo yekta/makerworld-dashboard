@@ -112,10 +112,19 @@ export default function ModelStatsChart({
       (timeframe) => (timeframe + "_timestamp") as keyof typeof metadata,
     );
     const data: TChartData = timeframes
-      .map((timeframe, index) => ({
-        prints: model.stats[timeframe].prints,
-        timestamp: metadata[timeframeTimestamps[index]] + 24 * 60 * 60 * 1000,
-      }))
+      .map((timeframe, index) => {
+        const metadataTimestamp = metadata[timeframeTimestamps[index]];
+        if (metadataTimestamp === null) {
+          return {
+            prints: model.stats[timeframe].prints,
+            timestamp: placeholderData[index].timestamp,
+          };
+        }
+        return {
+          prints: model.stats[timeframe].prints,
+          timestamp: metadataTimestamp + 24 * 60 * 60 * 1000,
+        };
+      })
       .reverse();
     return data;
   }, [model, metadata, isPlaceholder, dayOfWeek]);

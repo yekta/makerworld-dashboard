@@ -1,10 +1,11 @@
 "use client";
 
 import { useIsCN } from "@/app/(home)/_components/filters-section/hooks";
+import { useFlash } from "@/components/providers/flash-provider";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
-import { ClockIcon, Globe2Icon } from "lucide-react";
+import { Globe2Icon } from "lucide-react";
 
 type TProps = {
   className?: string;
@@ -12,6 +13,12 @@ type TProps = {
 
 export default function CnSwitch({ className }: TProps) {
   const [isCN, setIsCN] = useIsCN();
+  const { disableFlash, enableFlashWithDelay } = useFlash();
+  const onCheckChange = (checked: boolean) => {
+    disableFlash();
+    setIsCN(checked);
+    enableFlashWithDelay();
+  };
   return (
     <Label
       htmlFor="is_cn"
@@ -30,7 +37,7 @@ export default function CnSwitch({ className }: TProps) {
         className="-mr-0.5"
         id="is_cn"
         checked={isCN}
-        onCheckedChange={setIsCN}
+        onCheckedChange={onCheckChange}
       />
     </Label>
   );

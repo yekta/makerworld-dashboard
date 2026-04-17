@@ -362,7 +362,7 @@ function DateTime({
   modelReleaseTimestamp: number;
   timeAgoString: string;
 } & TModelCardProps) {
-  const { isOpen, setHeadCutoffTimestamp } = useTimeMachine();
+  const { isOpen, setTimeMachineTimestamp } = useTimeMachine();
   const [, setModelSort] = useModelSort();
   const [, setModelOrder] = useModelOrder();
 
@@ -378,7 +378,7 @@ function DateTime({
     <El
       {...(isOpen && {
         onClick: () => {
-          setHeadCutoffTimestamp(
+          setTimeMachineTimestamp(
             Math.min(Date.now(), modelReleaseTimestamp + dayPlusFiveMinMs),
           );
           setModelSort("created_at");
