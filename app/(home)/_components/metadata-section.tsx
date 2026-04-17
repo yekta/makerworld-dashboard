@@ -82,7 +82,7 @@ function Metadata({
         return { keyValue, unit, timestamp: placeholderTimestamp };
       }
       if (!selectedMetadata[key]) {
-        return null;
+        return { keyValue, unit, timestamp: null };
       }
       const extraSeconds =
         selectedMetadata &&
@@ -111,7 +111,7 @@ function Metadata({
     >
       {rows.map((row, i) => (
         <div key={i} className="w-full flex items-center justify-center">
-          {row.map((item, index) => (
+          {row.map(({ keyValue, unit, timestamp }, index) => (
             <Fragment key={index}>
               <p
                 suppressHydrationWarning
@@ -119,10 +119,11 @@ function Metadata({
                 data-odd={index % 2 === 1 ? true : undefined}
                 className="shrink leading-none min-w-0 data-odd:text-left text-right data-only:text-center data-only:data-odd:text-center group-data-placeholder:rounded-sm group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent"
               >
-                {item === null
-                  ? "△N/A"
-                  : `△${item.keyValue.toString().padStart(2, "0")}
-                ${item.unit}:${timeAgo({ timestamp: item.timestamp, now: adjustedNow })}`}
+                △{keyValue.toString().padStart(2, "0")}
+                {unit}:
+                {timestamp === null
+                  ? "N/A"
+                  : timeAgo({ timestamp: timestamp, now: adjustedNow })}
               </p>
               {row.length === 2 && index === 0 && (
                 <span className="mx-[0.75ch] shrink-0 leading-none text-muted-most-foreground group-data-placeholder:rounded-sm group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-more-foreground group-data-placeholder:text-transparent">
