@@ -81,6 +81,7 @@ function Section({
   const veryFirstModelCreationTimestamp = useMemo(() => {
     if (!data) return placeholderTimestamp;
     const selectedModels = isCN ? data.models_cn : data.models;
+    if (selectedModels.length === 0) return null;
     const modelCreationTimestamps = selectedModels.map(
       (model) => model.model_created_at,
     );
@@ -93,6 +94,7 @@ function Section({
     const selectedMetadata = isCN ? data.metadata_cn : data.metadata;
     const lastWeekPrints = selectedStats["delta_0-168h"].prints;
     const lastWeekStartTimestamp = selectedMetadata["delta_0-168h_timestamp"];
+    if (!lastWeekStartTimestamp) return 0;
     const printsPerMs = lastWeekPrints / (adjustedNow - lastWeekStartTimestamp);
     const printsPerDay = printsPerMs * 1000 * 60 * 60 * 24;
     return printsPerDay;
@@ -104,6 +106,7 @@ function Section({
     const selectedMetadata = isCN ? data.metadata_cn : data.metadata;
     const lastWeekBoosts = selectedStats["delta_0-168h"].boosts;
     const lastWeekStartTimestamp = selectedMetadata["delta_0-168h_timestamp"];
+    if (!lastWeekStartTimestamp) return 0;
     const boostsPerMs = lastWeekBoosts / (adjustedNow - lastWeekStartTimestamp);
     const boostsPerDay = boostsPerMs * 1000 * 60 * 60 * 24;
     return boostsPerDay;
@@ -120,6 +123,7 @@ function Section({
   const incomePerMonth = useMemo(() => {
     if (!data) return kmbtFormatter.format(1011);
     if (data.pointsAndWallet.wallet_total_income === null) return "N/A";
+    if (!veryFirstModelCreationTimestamp) return "N/A";
     const sinceFirstModelCreationMs =
       adjustedNow - veryFirstModelCreationTimestamp;
     const incomePerMs =
@@ -274,7 +278,7 @@ function DatesSpan({
   timestamp,
   isPlaceholder,
 }: {
-  timestamp: number;
+  timestamp: number | null;
   isPlaceholder?: boolean;
 }) {
   const { timeMachineTimestamp } = useTimeMachine();
@@ -284,20 +288,34 @@ function DatesSpan({
     : now;
   const { timeAgoString, releaseDate } = useMemo(
     () => ({
-      timeAgoString: trimDuration({
-        duration: Duration.fromMillis(
-          adjustedNow - (!isPlaceholder ? timestamp : placeholderTimestamp),
-        ).shiftTo("years", "months", "days", "hours", "minutes", "seconds"),
-        precision: 2,
-      }).toHuman({
-        showZeros: false,
-        unitDisplay: "narrow",
-        maximumFractionDigits: 0,
-      }),
-      releaseDate: format(
-        new Date(!isPlaceholder ? timestamp : placeholderTimestamp),
-        "yyyy-MM-dd",
-      ),
+      timeAgoString:
+        timestamp === null
+          ? "N/A"
+          : trimDuration({
+              duration: Duration.fromMillis(
+                adjustedNow -
+                  (!isPlaceholder ? timestamp : placeholderTimestamp),
+              ).shiftTo(
+                "years",
+                "months",
+                "days",
+                "hours",
+                "minutes",
+                "seconds",
+              ),
+              precision: 2,
+            }).toHuman({
+              showZeros: false,
+              unitDisplay: "narrow",
+              maximumFractionDigits: 0,
+            }),
+      releaseDate:
+        timestamp === null
+          ? "N/A"
+          : format(
+              new Date(!isPlaceholder ? timestamp : placeholderTimestamp),
+              "yyyy-MM-dd",
+            ),
     }),
     [isPlaceholder, timestamp, adjustedNow],
   );
