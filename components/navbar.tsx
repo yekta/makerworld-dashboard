@@ -72,10 +72,7 @@ export default function Navbar({
           <NavItem
             key={route.pathname}
             route={route}
-            isActive={
-              selectedPathname === route.pathname ||
-              selectedPathname === route.pathname
-            }
+            isActive={selectedPathname === route.pathname}
             onClick={() => setSelectedPathname(route.pathname)}
           />
         </>
