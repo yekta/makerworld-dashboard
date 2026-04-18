@@ -40,7 +40,7 @@ export default function RegionSwitch({ className }: TProps) {
       )}
       onClick={onClick}
     >
-      <Globe2Icon className="size-3.5 -ml-0.5 shrink-0" />
+      <Globe2Icon className="size-3.5 -ml-0.5 -mr-0.5 shrink-0" />
       <p className="flex-1 text-sm min-w-0 overflow-hidden overflow-ellipsis whitespace-nowrap">
         {getRegionEnumLabel(region)}
       </p>
@@ -48,9 +48,9 @@ export default function RegionSwitch({ className }: TProps) {
         style={{
           rotate: `${index * 180}deg`,
         }}
-        className="size-4 shrink-0 text-muted-more-foreground -mr-1 transition transform"
+        className="size-3.5 shrink-0 text-muted-more-foreground -mr-1 transition transform"
       >
-        <ArrowLeftRightIcon className="size-4" />
+        <ArrowLeftRightIcon className="size-3.5" />
       </div>
     </Button>
   );

@@ -58,7 +58,7 @@ export default function OptionDropdown<T>({
           <p className="flex-1 select-none min-w-0 overflow-hidden overflow-ellipsis">
             {triggerLabel}
           </p>
-          <ChevronDown className="shrink-0 text-muted-more-foreground -mr-1 group-data-open:rotate-180 transition size-4" />
+          <ChevronDown className="size-4 shrink-0 text-muted-more-foreground -mr-1 group-data-open:rotate-180 transition" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent
