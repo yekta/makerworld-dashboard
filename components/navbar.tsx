@@ -8,11 +8,11 @@ import { AppRouterOutputs } from "@/server/trpc/api/root";
 import { TableIcon, UserRoundIcon } from "lucide-react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 type TRoute = {
   label: string;
-  href: string;
+  pathname: string;
   Icon: React.ComponentType<{ className?: string }>;
 };
 
@@ -23,7 +23,10 @@ export default function Navbar({
 }) {
   const pathname = usePathname();
   const [selectedPathname, setSelectedPathname] = useState(pathname);
-  const [region] = useRegion();
+
+  useEffect(() => {
+    setSelectedPathname(pathname);
+  }, [pathname]);
 
   const routes: TRoute[] = useMemo(() => {
     return [
@@ -50,30 +53,32 @@ export default function Navbar({
 
         return {
           label: `${user.username}`,
-          href: `/${user.username}${region !== REGION_DEFAULT ? `?region=${region}` : ""}`,
+          pathname: `/${user.username}`,
           Icon,
         };
       }),
       {
         label: "Leaderboard",
-        href: "/leaderboard",
+        pathname: "/leaderboard",
         Icon: TableIcon,
       },
     ];
-  }, [users, region]);
+  }, [users]);
 
   return (
     <nav className="w-full flex fixed bottom-0 bg-background border-t rounded-t-xl overflow-hidden z-50">
       {routes.map((route) => (
-        <NavItem
-          key={route.href}
-          route={route}
-          isActive={
-            selectedPathname === route.href ||
-            selectedPathname + `?region=${region}` === route.href
-          }
-          onClick={() => setSelectedPathname(route.href)}
-        />
+        <>
+          <NavItem
+            key={route.pathname}
+            route={route}
+            isActive={
+              selectedPathname === route.pathname ||
+              selectedPathname === route.pathname
+            }
+            onClick={() => setSelectedPathname(route.pathname)}
+          />
+        </>
       ))}
     </nav>
   );
@@ -88,12 +93,15 @@ function NavItem({
   isActive: boolean;
   onClick: () => void;
 }) {
+  const [region] = useRegion();
   return (
     <LinkButton
       data-active={isActive ? true : undefined}
       variant="ghost"
       className="flex-1 p-0 cursor-default group/link text-muted-more-foreground data-active:text-foreground relative min-w-0 overflow-hidden flex font-semibold rounded-none items-center justify-center"
-      href={route.href}
+      href={
+        route.pathname + (region !== REGION_DEFAULT ? `?region=${region}` : "")
+      }
       onClick={onClick}
     >
       <div className="w-full md:w-auto shrink min-w-0 flex flex-col gap-0.5 sm:gap-1.5 sm:flex-row items-center justify-center relative px-4 sm:px-10 sm:pt-3.5 sm:pb-3.5 pt-2 pb-[calc(0.5rem+var(--safe-area-inset-bottom))]">
