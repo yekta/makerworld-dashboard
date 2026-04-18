@@ -2,6 +2,7 @@
 
 import {
   getRegionEnumLabel,
+  REGION_DEFAULT,
   TRegionEnum,
 } from "@/app/(home)/_components/constants";
 import { useRegion } from "@/app/(home)/_components/filters-section/hooks";
@@ -33,15 +34,16 @@ export default function RegionSwitch({ className }: TProps) {
 
   return (
     <Button
+      data-non-default={region !== REGION_DEFAULT ? true : undefined}
       variant="ghost"
       className={cn(
-        "bg-background select-none group px-3 font-medium hover:bg-border active:bg-border text-foreground border justify-start text-left",
+        "bg-background select-none group/button data-non-default:border-warning/18 px-3 font-medium hover:bg-border active:bg-border text-foreground border justify-start text-left",
         className,
       )}
       onClick={onClick}
     >
-      <Globe2Icon className="size-3.5 -ml-0.5 -mr-0.5 shrink-0" />
-      <p className="flex-1 text-sm min-w-0 overflow-hidden overflow-ellipsis whitespace-nowrap">
+      <Globe2Icon className="size-3.5 -ml-0.5 -mr-0.5 shrink-0 group-data-non-default/button:text-warning" />
+      <p className="flex-1 text-sm min-w-0 overflow-hidden overflow-ellipsis whitespace-nowrap group-data-non-default/button:text-warning">
         {getRegionEnumLabel(region)}
       </p>
       <div
@@ -50,7 +52,7 @@ export default function RegionSwitch({ className }: TProps) {
         }}
         className="size-3.5 shrink-0 text-muted-more-foreground -mr-1 transition transform"
       >
-        <ArrowLeftRightIcon className="size-3.5" />
+        <ArrowLeftRightIcon className="size-3.5 group-data-non-default/button:text-warning/50" />
       </div>
     </Button>
   );

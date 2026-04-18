@@ -68,14 +68,12 @@ export default function Navbar({
   return (
     <nav className="w-full flex fixed bottom-0 bg-background border-t rounded-t-xl overflow-hidden z-50">
       {routes.map((route) => (
-        <>
-          <NavItem
-            key={route.pathname}
-            route={route}
-            isActive={selectedPathname === route.pathname}
-            onClick={() => setSelectedPathname(route.pathname)}
-          />
-        </>
+        <NavItem
+          key={route.pathname}
+          route={route}
+          isActive={selectedPathname === route.pathname}
+          onClick={() => setSelectedPathname(route.pathname)}
+        />
       ))}
     </nav>
   );
