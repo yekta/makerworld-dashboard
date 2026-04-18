@@ -1,6 +1,6 @@
 "use client";
 
-import CnSwitch from "@/app/(home)/_components/filters-section/cn-switch";
+import RegionSwitch from "@/app/(home)/_components/filters-section/region-switch";
 import OrderDropdown from "@/app/(home)/_components/filters-section/order-dropdown";
 import SortDropdown from "@/app/(home)/_components/filters-section/sort-dropdown";
 import StatVisiblityPreferencesDropdown from "@/app/(home)/_components/filters-section/stat-visibility-preferences-dropdown";
@@ -30,7 +30,7 @@ export default function FiltersSection({ className }: TProps) {
       </div>
       <div className="w-full sm:w-auto flex shrink justify-end items-center">
         <StatVisiblityPreferencesDropdown className="flex-1 sm:w-28 sm:flex-none rounded-r-none" />
-        <CnSwitch className="w-28 rounded-l-none -ml-px" />
+        <RegionSwitch className="w-28 rounded-l-none -ml-px" />
       </div>
     </div>
   );

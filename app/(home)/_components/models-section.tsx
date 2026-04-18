@@ -5,9 +5,9 @@ import {
   MODEL_SORT_DEFAULT,
 } from "@/app/(home)/_components/constants";
 import {
-  useIsCN,
   useModelOrder,
   useModelSort,
+  useRegion,
 } from "@/app/(home)/_components/filters-section/hooks";
 import ModelCard, {
   TModelCardProps,
@@ -80,12 +80,16 @@ function Models({
 }: TModelsProps) {
   const [modelSort] = useModelSort();
   const [modelOrder] = useModelOrder();
-  const [isCN] = useIsCN();
+  const [region] = useRegion();
 
-  const selectedModels = isPlaceholder ? undefined : isCN ? models_cn : models;
+  const selectedModels = isPlaceholder
+    ? undefined
+    : region === "china"
+      ? models_cn
+      : models;
   const selectedMetadata = isPlaceholder
     ? undefined
-    : isCN
+    : region === "china"
       ? metadata_cn
       : metadata;
 

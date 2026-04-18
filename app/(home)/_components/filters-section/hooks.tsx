@@ -1,6 +1,6 @@
 import {
-  IS_CN_DEFAULT,
-  IS_CN_KEY,
+  REGION_DEFAULT,
+  REGION_KEY,
   MODEL_ORDER_DEFAULT,
   MODEL_ORDER_KEY,
   MODEL_SORT_DEFAULT,
@@ -10,6 +10,7 @@ import {
   TModelOrderEnum,
   TModelSortByEnum,
   TModelStatVisibilityPreferencesEnum,
+  TRegionEnum,
 } from "@/app/(home)/_components/constants";
 import {
   parseAsArrayOf,
@@ -44,10 +45,10 @@ export function useModelSort() {
   return res;
 }
 
-export function useIsCN() {
+export function useRegion() {
   const res = useQueryState(
-    IS_CN_KEY,
-    parseAsBoolean.withDefault(IS_CN_DEFAULT),
+    REGION_KEY,
+    parseAsStringEnum(TRegionEnum.options).withDefault(REGION_DEFAULT),
   );
   return res;
 }

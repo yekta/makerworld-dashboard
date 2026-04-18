@@ -58,7 +58,7 @@ export default function OptionDropdown<T>({
           <p className="flex-1 select-none min-w-0 overflow-hidden overflow-ellipsis">
             {triggerLabel}
           </p>
-          <ChevronDown className="shrink-0 text-muted-more-foreground -mr-1 group-data-open:rotate-180 transition" />
+          <ChevronDown className="shrink-0 text-muted-more-foreground -mr-1 group-data-open:rotate-180 transition size-4" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent
@@ -108,7 +108,9 @@ export default function OptionDropdown<T>({
               >
                 <div className="w-full gap-2 justify-between items-center flex">
                   <div className="shrink min-w-0 flex gap-2 items-center">
-                    {item.Icon && <item.Icon className="size-3.5 -mr-0.5" />}
+                    {item.Icon && (
+                      <item.Icon className="size-3.5 -mr-0.5 shrink-0" />
+                    )}
                     <p className="min-w-0 shrink leading-tight text-left">
                       {item.label}
                     </p>

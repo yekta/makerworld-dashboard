@@ -1,6 +1,6 @@
 "use client";
 
-import { useIsCN } from "@/app/(home)/_components/filters-section/hooks";
+import { useRegion } from "@/app/(home)/_components/filters-section/hooks";
 import PointsAndWalletCard from "@/app/(home)/_components/points-and-wallet-card";
 import PrintIcon from "@/components/icons/print-icon";
 import { useNow } from "@/components/providers/now-provider";
@@ -51,7 +51,7 @@ function Section({
     compactDisplay: "short", // uses K, M, B…
     maximumSignificantDigits: 3,
   });
-  const [isCN] = useIsCN();
+  const [region] = useRegion();
 
   const { projectedMonthlyUSDRevenue, realMonthlyUSDRevenue } = useMemo(() => {
     if (!data)
@@ -80,45 +80,50 @@ function Section({
 
   const veryFirstModelCreationTimestamp = useMemo(() => {
     if (!data) return placeholderTimestamp;
-    const selectedModels = isCN ? data.models_cn : data.models;
+    const selectedModels = region === "china" ? data.models_cn : data.models;
     if (selectedModels.length === 0) return null;
     const modelCreationTimestamps = selectedModels.map(
       (model) => model.model_created_at,
     );
     return Math.min(...modelCreationTimestamps);
-  }, [data, isCN]);
+  }, [data, region]);
 
   const printsPerDayBasedOnLastWeek = useMemo(() => {
     if (!data) return 1000;
-    const selectedStats = isCN ? data.user.stats_cn : data.user.stats;
-    const selectedMetadata = isCN ? data.metadata_cn : data.metadata;
+    const selectedStats =
+      region === "china" ? data.user.stats_cn : data.user.stats;
+    const selectedMetadata =
+      region === "china" ? data.metadata_cn : data.metadata;
     const lastWeekPrints = selectedStats["delta_0-168h"].prints;
     const lastWeekStartTimestamp = selectedMetadata["delta_0-168h_timestamp"];
     if (!lastWeekStartTimestamp) return 0;
     const printsPerMs = lastWeekPrints / (adjustedNow - lastWeekStartTimestamp);
     const printsPerDay = printsPerMs * 1000 * 60 * 60 * 24;
     return printsPerDay;
-  }, [data, isCN]);
+  }, [data, region, adjustedNow]);
 
   const boostsPerDayBasedOnLastWeek = useMemo(() => {
     if (!data) return 10;
-    const selectedStats = isCN ? data.user.stats_cn : data.user.stats;
-    const selectedMetadata = isCN ? data.metadata_cn : data.metadata;
+    const selectedStats =
+      region === "china" ? data.user.stats_cn : data.user.stats;
+    const selectedMetadata =
+      region === "china" ? data.metadata_cn : data.metadata;
     const lastWeekBoosts = selectedStats["delta_0-168h"].boosts;
     const lastWeekStartTimestamp = selectedMetadata["delta_0-168h_timestamp"];
     if (!lastWeekStartTimestamp) return 0;
     const boostsPerMs = lastWeekBoosts / (adjustedNow - lastWeekStartTimestamp);
     const boostsPerDay = boostsPerMs * 1000 * 60 * 60 * 24;
     return boostsPerDay;
-  }, [data, isCN]);
+  }, [data, region, adjustedNow]);
 
   const boostRatePercentage = useMemo(() => {
     if (!data) return 5;
-    const selectedStats = isCN ? data.user.stats_cn : data.user.stats;
+    const selectedStats =
+      region === "china" ? data.user.stats_cn : data.user.stats;
     return (
       (selectedStats.current.boosts / (selectedStats.current.prints || 1)) * 100
     );
-  }, [data, isCN]);
+  }, [data, region]);
 
   const incomePerMonth = useMemo(() => {
     if (!data) return kmbtFormatter.format(1011);

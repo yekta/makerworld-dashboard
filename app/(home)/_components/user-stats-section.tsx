@@ -1,6 +1,6 @@
 "use client";
 
-import { useIsCN } from "@/app/(home)/_components/filters-section/hooks";
+import { useRegion } from "@/app/(home)/_components/filters-section/hooks";
 import PrintIcon from "@/components/icons/print-icon";
 import { useStats } from "@/components/providers/stats-provider";
 import Stat from "@/components/stat";
@@ -8,7 +8,7 @@ import { DownloadIcon, RocketIcon, UsersIcon } from "lucide-react";
 
 export default function UserStatsSection() {
   const { data, isPending, isError } = useStats();
-  const [isCN] = useIsCN();
+  const [region] = useRegion();
 
   if (!data && isError) {
     return (
@@ -20,8 +20,10 @@ export default function UserStatsSection() {
     );
   }
 
-  const selectedData = isCN ? data?.user.stats_cn : data?.user.stats;
-  const selectedRecords = isCN ? data?.user.records_cn : data?.user.records;
+  const selectedData =
+    region === "china" ? data?.user.stats_cn : data?.user.stats;
+  const selectedRecords =
+    region === "china" ? data?.user.records_cn : data?.user.records;
 
   return (
     <Wrapper>

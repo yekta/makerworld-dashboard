@@ -13,9 +13,10 @@ import z from "zod";
 export const MODEL_SORT_KEY = "sort_by";
 export const MODEL_ORDER_KEY = "order";
 export const MODEL_STAT_VISIBLITY_PREFERENCES_KEY = "stats";
-export const IS_CN_KEY = "is_cn";
+export const REGION_KEY = "region";
 
 export const TModelOrderEnum = z.enum(["desc", "asc"]);
+export const TRegionEnum = z.enum(["global", "china"]);
 export const TModelSortByEnum = z.enum([
   "created_at",
   "prints_current",
@@ -93,11 +94,24 @@ export function getModelStatVisibilityPreferencesEnumLabel(
   }
 }
 
+export type TRegion = z.infer<typeof TRegionEnum>;
+
+export function getRegionEnumLabel(region: TRegion) {
+  switch (region) {
+    case "china":
+      return "China";
+    case "global":
+      return "Global";
+    default:
+      return region;
+  }
+}
+
 export const MODEL_SORT_DEFAULT: z.infer<typeof TModelSortByEnum> =
   "prints_current";
 export const MODEL_ORDER_DEFAULT: z.infer<typeof TModelOrderEnum> = "desc";
 export const CHART_VISIBILITY_DEFAULT = true;
-export const IS_CN_DEFAULT = false;
+export const REGION_DEFAULT: z.infer<typeof TRegionEnum> = "global";
 export const MODEL_STAT_VISIBLITY_PREFERENCES_DEFAULT: z.infer<
   typeof TModelStatVisibilityPreferencesEnum
 >[] = [

@@ -1,6 +1,7 @@
 "use client";
 
-import { useIsCN } from "@/app/(home)/_components/filters-section/hooks";
+import { REGION_DEFAULT } from "@/app/(home)/_components/constants";
+import { useRegion } from "@/app/(home)/_components/filters-section/hooks";
 import { LinkButton } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { AppRouterOutputs } from "@/server/trpc/api/root";
@@ -15,8 +16,6 @@ type TRoute = {
   Icon: React.ComponentType<{ className?: string }>;
 };
 
-const cnString = "?cn=true";
-
 export default function Navbar({
   users,
 }: {
@@ -24,7 +23,7 @@ export default function Navbar({
 }) {
   const pathname = usePathname();
   const [selectedPathname, setSelectedPathname] = useState(pathname);
-  const [isCN] = useIsCN();
+  const [region] = useRegion();
 
   const routes: TRoute[] = useMemo(() => {
     return [
@@ -51,7 +50,7 @@ export default function Navbar({
 
         return {
           label: `${user.username}`,
-          href: `/${user.username}${isCN ? cnString : ""}`,
+          href: `/${user.username}${region !== REGION_DEFAULT ? `?region=${region}` : ""}`,
           Icon,
         };
       }),
@@ -61,7 +60,7 @@ export default function Navbar({
         Icon: TableIcon,
       },
     ];
-  }, [users, isCN]);
+  }, [users, region]);
 
   return (
     <nav className="w-full flex fixed bottom-0 bg-background border-t rounded-t-xl overflow-hidden z-50">
@@ -71,7 +70,7 @@ export default function Navbar({
           route={route}
           isActive={
             selectedPathname === route.href ||
-            selectedPathname + cnString === route.href
+            selectedPathname + `?region=${region}` === route.href
           }
           onClick={() => setSelectedPathname(route.href)}
         />

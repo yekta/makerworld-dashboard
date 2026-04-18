@@ -1,6 +1,6 @@
 "use client";
 
-import { useIsCN } from "@/app/(home)/_components/filters-section/hooks";
+import { useRegion } from "@/app/(home)/_components/filters-section/hooks";
 import { useNow } from "@/components/providers/now-provider";
 import { useStats } from "@/components/providers/stats-provider";
 import { useTimeMachine } from "@/components/providers/time-machine-provider";
@@ -54,7 +54,7 @@ function Metadata({
 }) {
   const now = useNow();
   const { timeMachineTimestamp } = useTimeMachine();
-  const [isCN] = useIsCN();
+  const [region] = useRegion();
   const adjustedNow = timeMachineTimestamp
     ? Math.min(now, timeMachineTimestamp)
     : now;
@@ -77,7 +77,8 @@ function Metadata({
       const keyNumber = Number(cleanedKey);
       const unit = keyNumber >= 168 ? "d" : "h";
       const keyValue = Math.round(unit === "d" ? keyNumber / 24 : keyNumber);
-      const selectedMetadata = isCN ? data?.metadata_cn : data?.metadata;
+      const selectedMetadata =
+        region === "china" ? data?.metadata_cn : data?.metadata;
       if (!selectedMetadata) {
         return { keyValue, unit, timestamp: placeholderTimestamp };
       }
@@ -94,7 +95,7 @@ function Metadata({
         : placeholderTimestamp;
       return { keyValue, unit, timestamp };
     });
-  }, [data, adjustedNow, isCN]);
+  }, [data, adjustedNow, region]);
 
   const rows = useMemo(
     () =>

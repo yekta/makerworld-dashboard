@@ -50,7 +50,7 @@ export function TimeMachineButton({ className }: TProps) {
           ? format(new Date(timeMachineTimestamp!), "yyyy-MM-dd")
           : "Time Machine"}
       </p>
-      <ChevronDown className="shrink-0 text-muted-more-foreground -mr-1 group-data-open:rotate-180 transition-transform group-data-travelled:text-warning/50" />
+      <ChevronDown className="shrink-0 text-muted-more-foreground -mr-1 group-data-open:rotate-180 transition-transform group-data-travelled:text-warning/50 size-4" />
     </Button>
   );
 }
