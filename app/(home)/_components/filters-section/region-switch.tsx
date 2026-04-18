@@ -8,7 +8,7 @@ import { useRegion } from "@/app/(home)/_components/filters-section/hooks";
 import { useFlash } from "@/components/providers/flash-provider";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { ArrowUpDownIcon, Globe2Icon } from "lucide-react";
+import { ArrowLeftRightIcon, Globe2Icon } from "lucide-react";
 import { useCallback, useMemo } from "react";
 
 type TProps = {
@@ -50,7 +50,7 @@ export default function RegionSwitch({ className }: TProps) {
         }}
         className="size-4 shrink-0 text-muted-more-foreground -mr-1 transition transform"
       >
-        <ArrowUpDownIcon className="size-4" />
+        <ArrowLeftRightIcon className="size-4" />
       </div>
     </Button>
   );
