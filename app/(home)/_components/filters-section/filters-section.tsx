@@ -22,14 +22,14 @@ export default function FiltersSection({ className }: TProps) {
         className,
       )}
     >
-      <TimeMachineButton className="w-full sm:w-40" />
-      <TimeMachineSlider className="sm:order-last" />
-      <div className="w-full sm:w-auto flex shrink justify-end items-center">
-        <SortDropdown className="flex-1 sm:flex-none sm:w-48 rounded-r-none" />
+      <TimeMachineButton className="w-full md:w-40" />
+      <TimeMachineSlider className="md:order-last" />
+      <div className="w-full md:w-auto flex shrink justify-end items-center">
+        <SortDropdown className="flex-1 md:flex-none md:w-44 rounded-r-none" />
         <OrderDropdown className="w-28 rounded-l-none -ml-px" />
       </div>
-      <div className="w-full sm:w-auto flex shrink justify-end items-center">
-        <StatVisiblityPreferencesDropdown className="flex-1 sm:w-28 sm:flex-none rounded-r-none" />
+      <div className="w-full md:w-auto flex shrink justify-end items-center">
+        <StatVisiblityPreferencesDropdown className="flex-1 md:w-28 md:flex-none rounded-r-none" />
         <RegionSwitch className="w-28 rounded-l-none -ml-px" />
       </div>
     </div>

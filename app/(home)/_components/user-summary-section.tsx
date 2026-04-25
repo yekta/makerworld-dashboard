@@ -192,7 +192,11 @@ function Section({
               suppressHydrationWarning
               className="shrink font-light whitespace-nowrap leading-normal text-center md:text-left text-muted-foreground min-w-0 overflow-hidden overflow-ellipsis group-data-placeholder:rounded group-data-placeholder:animate-pulse group-data-placeholder:bg-muted-most-foreground group-data-placeholder:text-transparent"
             >
-              <span className="font-medium">
+              <span>Last week</span>
+              <span className="text-muted-most-foreground px-[0.75ch] group-data-placeholder:text-transparent">
+                {">"}
+              </span>
+              <span className="font-medium text-foreground group-data-placeholder:text-transparent">
                 <PrintIcon className="inline-block size-2.75 mb-px mr-[0.2ch]" />
                 {printsPerDayBasedOnLastWeek.toLocaleString(appLocale, {
                   maximumFractionDigits: 1,
@@ -202,7 +206,7 @@ function Section({
               <span className="text-muted-most-foreground px-[0.75ch] group-data-placeholder:text-transparent">
                 {"|"}
               </span>
-              <span className="font-medium">
+              <span className="font-medium text-foreground group-data-placeholder:text-transparent">
                 <RocketIcon className="inline-block size-2.75 mb-px mr-[0.2ch]" />
                 {boostsPerDayBasedOnLastWeek.toLocaleString(appLocale, {
                   maximumFractionDigits: 1,
@@ -212,7 +216,7 @@ function Section({
               <span className="text-muted-most-foreground px-[0.75ch] group-data-placeholder:text-transparent">
                 {"|"}
               </span>
-              <span className="font-medium">
+              <span className="font-medium text-foreground group-data-placeholder:text-transparent">
                 <RocketIcon className="inline-block size-2.75 mb-px mr-[0.2ch]" />
                 {boostRatePercentage.toLocaleString(appLocale, {
                   maximumFractionDigits: 1,
